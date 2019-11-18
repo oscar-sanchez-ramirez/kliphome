@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class CategoryController extends ApiController
 {
     public function __construct()
     {
-        parent::__construct();
+        // parent::__construct();
         //Usar cuando queramos usar login con token
         // $this->middleware('client.credentials')->only(['index','show']);
     }
@@ -20,9 +21,8 @@ class CategoryController extends ApiController
      */
     public function index()
     {
-
         $categories = Category::all();
-        return $categories;
+        return view('admin.categories.index')->with('categories',$categories);
     }
 
     /**
@@ -32,7 +32,7 @@ class CategoryController extends ApiController
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -43,7 +43,11 @@ class CategoryController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $new_category = new Category();
+        $new_category->title = $request->title;
+        $new_category->save();
+
+        return Redirect::action('CategoryController@index');
     }
 
     /**
