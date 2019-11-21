@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Redirect;
 
 class CategoryController extends ApiController
 {
+
     public function __construct()
     {
+        $this->middleware('auth');
         // parent::__construct();
         //Usar cuando queramos usar login con token
         // $this->middleware('client.credentials')->only(['index','show']);

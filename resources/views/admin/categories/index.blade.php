@@ -67,9 +67,9 @@
                                                 <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                     <i class="zmdi zmdi-edit"></i>
                                                 </button>
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                {{-- <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                     <i class="zmdi zmdi-delete"></i>
-                                                </button>
+                                                </button> --}}
                                                 <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubcategoryModal" data-title="{{ $category->title }}" data-id="{{ $category->id }}">
                                                     <i data-toggle="tooltip" data-placement="top" title="SubCategorias" class="zmdi zmdi-collection-item-2"></i>
                                                 </button>

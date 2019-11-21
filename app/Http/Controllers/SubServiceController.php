@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class SubServiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -67,20 +72,11 @@ class SubServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function actualizar(Request $request)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        SubService::where('id',$request->subservice_id)->update([
+            'title' => $request->subservice_title
+        ]);
     }
 
     public function nuevo(Request $request)
@@ -91,18 +87,22 @@ class SubServiceController extends Controller
         $sub->save();
     }
 
+    public function eliminar(Request $request){
+        SubService::where('id',$request->subservice_id)->delete();
+    }
+
     public function getSubservice($id){
         $sub_services = SubService::where('service_id',$id)->get();
         $data = '';
         foreach($sub_services as $sub){
             $data = $data.'<tr>
                 <td>'.$sub->SubServiceName($id)["title"].'</td>
-                <td>'.$sub->title.'</td>
+                <td  class="td_'.$sub->id.'">'.$sub->title.'</td>
                 <td> <div class="table-data-feature">
-                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="setUpdateField('.(str_replace('"','\'',json_encode(array("id" => $sub->id, "title" => $sub->title)))).')">
                     <i class="zmdi zmdi-edit"></i>
                 </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteSubService('.$sub->id.')">
                     <i class="zmdi zmdi-delete"></i>
                 </button>
                 </div></td>

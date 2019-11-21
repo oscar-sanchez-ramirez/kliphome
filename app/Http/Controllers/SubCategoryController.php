@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -66,9 +71,11 @@ class SubCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function actualizar(Request $request)
     {
-        //
+        SubCategory::where('id',$request->subcategory_id)->update([
+            'title' => $request->subcategory_title
+        ]);
     }
 
     /**
@@ -77,9 +84,9 @@ class SubCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function eliminar(Request $request)
     {
-        //
+        SubCategory::where('id',$request->subcategory_id)->delete();
     }
 
     public function getSubcategory($id){
@@ -88,12 +95,12 @@ class SubCategoryController extends Controller
         foreach($sub_categories as $sub){
             $data = $data.'<tr>
                 <td>'.$sub->CategoryName($id)["title"].'</td>
-                <td>'.$sub->title.'</td>
+                <td  class="td_'.$sub->id.'">'.$sub->title.'</td>
                 <td> <div class="table-data-feature">
-                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="setUpdateField('.(str_replace('"','\'',json_encode(array("id" => $sub->id, "title" => $sub->title)))).')">
                     <i class="zmdi zmdi-edit"></i>
                 </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteSubCategory('.$sub->id.')">
                     <i class="zmdi zmdi-delete"></i>
                 </button>
                 </div></td>
