@@ -13,11 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 // Route::resource('categories', 'CategoryController');
 Route::post('oauth/token','\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
 
 Route::get('sub-categories/{category}','ApiRest\ApiServiceController@getSubCategories');
 Route::get('services/{subCategory}','ApiRest\ApiServiceController@getServices');
+
+Route::post('orders/create','ApiRest\OrderController@create');
+
+//AUTH
+Route::post('register','ApiRest\RegisterController@register');
