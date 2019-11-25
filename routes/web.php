@@ -11,6 +11,8 @@
 |
 */
 
+use App\User;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -36,3 +38,7 @@ Route::post('sub-servicios/nuevo','SubServiceController@nuevo');
 Route::post('sub-servicios/eliminar','SubServiceController@eliminar');
 Route::post('sub-servicios/actualizar','SubServiceController@actualizar');
 Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
+
+Route::get('checkUser',function(){
+    return User::where('id',13)->with('children')->get();
+});

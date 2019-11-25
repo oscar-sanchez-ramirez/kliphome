@@ -6,6 +6,7 @@ use App\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -13,7 +14,7 @@ class RegisterController extends Controller
         $this->validate($request,[
             'email' => 'required|email|unique:users',
             'name' => 'required',
-            'last_name' => 'required',
+            // 'lastName' => 'required',
             'password' => 'required'
         ]);
         $user = User::create([
@@ -22,15 +23,16 @@ class RegisterController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-        ]);
-        $address = Address::create([
+        ])->toArray();
+        Log::notice($user);
+        Address::create([
             'alias' => $request->alias,
             'address' => $request->address,
-            'user_id' => $user->id
+            'user_id' => $user["id"]
         ]);
         return response()->json([
             'message' => "Usuario creado correctamente",
-            'user' => $user->toArray()
+            'user' => $user
         ]);
     }
 }
