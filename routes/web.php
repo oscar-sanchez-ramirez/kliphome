@@ -23,7 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('admin', function () {
     return view('admin.admin');
-})->middleware('auth');
+})->middleware('auth','checkadmin');
 
 Route::resource('categorias', 'CategoryController');
 Route::resource('servicios', 'ServiceController',['except' => ['show']]);

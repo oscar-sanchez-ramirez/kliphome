@@ -6,12 +6,13 @@ use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class CategoryController extends ApiController
+class CategoryController extends Controller
 {
 
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('checkadmin');
         // parent::__construct();
         //Usar cuando queramos usar login con token
         // $this->middleware('client.credentials')->only(['index','show']);
