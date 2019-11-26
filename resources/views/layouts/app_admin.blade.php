@@ -190,8 +190,8 @@
                             <a href="{{ url('') }}/#">
                                 <i class="fas fa-calendar-alt"></i>Calendario</a>
                         </li>
-                        <li class="{{ active_menu('usuarios')}}">
-                            <a href="{{ url('') }}/usuarios">
+                        <li class="{{ active_menu('clientes')}}">
+                            <a href="{{ url('') }}/clientes">
                                 <i class="fas fa-users"></i>Clientes</a>
                         </li>
                         <li class="has-sub">

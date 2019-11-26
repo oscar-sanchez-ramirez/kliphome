@@ -32,7 +32,7 @@
                 <div class="table-responsive table-responsive-data2">
                     @if(count($users) == 0)
                         <div id="center">
-                            <h4>No se regitraron usuarios en la aplicación</h4>
+                            <h4>No se regitraron clientes en la aplicación</h4>
                         </div>
                     @else
                         <table class="table table-data2">

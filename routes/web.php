@@ -42,4 +42,4 @@ Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
 Route::get('checkUser',function(){
     return User::where('id',13)->with('children')->get();
 });
-Route::prefix('usuarios')->group(base_path('routes/users.php'));
+Route::prefix('clientes')->group(base_path('routes/clientes.php'));
