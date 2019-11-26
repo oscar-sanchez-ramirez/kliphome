@@ -5,7 +5,6 @@ namespace App\Http\Controllers\ApiRest;
 // use Illuminate\Http\Request;
 
 use App\Http\Controllers\ApiController;
-// use App\Http\Controllers\Controller;
 use App\Http\Resources\ServiceCollection;
 use App\SubCategory;
 use DB;
