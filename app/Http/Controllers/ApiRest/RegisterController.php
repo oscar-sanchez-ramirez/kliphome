@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\ApiRest;
 
 use App\Address;
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Log;
 
-class RegisterController extends Controller
+class RegisterController extends ApiController
 {
     public function register(Request $request){
         $this->validate($request,[
