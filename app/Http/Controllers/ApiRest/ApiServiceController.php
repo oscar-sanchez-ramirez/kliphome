@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\ApiRest;
 
 // use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+
+use App\Http\Controllers\ApiController;
+// use App\Http\Controllers\Controller;
 use App\Http\Resources\ServiceCollection;
 use App\SubCategory;
 use DB;
 
-class ApiServiceController extends Controller
+class ApiServiceController extends ApiController
 {
     public function getSubCategories($category){
         $subCategories = DB::table('categories as c')->join('sub_categories as s','c.id','s.category_id')->where('c.title',$category)->select('s.title')->get();

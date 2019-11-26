@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Order;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 
-class OrderController extends Controller
+class OrderController extends ApiController
 {
     public function create(Request $request){
 
