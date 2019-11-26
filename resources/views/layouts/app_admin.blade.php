@@ -190,8 +190,8 @@
                             <a href="{{ url('') }}/#">
                                 <i class="fas fa-calendar-alt"></i>Calendario</a>
                         </li>
-                        <li>
-                            <a href="{{ url('') }}/map.html">
+                        <li class="{{ active_menu('usuarios')}}">
+                            <a href="{{ url('') }}/usuarios">
                                 <i class="fas fa-users"></i>Clientes</a>
                         </li>
                         <li class="has-sub">
