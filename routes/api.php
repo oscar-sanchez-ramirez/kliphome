@@ -1,5 +1,6 @@
 <?php
 
+use App\Address;
 use Illuminate\Http\Request;
 
 /*
@@ -14,7 +15,9 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user();
+    $address = Address::where('user_id',$user->id)->get();
+    return array($user,$address);
 });
 // Route::resource('categories', 'CategoryController');
 Route::post('oauth/token','\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');

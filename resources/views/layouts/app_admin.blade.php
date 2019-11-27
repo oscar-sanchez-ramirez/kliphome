@@ -5,9 +5,9 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
+    <meta name="description" content="KlipHome">
+    <meta name="author" content="789.mx">
+    <meta name="keywords" content="Plomeria">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title Page-->
@@ -186,15 +186,15 @@
                             <a href="{{ url('') }}/servicios">
                                 <i class="far fa-check-square"></i>Servicios</a>
                         </li>
-                        <li>
-                            <a href="{{ url('') }}/#">
-                                <i class="fas fa-calendar-alt"></i>Calendario</a>
+                        <li class="{{ active_menu('ordenes')}} {{ active_menu('ordenes/*')}}">
+                            <a href="{{ url('') }}/ordenes">
+                                <i class="fas fa-calendar-alt"></i>Ordenes</a>
                         </li>
                         <li class="{{ active_menu('clientes')}}">
                             <a href="{{ url('') }}/clientes">
                                 <i class="fas fa-users"></i>Clientes</a>
                         </li>
-                        <li class="has-sub">
+                        {{-- <li class="has-sub">
                             <a class="js-arrow" href="{{ url('') }}/#">
                                 <i class="fas fa-desktop"></i>Solicitudes</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -232,10 +232,10 @@
                                     <a href="{{ url('') }}/typo.html">Typography</a>
                                 </li>
                             </ul>
-                        </li>
-                        <li>
+                        </li> --}}
+                        {{-- <li>
                             <a href="{{ url('') }}/map.html"><i class="fas fa-bookmark"></i>Cupones</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </nav>
             </div>

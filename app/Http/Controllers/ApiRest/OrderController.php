@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends ApiController
 {
     public function create(Request $request){
-
+        // ini_set('memory_limit', '512M');
         // try {
             $order = new Order;
-            $order->user_id = 1;
+            $order->user_id = $request->user_id;
             $order->selected_id = $request->selected_id;
             $order->type_service = $request->type_service;
             $order->service_date = $request->service_date;

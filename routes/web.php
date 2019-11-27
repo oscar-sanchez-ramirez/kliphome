@@ -11,8 +11,6 @@
 |
 */
 
-use App\User;
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -29,17 +27,12 @@ Route::resource('categorias', 'CategoryController');
 Route::resource('servicios', 'ServiceController',['except' => ['show']]);
 Route::resource('sub-categorias', 'SubCategoryController',['except' => ['show']]);
 
-Route::post('sub-categorias/nuevo','SubCategoryController@nuevo');
-Route::post('sub-categorias/eliminar','SubCategoryController@eliminar');
-Route::post('sub-categorias/actualizar','SubCategoryController@actualizar');
-Route::get('getSubcategory/{category_id}','SubCategoryController@getSubcategory');
-
-Route::post('sub-servicios/nuevo','SubServiceController@nuevo');
-Route::post('sub-servicios/eliminar','SubServiceController@eliminar');
-Route::post('sub-servicios/actualizar','SubServiceController@actualizar');
-Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
-
-Route::get('checkUser',function(){
-    return User::where('id',13)->with('children')->get();
-});
+// MODULES
 Route::prefix('clientes')->group(base_path('routes/clientes.php'));
+Route::prefix('sub-servicios')->group(base_path('routes/subServicios.php'));
+Route::prefix('sub-categorias')->group(base_path('routes/subCategorias.php'));
+Route::prefix('ordenes')->group(base_path('routes/ordenes.php'));
+
+// AJAX REQUEST
+Route::get('getSubcategory/{category_id}','SubCategoryController@getSubcategory');
+Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
