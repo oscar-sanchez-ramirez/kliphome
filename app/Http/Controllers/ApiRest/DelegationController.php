@@ -10,7 +10,7 @@ class DelegationController extends ApiController
 {
     //
     public function index(){
-        $delegations = Delegation::where('state',true)->select('title')->get();
+        $delegations = Delegation::where('state',true)->select('id','title')->get();
         return Response(json_encode(array('delegations' => $delegations)));
     }
 }
