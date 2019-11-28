@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends ApiController
 {
     public function create(Request $request){
-
+        Log::info('inicio create');
         try {
             $order = new Order;
             $order->user_id = $request->user_id;
