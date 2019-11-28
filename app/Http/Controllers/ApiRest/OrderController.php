@@ -22,7 +22,7 @@ class OrderController extends ApiController
             // $order->address = $request->address;
             // $order->save();
             $order = new Order;
-            $order->user_id = 14;
+            $order->user_id = 17;
             $order->selected_id = 1;
             $order->type_service = "SubService";
             $order->service_date = "13:13";
