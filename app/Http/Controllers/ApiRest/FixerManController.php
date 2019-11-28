@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class FixerManController extends Controller
+class FixerManController extends ApiController
 {
     public function register(Request $request){
         return $request->all();
