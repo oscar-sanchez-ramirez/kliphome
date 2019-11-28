@@ -12,14 +12,23 @@ class OrderController extends ApiController
     public function create(Request $request){
         Log::info('inicio create');
         try {
+            // $order = new Order;
+            // $order->user_id = $request->user_id;
+            // $order->selected_id = $request->selected_id;
+            // $order->type_service = $request->type_service;
+            // $order->service_date = $request->service_date;
+            // $order->service_description = $request->service_description;
+            // $order->service_image = $request->service_image;
+            // $order->address = $request->address;
+            // $order->save();
             $order = new Order;
-            $order->user_id = $request->user_id;
-            $order->selected_id = $request->selected_id;
-            $order->type_service = $request->type_service;
-            $order->service_date = $request->service_date;
-            $order->service_description = $request->service_description;
-            $order->service_image = $request->service_image;
-            $order->address = $request->address;
+            $order->user_id = 1;
+            $order->selected_id = "SADFASDFASDFASD";
+            $order->type_service = "SADFASDFASDFASD";
+            $order->service_date = "SADFASDFASDFASD";
+            $order->service_description = "SADFASDFASDFASD";
+            $order->service_image = "SADFASDFASDFASD";
+            $order->address = "SADFASDFASDFASD";
             $order->save();
             Log::info('llego');
             return Response(json_encode(array('success' => "La orden de servicio se realizó con éxito")));
