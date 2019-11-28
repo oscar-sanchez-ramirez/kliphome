@@ -35,3 +35,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 //DELEGATIONS
 Route::get('delegations','ApiRest\DelegationController@index');
+
+//FixerMan
+Route::post('registerFixerMan','ApiRest\FixerManController@register');
