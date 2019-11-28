@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiRest;
 
 // use Illuminate\Http\Request;
 
+use App\Category;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ServiceCollection;
 use App\SubCategory;
@@ -18,5 +19,9 @@ class ApiServiceController extends ApiController
     public function getServices($subCategory){
         $services =  new ServiceCollection(SubCategory::where('title',$subCategory)->first());
         return Response(json_encode(array('services' => $services)));
+    }
+    public function getCategories(){
+        $categories = Category::select('title');
+        return Response(json_encode(array('categories' => $categories)));
     }
 }

@@ -23,6 +23,9 @@ Route::get('sub-categories/{category}','ApiRest\ApiServiceController@getSubCateg
 Route::get('services/{subCategory}','ApiRest\ApiServiceController@getServices');
 Route::post('orders/create','ApiRest\OrderController@create');
 
+//Categories
+Route::get('categories','ApiRest\ApiServiceController@getCategories');
+
 //AUTH
 Route::post('register','ApiRest\RegisterController@register');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
