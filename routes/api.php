@@ -14,18 +14,21 @@ use Illuminate\Http\Request;
 |
 */
 
+
+// Route::resource('categories', 'CategoryController');
+
+//SERVICES
+Route::post('oauth/token','\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
+Route::get('sub-categories/{category}','ApiRest\ApiServiceController@getSubCategories');
+Route::get('services/{subCategory}','ApiRest\ApiServiceController@getServices');
+Route::post('orders/create','ApiRest\OrderController@create');
+
+//AUTH
+Route::post('register','ApiRest\RegisterController@register');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     $address = Address::where('user_id',$user->id)->get();
     return array($user,$address);
 });
-// Route::resource('categories', 'CategoryController');
-Route::post('oauth/token','\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
-
-Route::get('sub-categories/{category}','ApiRest\ApiServiceController@getSubCategories');
-Route::get('services/{subCategory}','ApiRest\ApiServiceController@getServices');
-
-Route::post('orders/create','ApiRest\OrderController@create');
-
-//AUTH
-Route::post('register','ApiRest\RegisterController@register');
+//DELEGATIONS
+Route::get('delegations','ApiRest\DelegationController@index');
