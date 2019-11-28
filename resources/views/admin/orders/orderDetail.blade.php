@@ -24,43 +24,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="card">
-                    <img {{--  class="card-img-top" --}} src="{{ ($orden->service_image) }}" alt="Card image cap">
+                    <img class="card-img-top" type="button" data-toggle="modal" data-target="#scrollmodal" src="{{ ($orden->service_image) }}" alt="Card image cap" >
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Card Image Title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                            content.
+                        <h4 class="card-title mb-3">{{ $orden->type_service }} - {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }}</h4>
+                        <p class="card-text">
+                            {{ $orden->service_description }}
                         </p>
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
-                <!-- DATA TABLE -->
-                {{-- <div class="table-data__tool"> --}}
-                    {{-- <div class="table-data__tool-left">
-                        <div class="rs-select2--light rs-select2--md">
-                            <select class="js-select2" name="property">
-                                <option selected="selected">All</option>
-                                <option value="">Option 1</option>
-                                <option value="">Option 2</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="table-data__tool-right">
-                        <a href="{{ url('') }}/categorias/create" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            <i class="zmdi zmdi-plus"></i>Categoría</a>
-                        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
-                            <select class="js-select2" name="type">
-                                <option selected="selected">Exportar</option>
-                                <option value="">Excel</option>
-                                <option value="">PDF</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                    </div> --}}
-                {{-- </div> --}}
+
                 <div class="table-responsive table-responsive-data2">
 
                 </div>
@@ -69,5 +45,28 @@
         </div>
     </div>
 </div>
+
+    <!-- modal scroll -->
+			<div class="modal fade" id="scrollmodal" tabindex="-1" role="dialog" aria-labelledby="scrollmodalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="scrollmodalLabel">Imagen del servicio</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="max-heigth:500px;overflow:scroll">
+                                <div>
+                                    <img  src="{{ ($orden->service_image) }}" style="transform:rotate(90deg);" alt="Card image cap" >
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end modal scroll -->
 @include('layouts.modals.subCategoryModal');
 @endsection
