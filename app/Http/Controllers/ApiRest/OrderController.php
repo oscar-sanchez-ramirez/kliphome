@@ -6,12 +6,25 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Order;
 use Illuminate\Support\Facades\Log;
+use Image;
+use Illuminate\Support\Carbon;
 
 class OrderController extends ApiController
 {
     public function create(Request $request){
         // ini_set('memory_limit', '512M');
+        ini_set('memory_limit', '-1');
+        set_time_limit(600);
         // try {
+
+            // $file = base64_decode($request->service_image);
+            // if ($file != "") {
+            //     // $imageData = $request->get('service_image');
+            //     $fileName = "images/test.png";
+            //     $image = Image::make('data:image/png;base64,' . base64_encode($request->service_image));
+	        //     $image->save($fileName);
+
+            // }
             $order = new Order;
             $order->user_id = $request->user_id;
             $order->selected_id = $request->selected_id;

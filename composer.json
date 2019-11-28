@@ -28,7 +28,9 @@
         "paragonie/random_compat": "2.*",
         "phpseclib/phpseclib": "^2.0",
         "symfony/psr-http-message-bridge": "~1.0",
-        "zendframework/zend-diactoros": "~1.0"
+        "zendframework/zend-diactoros": "~1.0",
+        "intervention/image": "^2.3",
+        "nesbot/carbon": "^2.26.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
