@@ -21,7 +21,7 @@ class ApiServiceController extends ApiController
         return Response(json_encode(array('services' => $services)));
     }
     public function getCategories(){
-        $categories = Category::all('title');
+        $categories = Category::all('id','title');
         return Response(json_encode(array('categories' => $categories)));
     }
 }
