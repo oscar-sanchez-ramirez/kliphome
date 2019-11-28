@@ -22,12 +22,12 @@ class OrderController extends ApiController
             // $order->address = $request->address;
             // $order->save();
             $order = new Order;
-            $order->user_id = 1;
-            $order->selected_id = "SADFASDFASDFASD";
-            $order->type_service = "SADFASDFASDFASD";
-            $order->service_date = "SADFASDFASDFASD";
-            $order->service_description = "SADFASDFASDFASD";
-            $order->service_image = "SADFASDFASDFASD";
+            $order->user_id = 14;
+            $order->selected_id = 1;
+            $order->type_service = "SubService";
+            $order->service_date = "13:13";
+            $order->service_description = "Bvccc";
+            $order->service_image = "https://firebasestorage.googleapis.com/v0/b/kliphome-c529b.appspot.com/o/images%2F1574957605133?alt=media&token=59a46fd3-6d12-4c5b-b0a4-e9f4b4f5921c";
             $order->address = 6;
             $order->save();
             // Log::info('llego');
