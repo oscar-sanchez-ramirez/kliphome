@@ -11,7 +11,7 @@ class OrderController extends ApiController
 {
     public function create(Request $request){
         // Log::info('inicio create');
-        try {
+        // try {
             // $order = new Order;
             // $order->user_id = $request->user_id;
             // $order->selected_id = $request->selected_id;
@@ -30,7 +30,7 @@ class OrderController extends ApiController
             $order->service_image = "SADFASDFASDFASD";
             $order->address = 6;
             $order->save();
-            Log::info('llego');
+            // Log::info('llego');
             return Response(json_encode(array('success' => "La orden de servicio se realizó con éxito")));
         // } catch (\Throwable $th) {
         //     Log::info('fail');
