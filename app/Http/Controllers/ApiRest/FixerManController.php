@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 class FixerManController extends ApiController
 {
     public function register(Request $request){
-        $this->validate($request,[
-            'email' => 'required|email|unique:users',
-            'name' => 'required',
-            // 'lastName' => 'required',
-            'password' => 'required'
-        ]);
+        Log::info('registrando worker');
+        // $this->validate($request,[
+        //     'email' => 'required|email|unique:users',
+        //     'name' => 'required',
+        //     // 'lastName' => 'required',
+        //     'password' => 'required'
+        // ]);
         $user = User::create([
             'name' => $request->name,
             'lastName' => $request->last_name,
