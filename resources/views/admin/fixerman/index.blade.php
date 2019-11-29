@@ -48,7 +48,7 @@
                                     <th>Email</th>
                                     <th>Telefono</th>
                                     <th>Fecha Registro</th>
-                                    {{-- <th></th> --}}
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,6 +64,7 @@
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
                                         <td>{{ $user->created_at->diffForHumans() }}</td>
+                                        <td><span class="badge badge-danger">Danger</span></td>
                                         {{-- <td>
                                             <div class="table-data-feature">
                                                 <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
