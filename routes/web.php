@@ -32,6 +32,7 @@ Route::prefix('clientes')->group(base_path('routes/clientes.php'));
 Route::prefix('sub-servicios')->group(base_path('routes/subServicios.php'));
 Route::prefix('sub-categorias')->group(base_path('routes/subCategorias.php'));
 Route::prefix('ordenes')->group(base_path('routes/ordenes.php'));
+Route::prefix('tecnicos')->group(base_path('routes/tecnicos.php'));
 
 // AJAX REQUEST
 Route::get('getSubcategory/{category_id}','SubCategoryController@getSubcategory');

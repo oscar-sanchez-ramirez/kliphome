@@ -178,11 +178,11 @@
                             <a href="{{ url('') }}/chart.html">
                                 <i class="fas fa-chart-bar"></i>Charts</a>
                         </li> --}}
-                        <li class="{{ active_menu('categorias')}}">
+                        <li class="{{ active_menu('categorias')}} {{ active_menu('categorias/*')}}">
                             <a href="{{ url('') }}/categorias">
                                 <i class="fas fa-table"></i>Categorías</a>
                         </li>
-                        <li class="{{ active_menu('servicios')}}">
+                        <li class="{{ active_menu('servicios')}} {{ active_menu('servicios/*')}}">
                             <a href="{{ url('') }}/servicios">
                                 <i class="far fa-check-square"></i>Servicios</a>
                         </li>
@@ -190,9 +190,13 @@
                             <a href="{{ url('') }}/ordenes">
                                 <i class="fas fa-calendar-alt"></i>Ordenes</a>
                         </li>
-                        <li class="{{ active_menu('clientes')}}">
+                        <li class="{{ active_menu('clientes')}} {{  active_menu('clientes/*')}}">
                             <a href="{{ url('') }}/clientes">
                                 <i class="fas fa-users"></i>Clientes</a>
+                        </li>
+                        <li class="{{ active_menu('tecnicos')}} {{ active_menu('tecnicos/*')}}">
+                            <a href="{{ url('') }}/tecnicos">
+                                <i class="fas fa-users"></i>Técnicos</a>
                         </li>
                         {{-- <li class="has-sub">
                             <a class="js-arrow" href="{{ url('') }}/#">
