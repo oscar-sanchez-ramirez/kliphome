@@ -27,13 +27,13 @@ class FixerManController extends ApiController
             'state' => 0,
             'password' => bcrypt($request->password),
         ])->toArray();
+        Log::notice($request->all());
         for ($i=0; $i < count($request->workArea); $i++) {
             $selected = new SelectedDelegation;
             $selected->user_id = $user["id"];
             $selected->delegation_id = $request->workarea[$i];
             $selected->save();
         }
-        Log::notice($request->all());
         // Address::create([
         //     'alias' => $request->alias,
         //     'address' => $request->address,
