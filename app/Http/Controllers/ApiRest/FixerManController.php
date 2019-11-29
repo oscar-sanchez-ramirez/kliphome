@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ApiRest;
 
 use App\Http\Controllers\ApiController;
+use App\SelectedDelegation;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,6 +27,12 @@ class FixerManController extends ApiController
             'state' => 0,
             'password' => bcrypt($request->password),
         ])->toArray();
+        for ($i=0; $i < count($request->workArea); $i++) {
+            $selected = new SelectedDelegation;
+            $selected->user_id = $user["id"];
+            $selected->delegation_id = $request->workarea[$i];
+            $selected->save();
+        }
         Log::notice($request->all());
         // Address::create([
         //     'alias' => $request->alias,
