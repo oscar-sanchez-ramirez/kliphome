@@ -30,7 +30,7 @@ class FixerManController extends ApiController
         ])->toArray();
         $selected = new SelectedDelegation;
         $selected->user_id = $user["id"];
-        $selected->delegation_id = $request->workarea;
+        $selected->delegation_id = $request->workArea;
         $selected->save();
 
         // Address::create([
