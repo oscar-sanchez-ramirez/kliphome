@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiRest;
 
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FixerManController extends ApiController
 {
