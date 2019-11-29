@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ApiRest;
 
 use App\Http\Controllers\ApiController;
+use App\SelectedCategories;
 use App\SelectedDelegation;
 use App\User;
 use Illuminate\Http\Request;
@@ -33,11 +34,13 @@ class FixerManController extends ApiController
         $selected->delegation_id = $request->workArea;
         $selected->save();
 
-        // Address::create([
-        //     'alias' => $request->alias,
-        //     'address' => $request->address,
-        //     'user_id' => $user["id"]
-        // ]);
+        for ($i=0; $i < count($request->categories); $i++) {
+            $category = new SelectedCategories;
+            $category->user_id = $user["id"];
+            $category->category_id = $request->categories[$i];
+            $category->save();
+        }
+
         return response()->json([
             'message' => "Usuario creado correctamente",
             'user' => $user
