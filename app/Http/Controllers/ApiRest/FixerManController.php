@@ -18,6 +18,7 @@ class FixerManController extends ApiController
         //     // 'lastName' => 'required',
         //     'password' => 'required'
         // ]);
+        Log::notice($request->all());
         $user = User::create([
             'name' => $request->name,
             'lastName' => $request->last_name,
@@ -27,17 +28,11 @@ class FixerManController extends ApiController
             'state' => 0,
             'password' => bcrypt($request->password),
         ])->toArray();
-        Log::notice($request->all());
         $selected = new SelectedDelegation;
         $selected->user_id = $user["id"];
         $selected->delegation_id = $request->workarea;
         $selected->save();
-        // for ($i=0; $i < count($request->workArea); $i++) {
-        //     $selected = new SelectedDelegation;
-        //     $selected->user_id = $user["id"];
-        //     $selected->delegation_id = $request->workarea[$i];
-        //     $selected->save();
-        // }
+
         // Address::create([
         //     'alias' => $request->alias,
         //     'address' => $request->address,
