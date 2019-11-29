@@ -41,7 +41,7 @@ class FixerManController extends ApiController
         for ($i=0; $i < count($categories); $i++) {
             $category = new SelectedCategories;
             $category->user_id = $user["id"];
-            $category->category_id = $request->categories[$i];
+            $category->category_id = $categories[$i];
             $category->save();
         }
 
