@@ -29,12 +29,16 @@ class FixerManController extends ApiController
             'state' => 0,
             'password' => bcrypt($request->password),
         ])->toArray();
+
+        //SAVE SELECTED DELEGATION
         $selected = new SelectedDelegation;
         $selected->user_id = $user["id"];
         $selected->delegation_id = $request->workArea;
         $selected->save();
 
-        for ($i=0; $i < count($request->categories); $i++) {
+        //SAVE SELECTED CATEGORIES
+        $categories = explode(',',$request->categories);
+        for ($i=0; $i < count($categories); $i++) {
             $category = new SelectedCategories;
             $category->user_id = $user["id"];
             $category->category_id = $request->categories[$i];
