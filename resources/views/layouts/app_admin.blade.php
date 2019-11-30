@@ -438,6 +438,9 @@
     @if(Request::is('servicios'))
         <script src="{{ url('') }}/vendor/services/subservices.js"></script>
     @endif
+    @if(Request::is('tecnicos'))
+        <script src="{{ url('') }}/vendor/fixerman/fixerman.js"></script>
+    @endif
     <!-- Bootstrap JS-->
     <script src="{{ url('') }}/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="{{ url('') }}/vendor/bootstrap-4.1/bootstrap.min.js"></script>

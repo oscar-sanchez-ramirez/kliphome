@@ -46,7 +46,7 @@
                                     </th>
                                     <th>Nombres</th>
                                     <th>Email</th>
-                                    <th>Telefono</th>
+                                    <th>Estado</th>
                                     <th>Fecha Registro</th>
                                     <th></th>
                                 </tr>
@@ -63,21 +63,23 @@
                                         <td>{{ $user->name }} {{ $user->lastName }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
-                                        <td>{{ $user->created_at->diffForHumans() }}</td>
-                                        <td><span class="badge badge-danger">Danger</span></td>
-                                        {{-- <td>
+                                        <td>
+                                            @if($user->state == 0)
+                                                <span class="badge badge-danger">Pendiente</span>
+                                            @else
+                                                <span class="badge badge-success">Validado</span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <div class="table-data-feature">
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                    <i class="zmdi zmdi-edit"></i>
-                                                </button>
                                                 <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                     <i class="zmdi zmdi-delete"></i>
                                                 </button>
-                                                <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubcategoryModal" data-title="{{ $user->title }}" data-id="{{ $user->id }}">
-                                                    <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-collection-item-2"></i>
+                                                <button class="item" data-toggle="modal" data-target="#mediumModal" id="fixermanModal" data-id="{{ $user->id }}">
+                                                    <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-eye"></i>
                                                 </button>
                                             </div>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                     <tr class="spacer"></tr>
                                 @endforeach
@@ -90,5 +92,5 @@
         </div>
     </div>
 </div>
-@include('layouts.modals.subCategoryModal');
+@include('layouts.modals.fixermanModal');
 @endsection

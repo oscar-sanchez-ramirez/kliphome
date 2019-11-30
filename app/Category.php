@@ -9,4 +9,7 @@ class Category extends Model
     public function subCategoriesCount($id){
         return SubCategory::where('category_id',$id)->count();
     }
+    protected $hidden = [
+        'created_at', 'updated_at',
+    ];
 }

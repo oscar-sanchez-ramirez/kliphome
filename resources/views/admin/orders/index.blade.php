@@ -69,12 +69,6 @@
                                                 <a class="item" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
                                                     <i class="zmdi zmdi-eye"></i>
                                                 </a>
-                                                {{-- <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="zmdi zmdi-delete"></i>
-                                                </button>
-                                                <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubcategoryModal" data-title="{{ $orden->title }}" data-id="{{ $orden->id }}">
-                                                    <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-collection-item-2"></i>
-                                                </button> --}}
                                             </div>
                                         </td>
                                     </tr>

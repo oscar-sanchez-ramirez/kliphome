@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends ApiController
 {
     public function create(Request $request){
-        Log::info('inicio create');
         try {
             $order = new Order;
             $order->user_id = $request->user_id;
@@ -21,10 +20,8 @@ class OrderController extends ApiController
             $order->service_image = $request->service_image;
             $order->address = $request->address;
             $order->save();
-            Log::info('llego');
             return Response(json_encode(array('success' => "La orden de servicio se realizó con éxito")));
         } catch (\Throwable $th) {
-            Log::info('fail');
             return Response(json_encode(array('failed' => "La orden de servicio no se realizó con éxito")));
         }
     }
