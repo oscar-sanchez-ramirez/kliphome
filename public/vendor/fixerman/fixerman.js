@@ -7,16 +7,14 @@ $(document).on('click', '#fixermanModal', function(){
 function listFixerManDetail(fixerman_id){
     //Listing sub services by service_id
     var url = window.location.origin+"/tecnicos/detalle/"+fixerman_id;
-    console.log(fixerman_id);
     $.ajax({
         type: "GET",
         url: url,
         success: function(data) {
-            console.log(data);
             $("#fixerManCategories").html('');
-            $("#fixerManDelegation").html('&nbsp;&nbsp;&nbsp;&nbsp;'+data["delegations"][0]['parent']["title"]);
+            $("#fixerManDelegation").html('&nbsp;&nbsp;&nbsp;&nbsp;'+data["delegations"][0]["title"]);
             for (let index = 0; index < data["categories"].length; index++) {
-                $("#fixerManCategories").append('<li>'+data["categories"][index]['parent']['title']+'</li>');
+                $("#fixerManCategories").append('<li>'+data["categories"][index]['title']+'</li>');
             }
 
         },

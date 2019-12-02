@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\SelectedCategories;
 use App\SelectedDelegation;
 use App\User;
+use DB;
 
 class FixerManController extends Controller
 {
@@ -15,8 +16,9 @@ class FixerManController extends Controller
         return view('admin.fixerman.index')->with('users',$users);
     }
     public function detail($id){
-        $delegation = SelectedDelegation::where('user_id',$id)->with('parent')->get(['id','delegation_id']);
-        $categories = SelectedCategories::where('user_id',$id)->with('parent')->get(['id','category_id']);
+        $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$id)->get();
+        $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
+        SelectedCategories::where('user_id',$id)->with('parent')->get(['id','category_id']);
         return response()->json([
             'delegations' => $delegation,
             'categories' => $categories
