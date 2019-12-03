@@ -9,6 +9,10 @@ use DB;
 
 class FixerManController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
         $users = User::where('type','AppFixerMan')->get();
         return view('admin.fixerman.index')->with('users',$users);

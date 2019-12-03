@@ -8,6 +8,10 @@ use App\Order;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     //Show all orders
     public function index(){
         $ordenes = Order::all(['id','user_id','service_description','service_date','created_at']);
