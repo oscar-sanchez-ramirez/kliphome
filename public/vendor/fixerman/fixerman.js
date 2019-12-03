@@ -40,7 +40,7 @@ function aproveFixerMan(fixerman_id,name){
                 $("#state"+fixerman_id).html('<span class="badge badge-success">Validado</span>');
             },
             error: function(data) {
-                alert("Error al eliminar registro, Porfavor intente de nuevo");
+                alert("Error al aprobar registro, Porfavor intente de nuevo");
             }
         });
     } else {
