@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Jobs\AproveFixerMan;
 use App\User;
 use DB;
-use Mail;
 
 class FixerManController extends Controller
 {
@@ -27,16 +27,10 @@ class FixerManController extends Controller
         ]);
     }
     public function aprove(Request $request){
-        $mail = "germanruelas17@gmail.com";
-
-        $usuario = array('nombre_completo' =>  "German");
-        Mail::send('emails.aproveFixerMan',$usuario, function($msj) use ($mail){
-            $msj->subject('Bienvenido a KlipHome');
-            $msj->to($mail,"Empieza a disfrutar de nuestra grandiosa comunidad");
-        });
         User::where('id',$request->fixerman_id)->update([
             'state' => true
         ]);
+        dispatch(new AproveFixerMan($request->fixerman_id));
 
     }
 }
