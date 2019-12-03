@@ -46,8 +46,8 @@
                                     </th>
                                     <th>Nombres</th>
                                     <th>Email</th>
+                                    <th># Telefono</th>
                                     <th>Estado</th>
-                                    <th>Fecha Registro</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -63,18 +63,18 @@
                                         <td>{{ $user->name }} {{ $user->lastName }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
-                                        <td>
+                                        <td id="state{{ $user->id }}">
                                             @if($user->state == 0)
-                                                <span class="badge badge-danger">Pendiente</span>
+                                                <span class="badge badge-danger" onclick="aproveFixerMan({{ $user->id }},'{{ $user->name }}')">Pendiente</span>
                                             @else
                                                 <span class="badge badge-success">Validado</span>
                                             @endif
                                         </td>
                                         <td>
                                             <div class="table-data-feature">
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                {{-- <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                     <i class="zmdi zmdi-delete"></i>
-                                                </button>
+                                                </button> --}}
                                                 <button class="item" data-toggle="modal" data-target="#mediumModal" id="fixermanModal" data-id="{{ $user->id }}">
                                                     <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-eye"></i>
                                                 </button>
