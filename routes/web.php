@@ -37,3 +37,6 @@ Route::prefix('tecnicos')->group(base_path('routes/tecnicos.php'));
 // AJAX REQUEST
 Route::get('getSubcategory/{category_id}','SubCategoryController@getSubcategory');
 Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
+
+
+Route::get('test', 'Admin\NotificationsProvider@test');
