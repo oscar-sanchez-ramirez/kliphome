@@ -39,15 +39,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function getReminderEmail()
-    {
-        return $this->email;
-    }
+
     public function children(){
         return $this->hasMany(Address::class, 'user_id')->orderBy('created_at', 'asc');
     }
     public function sendNotification()
     {
         $this->notify(new AproveFixerMan($this)); //Pass the model data to the OneSignal Notificator
+    }
+    public function routeNotificationForOneSignal()
+    {
+        /*
+         * you have to return the one signal player id tat will
+         * receive the message of if you want you can return
+         * an array of players id
+         */
+        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
     }
 }
