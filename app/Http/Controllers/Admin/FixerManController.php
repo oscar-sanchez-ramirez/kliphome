@@ -33,7 +33,7 @@ class FixerManController extends Controller
         ]);
         // dispatch(new AproveFixerMan($request->fixerman_id));
         $user = User::where('id',$request->fixerman_id)->first();
-        return $user->sendNotification();
+        return $user->sendNotification($user);
     }
 
     public function testWorker(){
