@@ -54,6 +54,6 @@ class User extends Authenticatable
          * receive the message of if you want you can return
          * an array of players id
          */
-        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
+        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => "german_rastas@hotmail.com"]];
     }
 }
