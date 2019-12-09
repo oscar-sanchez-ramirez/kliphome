@@ -8,6 +8,7 @@ use App\Jobs\AproveFixerMan;
 use App\User;
 use DB;
 
+
 class FixerManController extends Controller
 {
     public function __construct()
@@ -31,6 +32,12 @@ class FixerManController extends Controller
             'state' => true
         ]);
         dispatch(new AproveFixerMan($request->fixerman_id));
+    }
+
+    public function testWorker(){
+        // $this->register();
+       $user = User::with('sendNotification')->get();
+       return $user;
 
     }
 }

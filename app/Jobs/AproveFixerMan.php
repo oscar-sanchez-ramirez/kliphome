@@ -31,12 +31,14 @@ class AproveFixerMan implements ShouldQueue
      */
     public function handle()
     {
-        $mail = "germanruelas17@gmail.com";
-        $usuario = array('nombre_completo' =>  "German");
+        // $mail = "germanruelas17@gmail.com";
+        // $usuario = array('nombre_completo' =>  "German");
 
-        Mail::send('emails.aproveFixerMan',$usuario, function($msj) use ($mail){
-            $msj->subject('Bienvenido a KlipHome');
-            $msj->to($mail,"Empieza a disfrutar de nuestra grandiosa comunidad");
-        });
+        // Mail::send('emails.aproveFixerMan',$usuario, function($msj) use ($mail){
+        //     $msj->subject('Bienvenido a KlipHome');
+        //     $msj->to($mail,"Empieza a disfrutar de nuestra grandiosa comunidad");
+        // });
+        $user = User::where('id',$user_id)->with('sendNotification')->first();
+        return $user;
     }
 }

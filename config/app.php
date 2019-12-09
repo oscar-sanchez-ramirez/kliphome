@@ -164,6 +164,7 @@ return [
         \Barryvdh\Cors\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Berkayk\OneSignal\OneSignalServiceProvider::class,
+        NotificationChannels\OneSignal\OneSignalServiceProvider::class,
 
         /*
          * Package Service Providers...
