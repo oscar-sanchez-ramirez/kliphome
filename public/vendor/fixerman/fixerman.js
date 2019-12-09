@@ -32,7 +32,7 @@ function aproveFixerMan(fixerman_id,name){
     if (r == true) {
         var url = window.location.origin+"/tecnicos/aprove";
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: url,
             data: { 'fixerman_id': fixerman_id,'_token': token },
             success: function(data) {
