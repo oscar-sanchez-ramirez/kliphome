@@ -31,7 +31,9 @@ class FixerManController extends Controller
         User::where('id',$request->fixerman_id)->update([
             'state' => true
         ]);
-        dispatch(new AproveFixerMan($request->fixerman_id));
+        // dispatch(new AproveFixerMan($request->fixerman_id));
+        $user = User::where('id',$request->fixerman_id)->with('sendNotification')->first();
+        return $user;
     }
 
     public function testWorker(){
