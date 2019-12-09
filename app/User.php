@@ -12,6 +12,11 @@ use App\Notifications\AproveFixerMan;
 class User extends Authenticatable
 {
     use Notifiable,HasApiTokens;
+    public function __construct(
+        User $user
+    ) {
+        $this->user = $user;
+    }
     protected $table = 'users';
     /**
      * The attributes that are mass assignable.
@@ -54,6 +59,6 @@ class User extends Authenticatable
          * receive the message of if you want you can return
          * an array of players id
          */
-        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
+        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->user->email]];
     }
 }
