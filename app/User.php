@@ -39,7 +39,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    public function getReminderEmail()
+    {
+        return $this->email;
+    }
     public function children(){
         return $this->hasMany(Address::class, 'user_id')->orderBy('created_at', 'asc');
     }
@@ -54,6 +57,6 @@ class User extends Authenticatable
          * receive the message of if you want you can return
          * an array of players id
          */
-        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => "german_rastas@hotmail.com"]];
+        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->getReminderEmail()]];
     }
 }
