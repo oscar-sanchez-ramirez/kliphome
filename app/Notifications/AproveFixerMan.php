@@ -32,6 +32,16 @@ class AproveFixerMan extends Notification
         return [OneSignalChannel::class];
     }
 
+    public function routeNotificationForOneSignal()
+    {
+        /*
+         * you have to return the one signal player id tat will
+         * receive the message of if you want you can return
+         * an array of players id
+         */
+        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => "german_rastas@hotmail.com"]];
+    }
+
     /**
      * Get the mail representation of the notification.
      *

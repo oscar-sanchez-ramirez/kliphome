@@ -50,13 +50,4 @@ class User extends Authenticatable
     {
         $this->notify(new AproveFixerMan($this)); //Pass the model data to the OneSignal Notificator
     }
-    public function routeNotificationForOneSignal()
-    {
-        /*
-         * you have to return the one signal player id tat will
-         * receive the message of if you want you can return
-         * an array of players id
-         */
-        return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->getReminderEmail()]];
-    }
 }
