@@ -2,26 +2,27 @@
 
 namespace App\Jobs;
 
-use App\FixerMan;
-use Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use DB;
 
-class AproveFixerMan implements ShouldQueue
+class NotifyNewOrder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $user_id;
+    protected $type;
+    protected $id;
     /**
-     * Create a new job instance.
+     * IN THIS JOB WILL NOTIFY TO FIXERMEN WITH CATEGORIES MATCHED
      *
      * @return void
      */
-    public function __construct($user_id)
+    public function __construct($type,$id)
     {
-        $this->user_id = $user_id;
+        $this->type = $type;
+        $this->id = $id;
     }
 
     /**
@@ -31,7 +32,6 @@ class AproveFixerMan implements ShouldQueue
      */
     public function handle()
     {
-        $user = FirxerMan::where('id',$this->user_id)->first();
-        return $user->sendNotification($user->email);
+        // $fixermen = DB::table('', ['John'])
     }
 }
