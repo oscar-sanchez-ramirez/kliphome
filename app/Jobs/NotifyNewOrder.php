@@ -38,7 +38,7 @@ class NotifyNewOrder implements ShouldQueue
         Log::info('entrando a dispatch');
         $order = Order::where('id',10)->first();
         $category = $this->table($order->type_service,$order->selected_id);
-        return $user_match_categories = DB::table('users as u')->join('selected_categories as sc','u.id','sc.user_id')->select('u.*')->where('sc.category_id',$category[0]->id)->where('u.state',1)->get();
+        $user_match_categories = DB::table('users as u')->join('selected_categories as sc','u.id','sc.user_id')->select('u.*')->where('sc.category_id',$category[0]->id)->where('u.state',1)->get();
         foreach ($user_match_categories as $key) {
             $user = User::where('id',$key->id)->first();
             return $user->sendNotificationOrderMatch($user->email);
