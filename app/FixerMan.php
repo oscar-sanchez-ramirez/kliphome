@@ -2,10 +2,12 @@
 namespace App;
 use App\User;
 use App\Notifications\AproveFixerMan;
+use Illuminate\Notifications\Notifiable;
 
 
 class FixerMan extends User
 {
+    use Notifiable;
     public function sendNotification($email)
     {
         $this->email = $email;
