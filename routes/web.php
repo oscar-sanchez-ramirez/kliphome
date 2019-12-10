@@ -40,3 +40,4 @@ Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
 
 
 Route::get('test', 'Admin\NotificationsProvider@test');
+Route::get('testMatch','Admin\NotificationsProvider@testMatch');

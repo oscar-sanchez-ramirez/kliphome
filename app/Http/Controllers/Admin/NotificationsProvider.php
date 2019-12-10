@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use OneSignal;
-
+use App\Jobs\NotifyNewOrder;
 
 class NotificationsProvider extends Controller
 {
@@ -27,5 +27,10 @@ class NotificationsProvider extends Controller
             $buttons = null,
             $schedule = null
         );
+    }
+
+    public function testMatch(){
+        $order = Order::where('id',19)->first();
+        $user = new NotifyNewOrder($order);
     }
 }
