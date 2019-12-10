@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use OneSignal;
 use App\Jobs\NotifyNewOrder;
+use App\Order;
 
 class NotificationsProvider extends Controller
 {
