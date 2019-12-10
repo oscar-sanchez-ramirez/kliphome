@@ -1,6 +1,7 @@
 <?php
-use App\User;
 namespace App;
+use App\User;
+use App\Notifications\AproveFixerMan;
 
 
 class FixerMan extends User
