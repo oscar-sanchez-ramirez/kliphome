@@ -21,7 +21,8 @@ class OrderController extends ApiController
             $order->service_image = $request->service_image;
             $order->address = $request->address;
             $order->save();
-            dispatch(new NotifyNewOrder($order));
+            Log::notice($order);
+            dispatch(new NotifyNewOrder($order->id));
             return Response(json_encode(array('success' => "La orden de servicio se realizó con éxito")));
         } catch (\Throwable $th) {
             return Response(json_encode(array('failed' => "La orden de servicio no se realizó con éxito")));
