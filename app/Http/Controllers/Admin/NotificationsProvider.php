@@ -32,6 +32,6 @@ class NotificationsProvider extends Controller
 
     public function testMatch(){
         $order = Order::where('id',19)->first();
-        $user = new NotifyNewOrder($order);
+        dispatch(new NotifyNewOrder($order));
     }
 }
