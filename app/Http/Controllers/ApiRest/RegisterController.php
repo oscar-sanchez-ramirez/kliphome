@@ -24,11 +24,21 @@ class RegisterController extends ApiController
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ])->toArray();
-        Log::notice($user);
+        $word = "Ciudad de México";
+        $address = $request->address;
+
+        // Test if string contains the word
+        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX")){
+            $delegation = "Ciudad de México";
+        } elseif(strpos($address, "Guadalajara") !== false){
+            echo "Word Not Found!";
+            $delegation = "Guadalajara";
+        }
         Address::create([
             'alias' => $request->alias,
             'address' => $request->address,
-            'user_id' => $user["id"]
+            'user_id' => $user["id"],
+            'delegation' => $delegation
         ]);
         return response()->json([
             'message' => "Usuario creado correctamente",
