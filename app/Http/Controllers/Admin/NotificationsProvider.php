@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use OneSignal;
 use App\Jobs\NotifyNewOrder;
 use App\Order;
-use App\User;
-use DB;
 
 class NotificationsProvider extends Controller
 {
@@ -33,30 +31,7 @@ class NotificationsProvider extends Controller
     }
 
     public function testMatch(){
-        $order = Order::where('id',10)->first();
-        $category = $this->table($order->type_service,$order->selected_id);
-        return $user_match_categories = DB::table('users as u')->join('selected_categories as sc','u.id','sc.user_id')->select('u.*')->where('sc.category_id',$category[0]->id)->where('u.state',1)->get();
-        foreach ($user_match_categories as $key) {
-            $user = User::where('id',$key->id)->first();
-            return $user->sendNotificationOrderMatch($user->email);
-        }
-        Order::where('id',$this->order->id)->update([
-            'state' => "FIXERMAN_NOTIFIED"
-        ]);
-    }
-
-
-    private function table($type_service,$id){
-        switch ($type_service) {
-            case 'SubService':
-                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id')->where('subse.id',$id)->get();
-                return $category;
-                break;
-
-            default:
-                # code...
-                break;
-        }
-
+        $order = Order::where('id',19)->first();
+        $user = new NotifyNewOrder($order);
     }
 }
