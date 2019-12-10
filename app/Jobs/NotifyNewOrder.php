@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use DB;
 use App\User;
+use App\Order;
 
 class NotifyNewOrder implements ShouldQueue
 {
