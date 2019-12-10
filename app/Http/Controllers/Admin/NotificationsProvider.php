@@ -31,7 +31,7 @@ class NotificationsProvider extends Controller
     }
 
     public function testMatch(){
-        $order = Order::where('id',19)->first();
+        $order = Order::where('id',10)->first();
         $category = $this->table($order->type_service,$rder->selected_id);
         $user_match_categories = DB::table('users as u')->join('selected_categories as sc','u.id','sc.user_id')->select('u.*')->where('sc.category_id',$category[0]->id)->where('u.state',1)->get();
         foreach ($user_match_categories as $key) {
