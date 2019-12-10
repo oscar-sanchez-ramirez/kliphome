@@ -41,7 +41,7 @@ class NotifyNewOrder implements ShouldQueue
         $user_match_categories = DB::table('users as u')->join('selected_categories as sc','u.id','sc.user_id')->select('u.*')->where('sc.category_id',$category[0]->id)->where('u.state',1)->get();
         foreach ($user_match_categories as $key) {
             $user = User::where('id',$key->id)->first();
-            return $user->sendNotificationOrderMatch($user->email);
+            $user->sendNotificationOrderMatch($user->email);
         }
 
         Order::where('id',$this->order->id)->update([
