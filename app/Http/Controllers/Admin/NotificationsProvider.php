@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use OneSignal;
 use App\Jobs\NotifyNewOrder;
 use App\Order;
+use DB;
 
 class NotificationsProvider extends Controller
 {
