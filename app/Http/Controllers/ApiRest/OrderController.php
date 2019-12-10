@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ApiRest;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Order;
+use App\Jobs\NotifyNewOrder;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends ApiController
@@ -20,6 +21,7 @@ class OrderController extends ApiController
             $order->service_image = $request->service_image;
             $order->address = $request->address;
             $order->save();
+            dispatch(new NotifyNewOrder($order));
             return Response(json_encode(array('success' => "La orden de servicio se realizó con éxito")));
         } catch (\Throwable $th) {
             return Response(json_encode(array('failed' => "La orden de servicio no se realizó con éxito")));

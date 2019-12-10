@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\FixerMan;
+use App\User;
 use Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -31,7 +31,7 @@ class AproveFixerMan implements ShouldQueue
      */
     public function handle()
     {
-        $user = FirxerMan::where('id',$this->user_id)->first();
+        $user = User::where('id',$this->user_id)->first();
         return $user->sendNotification($user->email);
     }
 }
