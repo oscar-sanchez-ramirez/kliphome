@@ -38,11 +38,13 @@ class ApiServiceController extends ApiController
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             $ids = array_column($categories->toArray(), 'category_id');
             $orders = $this->categories($ids,$delegation[0]->delegation_id);
+            $accepted = $this->ordersAccepted($user->id);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
                 'categories' => $categories,
-                'orders' => $orders
+                'orders' => $orders,
+                'accepted' => $accepted
             ]);
         }elseif($user->type == "AppUser"){
             $address = Address::where('user_id',$user->id)->get();
@@ -55,6 +57,20 @@ class ApiServiceController extends ApiController
     {
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->where('a.delegation',$delegation_id)
+        ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
+        foreach ($orders as $key) {
+            $category = $this->table($key->type_service,$key->selected_id);
+            $result = in_array($category[0]->id,$ids);
+            if($result){
+                array_push($final_orders,$key);
+            }
+        }
+        return $final_orders;
+    }
+    public function ordersAccepted($user_id){
+        $final_orders = [];
+        $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
+        $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereIn('o.id',$selectedOrders)
         ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
