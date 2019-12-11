@@ -54,10 +54,9 @@ class ApiServiceController extends ApiController
         $orders = DB::table('orders')->where('state','FIXERMAN_NOTIFIED')->orWhere('state','PENDING')->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
-            if (in_array($ids, $category))
-            {
-                $orders.push($category);
-            }
+            Log::notice($category);
+            $result = array_intersect($ids, $category);
+            $final_orders.push($result);
         }
         return $final_orders;
     }
