@@ -7,6 +7,7 @@ namespace App\Http\Controllers\ApiRest;
 use App\Category;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ServiceCollection;
+use Illuminate\Support\Facades\Log;
 use App\SubCategory;
 use DB;
 use App\Address;
