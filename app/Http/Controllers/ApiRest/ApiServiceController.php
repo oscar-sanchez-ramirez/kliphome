@@ -37,9 +37,9 @@ class ApiServiceController extends ApiController
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             $ids = array_column($categories->toArray(), 'category_id');
-            $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
+            $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->pluck('order_id');
             $orders = $this->categories($ids,$delegation[0]->delegation_id,$selectedOrders);
-            $accepted = $this->ordersAccepted($user->id,$selectedOrders);
+            $accepted = $this->ordersAccepted($selectedOrders);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
@@ -68,7 +68,7 @@ class ApiServiceController extends ApiController
         }
         return $final_orders;
     }
-    public function ordersAccepted($user_id,$selectedOrders){
+    public function ordersAccepted($selectedOrders){
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereIn('o.id',$selectedOrders)
         ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
