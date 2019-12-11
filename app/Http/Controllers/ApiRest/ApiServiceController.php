@@ -53,7 +53,7 @@ class ApiServiceController extends ApiController
         $final_orders = [];
         Log::notice($delegation_id);
         $orders = DB::table('orders as o')->join('addresses as a','o.address','a.id')->where('a.delegation',$delegation_id)
-                ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')->select('o.*'.'a.delegation','a.address')->get();
+                ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')->select('o.*','a.delegation','a.address')->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             Log::notice($category);
