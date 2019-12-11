@@ -35,7 +35,7 @@ class ApiServiceController extends ApiController
             Log::notice($categories);
             $ids = array_column($categories->toArray(), 'category_id');
             Log::notice($ids);
-            $orders = $this->categories($ids);
+            $orders = $this->categories($ids,$delegation[0]->delegation_id);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
@@ -48,10 +48,11 @@ class ApiServiceController extends ApiController
         }
 
     }
-    public function categories($ids)
+    public function categories($ids,$delegation_id)
     {
         $final_orders = [];
-        $orders = DB::table('orders')->where('state','FIXERMAN_NOTIFIED')->orWhere('state','PENDING')->get();
+        $orders = DB::table('orders as o')->join('addresses as a','o.address','a.id')->where('a.delegation',$delegation_id)
+                ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('state','PENDING')->select('o.*'.'a.delegation','a.address')->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             Log::notice($category);
