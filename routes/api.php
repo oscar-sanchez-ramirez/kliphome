@@ -2,7 +2,7 @@
 
 use App\Address;
 use Illuminate\Http\Request;
-use DB;
+use App\Http\Controllers\Admin\Libs\UserLib;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,19 +31,9 @@ Route::get('categories','ApiRest\ApiServiceController@getCategories');
 Route::post('register','ApiRest\RegisterController@register');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
-
-    if($user->type == "AppFixerMan"){
-        $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
-        $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
-        return response()->json([
-            'user' => $user,
-            'delegations' => $delegation,
-            'categories' => $categories
-        ]);
-    }elseif($user->type == "AppUser"){
-        $address = Address::where('user_id',$user->id)->get();
-        return array($user,$address);
-    }
+    $info = new UserLib();
+    $final = $info->userInfo($user->id);
+    return $final;
 });
 //DELEGATIONS
 Route::get('delegations','ApiRest\DelegationController@index');
