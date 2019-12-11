@@ -40,4 +40,5 @@ Route::get('delegations','ApiRest\DelegationController@index');
 
 //FixerMan
 Route::post('registerFixerMan','ApiRest\FixerManController@register');
+Route::post('saveSelectedOrder','ApiRest\FixerManController@saveSelectedOrder');
 Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');

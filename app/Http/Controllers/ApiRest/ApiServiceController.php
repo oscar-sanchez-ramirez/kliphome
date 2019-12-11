@@ -15,18 +15,22 @@ use App\User;
 
 class ApiServiceController extends ApiController
 {
+    //Getting sub-categories for clientApp
     public function getSubCategories($category){
         $subCategories = DB::table('categories as c')->join('sub_categories as s','c.id','s.category_id')->where('c.title',$category)->select('s.title')->get();
         return Response(json_encode(array('subCategories' => $subCategories)));
     }
+    //Getting services for clientApp
     public function getServices($subCategory){
         $services =  new ServiceCollection(SubCategory::where('title',$subCategory)->first());
         return Response(json_encode(array('services' => $services)));
     }
+    //Getting categories for clientApp
     public function getCategories(){
         $categories = Category::all('id','title');
         return Response(json_encode(array('categories' => $categories)));
     }
+    //Return info after login, conditional if user is client or fixerman
     public function userInfo($id){
         $user = User::where('id',$id)->first();
         if($user->type == "AppFixerMan"){
@@ -48,6 +52,7 @@ class ApiServiceController extends ApiController
         }
 
     }
+    //getting categories by fixerman preferences
     public function categories($ids,$delegation_id)
     {
         $final_orders = [];
@@ -65,7 +70,7 @@ class ApiServiceController extends ApiController
         }
         return $final_orders;
     }
-
+    //Query will depend of order selected
     private function table($type_service,$id){
 
         switch ($type_service) {

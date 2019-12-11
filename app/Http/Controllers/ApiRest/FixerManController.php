@@ -8,6 +8,7 @@ use App\SelectedDelegation;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use DB;
 
 class FixerManController extends ApiController
 {
@@ -53,6 +54,12 @@ class FixerManController extends ApiController
                 'fail' => "No se pudo registrar al trabajador, porfavor verifique sus datos"
             ]);
         }
+
+    }
+
+    public function saveSelectedOrder(Request $request){
+        Log::notice($request->all());
+        // $orders = DB::table('users as u')->join('selected_delegations as sd','sd.user_id','u.id')
 
     }
 }
