@@ -56,7 +56,9 @@ class ApiServiceController extends ApiController
             $category = $this->table($key->type_service,$key->selected_id);
             Log::notice($category);
             $result = in_array($category[0]->id,$ids);
-            array_push($final_orders,$result);
+            if($result){
+                array_push($final_orders,$key);
+            }
         }
         return $final_orders;
     }
