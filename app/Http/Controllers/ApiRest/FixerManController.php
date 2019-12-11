@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\ApiRest;
 
 use App\Http\Controllers\ApiController;
-use App\SelectedCategories;
-use App\SelectedDelegation;
+use App\SelectedOrders;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -58,8 +57,17 @@ class FixerManController extends ApiController
     }
 
     public function saveSelectedOrder(Request $request){
-        Log::notice($request->all());
-        // $orders = DB::table('users as u')->join('selected_delegations as sd','sd.user_id','u.id')
+        try {
+            Log::notice($request->all());
+            $new_selected_order = new SelectedOrders;
+            $new_selected_order->user_id = $request->user_id;
+            $new_selected_order->order_id = $request->order_id;
+            $new_selected_order->state = $request->state;
+            $new_selected_order->save();
+            return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
+        } catch (\Throwable $th) {
+            return Response(json_encode(array('failed' => "Error al guardar")));
+        }
 
     }
 }

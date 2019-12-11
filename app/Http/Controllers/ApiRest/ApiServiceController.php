@@ -36,9 +36,7 @@ class ApiServiceController extends ApiController
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
-            Log::notice($categories);
             $ids = array_column($categories->toArray(), 'category_id');
-            Log::notice($ids);
             $orders = $this->categories($ids,$delegation[0]->delegation_id);
             return response()->json([
                 'user' => $user,
@@ -56,13 +54,10 @@ class ApiServiceController extends ApiController
     public function categories($ids,$delegation_id)
     {
         $final_orders = [];
-        Log::notice($delegation_id);
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->where('a.delegation',$delegation_id)
         ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
-            Log::notice($category);
             $result = in_array($category[0]->id,$ids);
             if($result){
                 array_push($final_orders,$key);
