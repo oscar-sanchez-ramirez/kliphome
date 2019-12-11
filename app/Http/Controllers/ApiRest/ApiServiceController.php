@@ -55,7 +55,7 @@ class ApiServiceController extends ApiController
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             Log::notice($category);
-            $result = array_intersect($category[0]->id,$ids);
+            $result = in_array($category[0]->id,$ids);
             $final_orders.push($result);
         }
         return $final_orders;
