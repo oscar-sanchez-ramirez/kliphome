@@ -55,7 +55,7 @@ class ApiServiceController extends ApiController
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             Log::notice($category);
-            $result = array_intersect($ids, $category);
+            $result = array_intersect($category[0]->id,$ids);
             $final_orders.push($result);
         }
         return $final_orders;
@@ -65,7 +65,7 @@ class ApiServiceController extends ApiController
 
         switch ($type_service) {
             case 'SubService':
-                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id')->where('subse.id',$id)->first();
+                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id')->where('subse.id',$id)->get();
                 return $category;
                 break;
 
