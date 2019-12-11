@@ -2,7 +2,7 @@
 
 use App\Address;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Admin\FixerManController;
+use App\Http\Controllers\ApiRest\ApiServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ Route::get('categories','ApiRest\ApiServiceController@getCategories');
 Route::post('register','ApiRest\RegisterController@register');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
-    $info = new FixerManController();
+    $info = new ApiServiceController();
     $final = $info->userInfo($user->id);
     return $final;
 });
