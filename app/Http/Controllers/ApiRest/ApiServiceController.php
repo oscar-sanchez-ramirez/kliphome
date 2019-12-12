@@ -62,6 +62,7 @@ class ApiServiceController extends ApiController
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
+            $key->service = $category[0]->service;
             if($result){
                 array_push($final_orders,$key);
             }
@@ -73,7 +74,9 @@ class ApiServiceController extends ApiController
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereIn('o.id',$selectedOrders)
         ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
         foreach ($orders as $key) {
-                array_push($final_orders,$key);
+            $category = $this->table($key->type_service,$key->selected_id);
+            $key->service = $category[0]->service;
+            array_push($final_orders,$key);
         }
         return $final_orders;
     }
@@ -82,7 +85,7 @@ class ApiServiceController extends ApiController
 
         switch ($type_service) {
             case 'SubService':
-                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id')->where('subse.id',$id)->get();
+                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id','subse.title as service')->where('subse.id',$id)->get();
                 return $category;
                 break;
 
