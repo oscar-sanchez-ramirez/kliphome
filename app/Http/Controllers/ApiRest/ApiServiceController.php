@@ -37,7 +37,7 @@ class ApiServiceController extends ApiController
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             $ids = array_column($categories->toArray(), 'category_id');
-            $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->pluck('order_id');
+            $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',true)->pluck('order_id');
             $orders = $this->categories($ids,$delegation[0]->delegation_id,$selectedOrders);
             $accepted = $this->ordersAccepted($selectedOrders);
             return response()->json([
