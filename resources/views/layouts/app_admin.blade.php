@@ -330,7 +330,7 @@
                                         <span class="quantity">{{ $notificaciones }}</span>
                                         <div class="notifi-dropdown js-dropdown">
                                             <div class="notifi__title">
-                                                <p>You have 3 Notifications</p>
+                                                <p>You have {{ Auth::user()->unreadNotifications->count() }} Notifications</p>
                                             </div>
                                             @foreach(Auth::user()->unreadNotifications as $notification)
                                             <div class="notifi__item">
@@ -339,7 +339,7 @@
                                                 </div>
                                                 <div class="content">
                                                     <p>You got a email notification</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
+                                                    <span class="date">{{ $notification->created_at }}</span>
                                                 </div>
                                             </div>
                                             @endforeach
