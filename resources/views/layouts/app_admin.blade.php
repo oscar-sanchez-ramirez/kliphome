@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>KlipHome</title>
 
     <!-- Fontfaces CSS-->
     <link href="{{ url('') }}/css/font-face.css" rel="stylesheet" media="all">
@@ -44,7 +44,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="{{ url('') }}/index.html">
-                            <img src="{{ url('') }}/images/icon/kliphomelogo.png" alt="Klip Home Logo" />
+                            <img src="{{ url('') }}/images/icon/kliphomelogo.png" height="50px" width="50px" alt="Klip Home Logo" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -57,43 +57,28 @@
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                            <a class="js-arrow" href="{{ url('') }}/#">
-                                <i class="fas fa-tachometer-alt"></i>Inicio</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="{{ url('') }}/index.html">Dashboard 1</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/index2.html">Dashboard 2</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/index3.html">Dashboard 3</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/index4.html">Dashboard 4</a>
-                                </li>
-                            </ul>
+                        <li class="{{ active_menu('admin')}}">
+                            <a href="{{ url('') }}/admin"><i class="fas fa-tachometer-alt"></i>Inicio</a>
                         </li>
-                        <li>
-                            <a href="{{ url('') }}/chart.html">
-                                <i class="fas fa-chart-bar"></i>Charts</a>
+                        <li class="{{ active_menu('categorias')}} {{ active_menu('categorias/*')}}">
+                            <a href="{{ url('') }}/categorias">
+                                <i class="fas fa-table"></i>Categorías</a>
                         </li>
-                        <li>
-                            <a href="{{ url('') }}/table.html">
-                                <i class="fas fa-table"></i>Tables</a>
+                        <li class="{{ active_menu('servicios')}} {{ active_menu('servicios/*')}}">
+                            <a href="{{ url('') }}/servicios">
+                                <i class="far fa-check-square"></i>Servicios</a>
                         </li>
-                        <li>
-                            <a href="{{ url('') }}/form.html">
-                                <i class="far fa-check-square"></i>Forms</a>
+                        <li class="{{ active_menu('ordenes')}} {{ active_menu('ordenes/*')}}">
+                            <a href="{{ url('') }}/ordenes">
+                                <i class="fas fa-calendar-alt"></i>Ordenes</a>
                         </li>
-                        <li>
-                            <a href="{{ url('') }}/#">
-                                <i class="fas fa-calendar-alt"></i>Calendar</a>
+                        <li class="{{ active_menu('clientes')}} {{  active_menu('clientes/*')}}">
+                            <a href="{{ url('') }}/clientes">
+                                <i class="fas fa-users"></i>Clientes</a>
                         </li>
-                        <li>
-                            <a href="{{ url('') }}/map.html">
-                                <i class="fas fa-map-marker-alt"></i>Maps</a>
+                        <li class="{{ active_menu('tecnicos')}} {{ active_menu('tecnicos/*')}}">
+                            <a href="{{ url('') }}/tecnicos">
+                                <i class="fas fa-users"></i>Técnicos</a>
                         </li>
                         <li class="has-sub">
                             <a class="js-arrow" href="{{ url('') }}/#">
@@ -333,8 +318,16 @@
                                         </div>
                                     </div>
                                     <div class="noti__item js-item-menu">
+                                        @php
+                                            $notificaciones = Auth::user()->unreadNotifications->count();
+                                            if($notificaciones > 9){
+                                                $notificaciones = "9+";
+                                            }if($notificaciones == 0){
+                                                $notificaciones = "";
+                                            }
+                                        @endphp
                                         <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">3</span>
+                                        <span class="quantity">{{ $notificaciones }}</span>
                                         <div class="notifi-dropdown js-dropdown">
                                             <div class="notifi__title">
                                                 <p>You have 3 Notifications</p>
@@ -378,7 +371,7 @@
                                             <img src="{{ url('') }}/images/icon/avatar-01.jpg" alt="John Doe" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="{{ url('') }}/#">john doe</a>
+                                            <a class="js-acc-btn" href="{{ url('') }}/#">{{ Auth::user()->name }}</a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -389,15 +382,15 @@
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="{{ url('') }}/#">john doe</a>
+                                                        <a href="{{ url('') }}/#">{{ Auth::user()->name }}</a>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <span class="email">{{ Auth::user()->email }}</span>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a href="{{ url('') }}/#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
+                                                        <i class="zmdi zmdi-account"></i>Cuenta</a>
                                                 </div>
                                                 <div class="account-dropdown__item">
                                                     <a href="{{ url('') }}/#">
