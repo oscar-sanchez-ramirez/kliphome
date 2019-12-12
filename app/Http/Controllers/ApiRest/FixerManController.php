@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use DB;
+use App\Notifications\NotifyAcceptOrder;
 
 class FixerManController extends ApiController
 {
@@ -58,12 +59,15 @@ class FixerManController extends ApiController
 
     public function saveSelectedOrder(Request $request){
         try {
-            Log::notice($request->all());
             $new_selected_order = new SelectedOrders;
             $new_selected_order->user_id = $request->user_id;
             $new_selected_order->order_id = $request->order_id;
             $new_selected_order->state = $request->state;
             $new_selected_order->save();
+            if($request->state == 1){
+                $user = User::where('email',"admin@kliphome.com")->first();
+                $user->notify(new NotifyAcceptOrder($new_selected_order));
+            }
             return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
         } catch (\Throwable $th) {
             return Response(json_encode(array('failed' => "Error al guardar")));
