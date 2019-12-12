@@ -339,7 +339,7 @@
                                                 </div>
                                                 <div class="content">
                                                     <p>You got a email notification</p>
-                                                    <span class="date">{{ $notification->created_at }}</span>
+                                                    <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                 </div>
                                             </div>
                                             @endforeach
