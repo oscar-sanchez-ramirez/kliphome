@@ -37,12 +37,11 @@ class ApiServiceController extends ApiController
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             $ids = array_column($categories->toArray(), 'category_id');
-            $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->get();
-            $selectedTrue = array_keys(array_column($selectedOrders->toArray(), 'state'), 1);
-            $selectedFalse = array_keys(array_column($selectedOrders->toArray(), 'state'), 0);
-            Log::notice($selectedFalse);
-            $orders = $this->categories($ids,$delegation[0]->delegation_id,array_column($selectedFalse->toArray(),'id'));
-            $accepted = $this->ordersAccepted(array_column($selectedTrue->toArray(),'id'));
+            $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
+            $notSelectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',0)->pluck('order_id');
+            Log::notice($selectedOrders);
+            $orders = $this->categories($ids,$delegation[0]->delegation_id,$notSelectedOrders);
+            $accepted = $this->ordersAccepted($selectedOrders);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
