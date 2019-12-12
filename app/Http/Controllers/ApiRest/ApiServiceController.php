@@ -40,7 +40,7 @@ class ApiServiceController extends ApiController
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
             $notSelectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',0)->pluck('order_id');
             Log::notice($selectedOrders);
-            $orders = $this->categories($ids,$delegation[0]->delegation_id,$notSelectedOrders);
+            $orders = $this->categories($ids,$delegation[0]->delegation_id,$selectedOrders,$notSelectedOrders);
             $accepted = $this->ordersAccepted($selectedOrders);
             return response()->json([
                 'user' => $user,
@@ -56,10 +56,10 @@ class ApiServiceController extends ApiController
 
     }
     //getting categories by fixerman preferences
-    public function categories($ids,$delegation_id,$selectedOrders)
+    public function categories($ids,$delegation_id,$selectedOrders,$notSelectedOrders)
     {
         $final_orders = [];
-        $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereNotIn('o.id',$selectedOrders)->where('a.delegation',$delegation_id)
+        $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereNotIn('o.id',$selectedOrders)->whereNotIn('o.id',$notSelectedOrders)->where('a.delegation',$delegation_id)
         ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
         Log::notice($orders);
         foreach ($orders as $key) {
