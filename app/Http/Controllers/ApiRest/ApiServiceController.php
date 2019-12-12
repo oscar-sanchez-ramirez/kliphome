@@ -38,11 +38,11 @@ class ApiServiceController extends ApiController
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             $ids = array_column($categories->toArray(), 'category_id');
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->get();
-            $selectedTrue = array_keys(array_column($selectedOrders, 'state'), 1);
-            $selectedFalse = array_keys(array_column($selectedOrders, 'state'), 0);
+            $selectedTrue = array_keys(array_column($selectedOrders->toArray(), 'state'), 1);
+            $selectedFalse = array_keys(array_column($selectedOrders->toArray(), 'state'), 0);
             Log::notice($selectedFalse);
-            $orders = $this->categories($ids,$delegation[0]->delegation_id,array_column($selectedFalse,'id'));
-            $accepted = $this->ordersAccepted(array_column($selectedTrue,'id'));
+            $orders = $this->categories($ids,$delegation[0]->delegation_id,array_column($selectedFalse->toArray(),'id'));
+            $accepted = $this->ordersAccepted(array_column($selectedTrue->toArray(),'id'));
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
