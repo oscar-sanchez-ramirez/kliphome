@@ -14,6 +14,11 @@ $(document).on('click', '#SubServiceModal', function(){
     //Listing all sub services into modal
     listSubServices(service_id);
 });
+$("#filterCategories").on('change',function(){
+    var category = document.getElementById('filterCategories').value;
+    listServices(category);
+    // console.log(category);
+});
 
 function saveSubService(){
     //Getting the new title and service_id for new record
@@ -89,6 +94,28 @@ function listSubServices(service_id){
             } else {
 
                 $(".tbodyModal").html('<p>No tiene Sub Servicios</p>');
+            }
+
+        },
+        error: function(data) {
+            console.log("Error al obtener en busqueda");
+        }
+    });
+}
+
+function listServices(category_id){
+    //Listing sub services by service_id
+    var url = window.location.origin+"/getServices/"+category_id;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(data) {
+            console.log(data);
+            if (data != "") {
+                $("#bodyServices").html(data);
+            } else {
+
+                $("#bodyServices").html('<p>No tiene Servicios</p>');
             }
 
         },

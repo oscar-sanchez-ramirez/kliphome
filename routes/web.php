@@ -24,7 +24,7 @@ Route::get('admin', function () {
 })->middleware('auth','checkadmin');
 
 Route::resource('categorias', 'CategoryController');
-Route::resource('servicios', 'ServiceController',['except' => ['show']]);
+Route::resource('servicios', 'ServiceController');
 Route::resource('sub-categorias', 'SubCategoryController',['except' => ['show']]);
 
 // MODULES
@@ -37,6 +37,7 @@ Route::prefix('tecnicos')->group(base_path('routes/tecnicos.php'));
 // AJAX REQUEST
 Route::get('getSubcategory/{category_id}','SubCategoryController@getSubcategory');
 Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
+Route::get('getServices/{category_id}','ServiceController@getServicesByCategory');
 
 
 Route::get('test', 'Admin\NotificationsProvider@test');

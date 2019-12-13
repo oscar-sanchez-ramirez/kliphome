@@ -19,14 +19,17 @@
                     <div class="table-data__tool-right">
                         <a href="{{ url('') }}/categorias/create" class="au-btn au-btn-icon au-btn--green au-btn--small">
                             <i class="zmdi zmdi-plus"></i>Categoría</a>
-                        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
+                        {{-- <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
                             <select class="js-select2" name="type">
                                 <option selected="selected">Exportar</option>
                                 <option value="">Excel</option>
                                 <option value="">PDF</option>
                             </select>
                             <div class="dropDownSelect2"></div>
-                        </div>
+                        </div> --}}
+                        <button class="item" data-toggle="modal" data-target="#staticModal">
+                            <i data-toggle="tooltip" data-placement="top" title="Info" class="fa fa-question-circle"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
