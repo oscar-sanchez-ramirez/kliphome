@@ -42,6 +42,10 @@
                             <i class="fa fa-phone"></i> {{ $fixerman->phone }}
                         </div>
                     </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope"></i></button>
+                        <button type="reset" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
+                    </div>
                 </div>
                 @endif
             </div>
@@ -49,7 +53,15 @@
                 <div class="card">
                     <img class="card-img-top" type="button" data-toggle="modal" data-target="#scrollmodal" src="{{ ($orden->service_image) }}" alt="Card image cap" >
                     <div class="card-body">
-                        <h4 class="card-title mb-3">{{ $orden->type_service }} - {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }}</h4>
+                        <h4 class="card-title mb-3">{{ $orden->type_service }} - {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }}
+                            @if($orden->state == "PENDING")
+                                <span class="badge badge-danger">PENDIENTE</span>
+                            @elseif($orden->state == "ACCEPTED")
+                                <span class="badge badge-info">EN PROCESO</span>
+                            @elseif($orden->state == "DONE")
+                                <span class="badge badge-success">TERMINADO</span>
+                            @endif
+                        </h4>
                         <p class="card-text">
                             {{ $orden->service_description }}
                         </p>
