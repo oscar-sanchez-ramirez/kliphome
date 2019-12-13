@@ -23,6 +23,27 @@
                         </div>
                     </div>
                 </div>
+                @if($fixerman != null)
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title mb-3">Perfil Técnico del servicio</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="mx-auto d-block">
+                            <img class="rounded-circle mx-auto d-block" src="{{ url('') }}/images/icon/avatar-01.jpg" alt="Card image cap">
+                            <h5 class="text-sm-center mt-2 mb-1">{{ $fixerman->name }} {{ $fixerman->lastName }}</h5>
+                            <div class="location text-sm-center">
+                                {{-- <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }} --}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="card-text text-sm-center">
+                            <i class="fa fa-envelope"></i> {{ $fixerman->email }}<br>
+                            <i class="fa fa-phone"></i> {{ $fixerman->phone }}
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
             <div class="col-md-8">
                 <div class="card">

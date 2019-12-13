@@ -110,7 +110,6 @@ function listServices(category_id){
         type: "GET",
         url: url,
         success: function(data) {
-            console.log(data);
             if (data != "") {
                 $("#bodyServices").html(data);
             } else {

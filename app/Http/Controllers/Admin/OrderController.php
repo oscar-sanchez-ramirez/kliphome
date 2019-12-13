@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Order;
+use DB;
 
 class OrderController extends Controller
 {
@@ -20,7 +21,8 @@ class OrderController extends Controller
     //Show one order
     public function orderDetail($id){
         $orden = Order::find($id);
-        return view('admin.orders.orderDetail')->with('orden',$orden);
+        $fixerman = DB::table('selected_orders as s')->join('users as u','u.id','s.user_id')->select('u.*')->where('s.state',1)->first();
+        return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman);
     }
 
 }
