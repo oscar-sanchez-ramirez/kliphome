@@ -53,7 +53,7 @@
                 <div class="card">
                     <img class="card-img-top" type="button" data-toggle="modal" data-target="#scrollmodal" src="{{ ($orden->service_image) }}" alt="Card image cap" >
                     <div class="card-body">
-                        <h4 class="card-title mb-3">{{ $orden->type_service }} - {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }}
+                        <h4 class="card-title mb-3">{{ \Carbon\Carbon::parse($orden->service_date)->format('d-M, H:m') }} / {{ $orden->type_service }} / {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }} /
                             @if($orden->state == "PENDING")
                                 <span class="badge badge-danger">PENDIENTE</span>
                             @elseif($orden->state == "ACCEPTED")
