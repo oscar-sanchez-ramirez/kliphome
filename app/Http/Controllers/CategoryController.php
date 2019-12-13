@@ -48,6 +48,7 @@ class CategoryController extends Controller
     {
         $new_category = new Category();
         $new_category->title = $request->title;
+        $new_category->visit_price = $request->visit_price;
         $new_category->save();
 
         return Redirect::action('CategoryController@index');
@@ -61,7 +62,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::where('id',$id)->first();
+        return view('admin.categories.edit')->with('category',$category);
     }
 
     /**
@@ -72,7 +74,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -84,7 +86,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Category::where('id',$id)->update([
+            'title' => $request->title,
+            'visit_price' => $request->visit_price
+        ]);
+        return Redirect::action('CategoryController@index');
     }
 
     /**

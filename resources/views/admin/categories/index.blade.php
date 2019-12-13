@@ -46,6 +46,7 @@
                                     </th>
                                     <th>Titulo</th>
                                     <th>Sub-Categorías</th>
+                                    <th>Precio de Visita</th>
                                     <th>Fecha Creación</th>
                                     <th></th>
                                 </tr>
@@ -61,15 +62,15 @@
                                         </td>
                                         <td>{{ $category->title }}</td>
                                         <td>{{ $category->subCategoriesCount($category->id) }}</td>
+                                        <td>{{ $category->visit_price }}</td>
                                         <td>{{ $category->created_at->diffForHumans() }}</td>
                                         <td>
                                             <div class="table-data-feature">
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                    <i class="zmdi zmdi-edit"></i>
-                                                </button>
-                                                {{-- <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="zmdi zmdi-delete"></i>
-                                                </button> --}}
+                                                <form action="{{ url('') }}/categorias/{{ $category->id }}" type="GET">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                </form>
                                                 <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubcategoryModal" data-title="{{ $category->title }}" data-id="{{ $category->id }}">
                                                     <i data-toggle="tooltip" data-placement="top" title="SubCategorias" class="zmdi zmdi-collection-item-2"></i>
                                                 </button>

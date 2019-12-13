@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Service;
 use App\SubCategory;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -21,8 +22,9 @@ class ServiceController extends Controller
      */
     public function index()
     {
+        $categories = Category::all();
         $services = Service::all();
-        return view('admin.services.index')->with('services',$services);
+        return view('admin.services.index')->with('services',$services)->with('categories',$categories);
     }
 
     /**

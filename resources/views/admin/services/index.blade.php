@@ -10,8 +10,9 @@
                         <div class="rs-select2--light rs-select2--md">
                             <select class="js-select2" name="property">
                                 <option selected="selected">All Categories</option>
-                                <option value="">Option 1</option>
-                                <option value="">Option 2</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                @endforeach
                             </select>
                             <div class="dropDownSelect2"></div>
                         </div>
