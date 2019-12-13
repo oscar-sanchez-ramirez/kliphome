@@ -57,7 +57,7 @@
                          $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $orden->service_date);
                         @endphp
                         <h4 class="card-title mb-3">{{ \Carbon\Carbon::parse($date)->format('d,M H:i') }} / {{ $orden->type_service }} / {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }} /
-                            @if($orden->state == "PENDING")
+                            @if($orden->state == "PENDING" || $orden->state == "FIXERMAN_NOTIFIED")
                                 <span class="badge badge-danger">PENDIENTE</span>
                             @elseif($orden->state == "ACCEPTED")
                                 <span class="badge badge-info">EN PROCESO</span>
