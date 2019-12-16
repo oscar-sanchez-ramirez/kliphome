@@ -50,8 +50,9 @@ class ApiServiceController extends ApiController
                 'accepted' => $accepted
             ]);
         }elseif($user->type == "AppUser"){
+            $categories = Category::all();
             $address = Address::where('user_id',$user->id)->get();
-            return array($user,$address);
+            return array($user,$address,$categories);
         }
 
     }
