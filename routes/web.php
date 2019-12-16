@@ -40,5 +40,5 @@ Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
 Route::get('getServices/{category_id}','ServiceController@getServicesByCategory');
 
 
-Route::get('test', 'Admin\NotificationsProvider@test');
+Route::get('testOrder', 'ApiRest\OrderController@testOrder');
 Route::get('testMatch','Admin\NotificationsProvider@testMatch');

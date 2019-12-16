@@ -28,4 +28,7 @@ class OrderController extends ApiController
             return Response(json_encode(array('failed' => "La orden de servicio no se realizó con éxito")));
         }
     }
+    public function testOrder(){
+        dispatch(new NotifyNewOrder(2));
+    }
 }
