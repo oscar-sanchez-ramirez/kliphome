@@ -20,6 +20,9 @@ class Order extends Model
             case 'Service':
                 return Service::where('id',$id)->first('title');
                 break;
+            case 'Category':
+                return Category::where('id',$id)->first('title');
+                break;
             default:
                 # code...
                 break;
