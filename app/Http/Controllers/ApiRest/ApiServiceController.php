@@ -94,7 +94,7 @@ class ApiServiceController extends ApiController
                 return $category;
                 break;
             case 'Category':
-                $category = DB::table('categories')->select('title','id')->where('id',$id)->get();
+                $category = DB::table('categories')->select('title as service','id')->where('id',$id)->get();
                 return $category;
                 break;
 
