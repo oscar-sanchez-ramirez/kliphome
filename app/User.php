@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\AproveFixerMan;
 use App\Notifications\NotifyNewOrder;
+use Illuminate\Support\Facades\Log;
 
 
 class User extends Authenticatable
@@ -59,6 +60,8 @@ class User extends Authenticatable
 
     public function routeNotificationForOneSignal()
     {
+        Log::notice("one");
+        Log::notice($this->email);
         return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
     }
 }
