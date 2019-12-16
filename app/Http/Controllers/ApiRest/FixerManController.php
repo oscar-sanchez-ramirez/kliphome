@@ -16,7 +16,6 @@ class FixerManController extends ApiController
 {
     public function register(Request $request){
         try {
-            Log::notice($request->all());
             $this->validate($request,[
                 'email' => 'required|email|unique:users',
                 'name' => 'required',
@@ -32,17 +31,14 @@ class FixerManController extends ApiController
                 'state' => 0,
                 'password' => bcrypt($request->password),
             ])->toArray();
-            Log::notice($user);
 
             //SAVE SELECTED DELEGATION
             $selected = new SelectedDelegation;
             $selected->user_id = $user["id"];
             $selected->delegation_id = $request->workArea;
             $selected->save();
-            Log::notice($request->workArea);
             //SAVE SELECTED CATEGORIES
             $categories = explode(',',$request->categories);
-            Log::notice($categories);
             for ($i=0; $i < count($categories); $i++) {
                 $category = new SelectedCategories;
                 $category->user_id = $user["id"];
