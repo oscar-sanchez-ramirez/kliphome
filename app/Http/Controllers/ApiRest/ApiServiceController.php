@@ -35,13 +35,18 @@ class ApiServiceController extends ApiController
         $user = User::where('id',$id)->first();
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
+            Log::notice($delegation);
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
+            Log::notice($categories);
             $ids = array_column($categories->toArray(), 'category_id');
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
-            $notSelectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',0)->pluck('order_id');
             Log::notice($selectedOrders);
+            $notSelectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',0)->pluck('order_id');
+            Log::notice($notSelectedOrders);
             $orders = $this->categories($ids,$delegation[0]->delegation_id,$selectedOrders,$notSelectedOrders);
+            Log::notice($orders);
             $accepted = $this->ordersAccepted($selectedOrders);
+            Log::notice($accepted);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
@@ -62,7 +67,6 @@ class ApiServiceController extends ApiController
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereNotIn('o.id',$selectedOrders)->whereNotIn('o.id',$notSelectedOrders)->where('a.delegation',$delegation_id)
         ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
@@ -77,7 +81,6 @@ class ApiServiceController extends ApiController
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereIn('o.id',$selectedOrders)
         ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $key->service = $category[0]->service;
@@ -91,6 +94,10 @@ class ApiServiceController extends ApiController
         switch ($type_service) {
             case 'SubService':
                 $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id','subse.title as service')->where('subse.id',$id)->get();
+                return $category;
+                break;
+            case 'Category':
+                $category = DB::table('categories as ca')->select('ca.title','ca.id')->where('ca.id',$id)->get();
                 return $category;
                 break;
 
