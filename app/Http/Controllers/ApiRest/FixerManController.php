@@ -35,9 +35,10 @@ class FixerManController extends ApiController
             $selected->user_id = $user["id"];
             $selected->delegation_id = $request->workArea;
             $selected->save();
-
+            Log::notice($request->workArea);
             //SAVE SELECTED CATEGORIES
             $categories = explode(',',$request->categories);
+            Log::notice($categories);
             for ($i=0; $i < count($categories); $i++) {
                 $category = new SelectedCategories;
                 $category->user_id = $user["id"];
