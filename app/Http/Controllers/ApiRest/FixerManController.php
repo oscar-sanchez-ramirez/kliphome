@@ -30,6 +30,7 @@ class FixerManController extends ApiController
                 'state' => 0,
                 'password' => bcrypt($request->password),
             ])->toArray();
+            Log::notice($user);
 
             //SAVE SELECTED DELEGATION
             $selected = new SelectedDelegation;
