@@ -4,6 +4,8 @@ namespace App\Http\Controllers\ApiRest;
 
 use App\Http\Controllers\ApiController;
 use App\SelectedOrders;
+use App\SelectedDelegation;
+use App\SelectedCategories;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
