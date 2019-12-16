@@ -14,6 +14,7 @@ class FixerManController extends ApiController
 {
     public function register(Request $request){
         try {
+            Log::notice($request->all());
             $this->validate($request,[
                 'email' => 'required|email|unique:users',
                 'name' => 'required',
