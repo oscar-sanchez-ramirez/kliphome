@@ -31,6 +31,7 @@ class OrderController extends Controller
     public function aprobarSolicitudTecnico($fixerman_id,$order_id){
         Log::notice("1");
         dispatch(new ApproveOrderFixerMan($fixerman_id,$order_id));
+        return back();
     }
     public function eliminarSolicitudTecnico($fixerman_id,$order_id){
         SelectedOrders::where('user_id',$fixerman_id)->where('order_id',$order_id)->update([
