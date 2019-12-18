@@ -31,7 +31,12 @@ class ApproveOrderFixerman extends Notification
     {
         return [OneSignalChannel::class];
     }
-
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toOneSignal($notifiable)
     {
         //now you can build your message with the $this->data information
