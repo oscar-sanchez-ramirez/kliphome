@@ -43,13 +43,22 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope"></i></button>
-                        <form action="{{ url('') }}/ordenes/aprobarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
-                            <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
-                        </form>
-                        <form action="{{ url('') }}/ordenes/eliminarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
-                        </form>
+                        <ul class="list-inline">
+                            <li>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope"></i></button>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ url('') }}/ordenes/aprobarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ url('') }}/ordenes/eliminarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 @endif
