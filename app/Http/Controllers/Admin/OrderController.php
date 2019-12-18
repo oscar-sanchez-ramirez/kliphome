@@ -8,6 +8,7 @@ use App\Order;
 use App\SelectedOrders;
 use App\Jobs\ApproveOrderFixerMan;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -28,6 +29,7 @@ class OrderController extends Controller
         return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman);
     }
     public function aprobarSolicitudTecnico($fixerman_id,$order_id){
+        Log::notice("1");
         dispatch(new ApproveOrderFixerMan($fixerman_id,$order_id));
     }
     public function eliminarSolicitudTecnico($fixerman_id,$order_id){

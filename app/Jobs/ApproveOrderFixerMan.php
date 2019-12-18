@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use OneSignal;
 use App\Order;
 use App\User;
+use Illuminate\Support\Facades\Log;
 
 class ApproveOrderFixerMan implements ShouldQueue
 {
@@ -25,6 +26,7 @@ class ApproveOrderFixerMan implements ShouldQueue
     {
         $this->fixerman_id = $fixerman_id;
         $this->order_id = $order_id;
+        Log::notice("2");
     }
 
     /**
@@ -37,6 +39,9 @@ class ApproveOrderFixerMan implements ShouldQueue
         //Notification for Client
         $order = Order::where('id',$this->order_id)->first();
         $user_order = User::where('id',$order->user_id)->first();
+        Log::notice("3");
+        Log::notice($order);
+        Log::notice($user_order);
         OneSignal::sendNotificationUsingTags(
             "Un Técnico ha aceptado la solicitud para tu solicitud",
             array(
@@ -47,10 +52,12 @@ class ApproveOrderFixerMan implements ShouldQueue
             $buttons = null,
             $schedule = null
         );
+        Log::notice("4");
         //Notification for Fixerman
         $fixerman = User::where('id',$this->fixerman)->first();
         $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
         //
+        Log::notice("5");
         Order::where('id',$order_id)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);

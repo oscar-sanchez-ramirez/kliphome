@@ -56,6 +56,7 @@ class User extends Authenticatable
                 $this->notify(new AproveFixerMan($this));
                 break;
             case 'ApproveOrderFixerMan':
+                Log::notice("4.5");
                 //Notify when a Fixerman Request was approved
                 $this->notify(new ApproveOrderFixerman($this));
                 # code...
