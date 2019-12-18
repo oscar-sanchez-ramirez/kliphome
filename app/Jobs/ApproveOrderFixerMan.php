@@ -61,7 +61,7 @@ class ApproveOrderFixerMan implements ShouldQueue
         );
         Log::notice("4");
         //Notification for Fixerman
-        $fixerman = User::where('id',$this->fixerman)->first();
+        $fixerman = User::where('id',$this->fixerman_id)->first();
         $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
         //
         Log::notice("5");
