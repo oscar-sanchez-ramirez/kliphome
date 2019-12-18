@@ -97,6 +97,10 @@ class ApiServiceController extends ApiController
                 $category = DB::table('categories')->select('title as service','id')->where('id',$id)->get();
                 return $category;
                 break;
+            case 'Service':
+                $category = DB::table('services as se')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id','subse.title as service')->where('se.id',$id)->get();
+                return $category;
+                break;
 
             default:
                 # code...
