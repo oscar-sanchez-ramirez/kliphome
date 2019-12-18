@@ -42,23 +42,23 @@ class ApproveOrderFixerMan implements ShouldQueue
         Log::notice("3");
         Log::notice($order);
         Log::notice($user_order);
-        OneSignal::sendNotificationToAll(
-            "this is a test from laravel",
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
-        // OneSignal::sendNotificationUsingTags(
-        //     "Un Técnico ha aceptado la solicitud para tu solicitud",
-        //     array(
-        //         ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user_order->email],
-        //     ),
+        // OneSignal::sendNotificationToAll(
+        //     "this is a test from laravel",
         //     $url = null,
         //     $data = null,
         //     $buttons = null,
         //     $schedule = null
         // );
+        OneSignal::sendNotificationUsingTags(
+            "Un Técnico ha aceptado la solicitud para tu solicitud",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user_order->email],
+            ),
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
         Log::notice("4");
         //Notification for Fixerman
         $fixerman = User::where('id',$this->fixerman)->first();
