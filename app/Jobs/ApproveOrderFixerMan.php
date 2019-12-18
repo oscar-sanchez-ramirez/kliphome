@@ -62,7 +62,23 @@ class ApproveOrderFixerMan implements ShouldQueue
         Log::notice("4");
         //Notification for Fixerman
         $fixerman = User::where('id',$this->fixerman_id)->first();
-        $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
+        $client = new Berkayk\OneSignal\OneSignalClient(
+            getenv('a8a80cb1-1654-4ccc-92be-54dff3e0171e'),
+            getenv('NTRkOGJkNGUtOGJhMy00NTMyLWEyYWQtOTk2MTMyM2ZiYTA1'),
+            getenv('OGVmYmUxMmYtMDMzYi00ZGJlLTk1NjMtYzY5ZjQ0Y2JkNmZl'));
+
+        Log::notice($client->testCredentials());
+        OneSignal::sendNotificationUsingTags(
+            "Un Técnico ha aceptado la solicitud para tu solicitud",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $fixerman->email],
+            ),
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
+        // $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
         //
         Log::notice("5");
         Order::where('id',$this->order_id)->update([
