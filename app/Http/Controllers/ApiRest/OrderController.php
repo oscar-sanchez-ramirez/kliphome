@@ -29,6 +29,6 @@ class OrderController extends ApiController
         }
     }
     public function testOrder(){
-        dispatch(new NotifyNewOrder(6));
+        dispatch(new NotifyNewOrder(7));
     }
 }
