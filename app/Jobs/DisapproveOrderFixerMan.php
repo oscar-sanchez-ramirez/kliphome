@@ -2,26 +2,24 @@
 
 namespace App\Jobs;
 
-use App\User;
-use Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class AproveFixerMan implements ShouldQueue
+class DisapproveOrderFixerMan implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $user_id;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user_id)
+    public function __construct()
     {
-        $this->user_id = $user_id;
+        //
     }
 
     /**
@@ -31,7 +29,6 @@ class AproveFixerMan implements ShouldQueue
      */
     public function handle()
     {
-        $user = User::where('id',$this->user_id)->first();
-        return $user->sendNotification($user->email,'AproveFixerMan');
+        //
     }
 }

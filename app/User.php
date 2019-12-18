@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\AproveFixerMan;
 use App\Notifications\NotifyNewOrder;
+use App\Notifications\OneSignal\ApproveOrderFixerman;
 use Illuminate\Support\Facades\Log;
 
 
@@ -46,16 +47,28 @@ class User extends Authenticatable
     public function children(){
         return $this->hasMany(Address::class, 'user_id')->orderBy('created_at', 'asc');
     }
-    public function sendNotification($email)
+    public function sendNotification($email,$type)
     {
         $this->email = $email;
-        $this->notify(new AproveFixerMan($this)); //Pass the model data to the OneSignal Notificator
-    }
+        switch ($type) {
+            case 'AproveFixerMan':
+                //Notify when a FixerMan is approved
+                $this->notify(new AproveFixerMan($this));
+                break;
+            case 'ApproveOrderFixerMan':
+                //Notify when a Fixerman Request was approved
+                $this->notify(new ApproveOrderFixerman($this));
+                # code...
+                break;
+            case 'sendNotificationOrderMatch':
+                //Notify when user create a order and exists fixerman with the same category
+                $this->notify(new NotifyNewOrder($this));
+                break;
+            default:
+                # code...
+                break;
+        }
 
-    public function sendNotificationOrderMatch($email)
-    {
-        $this->email = $email;
-        $this->notify(new NotifyNewOrder($this)); //Pass the model data to the OneSignal Notificator
     }
 
     public function routeNotificationForOneSignal()

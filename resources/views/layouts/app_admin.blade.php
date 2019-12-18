@@ -306,7 +306,7 @@
                                             @if($notification->type == "App\Notifications\NotifyAcceptOrder")
                                             <div class="notifi__item">
                                                 <div class="bg-c1 img-cir img-40">
-                                                    <i class="zmdi zmdi-email-open"></i>
+                                                    <i class="fa fa-wrench"></i>
                                                 </div>
                                                 <div class="content">
                                                     <p>Un Técnico aceptó un trabajo</p>

@@ -44,7 +44,12 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope"></i></button>
-                        <button type="reset" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
+                        <form action="{{ url('') }}/ordenes/aprobarSolicitudTecnico/{{ $fixerman->id }}/{{ $order->id }}">
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
+                        </form>
+                        <form action="{{ url('') }}/ordenes/eliminarSolicitudTecnico/{{ $fixerman->id }}/{{ $order->id }}">
+                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
+                        </form>
                     </div>
                 </div>
                 @endif
@@ -82,27 +87,27 @@
     </div>
 </div>
 
-    <!-- modal scroll -->
-			<div class="modal fade" id="scrollmodal" tabindex="-1" role="dialog" aria-labelledby="scrollmodalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="scrollmodalLabel">Imagen del servicio</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body" style="max-heigth:500px;overflow:scroll">
-                                <div>
-                                    <img  src="{{ ($orden->service_image) }}" style="transform:rotate(90deg);" alt="Card image cap" >
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-                            </div>
-                        </div>
-                    </div>
+<!-- modal scroll -->
+<div class="modal fade" id="scrollmodal" tabindex="-1" role="dialog" aria-labelledby="scrollmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scrollmodalLabel">Imagen del servicio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-heigth:500px;overflow:scroll">
+                <div>
+                    <img  src="{{ ($orden->service_image) }}" style="transform:rotate(90deg);" alt="Card image cap" >
                 </div>
-                <!-- end modal scroll -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal scroll -->
 @include('layouts.modals.subCategoryModal');
 @endsection
