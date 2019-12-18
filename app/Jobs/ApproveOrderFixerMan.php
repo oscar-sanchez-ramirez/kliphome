@@ -65,7 +65,7 @@ class ApproveOrderFixerMan implements ShouldQueue
         $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
         //
         Log::notice("5");
-        Order::where('id',$order_id)->update([
+        Order::where('id',$this->order_id)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);
     }
