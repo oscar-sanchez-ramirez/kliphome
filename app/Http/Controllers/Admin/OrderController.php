@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\SelectedOrders;
 use App\Jobs\ApproveOrderFixerMan;
+use App\Jobs\DisapproveOrderFixerMan;
 use DB;
 use Illuminate\Support\Facades\Log;
 
@@ -29,14 +30,12 @@ class OrderController extends Controller
         return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman);
     }
     public function aprobarSolicitudTecnico($fixerman_id,$order_id){
-        Log::notice("1");
         dispatch(new ApproveOrderFixerMan($fixerman_id,$order_id));
         return back();
     }
     public function eliminarSolicitudTecnico($fixerman_id,$order_id){
-        SelectedOrders::where('user_id',$fixerman_id)->where('order_id',$order_id)->update([
-            'state' => 0
-        ]);
+        dispatch(new DisapproveOrderFixerMan($fixerman_id,$order_id));
+        return back();
     }
 
 }

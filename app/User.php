@@ -9,6 +9,7 @@ use Laravel\Passport\HasApiTokens;
 use App\Notifications\AproveFixerMan;
 use App\Notifications\NotifyNewOrder;
 use App\Notifications\OneSignal\ApproveOrderFixerman;
+use App\Notifications\OneSignal\DisapproveOrderFixerman;
 use Illuminate\Support\Facades\Log;
 
 
@@ -56,10 +57,13 @@ class User extends Authenticatable
                 $this->notify(new AproveFixerMan($this));
                 break;
             case 'ApproveOrderFixerMan':
-                Log::notice("4.5");
                 //Notify when a Fixerman Request was approved
                 $this->notify(new ApproveOrderFixerman($this));
                 # code...
+                break;
+            case 'DisapproveOrderFixerMan':
+                //Notify when a Fixerman Request was disapproved
+                $this->notify(new DisapproveOrderFixerman($this));
                 break;
             case 'sendNotificationOrderMatch':
                 //Notify when user create a order and exists fixerman with the same category
