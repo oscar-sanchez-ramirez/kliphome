@@ -21,8 +21,6 @@ class NotificationsController extends ApiController
     }
 
     public function deleteNotification($id){
-        DB::table('notifications')->where('id',$id)->update([
-            'read_at' => Carbon::now()
-        ]);
+        DB::table('notifications')->where('id',$id)->delete();
     }
 }
