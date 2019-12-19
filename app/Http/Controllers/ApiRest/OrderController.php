@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use App\Jobs\NotifyNewOrder;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\ApproveOrderFixerMan;
 
 class OrderController extends ApiController
 {
@@ -29,6 +30,7 @@ class OrderController extends ApiController
         }
     }
     public function testOrder(){
-        dispatch(new NotifyNewOrder(8));
+        // dispatch(new NotifyNewOrder(8));
+        dispatch(new ApproveOrderFixerMan(78,8));
     }
 }
