@@ -45,3 +45,5 @@ Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
 
 //Notifications
 Route::get('notifications/{id}','ApiRest\NotificationsController@getNotifications');
+Route::post('notifications/markAsRead/{id}','ApiRest\NotificationsController@markAsRead');
+Route::post('notifications/deleteNotification/{id}','ApiRest\NotificationsController@deleteNotification');
