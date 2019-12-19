@@ -41,10 +41,10 @@ class ApproveOrderFixerMan implements ShouldQueue
         $order = Order::where('id',$this->order_id)->first();
         $fixerman = User::where('id',$this->fixerman_id)->first();
         $date = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
+        $user_order = User::where('id',$order->user_id)->first();
 
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
-        $user_order = User::where('id',$order->user_id)->first();
         $user_order->notify(new DatabaseApproveOrderFixerMan($order));
 
         OneSignal::sendNotificationUsingTags(
