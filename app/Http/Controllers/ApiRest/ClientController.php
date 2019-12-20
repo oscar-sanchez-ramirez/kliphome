@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiRest;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use DB;
 
 class ClientController extends ApiController
 {
