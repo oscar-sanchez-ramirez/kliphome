@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\ApiRest;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class ClientController extends Controller
+class ClientController extends ApiController
 {
     public function historyOrders($id){
         $orders = DB::table('orders as o')
