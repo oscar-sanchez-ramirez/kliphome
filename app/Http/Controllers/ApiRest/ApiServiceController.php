@@ -91,7 +91,7 @@ class ApiServiceController extends ApiController
         return $final_orders;
     }
     //Query will depend of order selected
-    private function table($type_service,$id){
+    public function table($type_service,$id){
 
         switch ($type_service) {
             case 'Category':
