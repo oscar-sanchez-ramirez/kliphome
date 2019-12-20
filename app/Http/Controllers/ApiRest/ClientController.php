@@ -12,7 +12,7 @@ class ClientController extends Controller
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->join('users as u','u.id','so.user_id')
-        ->select('o.*','a.alias','u.name','u.lastName')->get();
+        ->select('o.*','a.alias','u.name','u.lastName')->where('o.user_id',$id)->get();
         return Response(json_encode(array('orders' => $orders)));
     }
 }
