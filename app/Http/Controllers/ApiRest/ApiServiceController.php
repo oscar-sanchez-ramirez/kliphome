@@ -84,6 +84,10 @@ class ApiServiceController extends ApiController
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $key->service = $category[0]->service;
+            $key->service = $category[0]->service;
+            $key->category = $category[0]->category;
+            $key->sub_category = $category[0]->sub_category;
+            $key->serviceTrait = $category[0]->service;
             array_push($final_orders,$key);
         }
         return $final_orders;

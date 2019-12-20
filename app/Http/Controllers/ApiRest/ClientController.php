@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Http\Controllers\ApiRest;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class ClientController extends Controller
+{
+    public function historyOrders($id){
+        $orders = DB::table('orders as o')
+        ->join('addresses as a','o.address','a.id')
+        ->leftJoin('selected_orders as so','o.id','so.order_id')
+        ->join('users as u','u.id','so.user_id')
+        ->select('o.*','a.alias','u.name','u.lastName')->get();
+        return Response(json_encode(array('orders' => $orders)));
+    }
+}

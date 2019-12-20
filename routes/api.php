@@ -43,6 +43,9 @@ Route::post('registerFixerMan','ApiRest\FixerManController@register');
 Route::post('saveSelectedOrder','ApiRest\FixerManController@saveSelectedOrder');
 Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
 
+//Client
+Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');
+
 //Notifications
 Route::get('notifications/{id}','ApiRest\NotificationsController@getNotifications');
 Route::post('notifications/markAsRead/{id}','ApiRest\NotificationsController@markAsRead');
