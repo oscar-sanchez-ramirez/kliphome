@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Log;
 use OneSignal;
 
 class NotifyAcceptOrder extends Notification
@@ -55,6 +56,7 @@ class NotifyAcceptOrder extends Notification
      */
     public function toArray($notifiable)
     {
+        Log::notice($this->selected_order);
         OneSignal::sendNotificationUsingTags(
             "Un Técnico ha aceptado la solicitud para tu solicitud",
             array(
