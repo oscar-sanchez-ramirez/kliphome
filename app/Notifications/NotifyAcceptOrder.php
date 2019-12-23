@@ -58,7 +58,6 @@ class NotifyAcceptOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        Log::notice($this->email);
         OneSignal::sendNotificationUsingTags(
             "Un Técnico ha aceptado la solicitud para tu solicitud",
             array(

@@ -60,7 +60,7 @@ class FixerManController extends ApiController
     }
 
     public function saveSelectedOrder(Request $request){
-        // try {
+        try {
             $order = Order::where('id',$request->order_id)->first();
             Log::notice($order);
             $new_selected_order = new SelectedOrders;
@@ -70,13 +70,12 @@ class FixerManController extends ApiController
             $new_selected_order->save();
             if($request->state == 1){
                 $user = User::where('id',$order->user_id)->first();
-                Log::notice($user);
                 $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
             }
             return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
-        // } catch (\Throwable $th) {
-            // return Response(json_encode(array('failed' => "Error al guardar")));
-        // }
+        } catch (\Throwable $th) {
+            return Response(json_encode(array('failed' => "Error al guardar")));
+        }
 
     }
 }
