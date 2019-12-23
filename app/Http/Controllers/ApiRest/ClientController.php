@@ -21,7 +21,6 @@ class ClientController extends ApiController
             $key->category = $category[0]->category;
             $key->sub_category = $category[0]->sub_category;
             $key->serviceTrait = $category[0]->service;
-            $key->address = $category[0]->address;
             $key->visit_price = $category[0]->visit_price;
         }
         return Response(json_encode(array('orders' => $orders)));
