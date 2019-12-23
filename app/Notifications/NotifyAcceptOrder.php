@@ -13,14 +13,16 @@ class NotifyAcceptOrder extends Notification
 {
     use Queueable;
     protected $selected_order;
+    protected $email;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($selected_order)
+    public function __construct($selected_order,$email)
     {
         $this->selected_order = $selected_order;
+        $this->email = $email;
     }
 
     /**
@@ -56,11 +58,11 @@ class NotifyAcceptOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        Log::notice($this->selected_order);
+        Log::notice($this->email);
         OneSignal::sendNotificationUsingTags(
             "Un Técnico ha aceptado la solicitud para tu solicitud",
             array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->selected_order["user_email"]],
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
             ),
             $url = null,
             $data = null,

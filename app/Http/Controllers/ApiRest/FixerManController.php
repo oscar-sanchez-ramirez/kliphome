@@ -71,7 +71,7 @@ class FixerManController extends ApiController
             if($request->state == 1){
                 $user = User::where('id',$order->user_id)->first();
                 Log::notice($user);
-                $user->notify(new NotifyAcceptOrder($new_selected_order));
+                $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
             }
             return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
         // } catch (\Throwable $th) {
