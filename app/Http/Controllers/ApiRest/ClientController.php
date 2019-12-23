@@ -14,13 +14,15 @@ class ClientController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
-        ->select('o.*','a.alias','u.name','u.lastName')->where('o.user_id',$id)->get();
+        ->select('o.*','a.alias','a.address','u.name','u.lastName')->where('o.user_id',$id)->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
             $key->category = $category[0]->category;
             $key->sub_category = $category[0]->sub_category;
             $key->serviceTrait = $category[0]->service;
+            $key->address = $category[0]->address;
+            $key->visit_price = $category[0]->visit_price;
         }
         return Response(json_encode(array('orders' => $orders)));
     }
