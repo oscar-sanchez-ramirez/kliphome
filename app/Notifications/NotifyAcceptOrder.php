@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use OneSignal;
 
 class NotifyAcceptOrder extends Notification
 {
@@ -54,6 +55,16 @@ class NotifyAcceptOrder extends Notification
      */
     public function toArray($notifiable)
     {
+        OneSignal::sendNotificationUsingTags(
+            "Un Técnico ha aceptado la solicitud para tu solicitud",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->selected_order["user_email"]],
+            ),
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
         return $this->selected_order;
     }
 }
