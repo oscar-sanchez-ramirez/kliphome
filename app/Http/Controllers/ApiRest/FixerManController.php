@@ -70,6 +70,8 @@ class FixerManController extends ApiController
             $new_selected_order->save();
             if($request->state == 1){
                 $user = User::where('id',$order->user_id)->first();
+                $fixerman = User::where('id',$request->user_id)->first();
+                $new_selected_order["mensajeClient"] = $fixerman->name." aceptó tu trabajo. Échale un vistazo";
                 $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
             }
             return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
