@@ -11,6 +11,8 @@ use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use DB;
+use App\Jobs\ApproveOrderFixerMan;
+use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
 
 class FixerManController extends ApiController
