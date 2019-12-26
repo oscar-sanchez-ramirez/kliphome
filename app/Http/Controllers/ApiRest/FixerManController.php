@@ -83,6 +83,7 @@ class FixerManController extends ApiController
     }
 
     public function aprobarSolicitudTecnico(Request $request){
+        Log::notice($request->all());
         dispatch(new ApproveOrderFixerMan($request->fixerman_id,$request->order_id));
         return back();
     }
