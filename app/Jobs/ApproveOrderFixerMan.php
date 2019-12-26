@@ -45,18 +45,18 @@ class ApproveOrderFixerMan implements ShouldQueue
 
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
-        $user_order->notify(new DatabaseApproveOrderFixerMan($order));
+        // $user_order->notify(new DatabaseApproveOrderFixerMan($order));
 
-        OneSignal::sendNotificationUsingTags(
-            "Un Técnico ha aceptado la solicitud para tu solicitud",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user_order->email],
-            ),
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
+        // OneSignal::sendNotificationUsingTags(
+        //     "Un Técnico ha aceptado la solicitud para tu solicitud",
+        //     array(
+        //         ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user_order->email],
+        //     ),
+        //     $url = null,
+        //     $data = null,
+        //     $buttons = null,
+        //     $schedule = null
+        // );
 
         //Notification for Fixerman
 
