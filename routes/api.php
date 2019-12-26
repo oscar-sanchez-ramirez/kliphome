@@ -42,6 +42,8 @@ Route::get('delegations','ApiRest\DelegationController@index');
 Route::post('registerFixerMan','ApiRest\FixerManController@register');
 Route::post('saveSelectedOrder','ApiRest\FixerManController@saveSelectedOrder');
 Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
+Route::post('aprobarSolicitudTecnico','ApiRest\FixerManController@aprobarSolicitudTecnico');
+Route::post('eliminarSolicitudTecnico','ApiRest\FixerManController@eliminarSolicitudTecnico');
 
 //Client
 Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');

@@ -78,6 +78,14 @@ class FixerManController extends ApiController
         } catch (\Throwable $th) {
             return Response(json_encode(array('failed' => "Error al guardar")));
         }
+    }
 
+    public function aprobarSolicitudTecnico(Request $request){
+        dispatch(new ApproveOrderFixerMan($request->fixerman_id,$request->order_id));
+        return back();
+    }
+    public function eliminarSolicitudTecnico(Request $request){
+        dispatch(new DisapproveOrderFixerMan($request->fixerman_id,$request->order_id));
+        return back();
     }
 }
