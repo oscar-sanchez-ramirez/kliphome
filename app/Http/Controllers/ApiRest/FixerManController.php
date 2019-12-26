@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use DB;
 use App\Jobs\ApproveOrderFixerMan;
+use App\Http\Controllers\ApiRest\ApiServiceController;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
 
@@ -87,19 +88,21 @@ class FixerManController extends ApiController
         dispatch(new ApproveOrderFixerMan($request->fixerman_id,$request->order_id));
         return back();
     }
+
     public function eliminarSolicitudTecnico(Request $request){
         dispatch(new DisapproveOrderFixerMan($request->fixerman_id,$request->order_id));
         return back();
     }
-    public function infoFixerman($id){
-        $user = User::where('id',$id)->where('type','AppFixerMan')->first();
-        $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
-        $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
 
+    public function infoFixerman($id,$order_id){
+        $order = Order::where('id',$order_id)->first();
+        $order_category = new ApiServiceController();
+        $user = User::where('id',$id)->where('type','AppFixerMan')->first();
+        $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
         return response()->json([
             'user' => $user,
-            'delegations' => $delegation,
             'categories' => $categories,
+            'order_category' => $order_category->table($order->type_service,$order->selected_id)
         ]);
     }
 }
