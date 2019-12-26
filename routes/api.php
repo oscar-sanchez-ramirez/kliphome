@@ -39,6 +39,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('delegations','ApiRest\DelegationController@index');
 
 //FixerMan
+Route::get('infoFixerman/{id}','ApiRest\FixerManController@infoFixerman');
 Route::post('registerFixerMan','ApiRest\FixerManController@register');
 Route::post('saveSelectedOrder','ApiRest\FixerManController@saveSelectedOrder');
 Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
