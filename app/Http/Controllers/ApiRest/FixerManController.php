@@ -114,4 +114,25 @@ class FixerManController extends ApiController
             'order_category' => $order_category->table($order->type_service,$order->selected_id)
         ]);
     }
+
+    public function updateUserField(Request $request){
+        $field = $request->field;
+        $value = $request->value;
+
+        DB::table('users')->update([
+            $field => $value
+        ]);
+    }
+
+    private function fields($field){
+        switch ($field) {
+            case 'Nombre':
+                return "name";
+                break;
+
+            default:
+                # code...
+                break;
+        }
+    }
 }
