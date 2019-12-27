@@ -116,6 +116,7 @@ class FixerManController extends ApiController
     }
 
     public function updateUserField(Request $request){
+        Log::notice($request->all());
         $field = $this->fields($request->field);
         $value = $request->value;
         $user_id = $request->user_id;
