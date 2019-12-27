@@ -118,8 +118,9 @@ class FixerManController extends ApiController
     public function updateUserField(Request $request){
         $field = $this->fields($request->field);
         $value = $request->value;
+        $user_id = $request->user_id;
 
-        DB::table('users')->update([
+        DB::table('users')->where('id',$user_id)->update([
             $field => $value
         ]);
     }
