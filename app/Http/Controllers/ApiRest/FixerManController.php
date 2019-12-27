@@ -142,6 +142,9 @@ class FixerManController extends ApiController
             case 'Contraseña':
                 return "password";
                 break;
+            case 'avatar':
+                return "avatar";
+                break;
             default:
                 # code...
                 break;
