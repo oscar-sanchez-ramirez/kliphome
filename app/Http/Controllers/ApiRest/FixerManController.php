@@ -130,7 +130,18 @@ class FixerManController extends ApiController
             case 'Nombre':
                 return "name";
                 break;
-
+            case 'Apellido':
+                return "lastName";
+                break;
+            case 'Telefono':
+                return "phone";
+                break;
+            case 'email':
+                return "email";
+                break;
+            case 'Contraseña':
+                return "password";
+                break;
             default:
                 # code...
                 break;
