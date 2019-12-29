@@ -19,7 +19,11 @@ class ClientController extends ApiController
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
             $key->category = $category[0]->category;
-            $key->sub_category = $category[0]->sub_category;
+            if ($key->type_service == "Category") {
+                $key->sub_category = "-";
+            }else{
+                $key->sub_category = $category[0]->sub_category;
+            }
             $key->serviceTrait = $category[0]->service;
             $key->visit_price = $category[0]->visit_price;
         }
