@@ -67,7 +67,11 @@ class ApiServiceController extends ApiController
             $result = in_array($category[0]->id,$ids);
             $key->service = $category[0]->service;
             $key->category = $category[0]->category;
-            $key->sub_category = $category[0]->sub_category;
+            if ($key->type_service == "Category") {
+                $key->sub_category = "-";
+            }else{
+                $key->sub_category = $category[0]->sub_category;
+            }
             $key->serviceTrait = $category[0]->service;
             if($result){
                 array_push($final_orders,$key);
@@ -84,7 +88,11 @@ class ApiServiceController extends ApiController
             $key->service = $category[0]->service;
             $key->service = $category[0]->service;
             $key->category = $category[0]->category;
-            $key->sub_category = $category[0]->sub_category;
+            if ($key->type_service == "Category") {
+                $key->sub_category = "-";
+            }else{
+                $key->sub_category = $category[0]->sub_category;
+            }
             $key->serviceTrait = $category[0]->service;
             array_push($final_orders,$key);
         }
