@@ -81,8 +81,15 @@ class ApiServiceController extends ApiController
     }
     public function ordersAccepted($selectedOrders){
         $final_orders = [];
-        $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')->whereIn('o.id',$selectedOrders)
-        ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')->orWhere('o.state','FIXERMAN_APPROVED');})->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
+
+        $orders = DB::table('orders as o')
+        ->join('users as u','u.id','o.user_id')
+        ->join('addresses as a','o.address','a.id')
+        ->join('selected_orders as so','o.id','so.order_id')
+        ->whereIn('o.id',$selectedOrders)
+        ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')->orWhere('o.state','FIXERMAN_APPROVED');})
+        ->select('o.*','a.delegation','a.alias','a.address','u.name','u.lastName','u.avatar','so.created_at as orderAcepted')->get();
+
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $key->service = $category[0]->service;

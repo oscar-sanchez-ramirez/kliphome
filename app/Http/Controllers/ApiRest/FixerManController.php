@@ -94,6 +94,15 @@ class FixerManController extends ApiController
         return back();
     }
 
+    public function terminarOrden(Request $request){
+        $order_id = $request->order_id;
+        $user_id = $request->user_id;
+        //Get User and Order
+        $order = Order::where('id',$order_id)->first();
+        $client = User::where('id',$user_id)->first();
+        $order["mensajeClient"] = "¡Gracias por usar KlipHome! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+    }
+
     public function infoFixerman($id,$order_id){
         $order = Order::where('id',$order_id)->first();
 
@@ -129,7 +138,6 @@ class FixerManController extends ApiController
                 $field => $value
             ]);
         }
-
     }
 
     private function fields($field){
