@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\ApiRest;
 
 use App\Http\Controllers\ApiController;
-use App\SelectedOrders;
-use App\SelectedDelegation;
-use App\SelectedCategories;
-use App\User;
-use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use DB;
-use App\Jobs\ApproveOrderFixerMan;
+use App\User;
+use App\Order;
+use App\SelectedOrders;
+use App\SelectedDelegation;
+use App\SelectedCategories;
+use Carbon\Carbon;
 use App\Http\Controllers\ApiRest\ApiServiceController;
+use App\Jobs\ApproveOrderFixerMan;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
+use App\Notifications\Database\FinishedOrder;
 
 class FixerManController extends ApiController
 {
@@ -96,11 +98,21 @@ class FixerManController extends ApiController
 
     public function terminarOrden(Request $request){
         $order_id = $request->order_id;
-        $user_id = $request->user_id;
+        $fixerman_id = $request->fixerman_id;
         //Get User and Order
         $order = Order::where('id',$order_id)->first();
-        $client = User::where('id',$user_id)->first();
-        $order["mensajeClient"] = "¡Gracias por usar KlipHome! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $fixerman = User::where('id',$fixerman_id)->first();
+
+        //Notify
+        $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio con ".ucfirst(strtolower($fixerman->name))." ha terminado, ¡Califícalo ahora! ";
+        $client = User::where('id',$order->user_id)->first();
+        $client->notify(new FinishedOrder($order));
+
+        //Update order
+        Order::where('id',$order_id)->update([
+            'finished_at' => Carbon::now(),
+            'state' => 'FIXERMAN_DONE'
+        ]);
     }
 
     public function infoFixerman($id,$order_id){
