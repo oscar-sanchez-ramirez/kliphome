@@ -97,6 +97,7 @@ class FixerManController extends ApiController
     }
 
     public function terminarOrden(Request $request){
+        Log::notice($request->all());
         $order_id = $request->order_id;
         $fixerman_id = $request->fixerman_id;
         //Get User and Order
