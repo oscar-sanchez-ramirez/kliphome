@@ -119,7 +119,7 @@ class FixerManController extends ApiController
 
         $qualify = new Qualify;
         $qualify->user_id = $request->fixerman_id;
-        $qualify->idOrderAccepted = $request->idOrderAccepted;
+        $qualify->selected_order_id = $request->idOrderAccepted;
         $qualify->presentation = $request->presentation;
         $qualify->puntuality = $request->puntuality;
         $qualify->problemSolve = $request->problemSolve;
