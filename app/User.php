@@ -10,6 +10,7 @@ use App\Notifications\AproveFixerMan;
 use App\Notifications\NotifyNewOrder;
 use App\Notifications\OneSignal\ApproveOrderFixerman;
 use App\Notifications\OneSignal\DisapproveOrderFixerman;
+use App\Notifications\OneSignal\ServiceQualified;
 use Illuminate\Support\Facades\Log;
 
 
