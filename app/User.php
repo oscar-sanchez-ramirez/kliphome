@@ -69,6 +69,9 @@ class User extends Authenticatable
                 //Notify when user create a order and exists fixerman with the same category
                 $this->notify(new NotifyNewOrder($this));
                 break;
+            case 'ServiceQualified':
+                //Notify when user create a order and exists fixerman with the same category
+                $this->notify(new ServiceQualified($this));
             default:
                 # code...
                 break;
@@ -78,7 +81,6 @@ class User extends Authenticatable
 
     public function routeNotificationForOneSignal()
     {
-        Log::notice("one");
         Log::notice($this->email);
         return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
     }

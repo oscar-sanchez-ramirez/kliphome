@@ -106,6 +106,17 @@ class FixerManController extends ApiController
         $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio con ".ucfirst(strtolower($fixerman->name))." ha terminado, ¡Califícalo ahora! ";
         $client = User::where('id',$order->user_id)->first();
         $client->notify(new FinishedOrder($order));
+        //Onesignal Notification
+        OneSignal::sendNotificationUsingTags(
+            ucfirst(strtolower($fixerman->name))." ha marcardo el servicio como terminado. ¡Valóralo ahora!",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
+            ),
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
 
         //Update order
         Order::where('id',$order_id)->update([
@@ -115,8 +126,6 @@ class FixerManController extends ApiController
     }
 
     public function qualifyService(Request $request){
-        Log::notice($request->all());
-
         $qualify = new Qualify;
         $qualify->user_id = $request->fixerman_id;
         $qualify->selected_order_id = $request->idOrderAccepted;
@@ -126,6 +135,8 @@ class FixerManController extends ApiController
         $qualify->comment = $request->comment;
         $qualify->tip = $request->tip;
         $qualify->save();
+        $user = User::where('id',$request->fixerman_id)->first();
+        $user->sendNotification($user->email,'ServiceQualified');
 
     }
 
