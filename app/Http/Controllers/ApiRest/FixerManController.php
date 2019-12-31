@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use DB;
 use App\User;
 use App\Order;
+use App\Qualify;
 use App\SelectedOrders;
 use App\SelectedDelegation;
 use App\SelectedCategories;
@@ -67,7 +68,6 @@ class FixerManController extends ApiController
     public function saveSelectedOrder(Request $request){
         try {
             $order = Order::where('id',$request->order_id)->first();
-            Log::notice($order);
             $new_selected_order = new SelectedOrders;
             $new_selected_order->user_id = $request->user_id;
             $new_selected_order->order_id = $request->order_id;
@@ -116,6 +116,16 @@ class FixerManController extends ApiController
 
     public function qualifyService(Request $request){
         Log::notice($request->all());
+
+        $qualify = new Qualify;
+        $qualify->fixerman_id = $request->fixerman_id;
+        $qualify->idOrderAccepted = $request->idOrderAccepted;
+        $qualify->presentation = $request->presentation;
+        $qualify->puntuality = $request->puntuality;
+        $qualify->problemSolve = $request->problemSolve;
+        $qualify->comment = $request->comment;
+        $qualify->tip = $request->tip;
+        $qualify->save();
 
     }
 
