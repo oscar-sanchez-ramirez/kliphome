@@ -118,7 +118,7 @@ class FixerManController extends ApiController
         Log::notice($request->all());
 
         $qualify = new Qualify;
-        $qualify->fixerman_id = $request->fixerman_id;
+        $qualify->user_id = $request->fixerman_id;
         $qualify->idOrderAccepted = $request->idOrderAccepted;
         $qualify->presentation = $request->presentation;
         $qualify->puntuality = $request->puntuality;
