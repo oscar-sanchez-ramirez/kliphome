@@ -116,6 +116,7 @@ class FixerManController extends ApiController
 
     public function qualifyService(Request $request){
         Log::notice($request->all());
+
     }
 
     public function infoFixerman($id,$order_id){
