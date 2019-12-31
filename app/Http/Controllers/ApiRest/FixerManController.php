@@ -142,6 +142,11 @@ class FixerManController extends ApiController
         $user->notify(new ServiceQualified($qualify));
         //OneSignal notification
         $user->sendNotification($user->email,'ServiceQualified');
+        //Update order
+        DB::table('selected_orders as so')
+        ->join('orders as o', 'so.order_id','o.id')
+        ->where('so.id',$request->idOrderAccepted)
+        ->update([ 'o.state' => "QUALIFIED" ]);
 
     }
 
