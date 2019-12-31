@@ -97,13 +97,11 @@ class FixerManController extends ApiController
     }
 
     public function terminarOrden(Request $request){
-        Log::notice($request->all());
         $order_id = $request->order_id;
         $fixerman_id = $request->fixerman_id;
         //Get User and Order
         $order = Order::where('id',$order_id)->first();
         $fixerman = User::where('id',$fixerman_id)->first();
-        Log::notice($fixerman);
         //Notify
         $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio con ".ucfirst(strtolower($fixerman->name))." ha terminado, ¡Califícalo ahora! ";
         $client = User::where('id',$order->user_id)->first();
@@ -114,6 +112,10 @@ class FixerManController extends ApiController
             'finished_at' => Carbon::now(),
             'state' => 'FIXERMAN_DONE'
         ]);
+    }
+
+    public function qualifyService(Request $request){
+        Log::notice($request->all());
     }
 
     public function infoFixerman($id,$order_id){
