@@ -18,6 +18,7 @@ use App\Jobs\ApproveOrderFixerMan;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
 use App\Notifications\Database\FinishedOrder;
+use App\Notifications\Database\ServiceQualified;
 
 class FixerManController extends ApiController
 {
@@ -136,6 +137,10 @@ class FixerManController extends ApiController
         $qualify->tip = $request->tip;
         $qualify->save();
         $user = User::where('id',$request->fixerman_id)->first();
+        //Database notification
+        $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
+        $user->notify(new ServiceQualified($qualify));
+        //OneSignal notification
         $user->sendNotification($user->email,'ServiceQualified');
 
     }
