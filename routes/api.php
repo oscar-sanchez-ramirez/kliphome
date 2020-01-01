@@ -51,6 +51,7 @@ Route::post('qualifyService','ApiRest\FixerManController@qualifyService');
 
 //Client
 Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');
+Route::get('orderDetail/{id}/{order_id}','ApiRest\ClientController@orderDetail');
 
 //Notifications
 Route::get('notifications/{id}','ApiRest\NotificationsController@getNotifications');
