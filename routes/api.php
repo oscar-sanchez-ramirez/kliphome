@@ -40,10 +40,11 @@ Route::get('delegations','ApiRest\DelegationController@index');
 
 //FixerMan
 Route::get('infoFixerman/{id}/{order_id}','ApiRest\FixerManController@infoFixerman');
+Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
+Route::get('historyReviews/{id}','ApiRest\FixerManController@historyReviews');
 Route::post('registerFixerMan','ApiRest\FixerManController@register');
 Route::post('updateUserField','ApiRest\FixerManController@updateUserField');
 Route::post('saveSelectedOrder','ApiRest\FixerManController@saveSelectedOrder');
-Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
 Route::post('aprobarSolicitudTecnico','ApiRest\FixerManController@aprobarSolicitudTecnico');
 Route::post('eliminarSolicitudTecnico','ApiRest\FixerManController@eliminarSolicitudTecnico');
 Route::post('terminarOrden','ApiRest\FixerManController@terminarOrden');

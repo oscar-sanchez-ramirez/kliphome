@@ -139,7 +139,7 @@ class FixerManController extends ApiController
         $qualify->save();
         $user = User::where('id',$request->fixerman_id)->first();
         //Database notification
-        $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
+        $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
         $user->notify(new ServiceQualified($qualify));
         //OneSignal notification
         $user->sendNotification($user->email,'ServiceQualified');
@@ -188,6 +188,15 @@ class FixerManController extends ApiController
         }
     }
 
+    public function historyReviews($id){
+        $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user.id')
+        ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->get();
+
+        return response()->json([
+            'reviews' => $reviews
+        ]);
+    }
+
     private function fields($field){
         switch ($field) {
             case 'Nombre':
@@ -213,4 +222,5 @@ class FixerManController extends ApiController
                 break;
         }
     }
+
 }
