@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use DB;
+use OneSignal;
 use App\User;
 use App\Order;
 use App\Qualify;
