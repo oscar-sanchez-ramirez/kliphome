@@ -203,17 +203,11 @@ class FixerManController extends ApiController
                 $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
                 ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$user_id)->get();
                 break;
-            case 7:
-                $hoy = Carbon::now();
-                $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
-                ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created',$hoy)->where('q.user_id',$user_id)->get();
-            break;
-
-            case 30:
-                # code...
-                break;
             default:
-                # code...
+                $hoy = Carbon::now();
+                $days = $mes->subDays($filter)->format('Y/m/d');
+                $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
+                ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created_at','>',$days)->whereDate('q.created_at','<=',$hoy)->where('q.user_id',$user_id)->get();
                 break;
         }
 
