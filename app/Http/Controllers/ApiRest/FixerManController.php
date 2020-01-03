@@ -206,7 +206,7 @@ class FixerManController extends ApiController
             default:
                 $hoy = Carbon::now()->format('Y-m-d H:i:i');
                 $sub = Carbon::createFromFormat('Y-m-d H:i:i', $hoy);
-                return $days = $sub->subDays($filter)->format('Y-m-d H:i:i');
+                $days = $sub->subDays($filter)->format('Y-m-d H:i:i');
                 return $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
                 ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created_at','>=',$days)->whereDate('q.created_at','<=',$hoy)->where('q.user_id',$user_id)->get();
                 break;
