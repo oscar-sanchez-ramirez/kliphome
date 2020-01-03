@@ -201,14 +201,14 @@ class FixerManController extends ApiController
         switch ($filter) {
             case 'all':
                 $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
-                ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$user_id)->get();
+                ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$user_id)->orderBy('q.created_at','DESC')->get();
                 break;
             default:
                 $hoy = Carbon::now()->format('Y-m-d H:i:i');
                 $sub = Carbon::createFromFormat('Y-m-d H:i:i', $hoy);
                 $days = $sub->subDays($filter)->format('Y-m-d H:i:i');
                 $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
-                ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created_at','>=',$days)->whereDate('q.created_at','<=',$hoy)->where('q.user_id',$user_id)->get();
+                ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created_at','>=',$days)->whereDate('q.created_at','<=',$hoy)->where('q.user_id',$user_id)->orderBy('q.created_at','DESC')->get();
                 break;
         }
 
