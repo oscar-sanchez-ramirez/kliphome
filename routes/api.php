@@ -42,6 +42,7 @@ Route::get('delegations','ApiRest\DelegationController@index');
 Route::get('infoFixerman/{id}/{order_id}','ApiRest\FixerManController@infoFixerman');
 Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
 Route::get('historyReviews/{id}','ApiRest\FixerManController@historyReviews');
+Route::get('filterReviews/{user_id}/{filter}','ApiRest\FixerManController@filterReviews');
 Route::post('registerFixerMan','ApiRest\FixerManController@register');
 Route::post('updateUserField','ApiRest\FixerManController@updateUserField');
 Route::post('saveSelectedOrder','ApiRest\FixerManController@saveSelectedOrder');

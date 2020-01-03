@@ -197,6 +197,32 @@ class FixerManController extends ApiController
         ]);
     }
 
+    public function filterReviews($user_id,$filter){
+        switch ($filter) {
+            case 'all':
+                $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
+                ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$user_id)->get();
+                break;
+            case 7:
+                $hoy = Carbon::now();
+                $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
+                ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created',$hoy)->where('q.user_id',$user_id)->get();
+            break;
+
+            case 30:
+                # code...
+                break;
+            default:
+                # code...
+                break;
+        }
+
+
+        return response()->json([
+            'reviews' => $reviews
+        ]);
+    }
+
     private function fields($field){
         switch ($field) {
             case 'Nombre':
