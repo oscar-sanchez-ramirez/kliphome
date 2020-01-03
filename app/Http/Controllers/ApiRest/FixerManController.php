@@ -207,7 +207,7 @@ class FixerManController extends ApiController
                 $hoy = Carbon::now();
                 $days = $hoy->subDays($filter);
                 return $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
-                ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created_at','>',$days)->whereDate('q.created_at','<=',$hoy)->where('q.user_id',$user_id)->get();
+                ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created_at','>=',$days)->whereDate('q.created_at','<=',$hoy)->where('q.user_id',$user_id)->get();
                 break;
         }
 
