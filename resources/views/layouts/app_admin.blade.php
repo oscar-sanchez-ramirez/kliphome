@@ -34,6 +34,10 @@
     <!-- Main CSS-->
     <link href="{{ url('') }}/css/theme.css" rel="stylesheet" media="all">
 
+    @if(Request::is('messenger'))
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @endif
+
 </head>
 
 <body class="animsition">
@@ -371,7 +375,9 @@
                 </div>
             </header>
             <!-- HEADER DESKTOP-->
-                @yield('content')
+                <div id="app">
+                    @yield('content')
+                </div>
             <!-- MAIN CONTENT-->
 
             <!-- END MAIN CONTENT-->
@@ -411,6 +417,10 @@
 
     <!-- Main JS-->
     <script src="{{ url('') }}/js/main.js"></script>
+
+    @if(Request::is('messenger'))
+        <script src="{{ asset('js/app.js') }}" defer></script>
+    @endif
 
 </body>
 
