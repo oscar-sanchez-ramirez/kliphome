@@ -40,6 +40,9 @@ Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');
 Route::get('getServices/{category_id}','ServiceController@getServicesByCategory');
 
 //CHAT
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
 Route::get('messenger','Chat\MessageController@messenger');
 Route::get('/api/conversations', 'Chat\ConversationController@index');
 Route::get('/api/messages', 'Chat\MessageController@index');

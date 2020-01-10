@@ -2,7 +2,7 @@
     <b-list-group-item :variant="variant">
         <b-row class="p-2" align-h="center">
             <b-col cols="3" md="3" class="text-center">
-                <b-img rounded="circle" width="60" style="border-radius:100%;border: 2px solid #ca90f4; padding:2px" height="60" :src="conversation.contact_name['avatar']"  alt="img" class="m-1" />
+                <b-img rounded="circle" width="60" style="border-radius:100%;border: 2px solid #ca90f4; padding:2px" height="60" :src="conversation.contact_name['avatar']"  alt="img" class="m-1"></b-img>
             </b-col>
             <b-col cols="9">
 
