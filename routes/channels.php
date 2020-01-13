@@ -24,3 +24,4 @@ Broadcast::channel('messenger', function ($user) {
       'id' => $user->id
     ];
 });
+Broadcast::routes(['middleware' => ['auth:api']]);

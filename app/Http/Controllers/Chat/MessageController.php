@@ -6,13 +6,14 @@ use DB;
 use Auth;
 use App\Message;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 
-class MessageController extends Controller
+class MessageController extends ApiController
 {
     public function __construct()
 	{
-	    $this->middleware(['auth']);
+	    // $this->middleware(['auth']);
     }
     public function messenger(){
         $carbon = new \Carbon\Carbon();

@@ -10,12 +10,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use App\Notifications\Database\NewConversation;
+use App\Http\Controllers\ApiController;
 
-class ConversationController extends Controller
+class ConversationController extends ApiController
 {
     public function __construct()
 	{
-	    $this->middleware(['auth']);
+	    // $this->middleware(['auth']);
 	}
   public function index()
   {

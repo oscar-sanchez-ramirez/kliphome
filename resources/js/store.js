@@ -9,7 +9,8 @@ export default new Vuex.Store({
         selectedConversation: null,
         conversations: [],
         querySearch: '',
-        user: null
+        user: null,
+        credentials:[]
     },
     mutations: {
         setDialog(state, value) {
@@ -77,6 +78,20 @@ export default new Vuex.Store({
             context.commit('addMessage',message);
           }
         });
+      },
+      getAccess(context){
+        const params = {
+          grant_type: "password",
+          client_id : 6,
+          client_secret : "TSfPPR0OSaafAqO1PDuJB9UlElR4JX2g2VWxdZiq",
+          username: "germanruelas17@gmail.com",
+          password: "12345678"
+        };
+        return axios.post('/oauth/token',params).then((response) => {
+          this.state.credentials = response.data;
+          console.log(this.state.credentials);
+        });
+
       }
     },
     getters:{
