@@ -38,18 +38,28 @@ export default{
     user: Object
   },
   mounted(){
-    console.log(this.user);
+    this.$store.dispatch('getAccess');
+
+
+
     this.$store.commit('setUser',this.user);
     this.$store.dispatch('getConversations');
-    this.$store.dispatch('getAccess');
-    window.Echo.private('users.'+this.user.id)
-        .listen('MessageSent', function (data) {
-            console.log(data);
-            const message = data.message;
-            message.written_by_me = 0;
-            this.addMessage1(message);
-        });
 
+    Echo.private('users.'+this.user.id).listen('MessageSent',(data)=>{
+      const message = data.message;
+      message.written_by_me = 0;
+      this.addMessage1(message);
+    });
+
+
+    Echo.join('messenger')
+    .here((users)=>{
+      users.forEach(user => this.changeStatus(user,true));
+    }).joining(
+      user => this.changeStatus(user,true)
+    ).leaving(
+      user => this.changeStatus(user,false)
+    );
 
   },
   methods:

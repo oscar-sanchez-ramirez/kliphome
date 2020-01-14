@@ -34,10 +34,30 @@ class MessageController extends ApiController
         $query->where('to_id',$userId)->where('from_id',$contactId);
         })->get();
     }
+
+    public function indexRest($userId,$contactId){
+        return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content')
+        ->where(function ($query) use ($userId,$contactId){
+        $query->where('from_id',$userId)->where('to_id',$contactId);
+        })->orWhere(function ($query) use ($userId,$contactId){
+        $query->where('to_id',$userId)->where('from_id',$contactId);
+        })->get();
+    }
     public function store(Request $request)
     {
         $message = new Message;
         $message->from_id = Auth::user()->id;
+        $message->to_id = $request->to_id;
+        $message->content = $request->content;
+        $saved = $message->save();
+        $data = [];
+        $data['success'] = $saved;
+        $data['message'] = $message;
+        return $data;
+    }
+    public function storeRest(Request $request){
+        $message = new Message;
+        $message->from_id = $request->user_id;
         $message->to_id = $request->to_id;
         $message->content = $request->content;
         $saved = $message->save();
