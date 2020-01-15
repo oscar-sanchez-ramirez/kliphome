@@ -82,8 +82,8 @@ export default new Vuex.Store({
       getAccess(context){
         const params = {
           grant_type: "password",
-          client_id : 6,
-          client_secret : "TSfPPR0OSaafAqO1PDuJB9UlElR4JX2g2VWxdZiq",
+          client_id : 8,
+          client_secret : "hxu9AKdphTDjWqR9q9MQdrGFrNKuQUAZwSNq2ekl",
           username: "germanruelas17@gmail.com",
           password: "12345678"
         };
