@@ -55,7 +55,7 @@ class ConversationController extends ApiController
   }
   public function new_conversation(Request $request){
     $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
-    $anuncio = Order::find($id_anuncio);
+
     if(!$check_conversation){
       $con_auth = new Conversation;
       $con_auth->user_id = $request->user_id;
@@ -72,8 +72,8 @@ class ConversationController extends ApiController
       $con->order_id = $request->order_id;
       $con->save();
 
-      $usuario_anuncio = User::find($request->to_id);
-      $usuario_anuncio->notify(new NewConversation($con));
+      // $usuario_anuncio = User::find($request->to_id);
+      // $usuario_anuncio->notify(new NewConversation($con));
     }
   }
 }
