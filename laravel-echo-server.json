@@ -1,5 +1,5 @@
 {
-	"authHost": "http://gdgcusco.com",
+	"authHost": "https://gdgcusco.com",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
@@ -12,7 +12,7 @@
 	"devMode": true,
 	"host": null,
 	"port": "6001",
-	"protocol": "http",
+	"protocol": "https",
 	"socketio": {},
 	"secureOptions": 67108864,
 	"sslCertPath": "",
@@ -25,7 +25,7 @@
 	},
 	"apiOriginAllow": {
 		"allowCors": true,
-		"allowOrigin": "http://gdgcusco.com",
+		"allowOrigin": "https://gdgcusco.com",
 		"allowMethods": "GET, POST",
 		"allowHeaders": "Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept, Authorization, X-CSRF-TOKEN, X-Socket-Id"
 	}
