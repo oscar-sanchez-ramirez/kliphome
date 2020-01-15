@@ -16,7 +16,7 @@
 	"socketio": {},
 	"secureOptions": 67108864,
 	"sslCertPath": "/home/gdgcusco/conf/web/ssl.gdgcusco.com.crt",
-	"sslKeyPath": "/home/gdgcusco/conf/web/ssl.gdgcusco.com.key",
+	"sslKeyPath": "/home/gdgcusco/conf/web/ssl.gdgcusco.com.pem",
 	"sslCertChainPath": "",
 	"sslPassphrase": "",
 	"subscribers": {
