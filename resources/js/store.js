@@ -82,8 +82,8 @@ export default new Vuex.Store({
       getAccess(context){
         const params = {
           grant_type: "password",
-          client_id : 7,
-          client_secret : "iv7El0IegHgStzhQJy8QWWQovRJIGkR3zTLI8f79",
+          client_id : 8,
+          client_secret : "hxu9AKdphTDjWqR9q9MQdrGFrNKuQUAZwSNq2ekl",
           username: "admin@kliphome.com",
           password: "kliphome2019"
         };
