@@ -84,8 +84,8 @@ export default new Vuex.Store({
           grant_type: "password",
           client_id : 8,
           client_secret : "hxu9AKdphTDjWqR9q9MQdrGFrNKuQUAZwSNq2ekl",
-          username: "germanruelas17@gmail.com",
-          password: "12345678"
+          username: "admin@kliphome.com",
+          password: "kliphome2019"
         };
         return axios.post('/oauth/token',params).then((response) => {
           this.state.credentials = response.data;
