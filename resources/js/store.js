@@ -89,7 +89,7 @@ export default new Vuex.Store({
         };
         return axios.post('/oauth/token',params).then((response) => {
           this.state.credentials = response.data;
-          console.log(this.state.credentials);
+          console.log(this.state.credentials.access_token);
         });
 
       }
