@@ -65,3 +65,4 @@ Route::post('notifications/deleteNotification/{id}','ApiRest\NotificationsContro
 Route::get('conversationsRest/{id}', 'Chat\ConversationController@indexRest');
 Route::get('messagesRest/{user_id}/{contact_id}', 'Chat\MessageController@indexRest');
 Route::post('messagesRest', 'Chat\MessageController@storeRest');
+Route::post('new_conversation','Chat\ConversationController@new_conversation');
