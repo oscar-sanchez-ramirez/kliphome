@@ -27,7 +27,7 @@ class MessageController extends ApiController
     {
         $userId = Auth::user()->id;
         $contactId = $request->contact_id;
-        return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content')
+        return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
         ->where(function ($query) use ($userId,$contactId){
         $query->where('from_id',$userId)->where('to_id',$contactId);
         })->orWhere(function ($query) use ($userId,$contactId){
@@ -36,7 +36,7 @@ class MessageController extends ApiController
     }
 
     public function indexRest($userId,$contactId){
-        return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content')
+        return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
         ->where(function ($query) use ($userId,$contactId){
         $query->where('from_id',$userId)->where('to_id',$contactId);
         })->orWhere(function ($query) use ($userId,$contactId){
