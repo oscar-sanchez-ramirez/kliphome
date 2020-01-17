@@ -49,7 +49,7 @@ class MessageController extends ApiController
         $query->where('from_id',$userId)->where('to_id',$contactId);
         })->orWhere(function ($query) use ($userId,$contactId){
         $query->where('to_id',$userId)->where('from_id',$contactId);
-        })->offset($page)->take(5)->orderBy('id',"ASC")->get();
+        })->offset($page)->take(5)->orderBy('id',"DESC")->get();
     }
     public function store(Request $request)
     {
