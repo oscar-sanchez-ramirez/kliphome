@@ -35,13 +35,21 @@ class MessageController extends ApiController
         })->get();
     }
 
-    public function indexRest($userId,$contactId){
+    public function indexRest($userId,$contactId,$page){
+        if($page == 0)
+        {
+            $page = 1;
+        }
+
+        $page = (5 * $page)-5;
+
+
         return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
         ->where(function ($query) use ($userId,$contactId){
         $query->where('from_id',$userId)->where('to_id',$contactId);
         })->orWhere(function ($query) use ($userId,$contactId){
         $query->where('to_id',$userId)->where('from_id',$contactId);
-        })->get();
+        })->offset($page)->take(5)->orderBy('id',"ASC")->get();
     }
     public function store(Request $request)
     {
