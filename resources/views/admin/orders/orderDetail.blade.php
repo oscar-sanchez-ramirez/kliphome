@@ -14,7 +14,11 @@
                             <img class="rounded-circle mx-auto d-block" src="{{ url('') }}/images/icon/avatar-01.jpg" alt="Card image cap">
                             <h5 class="text-sm-center mt-2 mb-1">{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</h5>
                             <div class="location text-sm-center">
-                                <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}</div>
+                                <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
+                                @if($order->price == "quotation")
+                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
+                                @endif
+                            </div>
                         </div>
                         <hr>
                         <div class="card-text text-sm-center">
@@ -118,5 +122,30 @@
     </div>
 </div>
 <!-- end modal scroll -->
+<!-- modal quotation -->
+<div class="modal fade" id="quotationmodal" tabindex="-1" role="dialog" aria-labelledby="scrollmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scrollmodalLabel">Imagen del servicio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-heigth:500px;overflow:scroll">
+                <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}">
+                    <input class="au-input au-input--full au-input--h65" type="number" placeholder="Escribe un precio">
+                    <button class="au-input-icon">
+                        <i class="zmdi zmdi-dollar"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal quotation -->
 @include('layouts.modals.subCategoryModal');
 @endsection
