@@ -134,14 +134,16 @@
             </div>
             <div class="modal-body" style="max-heigth:500px;overflow:scroll">
                 <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}">
-                    <input class="au-input au-input--full au-input--h65" type="number" placeholder="Escribe un precio">
+                    <input class="au-input au-input--full au-input--h65" type="number" placeholder="Escribe un precio: Ejemplo:300">
                     <button class="au-input-icon">
                         <i class="fa fa-dollar"></i>
                     </button>
+                    <br>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Enviar a {{ $orden->clientName($orden->user_id)["name"] }}</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
