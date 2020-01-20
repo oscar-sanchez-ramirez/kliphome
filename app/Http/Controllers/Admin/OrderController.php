@@ -59,6 +59,9 @@ class OrderController extends Controller
             $buttons = null,
             $schedule = null
         );
+        Order::where('id',$order_id)->update([
+            'price' => "waitquotation"
+        ]);
         return back()->with('success',"Se envió la cotización");
     }
 
