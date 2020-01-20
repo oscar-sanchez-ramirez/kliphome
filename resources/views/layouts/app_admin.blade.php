@@ -308,16 +308,28 @@
                                             </div>
                                             @foreach(Auth::user()->unreadNotifications as $notification)
                                             @if($notification->type == "App\Notifications\NotifyAcceptOrder")
-                                            <div class="notifi__item">
-                                                <div class="bg-c1 img-cir img-40">
-                                                    <i class="fa fa-wrench"></i>
+                                                <div class="notifi__item">
+                                                    <div class="bg-c1 img-cir img-40">
+                                                        <i class="fa fa-wrench"></i>
+                                                    </div>
+                                                    <div class="content">
+                                                        <p>Un Técnico aceptó un trabajo</p>
+                                                        <a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Ver</a>
+                                                        <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
+                                                    </div>
                                                 </div>
-                                                <div class="content">
-                                                    <p>Un Técnico aceptó un trabajo</p>
-                                                    <a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Ver</a>
-                                                    <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
+                                            @endif
+                                            @if($notification->type == "App\Notifications\Database\NewQuotation")
+                                                <div class="notifi__item">
+                                                    <div class="bg-c1 img-cir img-40">
+                                                        <i class="fa fa-wrench"></i>
+                                                    </div>
+                                                    <div class="content">
+                                                        <p>Una órden necesita una cotización</p>
+                                                        <a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Cotizar</a>
+                                                        <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endif
                                             @endforeach
                                             {{-- <div class="notifi__footer">
