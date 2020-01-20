@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Order;
-use App\SelectedOrders;
-use App\Jobs\ApproveOrderFixerMan;
-use App\Jobs\DisapproveOrderFixerMan;
 use DB;
+use OneSignal;
+use App\Order;
+use App\Quotation;
+use App\SelectedOrders;
+use Illuminate\Http\Request;
+use App\Jobs\ApproveOrderFixerMan;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Jobs\DisapproveOrderFixerMan;
+use App\Notifications\Database\QuotationSended;
 
 class OrderController extends Controller
 {
@@ -36,6 +39,27 @@ class OrderController extends Controller
     public function eliminarSolicitudTecnico($fixerman_id,$order_id){
         dispatch(new DisapproveOrderFixerMan($fixerman_id,$order_id));
         return back();
+    }
+    public function enviarCotizacion(Request $request,$order_id){
+        $user = DB::table('orders as o')->join('users as u','o.user_id','u.id')->select('u.*')->where('o.id',$order_id)->get();
+
+        $quotation = new Quotation;
+        $quotation->order_id = $order_id;
+        $quotation->price = $request->price;
+        $quotation->save();
+        $user->notify(new QuotationSended($quotation));
+
+        OneSignal::sendNotificationUsingTags(
+            "Acabas de recibir una cotización",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+            ),
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
+        return back()->with('success',"Se envió la cotización");
     }
 
 }

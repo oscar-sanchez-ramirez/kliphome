@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-body">
                         <div class="mx-auto d-block">
-                            <img class="rounded-circle mx-auto d-block" src="{{ url('') }}/images/icon/avatar-01.jpg" alt="Card image cap">
+                            <img class="rounded-circle mx-auto d-block" src="{{ $orden->clientName($orden->user_id)["avatar"] }}" alt="Card image cap">
                             <h5 class="text-sm-center mt-2 mb-1">{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</h5>
                             <div class="location text-sm-center">
                                 <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
@@ -134,8 +134,9 @@
             </div>
             <div class="modal-body" style="max-heigth:500px;overflow:scroll">
                 <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}">
-                    <input class="au-input au-input--full au-input--h65" type="number" placeholder="Escribe un precio: Ejemplo:300">
-                    <i class="fa fa-dollar"></i>
+                    <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Escribe un precio: Ejemplo:300">
+                    <button class="au-input-icon" type="button">
+                        <i class="fa fa-dollar"></i>
                     <br><br>
                     <button type="submit" class="btn btn-primary" data-dismiss="modal">Enviar a {{ $orden->clientName($orden->user_id)["name"] }}</button>
                 </form>
