@@ -43,7 +43,7 @@ class OrderController extends Controller
     }
     public function enviarCotizacion(Request $request,$order_id){
 
-        $order = Order::where('o.id',$order_id)->first();
+        $order = Order::where('id',$order_id)->first();
         $user = User::where('id',$order->user_id)->first();
         $quotation = new Quotation;
         $quotation->order_id = $order_id;
