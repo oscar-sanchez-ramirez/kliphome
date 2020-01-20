@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use DB;
 use OneSignal;
+use App\User;
 use App\Order;
 use App\Quotation;
 use App\SelectedOrders;
@@ -41,8 +42,9 @@ class OrderController extends Controller
         return back();
     }
     public function enviarCotizacion(Request $request,$order_id){
-        $user = DB::table('orders as o')->join('users as u','o.user_id','u.id')->select('u.*')->where('o.id',$order_id)->get();
 
+        $order = Order::where('o.id',$order_id)->first();
+        $user = User::where('id',$order->user_id)->first();
         $quotation = new Quotation;
         $quotation->order_id = $order_id;
         $quotation->price = $request->price;
