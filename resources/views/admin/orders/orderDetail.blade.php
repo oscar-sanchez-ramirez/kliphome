@@ -16,7 +16,7 @@
                             <div class="location text-sm-center">
                                 <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
                                 @if($orden->price == "quotation")
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
+                                    <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                 @endif
                             </div>
                         </div>
@@ -127,7 +127,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="scrollmodalLabel">Imagen del servicio</h5>
+                <h5 class="modal-title" id="scrollmodalLabel">Cotización</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -136,7 +136,7 @@
                 <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}">
                     <input class="au-input au-input--full au-input--h65" type="number" placeholder="Escribe un precio">
                     <button class="au-input-icon">
-                        <i class="zmdi zmdi-dollar"></i>
+                        <i class="fa fa-dollar"></i>
                     </button>
                 </form>
             </div>
