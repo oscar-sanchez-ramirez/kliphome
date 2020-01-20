@@ -15,6 +15,7 @@ class OrderController extends ApiController
 {
     public function create(Request $request){
         try {
+
             $order = new Order;
             $order->user_id = $request->user_id;
             $order->selected_id = $request->selected_id;
@@ -27,6 +28,7 @@ class OrderController extends ApiController
             $order->save();
             if($request->price == "quotation"){
                 //Get User and Order
+                $order->order_id = $order->id;
                 $client = User::where('type',"ADMINISTRATOR")->first();
                 $client->notify(new NewQuotation($order));
             }else{
