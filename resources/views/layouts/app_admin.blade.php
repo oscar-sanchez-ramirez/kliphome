@@ -304,7 +304,7 @@
                                         @endif
                                         <div class="notifi-dropdown js-dropdown">
                                             <div class="notifi__title">
-                                                <p>You have {{ Auth::user()->unreadNotifications->count() }} Notifications</p>
+                                                <p>Tienes {{ Auth::user()->unreadNotifications->count() }} Notificaciones</p>
                                             </div>
                                             @foreach(Auth::user()->unreadNotifications as $notification)
                                             @if($notification->type == "App\Notifications\NotifyAcceptOrder")
@@ -320,9 +320,9 @@
                                             </div>
                                             @endif
                                             @endforeach
-                                            <div class="notifi__footer">
-                                                <a href="{{ url('') }}/#">All notifications</a>
-                                            </div>
+                                            {{-- <div class="notifi__footer">
+                                                <a href="{{ url('') }}/#">Todas las notificaciones</a>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
