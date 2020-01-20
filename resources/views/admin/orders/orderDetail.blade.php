@@ -133,7 +133,8 @@
                 </button>
             </div>
             <div class="modal-body" style="max-heigth:500px;overflow:scroll">
-                <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}">
+                <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}" method="POST">
+                    @csrf
                     <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Escribe un precio: Ejemplo:300">
                     <button class="au-input-icon" type="button">
                         <i class="fa fa-dollar"></i>
