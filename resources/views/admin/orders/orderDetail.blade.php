@@ -138,7 +138,7 @@
                     <button class="au-input-icon">
                         <i class="fa fa-dollar"></i>
                     </button>
-                    <br>
+                    <br><br>
                     <button type="submit" class="btn btn-primary" data-dismiss="modal">Enviar a {{ $orden->clientName($orden->user_id)["name"] }}</button>
                 </form>
             </div>
