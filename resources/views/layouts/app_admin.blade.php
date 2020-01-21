@@ -331,6 +331,18 @@
                                                     </div>
                                                 </div>
                                             @endif
+                                            @if($notification->type == "App\Notifications\Database\QuotationCancelled")
+                                                <div class="notifi__item">
+                                                    <div class="bg-c1 img-cir img-40">
+                                                        <i class="fa fa-wrench"></i>
+                                                    </div>
+                                                    <div class="content">
+                                                        <p>El usuario no aceptó la tarifa</p>
+                                                        <a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["id"])) }}">Ver Órden</a>
+                                                        <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             @endforeach
                                             {{-- <div class="notifi__footer">
                                                 <a href="{{ url('') }}/#">Todas las notificaciones</a>
