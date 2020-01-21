@@ -6,10 +6,12 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Order;
 use App\User;
+use App\Quotation;
 use App\Jobs\NotifyNewOrder;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\ApproveOrderFixerMan;
 use App\Notifications\Database\NewQuotation;
+use App\Notifications\Database\QuotationCancelled;
 
 class OrderController extends ApiController
 {
@@ -38,6 +40,25 @@ class OrderController extends ApiController
         } catch (\Throwable $th) {
             return Response(json_encode(array('failed' => "La orden de servicio no se realizó con éxito")));
         }
+    }
+
+    public function suspend(Request $request){
+        Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+            'price' => "CANCELLED",
+            'state' => "CANCELLED"
+        ]);
+        $order = Order::where('id',$request->order_id)->first();
+        $client = User::where('type',"ADMINISTRATOR")->first();
+        $client->notify(new QuotationCancelled($order));
+
+    }
+
+    public function approve(Request $request){
+        $quotation = Quotation::where('order_id',$request->order_id)->first();
+        Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+            'price' => $quotation->price
+        ]);
+        dispatch(new NotifyNewOrder($order->id));
     }
     public function testOrder(){
         // dispatch(new NotifyNewOrder(8));

@@ -79,6 +79,8 @@
                                 <span class="badge badge-danger">PENDIENTE</span>
                             @elseif($orden->state == "ACCEPTED")
                                 <span class="badge badge-info">EN PROCESO</span>
+                            @elseif($orden->state == "CANCELLED")
+                                <span class="badge badge-danger">CANCELADO</span>
                             @elseif($orden->state == "DONE")
                                 <span class="badge badge-success">TERMINADO</span>
                             @endif
