@@ -129,7 +129,7 @@ class FixerManController extends ApiController
     }
 
     public function qualifyService(Request $request){
-        try {
+        // try {
             $price = floatval($request->price);
             Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
             Stripe\Charge::create ([
@@ -141,11 +141,11 @@ class FixerManController extends ApiController
             return response()->json([
                 'success' => true
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false
+        //     ]);
+        // }
 
         // $qualify = new Qualify;
         // $qualify->user_id = $request->fixerman_id;
