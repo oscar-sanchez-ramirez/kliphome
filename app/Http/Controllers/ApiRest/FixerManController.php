@@ -131,7 +131,7 @@ class FixerManController extends ApiController
     public function qualifyService(Request $request){
         // try {
             $price = floatval($request->price);
-            Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+            Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
             Stripe\Charge::create ([
                 "amount" => $price * 100,
                 "currency" => "usd",
