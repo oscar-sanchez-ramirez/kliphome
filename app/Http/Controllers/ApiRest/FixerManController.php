@@ -138,8 +138,13 @@ class FixerManController extends ApiController
                 "source" => $request->stripeToken,
                 "description" => "Payment of germanruelas17@gmail.com"
             ]);
+            return response()->json([
+                'success' => true
+            ]);
         } catch (\Throwable $th) {
-            return Redirect::action('WebController@history')->with('failed',"Your payment has been declined, please try again");
+            return response()->json([
+                'success' => false
+            ]);
         }
 
         // $qualify = new Qualify;
