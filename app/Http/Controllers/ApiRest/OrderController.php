@@ -60,6 +60,7 @@ class OrderController extends ApiController
         ]);
         dispatch(new NotifyNewOrder($order->id));
     }
+
     public function testOrder(){
         // dispatch(new NotifyNewOrder(8));
         dispatch(new ApproveOrderFixerMan(78,8));

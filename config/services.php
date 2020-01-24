@@ -38,6 +38,15 @@ return [
         // 'rest_api_key' => env('NTRkOGJkNGUtOGJhMy00NTMyLWEyYWQtOTk2MTMyM2ZiYTA1')
         'app_id' => 'a8a80cb1-1654-4ccc-92be-54dff3e0171e',
         'rest_api_key' => 'NTRkOGJkNGUtOGJhMy00NTMyLWEyYWQtOTk2MTMyM2ZiYTA1'
-    ]
+    ],
+    'stripe' => [
+        'model' => App\User::class,
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'webhook' => [
+            'secret' => env('STRIPE_WEBHOOK_SECRET'),
+            'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
+        ],
+    ],
 
 ];
