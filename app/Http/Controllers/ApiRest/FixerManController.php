@@ -129,45 +129,46 @@ class FixerManController extends ApiController
     }
 
     public function qualifyService(Request $request){
-        // try {
+        try {
+            $user = User::where('id',$request->fixerman_id)->first();
             $price = floatval($request->price);
-            Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
-            Stripe\Charge::create ([
-                "amount" => $price * 100,
-                "currency" => "MXN",
-                "source" => $request->stripeToken,
-                "description" => "Payment of germanruelas17@gmail.com"
-            ]);
+            if($price != 0){
+                Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
+                Stripe\Charge::create ([
+                    "amount" => $price * 100,
+                    "currency" => "MXN",
+                    "source" => $request->stripeToken,
+                    "description" => "Payment a ".$user->name." ".$user->lastName
+                ]);
+            }
+            $qualify = new Qualify;
+            $qualify->user_id = $request->fixerman_id;
+            $qualify->selected_order_id = $request->idOrderAccepted;
+            $qualify->presentation = $request->presentation;
+            $qualify->puntuality = $request->puntuality;
+            $qualify->problemSolve = $request->problemSolve;
+            $qualify->comment = $request->comment;
+            $qualify->tip = $request->tip;
+            $qualify->save();
+
+            //Database notification
+            $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
+            $user->notify(new ServiceQualified($qualify));
+            //OneSignal notification
+            $user->sendNotification($user->email,'ServiceQualified');
+            //Update order
+            DB::table('selected_orders as so')
+            ->join('orders as o', 'so.order_id','o.id')
+            ->where('so.id',$request->idOrderAccepted)
+            ->update([ 'o.state' => "QUALIFIED" ]);
             return response()->json([
                 'success' => true
             ]);
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'success' => false
-        //     ]);
-        // }
-
-        // $qualify = new Qualify;
-        // $qualify->user_id = $request->fixerman_id;
-        // $qualify->selected_order_id = $request->idOrderAccepted;
-        // $qualify->presentation = $request->presentation;
-        // $qualify->puntuality = $request->puntuality;
-        // $qualify->problemSolve = $request->problemSolve;
-        // $qualify->comment = $request->comment;
-        // $qualify->tip = $request->tip;
-        // $qualify->save();
-        // $user = User::where('id',$request->fixerman_id)->first();
-        // //Database notification
-        // $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
-        // $user->notify(new ServiceQualified($qualify));
-        // //OneSignal notification
-        // $user->sendNotification($user->email,'ServiceQualified');
-        // //Update order
-        // DB::table('selected_orders as so')
-        // ->join('orders as o', 'so.order_id','o.id')
-        // ->where('so.id',$request->idOrderAccepted)
-        // ->update([ 'o.state' => "QUALIFIED" ]);
-
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false
+            ]);
+        }
     }
 
     public function infoFixerman($id,$order_id){
