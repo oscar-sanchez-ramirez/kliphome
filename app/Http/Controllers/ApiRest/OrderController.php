@@ -53,7 +53,7 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-        // try {
+        try {
             $price = floatval($request->price);
             Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
             Stripe\Charge::create ([
@@ -66,15 +66,15 @@ class OrderController extends ApiController
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $quotation->price
             ]);
-            dispatch(new NotifyNewOrder($order->id));
+            dispatch(new NotifyNewOrder($request->order_id));
             return response()->json([
                 'success' => true
             ]);
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'success' => false
-        //     ]);
-        // }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false
+            ]);
+        }
 
 
 
