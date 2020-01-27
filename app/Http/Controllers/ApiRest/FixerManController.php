@@ -134,7 +134,7 @@ class FixerManController extends ApiController
             Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
             Stripe\Charge::create ([
                 "amount" => $price * 100,
-                "currency" => "usd",
+                "currency" => "MXN",
                 "source" => $request->stripeToken,
                 "description" => "Payment of germanruelas17@gmail.com"
             ]);

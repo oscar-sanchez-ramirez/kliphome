@@ -10,7 +10,7 @@ use DB;
 class NotificationsController extends ApiController
 {
     public function getNotifications($id){
-        $notifications  = DB::table('notifications')->where('notifiable_id',$id)->get();
+        $notifications  = DB::table('notifications')->where('notifiable_id',$id)->orderby('created_at',"DESC")->get();
         return Response(json_encode(array('notifications' => $notifications)));
     }
 
