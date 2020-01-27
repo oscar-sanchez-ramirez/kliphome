@@ -53,7 +53,7 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-        try {
+        // try {
             $price = floatval($request->price);
             Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
             Stripe\Charge::create ([
@@ -70,11 +70,11 @@ class OrderController extends ApiController
             return response()->json([
                 'success' => true
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false
+        //     ]);
+        // }
 
 
 
