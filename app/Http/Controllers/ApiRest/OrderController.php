@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\ApiRest;
 
-use OneSignal;
+use Stripe;
 use App\Order;
 use App\User;
 use App\Quotation;
