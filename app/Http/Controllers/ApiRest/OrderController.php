@@ -83,7 +83,7 @@ class OrderController extends ApiController
 
     public function coupon(Request $request){
         $coupon = User::where('code',$request->coupon)->first();
-        if($coupon->isEmpty()){
+        if(empty($coupon)){
             return response()->json([
                 'success' => false,
                 'message' => "Cupón no encontrado"
