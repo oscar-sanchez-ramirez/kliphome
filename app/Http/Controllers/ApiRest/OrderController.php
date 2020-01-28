@@ -83,7 +83,7 @@ class OrderController extends ApiController
 
     public function coupon(Request $request){
         $coupon = User::where('code',$request->coupon)->first();
-        if(!$coupon){
+        if($coupon->isEmpty()){
             return response()->json([
                 'success' => false,
                 'message' => "Cupón no encontrado"
@@ -91,13 +91,13 @@ class OrderController extends ApiController
         }
 
         $valid = Coupon::where('user_id',$request->user_id)->first();
-        if($valid){
+        if($valid->isNotEmpty()){
             return response()->json([
                 'success' => false,
                 'message' => "Ya usaste un cupón de primera orden"
             ]);
         }
-        if($coupon && !$valid){
+        if($coupon->isNotEmpty() && $valid->isEmpty()){
             return response()->json([
                 'success' => true,
                 'message' => "Cupón válido"
