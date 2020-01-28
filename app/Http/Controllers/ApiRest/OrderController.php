@@ -82,6 +82,7 @@ class OrderController extends ApiController
     }
 
     public function coupon(Request $request){
+        Log::notice($request->all());
         $coupon = User::where('code',$request->coupon)->first();
         Log::notice($coupon);
         if(empty($coupon)){
