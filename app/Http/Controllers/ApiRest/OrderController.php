@@ -62,12 +62,18 @@ class OrderController extends ApiController
                 "amount" => $price * 100,
                 "currency" => "MXN",
                 "source" => $request->stripeToken,
-                "description" => "Payment of germanruelas17@gmail.com"
+                "description" => "Payment of order".$request->order_id
             ]);
             $quotation = Quotation::where('order_id',$request->order_id)->first();
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $quotation->price
             ]);
+            if($request->coupon != ""){
+                $coupon = new Coupon;
+                $coupon->code = $request->coupon;
+                $coupon->user_id = $request->user_id;
+                $coupon->save();
+            }
             dispatch(new NotifyNewOrder($request->order_id));
             return response()->json([
                 'success' => true
@@ -83,9 +89,7 @@ class OrderController extends ApiController
     }
 
     public function coupon(Request $request){
-        Log::notice($request->all());
         $coupon = User::where('code',$request->coupon)->first();
-        Log::notice($coupon);
         if(empty($coupon)){
             return response()->json([
                 'success' => false,
