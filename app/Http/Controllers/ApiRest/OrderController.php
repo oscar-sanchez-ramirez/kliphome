@@ -6,6 +6,7 @@ use DB;
 use Stripe;
 use App\Order;
 use App\User;
+use App\Coupon;
 use App\Quotation;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
