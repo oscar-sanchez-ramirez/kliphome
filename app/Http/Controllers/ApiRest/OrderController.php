@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use DB;
 use Stripe;
 use App\Order;
 use App\User;
@@ -78,6 +79,23 @@ class OrderController extends ApiController
 
 
 
+    }
+
+    public function coupon(Request $request){
+        $coupon = DB::table('users as u')
+        ->join('coupons as c','c.user_id','u.id')
+        ->select('c.*')
+        ->where('u.id',$request->user_id)->where('c.code',$request->coupon)
+        ->get();
+        if($coupon){
+            return response()->json([
+                'success' => false
+            ]);
+        }else{
+            return response()->json([
+                'success' => true
+            ]);
+        }
     }
 
     public function testOrder(){

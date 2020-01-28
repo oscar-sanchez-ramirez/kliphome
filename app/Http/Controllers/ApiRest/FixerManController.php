@@ -40,6 +40,7 @@ class FixerManController extends ApiController
                 'type' => 'AppFixerMan',
                 'state' => 0,
                 'password' => bcrypt($request->password),
+                'code' => str_random(10)
             ])->toArray();
 
             //SAVE SELECTED DELEGATION

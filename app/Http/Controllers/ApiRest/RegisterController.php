@@ -23,6 +23,7 @@ class RegisterController extends ApiController
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'code' => str_random(10)
         ])->toArray();
         $word = "Ciudad de México";
         $address = $request->address;
