@@ -82,18 +82,30 @@ class OrderController extends ApiController
     }
 
     public function coupon(Request $request){
-        $coupon = DB::table('users as u')
-        ->join('coupons as c','c.user_id','u.id')
-        ->select('c.*')
-        ->where('u.id',$request->user_id)->where('c.code',$request->coupon)
-        ->get();
-        if($coupon){
+        $coupon = User::where('coupon',$request->coupon)->first();
+        if(!$coupon){
             return response()->json([
-                'success' => false
+                'success' => false,
+                'message' => "Cupón no encontrado"
+            ]);
+        }
+
+        $valid = Coupon::where('user_id',$request->user_id)->first();
+        if($valid){
+            return response()->json([
+                'success' => false,
+                'message' => "Ya usaste un cupón de primera orden"
+            ]);
+        }
+        if($coupon && !$valid){
+            return response()->json([
+                'success' => true,
+                'message' => "Cupón válido"
             ]);
         }else{
             return response()->json([
-                'success' => true
+                'success' => false,
+                'message' => "No se encontraron datos"
             ]);
         }
     }
