@@ -82,7 +82,7 @@ class OrderController extends ApiController
     }
 
     public function coupon(Request $request){
-        $coupon = User::where('coupon',$request->coupon)->first();
+        $coupon = User::where('code',$request->coupon)->first();
         if(!$coupon){
             return response()->json([
                 'success' => false,
