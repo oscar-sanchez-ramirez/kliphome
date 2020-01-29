@@ -37,7 +37,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     $final = $info->userInfo($user->id);
     return $final;
 });
-Route::post('resetPassword','Apisrest\RegisterController@reset');
+Route::post('resetPassword','ApiRest\RegisterController@reset');
 //DELEGATIONS
 Route::get('delegations','ApiRest\DelegationController@index');
 
