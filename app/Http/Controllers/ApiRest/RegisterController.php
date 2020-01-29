@@ -46,4 +46,14 @@ class RegisterController extends ApiController
             'user' => $user
         ]);
     }
+
+    public function reset(Request $request){
+        $user = User::where('email',$request->email)->first();
+        if(empty($user)){
+            return response()->json([
+                'success' => false,
+                'message' => "Usuario no encontrado en nuestra base de datos"
+            ]);
+        }
+    }
 }
