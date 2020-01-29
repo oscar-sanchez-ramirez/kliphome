@@ -52,7 +52,8 @@ class ApiServiceController extends ApiController
         }elseif($user->type == "AppUser"){
             $categories = Category::all();
             $address = Address::where('user_id',$user->id)->get();
-            return array($user,$address,$categories);
+            $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',"")->count();
+            return array($user,$address,$categories,$notifications);
         }
 
     }
