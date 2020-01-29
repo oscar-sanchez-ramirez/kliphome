@@ -51,19 +51,32 @@ class RegisterController extends ApiController
     }
 
     public function updatePassword(Request $request){
-        User::where('email',$request->email)->update([
-            'password' => bcrypt($request->password)
-        ]);
-        return response()->json([
-            'success' => true,
-            'message' => "La contraseña se actualizó"
-        ]);
+        $validateCode = ResetPassword::where('email',$request->email)->where('code',$request->code)->first();
+        $startTime = $validateCode->created_at;
+        $finishTime = Carbon::now();
+        $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
+        if($totalDuration > 5){
+            return response()->json([
+                'success' => false,
+                'message' => "Código ingresado expiró"
+            ]);
+        }else{
+            User::where('email',$request->email)->update([
+                'password' => bcrypt($request->password)
+            ]);
+            ResetPassword::where('email',$request->email)->where('code',$request->code)->delete();
+            return response()->json([
+                'success' => true,
+                'message' => "La contraseña se actualizó"
+            ]);
+        }
+
+
+
     }
 
     public function reset(Request $request){
-        Log::notice($request->all());
         $user = User::where('email',$request->email)->first();
-        Log::notice($user);
         if(empty($user)){
             return response()->json([
                 'success' => false,
@@ -91,10 +104,8 @@ class RegisterController extends ApiController
     }
 
     public function validateCode(Request $request){
-        Log::notice($request->all());
-        Log::info($request->email);
+
         $validateCode = ResetPassword::where('email',$request->email)->where('code',$request->code)->first();
-        Log::notice($validateCode);
         if(empty($validateCode)){
             return response()->json([
                 'success' => false,
@@ -103,7 +114,6 @@ class RegisterController extends ApiController
         }else{
             $startTime = $validateCode->created_at;
             $finishTime = Carbon::now();
-
             $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
             if($totalDuration > 5){
                 return response()->json([
