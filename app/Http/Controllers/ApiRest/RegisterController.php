@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Mail;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class RegisterController extends ApiController
 {
@@ -100,6 +101,13 @@ class RegisterController extends ApiController
                 'message' => "Código no encontrado"
             ]);
         }else{
+            $startTime = $validateCode->create_at;
+            $finishTime = Carbon::now();
+
+            $totalDuration = $finishTime->diffInSeconds($startTime);
+            Log::notice($startTime);
+            Log::notice($finishTime);
+            Log::notice($totalDuration);
             return response()->json([
                 'success' => true,
                 'message' => "Código válido"
