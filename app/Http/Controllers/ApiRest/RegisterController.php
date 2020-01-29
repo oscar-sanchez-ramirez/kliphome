@@ -49,6 +49,16 @@ class RegisterController extends ApiController
         ]);
     }
 
+    public function updatePassword(Request $request){
+        User::where('email',$request->email)->update([
+            'password' => $request->password
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => "La contraseña se actualizó"
+        ]);
+    }
+
     public function reset(Request $request){
         Log::notice($request->all());
         $user = User::where('email',$request->email)->first();
@@ -75,6 +85,21 @@ class RegisterController extends ApiController
             return response()->json([
                 'success' => true,
                 'message' => "Se envió un codigo a tu correo"
+            ]);
+        }
+    }
+
+    public function validateCode(Request $request){
+        $validateCode = ResetPassword::where('email',$request->email)->where('code',$request->code)->first();
+        if(empty($validateCode)){
+            return response()->json([
+                'success' => false,
+                'message' => "Código no encontrado"
+            ]);
+        }else{
+            return response()->json([
+                'success' => true,
+                'message' => "Código válido"
             ]);
         }
     }

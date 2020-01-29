@@ -31,13 +31,15 @@ Route::get('categories','ApiRest\ApiServiceController@getCategories');
 
 //AUTH
 Route::post('register','ApiRest\RegisterController@register');
+Route::post('resetPassword','ApiRest\RegisterController@reset');
+Route::post('validateCode','ApiRest\RegisterController@validateCode');
+Route::post('updatePassword','ApiRest\RegisterController@updatePassword');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     $info = new ApiServiceController();
     $final = $info->userInfo($user->id);
     return $final;
 });
-Route::post('resetPassword','ApiRest\RegisterController@reset');
 //DELEGATIONS
 Route::get('delegations','ApiRest\DelegationController@index');
 
