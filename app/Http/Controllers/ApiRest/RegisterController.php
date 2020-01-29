@@ -51,7 +51,7 @@ class RegisterController extends ApiController
 
     public function updatePassword(Request $request){
         User::where('email',$request->email)->update([
-            'password' => $request->password
+            'password' => bcrypt($request->password)
         ]);
         return response()->json([
             'success' => true,
