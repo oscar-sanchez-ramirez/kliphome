@@ -50,7 +50,9 @@ class RegisterController extends ApiController
     }
 
     public function reset(Request $request){
+        Log::notice($request->all());
         $user = User::where('email',$request->email)->first();
+        Log::notice($user);
         if(empty($user)){
             return response()->json([
                 'success' => false,
