@@ -104,7 +104,7 @@ class RegisterController extends ApiController
             $startTime = $validateCode->created_at;
             $finishTime = Carbon::now();
 
-            $totalDuration = $finishTime->diffInSeconds($startTime);
+            $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
             Log::notice($startTime);
             Log::notice($finishTime);
             Log::notice($totalDuration);
