@@ -91,6 +91,7 @@ class RegisterController extends ApiController
 
     public function validateCode(Request $request){
         Log::notice($request->all());
+        Log::info($request->email);
         $validateCode = ResetPassword::where('email',$request->email)->where('code',$request->code)->first();
         Log::notice($validateCode);
         if(empty($validateCode)){
