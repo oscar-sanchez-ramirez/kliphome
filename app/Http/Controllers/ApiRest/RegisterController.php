@@ -69,6 +69,11 @@ class RegisterController extends ApiController
                 $msj->subject('KlipHome: Código de acceso para reestablecer contraseña');
                 $msj->to($mail,"KlipHome: Código de acceso para reestablecer contraseña");
             });
+
+            return response()->json([
+                'success' => true,
+                'message' => "Se envió un codigo a tu correo"
+            ]);
         }
     }
 }
