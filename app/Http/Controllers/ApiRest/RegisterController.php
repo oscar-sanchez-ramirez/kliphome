@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\ApiRest;
 
 use App\Address;
+use App\ResetPassword;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\User;
+use Mail;
 use Illuminate\Support\Facades\Log;
 
 class RegisterController extends ApiController
@@ -54,6 +56,19 @@ class RegisterController extends ApiController
                 'success' => false,
                 'message' => "Usuario no encontrado en nuestra base de datos"
             ]);
+        }else{
+            $number = random_int(1000, 9999);
+            $new_code = new ResetPassword;
+            $new_code->email = $user->email;
+            $new_code->code = $number;
+            $new_code->save();
+
+            $usuario = array('code' =>  $number, 'email' => $user->email);
+            $mail = $user->email;
+            Mail::send('emails.resetpassword',$usuario, function($msj) use ($mail){
+                $msj->subject('KlipHome: Código de acceso para reestablecer contraseña');
+                $msj->to($mail,"KlipHome: Código de acceso para reestablecer contraseña");
+            });
         }
     }
 }
