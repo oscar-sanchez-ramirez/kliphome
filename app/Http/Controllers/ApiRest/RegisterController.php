@@ -101,7 +101,7 @@ class RegisterController extends ApiController
                 'message' => "Código no encontrado"
             ]);
         }else{
-            $startTime = $validateCode->create_at;
+            $startTime = $validateCode->created_at;
             $finishTime = Carbon::now();
 
             $totalDuration = $finishTime->diffInSeconds($startTime);
