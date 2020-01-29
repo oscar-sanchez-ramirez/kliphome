@@ -105,13 +105,17 @@ class RegisterController extends ApiController
             $finishTime = Carbon::now();
 
             $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
-            Log::notice($startTime);
-            Log::notice($finishTime);
-            Log::notice($totalDuration);
-            return response()->json([
-                'success' => true,
-                'message' => "Código válido"
-            ]);
+            if($totalDuration > 5){
+                return response()->json([
+                    'success' => false,
+                    'message' => "Código ingresado expiró"
+                ]);
+            }else{
+                return response()->json([
+                    'success' => true,
+                    'message' => "Código válido"
+                ]);
+            }
         }
     }
 }
