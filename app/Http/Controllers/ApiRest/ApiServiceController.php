@@ -67,7 +67,7 @@ class ApiServiceController extends ApiController
         ->whereNotIn('o.id',$selectedOrders)
         ->where('o.state','FIXERMAN_NOTIFIED')
         ->where('a.delegation',$delegation_id)
-            ->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
+            ->select('o.*','a.delegation','a.address','u.name','u.lastName','u.avatar')->get();
         Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
