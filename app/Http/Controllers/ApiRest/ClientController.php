@@ -28,7 +28,17 @@ class ClientController extends ApiController
             if($key->state == "FIXERMAN_APPROVED"){
                 $user = DB::table('selected_orders as so')->join('users as u','u.id','so.user_id')
                 ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->get();
+                Log::notice($user);
+                Log::notice(json_decode( json_encode($user), true));
                 $userArray = json_decode( json_encode($user), true);
+                Log::notice($userArray);
+                Log::notice($userArray[0]);
+                Log::notice($userArray[0]["name"]);
+                Log::notice($userArray[0]["lastName"]);
+                Log::notice($userArray[0]["id"]);
+                Log::notice($userArray[0]["avatar"]);
+                Log::notice($userArray[0]["orderAcepted"]);
+                Log::notice($userArray[0]["idOrderAccepted"]);
                 $key["name"] = $userArray[0]["name"];
                 $key["lastName"] = $userArray[0]["lastName"];
                 $key["fixerman_id"] = $userArray[0]["id"];
