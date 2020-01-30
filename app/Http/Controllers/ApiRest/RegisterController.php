@@ -33,10 +33,9 @@ class RegisterController extends ApiController
 
         // Test if string contains the word
         if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX")){
-            $delegation = "Ciudad de México";
+            $delegation = "1";
         } elseif(strpos($address, "Guadalajara") !== false){
-            echo "Word Not Found!";
-            $delegation = "Guadalajara";
+            $delegation = "2";
         }
         Address::create([
             'alias' => $request->alias,

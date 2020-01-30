@@ -15,7 +15,7 @@ class ClientController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
-        ->select('o.*','a.alias','a.address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')->where('o.user_id',$id)->get();
+        ->select('o.*','a.alias','a.address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
@@ -55,9 +55,9 @@ class ClientController extends ApiController
         $address = $request->address;
 
         if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
-            $delegation = "Ciudad de México";
+            $delegation = "1";
         } elseif(strpos($address, "Guadalajara") !== false){
-            $delegation = "Guadalajara";
+            $delegation = "2";
         }
         $add = new Address;
         $add->alias = $request->alias;

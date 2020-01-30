@@ -65,6 +65,7 @@ class ApiServiceController extends ApiController
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
         ->whereNotIn('o.id',$selectedOrders)
+        ->where('o.state','FIXERMAN_NOTIFIED')
         ->where('a.delegation',$delegation_id)
             ->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
         Log::notice($orders);
