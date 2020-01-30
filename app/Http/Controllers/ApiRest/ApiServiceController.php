@@ -36,9 +36,9 @@ class ApiServiceController extends ApiController
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             Log::notice($delegation);
-            $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
-            Log::notice($categories->toArray());
-            $ids = array_column($categories->toArray(), 'category_id');
+            $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
+            Log::notice($categories);
+            $ids = array_column($categories, 'category_id');
             Log::notice($ids);
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
             $notSelectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',0)->pluck('order_id');
