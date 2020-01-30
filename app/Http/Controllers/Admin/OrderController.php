@@ -57,9 +57,9 @@ class OrderController extends Controller
 
 
         $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
-        $date = $date->format('d-m-Y H:i');
+        $date = $date->format('d-MMM-Y H:i');
 
-        $quotation->mensajeClient = "Recibiste la cotización para tu orden para el ".$date;
+        $quotation->mensajeClient = "Recibiste la cotización de tu orden para el ".$date;
         $user->notify(new QuotationSended($quotation));
 
         OneSignal::sendNotificationUsingTags(
