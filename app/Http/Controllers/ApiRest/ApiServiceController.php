@@ -144,10 +144,13 @@ class ApiServiceController extends ApiController
     private function gettingColumn($array,$column){
         $result = [];
         Log::debug($array);
-        for ($i=0; $i < count($array->toArray()); $i++) {
-            Log::debug($array);
-            $result[$i] = $array[$i][$column];
+        foreach ($array as $item) {
+            array_push($result, $item->$column);
         }
+        // for ($i=0; $i < count($array->toArray()); $i++) {
+        //     Log::debug($array);
+        //     $result[$i] = $array[$i][$column];
+        // }
 
         return $result;
     }
