@@ -29,12 +29,12 @@ class ClientController extends ApiController
                 $user = DB::table('selected_orders as so')->join('users as u','u.id','so.user_id')
                 ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->get();
                 Log::notice($user);
-                $key["name"] = $user->name;
-                $key["lastName"] = $user->lastName;
-                $key["fixerman_id"] = $user->id;
-                $key["avatar"] = $user->avatar;
-                $key["orderAcepted"] = $user->orderAcepted;
-                $key["idOrderAccepted"] = $user->idOrderAccepted;
+                $key["name"] = $user[0]->name;
+                $key["lastName"] = $user[0]->lastName;
+                $key["fixerman_id"] = $user[0]->id;
+                $key["avatar"] = $user[0]->avatar;
+                $key["orderAcepted"] = $user[0]->orderAcepted;
+                $key["idOrderAccepted"] = $user[0]->idOrderAccepted;
             }
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
             $key->category = $category[0]->category;
