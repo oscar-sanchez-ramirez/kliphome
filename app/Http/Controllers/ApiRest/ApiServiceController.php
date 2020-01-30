@@ -38,7 +38,7 @@ class ApiServiceController extends ApiController
             Log::debug($delegation);
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             Log::notice($categories);
-            $ids = $this->gettingColumn($categories,"category_id");
+            $ids = $this->gettingColumn($categories->toArray(),"category_id");
             // array_column(array($categories->toArray()), 'category_id');
             Log::notice($ids);
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
@@ -144,14 +144,14 @@ class ApiServiceController extends ApiController
     private function gettingColumn($array,$column){
         $result = [];
 
-        foreach ($array as $item) {
-            Log::notice($item);
-            array_push($result, $item->category_id);
-        }
-        // for ($i=0; $i < count($array->toArray()); $i++) {
-        //     Log::debug($array);
-        //     $result[$i] = $array[$i][$column];
+        // foreach ($array as $item) {
+        //     Log::notice($item);
+        //     array_push($result, $item->category_id);
         // }
+        for ($i=0; $i < count($array); $i++) {
+            Log::debug($array[$i]);
+            $result[$i] = $array[$i][$column];
+        }
         Log::debug("result:");
         return $result;
     }
