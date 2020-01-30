@@ -30,13 +30,17 @@ class ClientController extends ApiController
                 ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->get();
                 Log::notice($user);
                 Log::notice(json_decode( json_encode($user), true));
-                $user = json_decode( json_encode($user), true);
-                $key["name"] = $user[0]->name;
-                $key["lastName"] = $user[0]->lastName;
-                $key["fixerman_id"] = $user[0]->id;
-                $key["avatar"] = $user[0]->avatar;
-                $key["orderAcepted"] = $user[0]->orderAcepted;
-                $key["idOrderAccepted"] = $user[0]->idOrderAccepted;
+                $userArray = json_decode( json_encode($user), true);
+                Log::notice($userArray);
+                Log::notice($userArray[0]);
+                Log::notice($userArray[0]["name"]);
+                Log::notice($userArray[0]->name);
+                $key["name"] = $userArray[0]->name;
+                $key["lastName"] = $userArray[0]->lastName;
+                $key["fixerman_id"] = $userArray[0]->id;
+                $key["avatar"] = $userArray[0]->avatar;
+                $key["orderAcepted"] = $userArray[0]->orderAcepted;
+                $key["idOrderAccepted"] = $userArray[0]->idOrderAccepted;
             }
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
             $key->category = $category[0]->category;
