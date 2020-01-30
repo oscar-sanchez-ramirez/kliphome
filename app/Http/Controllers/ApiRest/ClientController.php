@@ -27,8 +27,8 @@ class ClientController extends ApiController
         foreach ($orders as $key) {
             if($key->state == "FIXERMAN_APPROVED"){
                 $user = DB::table('selected_orders as so')->join('users as u','u.id','so.user_id')
-                ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->get();
-                Log::notice($user[0]);
+                ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->first();
+                Log::notice($user);
                 Log::notice($user[0]->name);
                 $key["name"] = $user[0]->name;
                 $key["lastName"] = $user[0]->lastName;
