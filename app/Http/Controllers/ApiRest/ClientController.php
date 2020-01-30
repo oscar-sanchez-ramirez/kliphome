@@ -71,4 +71,11 @@ class ClientController extends ApiController
             'address' => $address
         ]);
     }
+    public function deleteAddress(Request $request){
+        Address::where('user_id',$request->user_id)->where('alias',$request->alias)->delete();
+        $address = Address::where('user_id',$request->user_id)->get();
+        return response()->json([
+            'address' => $address
+        ]);
+    }
 }
