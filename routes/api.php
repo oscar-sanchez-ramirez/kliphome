@@ -60,6 +60,7 @@ Route::post('qualifyService','ApiRest\FixerManController@qualifyService');
 //Client
 Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');
 Route::get('orderDetail/{id}/{order_id}','ApiRest\ClientController@orderDetail');
+Route::post('addAddress','ApiRest\ClientController@addAddress');
 
 //Notifications
 Route::get('notifications/{id}','ApiRest\NotificationsController@getNotifications');

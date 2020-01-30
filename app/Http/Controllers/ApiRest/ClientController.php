@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiRest\ApiServiceController;
 use DB;
+use App\Address;
 
 class ClientController extends ApiController
 {
@@ -49,5 +50,25 @@ class ClientController extends ApiController
             $key->visit_price = $category[0]->visit_price;
         }
         return Response(json_encode(array('orders' => $orders)));
+    }
+    public function addAddress(Request $request){
+        $address = $request->address;
+
+        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX")){
+            $delegation = "Ciudad de México";
+        } elseif(strpos($address, "Guadalajara") !== false){
+            $delegation = "Guadalajara";
+        }
+        $add = new Address;
+        $add->alias = $request->alias;
+        $add->address = $request->address;
+        $add->user_id = $request->user_id;
+        $add->delegation = $delegation;
+        $add->save();
+
+        $address = Address::where('user_id',$request->user_id)->get();
+        return response()->json([
+            'address' => $address
+        ]);
     }
 }
