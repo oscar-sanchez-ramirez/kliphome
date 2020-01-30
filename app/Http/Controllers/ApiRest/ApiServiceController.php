@@ -93,7 +93,7 @@ class ApiServiceController extends ApiController
         ->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
         ->join('selected_orders as so','o.id','so.order_id')
-        ->whereIn('so.user_id',$user_id)
+        ->where('so.user_id',$user_id)
         // ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','FIXERMAN_APPROVED')->orWhere('o.state','FIXERMAN_DONE');})
         ->select('o.*','a.delegation','a.alias','a.address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->distinct('o.id')->get();
         Log::notice($orders);
