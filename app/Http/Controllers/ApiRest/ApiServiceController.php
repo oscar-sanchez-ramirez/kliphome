@@ -40,7 +40,8 @@ class ApiServiceController extends ApiController
             Log::notice($categories);
             $ids = [];
             for ($i=0; $i < count($categories); $i++) {
-                $ids[$i] = $categories[$i]->category_id;
+                Log::debug($categories[$i]);
+                $ids[$i] = $categories[$i];
             }
             // array_column(array($categories->toArray()), 'category_id');
             Log::notice($ids);
