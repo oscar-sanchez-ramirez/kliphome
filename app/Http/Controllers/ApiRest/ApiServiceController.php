@@ -40,8 +40,8 @@ class ApiServiceController extends ApiController
             Log::notice($categories);
             $ids = array();
             foreach($categories as $key) {
-                Log::notice($cat->category_id);
-                array_push($ids,$cat->category_id);
+                Log::notice($key->category_id);
+                array_push($ids,$key->category_id);
             }
             // array_column(array($categories->toArray()), 'category_id');
             Log::notice($ids);
