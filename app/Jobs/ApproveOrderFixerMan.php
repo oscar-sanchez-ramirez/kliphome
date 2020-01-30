@@ -50,7 +50,7 @@ class ApproveOrderFixerMan implements ShouldQueue
             $order["mensajeClient"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
             $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
             foreach ($otherRequest as $key) {
-                $notFixerman = User::where('user_id',$key->user_id)->first();
+                $notFixerman = User::where('id',$key->user_id)->first();
                 $notFixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
                 $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
             }
