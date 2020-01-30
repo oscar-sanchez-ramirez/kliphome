@@ -18,7 +18,7 @@
                                 @if($orden->price == "quotation" || $orden->state == "PENDING")
                                     <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                 @endif
-                                @if($order->price == "waitquotation")
+                                @if($orden->price == "waitquotation")
                                     <h4>Cotización enviada</h4>
                                 @endif
                             </div>
