@@ -184,17 +184,25 @@ class FixerManController extends ApiController
         $order_category = new ApiServiceController();
         $user = User::where('id',$id)->where('type','AppFixerMan')->first();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
+        $qualifies = DB::table('qualifies as q')
+        ->join('selected_orders as so','q.selected_order_id','so.id')
+        ->join('orders as o','so.order_id','o.id')
+        ->join('users as u','o.user_id','u.id')
+        ->where('q.user_id',$id)->select('q.presentation','q.puntuality','q.problemSolve','q.comment','u.name','u.lastName','u.avatar')
+        ->take(5)->get();
         if($order->state == "FIXERMAN_APPROVED"){
             return response()->json([
                 'message' => "Este trabajo ya ha sido asignado",
                 'user' => $user,
                 'categories' => $categories,
+                'qualifies' => $qualifies,
                 'order_category' => $order_category->table($order->type_service,$order->selected_id)
             ]);
         }
         return response()->json([
             'user' => $user,
             'categories' => $categories,
+            'qualifies' => $qualifies,
             'order_category' => $order_category->table($order->type_service,$order->selected_id)
         ]);
     }
