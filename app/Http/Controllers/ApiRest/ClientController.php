@@ -7,6 +7,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiRest\ApiServiceController;
 use DB;
 use App\Address;
+use App\User;
 
 class ClientController extends ApiController
 {
@@ -15,13 +16,24 @@ class ClientController extends ApiController
         // ->join('addresses as a','o.address','a.id')
         // ->leftJoin('selected_orders as so','o.id','so.order_id')
         // ->leftJoin('users as u','u.id','so.user_id')
-        // ->select('o.*','a.alias','a.address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
+        // ->select(
+        //'so.created_at as orderAcepted','so.id as idOrderAccepted')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
         ->select('o.*','a.alias','a.address')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
-        // if($orders)
+
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
+            if($key->state == "FIXERMAN_APPROVED"){
+                $user = DB::table('selected_orders as so')->join('users as u','u.id','so.user_id')
+                ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->first();
+                $key["name"] = $user->name;
+                $key["lastName"] = $user->lastName;
+                $key["fixerman_id"] = $user->id;
+                $key["avatar"] = $user->avatar;
+                $key["orderAcepted"] = $user->orderAcepted;
+                $key["idOrderAccepted"] = $user->idOrderAccepted;
+            }
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
             $key->category = $category[0]->category;
             if ($key->type_service == "Category") {
