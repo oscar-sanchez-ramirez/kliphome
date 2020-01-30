@@ -145,6 +145,7 @@ class ApiServiceController extends ApiController
         $result = [];
 
         foreach ($array as $item) {
+            Log::debug($item);
             array_push($result, $item->category_id);
         }
         // for ($i=0; $i < count($array->toArray()); $i++) {
