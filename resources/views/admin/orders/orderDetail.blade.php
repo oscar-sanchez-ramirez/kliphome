@@ -15,7 +15,7 @@
                             <h5 class="text-sm-center mt-2 mb-1">{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</h5>
                             <div class="location text-sm-center">
                                 <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
-                                @if($orden->price == "quotation")
+                                @if($orden->price == "quotation" || $orden->state == "PENDING")
                                     <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                 @endif
                             </div>
