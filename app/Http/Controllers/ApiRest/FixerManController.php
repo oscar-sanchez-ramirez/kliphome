@@ -11,6 +11,7 @@ use OneSignal;
 use App\User;
 use App\Order;
 use App\Qualify;
+use App\FixermanStat;
 use App\SelectedOrders;
 use App\SelectedDelegation;
 use App\SelectedCategories;
@@ -56,6 +57,9 @@ class FixerManController extends ApiController
                 $category->category_id = $categories[$i];
                 $category->save();
             }
+            FixermanStat::create([
+                'user_id' => $user["id"]
+            ]);
 
             return response()->json([
                 'message' => "Tu cuenta se creó exitosamente, evaluaremos tu perfil.",
@@ -72,6 +76,7 @@ class FixerManController extends ApiController
     public function saveSelectedOrder(Request $request){
         try {
             $order = Order::where('id',$request->order_id)->first();
+            // if($order->state)
             $new_selected_order = new SelectedOrders;
             $new_selected_order->user_id = $request->user_id;
             $new_selected_order->order_id = $request->order_id;

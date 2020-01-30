@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
+use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
 
 class ApproveOrderFixerMan implements ShouldQueue
 {
@@ -43,23 +44,20 @@ class ApproveOrderFixerMan implements ShouldQueue
         $date = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
         $user_order = User::where('id',$order->user_id)->first();
 
-        $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
-        $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
-        // $user_order->notify(new DatabaseApproveOrderFixerMan($order));
-
-        // OneSignal::sendNotificationUsingTags(
-        //     "Un Técnico ha aceptado la solicitud para tu solicitud",
-        //     array(
-        //         ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user_order->email],
-        //     ),
-        //     $url = null,
-        //     $data = null,
-        //     $buttons = null,
-        //     $schedule = null
-        // );
+        $otherRequest = DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->get();
+        if(!empty($otherRequest)){
+            $order["mensajeClient"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+            $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+            foreach ($otherRequest as $key) {
+                $notFixerman = User::where('user_id',$key->user_id)->first();
+                $notFixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
+                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
+            }
+        }
 
         //Notification for Fixerman
-
+        $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order));
         //
