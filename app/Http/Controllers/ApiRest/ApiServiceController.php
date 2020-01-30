@@ -38,8 +38,10 @@ class ApiServiceController extends ApiController
             Log::debug($delegation);
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             Log::notice($categories);
-            $ids = $categories->map->only(['category_id']);
-
+            $ids = []
+            foreach($categories as $cat){
+                array_push($ids,$cat->category_id);
+            }
             // array_column(array($categories->toArray()), 'category_id');
             Log::notice($ids);
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
