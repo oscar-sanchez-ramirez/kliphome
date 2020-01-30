@@ -143,7 +143,7 @@ class ApiServiceController extends ApiController
 
     private function gettingColumn($array,$column){
         $result = [];
-        Log::debug($array);
+
         foreach ($array as $item) {
             array_push($result, $item->$column);
         }
@@ -151,7 +151,7 @@ class ApiServiceController extends ApiController
         //     Log::debug($array);
         //     $result[$i] = $array[$i][$column];
         // }
-
+        Log::debug("result:");
         return $result;
     }
 }
