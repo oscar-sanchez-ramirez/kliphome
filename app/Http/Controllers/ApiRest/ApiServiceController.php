@@ -34,9 +34,9 @@ class ApiServiceController extends ApiController
     public function userInfo($id){
         $user = User::where('id',$id)->first();
         if($user->type == "AppFixerMan"){
-            $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get()->toArray();
+            $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             Log::debug($delegation);
-            $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
+            $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
             Log::notice($categories);
             $ids = array_column($categories, 'category_id');
             Log::notice($ids);
