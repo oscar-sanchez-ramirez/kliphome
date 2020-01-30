@@ -55,9 +55,9 @@ class OrderController extends Controller
         $quotation->price = $request->price;
         $quotation->save();
 
-
+        \Carbon\Carbon::setLocale('es');
         $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
-        $date = $date->format('d-MMM-Y H:i');
+        $date = $date->format('d-M-Y H:i');
 
         $quotation->mensajeClient = "Recibiste la cotización de tu orden para el ".$date;
         $user->notify(new QuotationSended($quotation));
