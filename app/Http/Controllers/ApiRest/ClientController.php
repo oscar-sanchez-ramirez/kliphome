@@ -39,7 +39,7 @@ class ClientController extends ApiController
                 Log::notice($userArray[0]["avatar"]);
                 Log::notice($userArray[0]["orderAcepted"]);
                 Log::notice($userArray[0]["idOrderAccepted"]);
-                // $key["name"] = $userArray[0]["name"];
+                $key->name = $userArray[0]["name"];
                 // $key["lastName"] = $userArray[0]["lastName"];
                 // $key["fixerman_id"] = $userArray[0]["id"];
                 // $key["avatar"] = $userArray[0]["avatar"];
