@@ -38,6 +38,7 @@ class ApiServiceController extends ApiController
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
             $ids = array_column($categories, 'category_id');
             $orders = $this->categories($ids,$delegation[0]->delegation_id,$user->id);
+            $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->where('state',1)->pluck('order_id');
             $accepted = $this->ordersAccepted($selectedOrders);
             return response()->json([
                 'user' => $user,
@@ -57,14 +58,13 @@ class ApiServiceController extends ApiController
     //getting categories by fixerman preferences
     public function categories($ids,$delegation_id,$user_id)
     {
-        $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->where('state',1)->pluck('order_id');
-        $notSelectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->where('state',0)->pluck('order_id');
+        $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
         // ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')
         //     ->orWhere('o.state','QUALIFIED');})
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
-        ->whereNotIn('o.id',$selectedOrders)->whereNotIn('o.id',$notSelectedOrders)
+        ->whereNotIn('o.id',$selectedOrders)
         ->where('a.delegation',$delegation_id)
             ->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
         Log::notice($orders);
