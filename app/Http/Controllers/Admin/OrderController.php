@@ -50,28 +50,33 @@ class OrderController extends Controller
 
         $order = Order::where('id',$order_id)->first();
         $user = User::where('id',$order->user_id)->first();
-        $quotation = new Quotation;
-        $quotation->order_id = $order_id;
-        $quotation->price = $request->price;
-        $quotation->save();
-        $date = \Carbon\Carbon::createFromFormat('d-m-Y H:i', $order->service_date);
-        $quotation->mensajeClient = "Recibiste la cotización para tu orden para el ".$date;
-        $user->notify(new QuotationSended($quotation));
+        // $quotation = new Quotation;
+        // $quotation->order_id = $order_id;
+        // $quotation->price = $request->price;
+        // $quotation->save();
 
-        OneSignal::sendNotificationUsingTags(
-            "Acabas de recibir una cotización",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
-            ),
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
-        Order::where('id',$order_id)->update([
-            'price' => "waitquotation"
-        ]);
-        return back()->with('success',"Se envió la cotización");
+
+        $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
+        $date = $date->format('d-m-Y H:i');
+        Log::notice($date);
+
+        // $quotation->mensajeClient = "Recibiste la cotización para tu orden para el ".$date;
+        // $user->notify(new QuotationSended($quotation));
+
+        // OneSignal::sendNotificationUsingTags(
+        //     "Acabas de recibir una cotización",
+        //     array(
+        //         ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+        //     ),
+        //     $url = null,
+        //     $data = null,
+        //     $buttons = null,
+        //     $schedule = null
+        // );
+        // Order::where('id',$order_id)->update([
+        //     'price' => "waitquotation"
+        // ]);
+        // return back()->with('success',"Se envió la cotización");
     }
 
 }
