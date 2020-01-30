@@ -145,7 +145,7 @@ class ApiServiceController extends ApiController
         $result = [];
 
         for ($i=0; $i < count($array); $i++) {
-            $result[$i] = $array[$i][$column]
+            $result[$i] = $array[$i][$column];
         }
 
         return $result;
