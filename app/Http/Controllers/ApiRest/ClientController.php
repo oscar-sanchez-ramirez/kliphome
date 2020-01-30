@@ -54,7 +54,7 @@ class ClientController extends ApiController
     public function addAddress(Request $request){
         $address = $request->address;
 
-        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX")){
+        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
             $delegation = "Ciudad de México";
         } elseif(strpos($address, "Guadalajara") !== false){
             $delegation = "Guadalajara";
