@@ -37,8 +37,8 @@ class ApiServiceController extends ApiController
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             Log::debug($delegation);
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
-            Log::notice($categories);
-            $ids = array_column($categories->toArray(), 'category_id');
+            Log::notice($categories->attributesToArray());
+            $ids = array_column($categories->attributesToArray(), 'category_id');
             // array_column(array($categories->toArray()), 'category_id');
             Log::notice($ids);
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
@@ -71,10 +71,10 @@ class ApiServiceController extends ApiController
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
         ->whereIn('o.id',$ids)
-        // ->whereNotIn('o.id',$selectedOrders)->whereNotIn('o.id',$notSelectedOrders)
-        // ->where('a.delegation',$delegation_id)
-        // ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')
-        //     ->orWhere('o.state','QUALIFIED');})
+        ->whereNotIn('o.id',$selectedOrders)->whereNotIn('o.id',$notSelectedOrders)
+        ->where('a.delegation',$delegation_id)
+        ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')
+            ->orWhere('o.state','QUALIFIED');})
             ->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
