@@ -48,6 +48,7 @@ class ApiServiceController extends ApiController
             Log::notice($orders);
             // Log::notice($orders);
             $accepted = $this->ordersAccepted($selectedOrders);
+            Log::notice($ids);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
