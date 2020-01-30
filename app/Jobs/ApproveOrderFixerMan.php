@@ -53,6 +53,9 @@ class ApproveOrderFixerMan implements ShouldQueue
                 $notFixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
                 $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
             }
+            DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
+                'state' => 0
+            ]);
         }
 
         //Notification for Fixerman
