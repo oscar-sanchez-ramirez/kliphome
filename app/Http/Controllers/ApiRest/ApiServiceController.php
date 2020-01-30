@@ -39,6 +39,7 @@ class ApiServiceController extends ApiController
             $ids = array_column($categories, 'category_id');
             $orders = $this->categories($ids,$delegation[0]->delegation_id,$user->id);
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
+            Log::notice($selectedOrders);
             $accepted = $this->ordersAccepted($selectedOrders);
             return response()->json([
                 'user' => $user,
