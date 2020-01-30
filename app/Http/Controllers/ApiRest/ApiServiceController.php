@@ -67,6 +67,7 @@ class ApiServiceController extends ApiController
     //getting categories by fixerman preferences
     public function categories($ids,$delegation_id,$selectedOrders,$notSelectedOrders)
     {
+        Log::debug($ids);
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
@@ -143,18 +144,4 @@ class ApiServiceController extends ApiController
 
     }
 
-    private function gettingColumn($array,$column){
-        $result = [];
-
-        // foreach ($array as $item) {
-        //     Log::notice($item);
-        //     array_push($result, $item->category_id);
-        // }
-        for ($i=0; $i < count($array); $i++) {
-            Log::debug($array[$i]);
-            $result[$i] = $array[$i][$column];
-        }
-        Log::debug("result:");
-        return $result;
-    }
 }
