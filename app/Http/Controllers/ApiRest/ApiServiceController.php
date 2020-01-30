@@ -71,10 +71,10 @@ class ApiServiceController extends ApiController
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
         ->whereIn('o.id',$ids)
-        ->whereNotIn('o.id',$selectedOrders)->whereNotIn('o.id',$notSelectedOrders)
-        ->where('a.delegation',$delegation_id)
-        ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')
-            ->orWhere('o.state','QUALIFIED');})
+        // ->whereNotIn('o.id',$selectedOrders)->whereNotIn('o.id',$notSelectedOrders)
+        // ->where('a.delegation',$delegation_id)
+        // ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')
+        //     ->orWhere('o.state','QUALIFIED');})
             ->select('o.*','a.delegation','a.address','u.name','u.lastName')->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
