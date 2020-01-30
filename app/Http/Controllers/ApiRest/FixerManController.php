@@ -132,6 +132,7 @@ class FixerManController extends ApiController
             'finished_at' => Carbon::now(),
             'state' => 'FIXERMAN_DONE'
         ]);
+        FixermanStat::where('user_id',$fixerman_id)->increment('completed');
     }
 
     public function qualifyService(Request $request){
