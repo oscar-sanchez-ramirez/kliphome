@@ -30,7 +30,7 @@ class ClientController extends ApiController
                 ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->get();
                 Log::notice($user);
                 Log::notice(json_decode( json_encode($user), true));
-
+                $user = json_decode( json_encode($user), true);
                 $key["name"] = $user[0]->name;
                 $key["lastName"] = $user[0]->lastName;
                 $key["fixerman_id"] = $user[0]->id;
