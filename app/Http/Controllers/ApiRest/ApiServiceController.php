@@ -39,7 +39,7 @@ class ApiServiceController extends ApiController
             $ids = array_column($categories, 'category_id');
             $orders = $this->categories($ids,$delegation[0]->delegation_id,$user->id);
             $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
-            $accepted = $this->ordersAccepted($selectedOrders);
+            $accepted = $this->ordersAccepted($selectedOrders,$user->id);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
@@ -68,7 +68,6 @@ class ApiServiceController extends ApiController
         ->where('o.state','FIXERMAN_NOTIFIED')
         ->where('a.delegation',$delegation_id)
             ->select('o.*','a.delegation','a.address','u.name','u.lastName','u.avatar')->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
@@ -86,15 +85,15 @@ class ApiServiceController extends ApiController
         }
         return $final_orders;
     }
-    public function ordersAccepted($selectedOrders){
+    public function ordersAccepted($selectedOrders,$user_id){
         $final_orders = [];
 
         $orders = DB::table('orders as o')
         ->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
         ->join('selected_orders as so','o.id','so.order_id')
-        ->whereIn('o.id',$selectedOrders)
-        ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','FIXERMAN_APPROVED')->orWhere('o.state','FIXERMAN_DONE');})
+        ->whereIn('o.id',$selectedOrders)->where('so.user_id',$user_id)
+        ->where(function($query){ return $query->where('o.state','FIXERMAN_APPROVED')->orWhere('o.state','FIXERMAN_DONE');})
         ->select('o.*','a.delegation','a.alias','a.address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->get();
 
         foreach ($orders as $key) {
