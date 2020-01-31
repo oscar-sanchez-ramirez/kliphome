@@ -223,7 +223,7 @@ class FixerManController extends ApiController
             for ($i=0; $i < count($new_value); $i++) {
                 $sel = new SelectedCategories;
                 $sel->user_id = $user_id;
-                $sel->category_id = $value[$i];
+                $sel->category_id = $new_value[$i];
                 $sel->save();
             }
         }
