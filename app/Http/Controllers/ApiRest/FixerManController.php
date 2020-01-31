@@ -197,6 +197,7 @@ class FixerManController extends ApiController
                 'user' => $user,
                 'categories' => $categories,
                 'qualifies' => $qualifies,
+                'order_state' => $order->state,
                 'order_category' => $order_category->table($order->type_service,$order->selected_id)
             ]);
         }
@@ -204,6 +205,7 @@ class FixerManController extends ApiController
             'user' => $user,
             'categories' => $categories,
             'qualifies' => $qualifies,
+            'order_state' => $order->state,
             'order_category' => $order_category->table($order->type_service,$order->selected_id)
         ]);
     }
