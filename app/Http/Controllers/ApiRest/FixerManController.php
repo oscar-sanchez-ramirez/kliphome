@@ -219,6 +219,7 @@ class FixerManController extends ApiController
         }else if($field == "Servicios"){
             DB::table('selected_categories')->where('user_id',$user_id)->delete();
             $new_value = explode(',', $value);
+            Log::notice($new_value);
             for ($i=0; $i < count($new_value); $i++) {
                 $sel = new SelectedCategories;
                 $sel->user_id = $user_id;
