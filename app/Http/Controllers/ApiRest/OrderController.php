@@ -57,7 +57,7 @@ class OrderController extends ApiController
     public function approve(Request $request){
         // try {
             $price = floatval($request->price);
-            Stripe\Stripe::setApiKey("pk_test_o4sFc1mMOFXnOs71NxRW0kEI0059OIXawi");
+            Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
             Stripe\Charge::create ([
                 "amount" => $price * 100,
                 "currency" => "MXN",
