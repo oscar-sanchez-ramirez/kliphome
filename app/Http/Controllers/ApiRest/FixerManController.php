@@ -211,7 +211,6 @@ class FixerManController extends ApiController
 
         $field = $this->fields($request->field);
         $value = $request->value;
-        Log::notice($value);
         $user_id = $request->user_id;
         if($field == 'password'){
             DB::table('users')->where('id',$user_id)->update([
@@ -219,7 +218,8 @@ class FixerManController extends ApiController
             ]);
         }else if($field == "Servicios"){
             DB::table('selected_categories')->where('user_id',$user_id)->delete();
-            for ($i=0; $i < count($value); $i++) {
+            $new_value = explode(',', $value);
+            for ($i=0; $i < count($new_value); $i++) {
                 $sel = new SelectedCategories;
                 $sel->user_id = $user_id;
                 $sel->category_id = $value[$i];
