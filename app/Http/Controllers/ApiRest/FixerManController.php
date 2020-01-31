@@ -95,7 +95,6 @@ class FixerManController extends ApiController
     }
 
     public function aprobarSolicitudTecnico(Request $request){
-        Log::notice($request->all());
         dispatch(new ApproveOrderFixerMan($request->fixerman_id,$request->order_id));
         return back();
     }
@@ -217,7 +216,16 @@ class FixerManController extends ApiController
             DB::table('users')->where('id',$user_id)->update([
                 $field => bcrypt($value)
             ]);
-        }else{
+        }else if($field == "Servicios"){
+            DB::table('selected_categories')->where('user_id',$user_id)->delete();
+            for ($i=0; $i < count($value); $i++) {
+                $sel = new SelectedCategories;
+                $sel->user_id = $user_id;
+                $sel->category_id = $value[$i];
+                $sel->save();
+            }
+        }
+        else{
             DB::table('users')->where('id',$user_id)->update([
                 $field => $value
             ]);
@@ -286,6 +294,9 @@ class FixerManController extends ApiController
                 break;
             case 'avatar':
                 return "avatar";
+                break;
+            case 'Servicios':
+                return "Servicios";
                 break;
             default:
                 # code...
