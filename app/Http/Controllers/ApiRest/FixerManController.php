@@ -191,7 +191,7 @@ class FixerManController extends ApiController
         // ->where('q.user_id',$id)
         ->select('q.presentation','q.puntuality','q.problemSolve','q.comment','q.created_at','u.name','u.lastName','u.avatar')
         ->take(5)->get();
-        if($order->state == "FIXERMAN_APPROVED"){
+        if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
             return response()->json([
                 'message' => "Este trabajo ya ha sido asignado",
                 'user' => $user,
