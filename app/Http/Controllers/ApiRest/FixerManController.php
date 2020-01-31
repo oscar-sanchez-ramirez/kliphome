@@ -211,6 +211,7 @@ class FixerManController extends ApiController
 
         $field = $this->fields($request->field);
         $value = $request->value;
+        Log::notice($value);
         $user_id = $request->user_id;
         if($field == 'password'){
             DB::table('users')->where('id',$user_id)->update([
