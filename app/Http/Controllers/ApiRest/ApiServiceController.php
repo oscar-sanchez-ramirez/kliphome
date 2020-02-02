@@ -15,10 +15,6 @@ use App\User;
 
 class ApiServiceController extends ApiController
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api')->only('getCategories');
-    }
     //Getting sub-categories for clientApp
     public function getSubCategories($category){
         $subCategories = DB::table('categories as c')->join('sub_categories as s','c.id','s.category_id')->where('c.title',$category)->select('s.title')->get();
