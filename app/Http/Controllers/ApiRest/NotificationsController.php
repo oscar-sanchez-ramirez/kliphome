@@ -11,7 +11,7 @@ class NotificationsController extends ApiController
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->only('getNotifications');
+        $this->middleware('auth:api');
     }
     public function getNotifications($id){
         $notifications  = DB::table('notifications')->where('notifiable_id',$id)->orderby('created_at',"DESC")->get();
