@@ -23,6 +23,9 @@ use App\Notifications\NotifyAcceptOrder;
 use App\Notifications\Database\FinishedOrder;
 use App\Notifications\Database\ServiceQualified;
 
+use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
+use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
+
 class FixerManController extends ApiController
 {
     public function register(Request $request){
@@ -76,7 +79,6 @@ class FixerManController extends ApiController
     public function saveSelectedOrder(Request $request){
         try {
             $order = Order::where('id',$request->order_id)->first();
-            // if($order->state)
             $new_selected_order = new SelectedOrders;
             $new_selected_order->user_id = $request->user_id;
             $new_selected_order->order_id = $request->order_id;
@@ -95,7 +97,36 @@ class FixerManController extends ApiController
     }
 
     public function aprobarSolicitudTecnico(Request $request){
-        dispatch(new ApproveOrderFixerMan($request->fixerman_id,$request->order_id));
+        $order = Order::where('id',$request->order_id)->first();
+        $fixerman = User::where('id',$request->fixerman_id)->first();
+        $date = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
+        $user_order = User::where('id',$order->user_id)->first();
+
+        $otherRequest = DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->get();
+        if(!empty($otherRequest)){
+            $order["mensajeClient"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+            $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+            foreach ($otherRequest as $key) {
+                $notFixerman = User::where('id',$key->user_id)->first();
+                $notFixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
+                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
+            }
+            DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
+                'state' => 0
+            ]);
+        }
+        //Notification for Fixerman
+        $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
+        $fixerman->notify(new DatabaseApproveOrderFixerMan($order));
+
+        Order::where('id',$request->order_id)->update([
+            'state' => 'FIXERMAN_APPROVED'
+        ]);
+
+
+        // dispatch(new ApproveOrderFixerMan($request->fixerman_id,$request->order_id));
         return back();
     }
 
@@ -187,7 +218,6 @@ class FixerManController extends ApiController
         ->join('selected_orders as so','q.selected_order_id','so.id')
         ->join('orders as o','so.order_id','o.id')
         ->join('users as u','o.user_id','u.id')
-        // ->where('q.user_id',$id)
         ->select('q.presentation','q.puntuality','q.problemSolve','q.comment','q.created_at','u.name','u.lastName','u.avatar')
         ->take(5)->get();
         if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
@@ -275,6 +305,28 @@ class FixerManController extends ApiController
         return response()->json([
             'reviews' => $reviews
         ]);
+    }
+
+    public function fixerManorderDetail($id,$order_id){
+        $orders = DB::table('orders as o')
+        ->join('addresses as a','o.address','a.id')
+        ->leftJoin('selected_orders as so','o.id','so.order_id')
+        ->leftJoin('users as u','u.id','so.user_id')
+        ->select('o.*','a.alias','a.address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
+        ->where('u.id',$id)->where('o.id',$order_id)->get();
+        $fetch_categories = new ApiServiceController();
+        foreach ($orders as $key) {
+            $category = $fetch_categories->table($key->type_service, $key->selected_id);
+            $key->category = $category[0]->category;
+            if ($key->type_service == "Category") {
+                $key->sub_category = "-";
+            }else{
+                $key->sub_category = $category[0]->sub_category;
+            }
+            $key->serviceTrait = $category[0]->service;
+            $key->visit_price = $category[0]->visit_price;
+        }
+        return Response(json_encode(array('orders' => $orders)));
     }
 
     private function fields($field){
