@@ -49,7 +49,7 @@ class FixerManController extends ApiController
                 'type' => 'AppFixerMan',
                 'state' => 0,
                 'password' => bcrypt($request->password),
-                'code' => str_random(10)
+                'code' => substr(md5(mt_rand()), 0, 10)
             ])->toArray();
 
             //SAVE SELECTED DELEGATION
@@ -98,6 +98,8 @@ class FixerManController extends ApiController
                 $fixerman = User::where('id',$request->user_id)->first();
                 $new_selected_order["mensajeClient"] = $fixerman->name." aceptó tu trabajo. Échale un vistazo";
                 $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
+            }else{
+                DB::table('fixerman_stats')->where('user_id',$request->user_id)->increment('rejected');
             }
             return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
         } catch (\Throwable $th) {
@@ -133,15 +135,17 @@ class FixerManController extends ApiController
         Order::where('id',$request->order_id)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);
-
-
-        // dispatch(new ApproveOrderFixerMan($request->fixerman_id,$request->order_id));
-        return back();
     }
 
     public function eliminarSolicitudTecnico(Request $request){
-        dispatch(new DisapproveOrderFixerMan($request->fixerman_id,$request->order_id));
-        return back();
+        $fixerman = User::where('id',$request->fixerman_id)->first();
+        $fixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
+        Order::where('id',$request->order_id)->update([
+            'state' => 'FIXERMAN_NOTIFIED'
+        ]);
+        SelectedOrders::where('user_id',$request->fixerman_id)->where('order_id',$request->order_id)->update([
+            'state' => 0
+        ]);
     }
 
     public function terminarOrden(Request $request){

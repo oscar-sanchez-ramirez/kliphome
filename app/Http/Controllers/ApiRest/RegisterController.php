@@ -20,19 +20,20 @@ class RegisterController extends ApiController
             // 'lastName' => 'required',
             'password' => 'required'
         ]);
+
         $user = User::create([
             'name' => $request->name,
             'lastName' => $request->last_name,
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'code' => str_random(10)
+            'code' => substr(md5(mt_rand()), 0, 10)
         ])->toArray();
         $word = "Ciudad de México";
         $address = $request->address;
 
         // Test if string contains the word
-        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX")){
+        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX") !== false){
             $delegation = "1";
         } elseif(strpos($address, "Guadalajara") !== false){
             $delegation = "2";

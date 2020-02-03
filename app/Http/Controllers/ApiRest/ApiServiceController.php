@@ -41,13 +41,11 @@ class ApiServiceController extends ApiController
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$user->id)->get();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
-            Log::notice($categories);
             $ids = array_column($categories, 'category_id');
-            Log::notice($ids);
             $orders = $this->categories($ids,$delegation[0]->delegation_id,$user->id);
-            Log::notice($orders);
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             // $selectedOrders = DB::table('selected_orders')->where('user_id',$user->id)->where('state',1)->pluck('order_id');
+            // Log::notice($selectedOrders);
             $accepted = $this->ordersAccepted($user->id);
             return response()->json([
                 'user' => $user,
@@ -73,9 +71,7 @@ class ApiServiceController extends ApiController
     //getting categories by fixerman preferences
     public function categories($ids,$delegation_id,$user_id)
     {
-        Log::notice($delegation_id);
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
-        Log::notice($selectedOrders);
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
@@ -83,7 +79,6 @@ class ApiServiceController extends ApiController
         ->where('o.state','FIXERMAN_NOTIFIED')
         ->where('a.delegation',$delegation_id)
             ->select('o.*','a.delegation','a.address','u.name','u.lastName','u.avatar')->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
