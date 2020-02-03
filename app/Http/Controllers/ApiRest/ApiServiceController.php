@@ -73,6 +73,7 @@ class ApiServiceController extends ApiController
     //getting categories by fixerman preferences
     public function categories($ids,$delegation_id,$user_id)
     {
+        Log::notice($delegation_id);
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
         Log::notice($selectedOrders);
         $final_orders = [];
@@ -82,6 +83,7 @@ class ApiServiceController extends ApiController
         ->where('o.state','FIXERMAN_NOTIFIED')
         ->where('a.delegation',$delegation_id)
             ->select('o.*','a.delegation','a.address','u.name','u.lastName','u.avatar')->get();
+        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
