@@ -34,7 +34,7 @@ class FixerManController extends ApiController
         $this->middleware('auth:api', ['only' => ['infoFixerman','aprobarSolicitudTecnico','updateUserField','terminarOrden','fixerManorderDetail','saveSelectedOrder','qualifyService','historyReviews','historyReviewsandOrders','filterReviews']]);
     }
     public function register(Request $request){
-        try {
+        // try {
             $this->validate($request,[
                 'email' => 'required|email|unique:users',
                 'name' => 'required',
@@ -65,9 +65,11 @@ class FixerManController extends ApiController
                 $category->category_id = $categories[$i];
                 $category->save();
             }
-            FixermanStat::create([
-                'user_id' => $user["id"]
-            ]);
+
+            $stat = new FixermanStat;
+            $stat->user_id = $user["id"];
+            $stat->save();
+
             $client = User::where('type',"ADMINISTRATOR")->first();
             $client->notify(new NewFixerMan($user));
 
@@ -75,11 +77,11 @@ class FixerManController extends ApiController
                 'message' => "Tu cuenta se creó exitosamente, evaluaremos tu perfil.",
                 'user' => $user
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'fail' => "No se pudo registrar al trabajador, porfavor verifique sus datos"
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'fail' => "No se pudo registrar al trabajador, porfavor verifique sus datos"
+        //     ]);
+        // }
 
     }
 
