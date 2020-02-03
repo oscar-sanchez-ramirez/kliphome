@@ -20,6 +20,7 @@ use App\Http\Controllers\ApiRest\ApiServiceController;
 use App\Jobs\ApproveOrderFixerMan;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
+use App\Notifications\NewFixerMan;
 use App\Notifications\Database\FinishedOrder;
 use App\Notifications\Database\ServiceQualified;
 
@@ -67,6 +68,8 @@ class FixerManController extends ApiController
             FixermanStat::create([
                 'user_id' => $user["id"]
             ]);
+            $client = User::where('type',"ADMINISTRATOR")->first();
+            $client->notify(new NewFixerMan($user));
 
             return response()->json([
                 'message' => "Tu cuenta se creó exitosamente, evaluaremos tu perfil.",
