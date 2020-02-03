@@ -42,6 +42,7 @@ class FixerManController extends ApiController
                 'password' => 'required'
             ]);
             $random = substr(md5(mt_rand()), 0, 10);
+            Log::notice($random);
             $user = User::create([
                 'name' => $request->name,
                 'lastName' => $request->lastName,

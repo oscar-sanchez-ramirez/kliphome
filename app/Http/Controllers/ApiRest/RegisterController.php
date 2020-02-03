@@ -21,6 +21,7 @@ class RegisterController extends ApiController
             'password' => 'required'
         ]);
         $random = substr(md5(mt_rand()), 0, 10);
+        Log::notice($random);
         $user = User::create([
             'name' => $request->name,
             'lastName' => $request->last_name,
@@ -33,9 +34,9 @@ class RegisterController extends ApiController
         $address = $request->address;
 
         // Test if string contains the word
-        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX") !== false){
+        if((strpos($address, "Ciudad de México") === true) || strpos($address, "CDMX") === true){
             $delegation = "1";
-        } elseif(strpos($address, "Guadalajara") !== false){
+        } elseif(strpos($address, "Guadalajara") === true){
             $delegation = "2";
         }
         Address::create([
