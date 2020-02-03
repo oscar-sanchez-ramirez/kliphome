@@ -59,7 +59,12 @@ class ApiServiceController extends ApiController
             $categories = Category::all();
             $address = Address::where('user_id',$user->id)->get();
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
-            return array($user,$address,$categories,$notifications);
+            return response()->json([
+                'user' => $user,
+                'address' => $address,
+                'categories' => $categories,
+                'notifications' => $notifications
+            ]);
         }
 
     }
