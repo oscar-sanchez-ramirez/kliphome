@@ -350,15 +350,12 @@
                                                     </div>
                                                     <div class="content">
                                                         <p>Un nuevo técnico se registró</p>
-                                                        <a href="{{ url('') }}/tecnicos">Ver Órden</a>
+                                                        <a href="{{ url('') }}/tecnicos">Ver</a>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
                                                 </div>
                                             @endif
                                             @endforeach
-                                            {{-- <div class="notifi__footer">
-                                                <a href="{{ url('') }}/#">Todas las notificaciones</a>
-                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
