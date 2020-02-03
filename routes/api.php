@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiRest\ApiServiceController;
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +37,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     $info = new ApiServiceController();
     $final = $info->userInfo($user->id);
-    Log::notice($final);
     return $final;
 });
 //DELEGATIONS
