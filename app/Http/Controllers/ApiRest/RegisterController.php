@@ -32,11 +32,12 @@ class RegisterController extends ApiController
         ])->toArray();
         $word = "Ciudad de México";
         $address = $request->address;
+        Log::notice($address);
 
         // Test if string contains the word
-        if((strpos($address, "Ciudad de México") === true) || strpos($address, "CDMX") === true){
+        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX") !== false){
             $delegation = "1";
-        } elseif(strpos($address, "Guadalajara") === true){
+        } elseif(strpos($address, "Guadalajara") !== false){
             $delegation = "2";
         }
         Address::create([
