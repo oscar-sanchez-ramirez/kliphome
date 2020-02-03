@@ -41,6 +41,7 @@ class FixerManController extends ApiController
                 'lastName' => 'required',
                 'password' => 'required'
             ]);
+            $random = substr(md5(mt_rand()), 0, 10);
             $user = User::create([
                 'name' => $request->name,
                 'lastName' => $request->lastName,
@@ -49,7 +50,7 @@ class FixerManController extends ApiController
                 'type' => 'AppFixerMan',
                 'state' => 0,
                 'password' => bcrypt($request->password),
-                'code' => substr(md5(mt_rand()), 0, 10)
+                'code' => $random
             ])->toArray();
 
             //SAVE SELECTED DELEGATION

@@ -20,14 +20,14 @@ class RegisterController extends ApiController
             // 'lastName' => 'required',
             'password' => 'required'
         ]);
-
+        $random = substr(md5(mt_rand()), 0, 10);
         $user = User::create([
             'name' => $request->name,
             'lastName' => $request->last_name,
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'code' => substr(md5(mt_rand()), 0, 10)
+            'code' => $random
         ])->toArray();
         $word = "Ciudad de México";
         $address = $request->address;
