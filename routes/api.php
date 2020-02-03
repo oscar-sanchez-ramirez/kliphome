@@ -21,6 +21,7 @@ use App\Http\Controllers\ApiRest\ApiServiceController;
 Route::post('oauth/token','\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
 Route::get('sub-categories/{category}','ApiRest\ApiServiceController@getSubCategories');
 Route::get('services/{subCategory}','ApiRest\ApiServiceController@getServices');
+//Orders**
 Route::post('orders/create','ApiRest\OrderController@create');
 Route::post('orders/suspend','ApiRest\OrderController@suspend');
 Route::post('orders/approve','ApiRest\OrderController@approve');
@@ -58,19 +59,19 @@ Route::post('terminarOrden','ApiRest\FixerManController@terminarOrden');
 Route::post('qualifyService','ApiRest\FixerManController@qualifyService');
 Route::get('fixerManorderDetail/{id}/{order_id}','ApiRest\FixerManController@fixerManorderDetail');
 
-//Client
+//Client**
 Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');
 Route::get('orderDetail/{id}/{order_id}','ApiRest\ClientController@orderDetail');
 Route::post('addAddress','ApiRest\ClientController@addAddress');
 Route::post('deleteAddress','ApiRest\ClientController@deleteAddress');
 
-//Notifications
+//Notifications**
 Route::get('notifications/{id}','ApiRest\NotificationsController@getNotifications');
 Route::post('notifications/markAsRead/{id}','ApiRest\NotificationsController@markAsRead');
 Route::post('notifications/deleteNotification/{id}','ApiRest\NotificationsController@deleteNotification');
 
 
-//Chat
+//Chat**
 Route::get('conversationsRest/{id}', 'Chat\ConversationController@indexRest');
 Route::get('messagesRest/{user_id}/{contact_id}/{page}', 'Chat\MessageController@indexRest');
 Route::post('messagesRest', 'Chat\MessageController@storeRest');

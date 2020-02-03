@@ -14,10 +14,10 @@ use App\Http\Controllers\ApiController;
 
 class ConversationController extends ApiController
 {
-    public function __construct()
-	{
-	    // $this->middleware(['auth']);
-	}
+  public function __construct()
+  {
+      $this->middleware('auth:api');
+  }
   public function index()
   {
     return Conversation::where('user_id',Auth::user()->id)->orderBy('last_time',"DESC")->get([

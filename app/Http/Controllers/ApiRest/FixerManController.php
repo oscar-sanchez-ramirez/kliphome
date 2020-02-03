@@ -28,6 +28,10 @@ use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrde
 
 class FixerManController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['infoFixerman','aprobarSolicitudTecnico','updateUserField','terminarOrden','fixerManorderDetail','saveSelectedOrder','qualifyService','historyReviews','historyReviewsandOrders','filterReviews']]);
+    }
     public function register(Request $request){
         try {
             $this->validate($request,[
@@ -300,8 +304,6 @@ class FixerManController extends ApiController
                 ->select('q.*','u.avatar','u.name','u.lastName')->whereDate('q.created_at','>=',$days)->whereDate('q.created_at','<=',$hoy)->where('q.user_id',$user_id)->orderBy('q.created_at','DESC')->get();
                 break;
         }
-
-
         return response()->json([
             'reviews' => $reviews
         ]);

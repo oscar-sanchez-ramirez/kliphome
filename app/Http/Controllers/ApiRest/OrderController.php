@@ -18,6 +18,10 @@ use App\Notifications\Database\QuotationCancelled;
 
 class OrderController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function create(Request $request){
         try {
             $order = new Order;

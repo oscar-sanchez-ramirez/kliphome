@@ -15,6 +15,10 @@ use App\User;
 
 class ApiServiceController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['getSubCategories']]);
+    }
     //Getting sub-categories for clientApp
     public function getSubCategories($category){
         $subCategories = DB::table('categories as c')->join('sub_categories as s','c.id','s.category_id')->where('c.title',$category)->select('s.title')->get();
@@ -62,8 +66,6 @@ class ApiServiceController extends ApiController
     public function categories($ids,$delegation_id,$user_id)
     {
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
-        // ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')
-        //     ->orWhere('o.state','QUALIFIED');})
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')

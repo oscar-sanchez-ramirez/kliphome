@@ -12,13 +12,11 @@ use Illuminate\Support\Facades\Log;
 
 class ClientController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function historyOrders($id){
-        // $orders = DB::table('orders as o')
-        // ->join('addresses as a','o.address','a.id')
-        // ->leftJoin('selected_orders as so','o.id','so.order_id')
-        // ->leftJoin('users as u','u.id','so.user_id')
-        // ->select(
-        //'so.created_at as orderAcepted','so.id as idOrderAccepted')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
         ->select('o.*','a.alias','a.address')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
