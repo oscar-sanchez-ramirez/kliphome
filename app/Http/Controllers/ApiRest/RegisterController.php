@@ -14,13 +14,14 @@ use Carbon\Carbon;
 class RegisterController extends ApiController
 {
     public function register(Request $request){
+        $random = substr(md5(mt_rand()), 0, 10);
         $this->validate($request,[
             'email' => 'required|email|unique:users',
             'name' => 'required',
             // 'lastName' => 'required',
             'password' => 'required'
         ]);
-        $random = substr(md5(mt_rand()), 0, 10);
+
         Log::notice($random);
         $user = User::create([
             'name' => $request->name,
@@ -30,12 +31,13 @@ class RegisterController extends ApiController
             'password' => bcrypt($request->password),
             'code' => $random
         ])->toArray();
+        Log::notice($user);
         $word = "Ciudad de México";
         $address = $request->address;
         Log::notice($address);
 
         // Test if string contains the word
-        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX") !== false){
+        if(strpos($address, "Ciudad de México") || strpos($address, "CDMX") || strpos($address, "Méx., México")){
             $delegation = "1";
         } elseif(strpos($address, "Guadalajara") !== false){
             $delegation = "2";
@@ -72,8 +74,6 @@ class RegisterController extends ApiController
                 'message' => "La contraseña se actualizó"
             ]);
         }
-
-
 
     }
 
