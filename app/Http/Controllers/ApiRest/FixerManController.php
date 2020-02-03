@@ -237,6 +237,7 @@ class FixerManController extends ApiController
         if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
             return response()->json([
                 'message' => "Este trabajo ya ha sido asignado",
+                'order' => $order,
                 'user' => $user,
                 'categories' => $categories,
                 'qualifies' => $qualifies,
@@ -245,6 +246,7 @@ class FixerManController extends ApiController
         }
         return response()->json([
             'user' => $user,
+            'order' => $order,
             'categories' => $categories,
             'qualifies' => $qualifies,
             'order_category' => $order_category->table($order->type_service,$order->selected_id)
