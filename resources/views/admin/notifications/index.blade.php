@@ -53,7 +53,7 @@
                             </thead>
                             <tbody>
                                 @php $i = 1 @endphp
-                                @foreach ($notifications as $noti)
+                                @foreach (Auth::user()->unreadNotifications as $noti)
                                     <tr class="tr-shadow">
                                         <td>
                                             <label class="au-checkbox">
@@ -70,7 +70,7 @@
                                         @if ($noti->type == "App\Notifications\Database\NewQuotation")
                                         <td><p>Una órden necesita una cotización</p></td>
                                         {{-- <td>{{ $noti->created_at->diffForHumans() }}</td> --}}
-                                        <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data)) }}">Cotizar</a></td>
+                                        <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["order_id"])) }}">Cotizar</a></td>
                                         @else
 
                                         @endif
