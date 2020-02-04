@@ -24,7 +24,7 @@ class OrderController extends Controller
 
     //Show all orders
     public function index(){
-        $ordenes = Order::all(['id','user_id','service_description','service_date','created_at'])->paginate(3);
+        $ordenes = Order::select(['id','user_id','service_description','service_date','created_at'])->paginate(3);
         return view('admin.orders.index')->with('ordenes',$ordenes);
     }
 
