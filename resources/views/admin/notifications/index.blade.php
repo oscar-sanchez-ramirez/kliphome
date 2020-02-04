@@ -61,12 +61,12 @@
                                             </label>
                                         </td>
                                         <td>{{ $order->id }}</td>
-                                        <td>{{ $orden->service_description }}</td>
-                                        <td>{{ $orden->service_date }}</td>
-                                        <td>{{ $orden->created_at->diffForHumans() }}</td>
+                                        <td>{{ $order->service_description }}</td>
+                                        <td>{{ $order->service_date }}</td>
+                                        <td>{{ $order->created_at->diffForHumans() }}</td>
                                         <td>
                                             <div class="table-data-feature">
-                                                <a class="item" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
+                                                <a class="item" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $order->id }}">
                                                     <i class="zmdi zmdi-eye"></i>
                                                 </a>
                                             </div>
