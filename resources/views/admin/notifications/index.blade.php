@@ -53,7 +53,7 @@
                             </thead>
                             <tbody>
                                 @php $i = 1 @endphp
-                                @foreach (Auth::user()->unreadNotifications as $noti)
+                                @foreach (Auth::user()->notifications as $noti)
                                     <tr class="tr-shadow">
                                         <td>
                                             <label class="au-checkbox">
