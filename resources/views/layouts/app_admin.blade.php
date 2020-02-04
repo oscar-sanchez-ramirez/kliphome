@@ -306,7 +306,7 @@
                                             <div class="notifi__title">
                                                 <p>Tienes {{ Auth::user()->unreadNotifications->count() }} Notificaciones</p>
                                             </div>
-                                            @foreach(Auth::user()->unreadNotifications->limit(5) as $notification)
+                                            @foreach(Auth::user()->unreadNotifications->limit(5)->get() as $notification)
                                             @if($notification->type == "App\Notifications\NotifyAcceptOrder")
                                                 <div class="notifi__item">
                                                     <div class="bg-c1 img-cir img-40">
