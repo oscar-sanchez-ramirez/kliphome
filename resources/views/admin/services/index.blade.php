@@ -88,6 +88,7 @@
                     {{-- @endif --}}
                 </div>
                 <!-- END DATA TABLE -->
+                {{ $services->links() }}
             </div>
         </div>
     </div>
