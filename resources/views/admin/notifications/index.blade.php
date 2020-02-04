@@ -52,7 +52,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php {{ $i = 1 }} @endphp
+                                @php $i = 1 @endphp
                                 @foreach ($notifications as $noti)
                                     <tr class="tr-shadow">
                                         <td>
