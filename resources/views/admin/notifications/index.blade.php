@@ -65,12 +65,12 @@
                                         @if ($noti->type == "App\Notifications\NotifyAcceptOrder")
                                             <td><p>Un Técnico aceptó un trabajo</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
-                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Ver</a></td>
+                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["order_id"])) }}">Ver</a></td>
                                         @endif
                                         @if ($noti->type == "App\Notifications\Database\NewQuotation")
                                         <td><p>Una órden necesita una cotización</p></td>
                                         {{-- <td>{{ $noti->created_at->diffForHumans() }}</td> --}}
-                                        <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Cotizar</a></td>
+                                        <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["order_id"])) }}">Cotizar</a></td>
                                         @else
 
                                         @endif
