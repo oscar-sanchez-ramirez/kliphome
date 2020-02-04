@@ -52,7 +52,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{ $i = 1 }}
+                                @php {{ $i = 1 }} @endphp
                                 @foreach ($notifications as $noti)
                                     <tr class="tr-shadow">
                                         <td>
@@ -61,7 +61,7 @@
                                                 <span class="au-checkmark"></span>
                                             </label>
                                         </td>
-                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $i++ }} {{$noti->type }}</td>
                                         @if ($noti->type == "App\Notifications\NotifyAcceptOrder")
                                             <td><p>Un Técnico aceptó un trabajo</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
