@@ -52,7 +52,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($notifications as $orden)
+                                @foreach ($notifications as $order)
                                     <tr class="tr-shadow">
                                         <td>
                                             <label class="au-checkbox">
@@ -80,7 +80,7 @@
                 </div>
                 <!-- END DATA TABLE -->
             </div>
-            {{ $ordenes->links() }}
+            {{ $notifications->links() }}
         </div>
     </div>
 </div>
