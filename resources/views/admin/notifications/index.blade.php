@@ -80,7 +80,7 @@
                 </div>
                 <!-- END DATA TABLE -->
             </div>
-            {{ $notifications->links() }}
+            {{-- {{ $notifications->links() }} --}}
         </div>
     </div>
 </div>
