@@ -357,6 +357,10 @@
                                             @endif
                                             @endforeach
                                         </div>
+                                        <div class="notifi__footer">
+                                            <a href="#">Todas las Notificaciones</a>
+                                            <a href="#">Marcar todas como leidas</a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="account-wrap">
