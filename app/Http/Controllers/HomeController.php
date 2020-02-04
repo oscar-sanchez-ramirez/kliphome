@@ -30,7 +30,7 @@ class HomeController extends Controller
 
     public function notificaciones(){
         $admin = User::where('type','ADMINISTRATOR')->first();
-        $notificaciones = DB::table('notifications')->where('notifiable_id',$admin->id)->get();
+        $notificaciones = DB::table('notifications')->where('notifiable_id',$admin->id)->paginate(10);
         return view('admin.notifications.index')->with('notifications',$notificaciones);
     }
 

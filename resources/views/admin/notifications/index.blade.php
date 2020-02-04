@@ -52,7 +52,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($notifications as $order)
+                                {{ $i = 1 }}
+                                @foreach ($notifications as $noti)
                                     <tr class="tr-shadow">
                                         <td>
                                             <label class="au-checkbox">
@@ -60,9 +61,14 @@
                                                 <span class="au-checkmark"></span>
                                             </label>
                                         </td>
-                                        <td>{{ $order->id }}</td>
-                                        {{-- <td>{{ $order->service_description }}</td>
-                                        <td>{{ $order->service_date }}</td>
+                                        <td>{{ $i++ }}</td>
+                                        @if ($noti->type == "App\Notifications\NotifyAcceptOrder")
+                                            <td><p>Un Técnico aceptó un trabajo</p></td>
+                                            <td>{{ $noti->created_at->diffForHumans() }}</td>
+                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Ver</a></td>
+                                        @endif
+
+                                        {{--
                                         <td>{{ $order->created_at->diffForHumans() }}</td>
                                         <td>
                                             <div class="table-data-feature">
@@ -80,7 +86,7 @@
                 </div>
                 <!-- END DATA TABLE -->
             </div>
-            {{-- {{ $notifications->links() }} --}}
+            {{ $notifications->links() }}
         </div>
     </div>
 </div>
