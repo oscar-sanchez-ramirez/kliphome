@@ -71,17 +71,17 @@
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
                                             <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["order_id"])) }}">Cotizar</a></td>
                                         @endif
-                                        @if($notification->type == "App\Notifications\Database\NewQuotation")
+                                        @if($noti->type == "App\Notifications\Database\NewQuotation")
                                             <td><p>Una órden necesita una cotización</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
                                             <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["order_id"])) }}">Cotizar</a></td>
                                         @endif
-                                        @if($notification->type == "App\Notifications\Database\QuotationCancelled")
+                                        @if($noti->type == "App\Notifications\Database\QuotationCancelled")
                                             <td><p>El usuario no aceptó la tarifa</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
                                             <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["id"])) }}">Ver Órden</a></td>
                                         @endif
-                                        @if($notification->type == "App\Notifications\NewFixerMan")
+                                        @if($noti->type == "App\Notifications\NewFixerMan")
                                             <td><p>Un nuevo técnico se registró</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
                                             <td><a href="{{ url('') }}/tecnicos">Ver</a></td>
