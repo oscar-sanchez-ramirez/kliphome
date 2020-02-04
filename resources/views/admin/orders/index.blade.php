@@ -80,6 +80,7 @@
                 </div>
                 <!-- END DATA TABLE -->
             </div>
+            {{ $ordenes->links() }}
         </div>
     </div>
 </div>
