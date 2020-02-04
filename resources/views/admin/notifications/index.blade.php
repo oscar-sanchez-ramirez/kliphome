@@ -61,7 +61,7 @@
                                             </label>
                                         </td>
                                         <td>{{ $order->id }}</td>
-                                        <td>{{ $order->service_description }}</td>
+                                        {{-- <td>{{ $order->service_description }}</td>
                                         <td>{{ $order->service_date }}</td>
                                         <td>{{ $order->created_at->diffForHumans() }}</td>
                                         <td>
@@ -70,7 +70,7 @@
                                                     <i class="zmdi zmdi-eye"></i>
                                                 </a>
                                             </div>
-                                        </td>
+                                        </td>--}}
                                     </tr>
                                     <tr class="spacer"></tr>
                                 @endforeach
