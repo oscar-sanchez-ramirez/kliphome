@@ -357,8 +357,11 @@
                                             @endif
                                             @endforeach
                                             <div class="notifi__footer">
-                                                <a href="#">Todas las Notificaciones</a>
-                                                <a href="#">Marcar todas como leidas</a>
+                                                <a href="{{ url('') }}/notificaciones">Todas las Notificaciones</a>
+                                                <form action="{{ url('') }}/markasread">
+                                                    @csrf
+                                                    <a href="#" type="submit">Marcar todas como leidas</a>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

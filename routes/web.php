@@ -46,6 +46,8 @@ Route::get('/api/messages', 'Chat\MessageController@index');
 Route::post('/api/messages', 'Chat\MessageController@store');
 Route::post('nueva-conversacion/{id}/{nombres}/{id_anuncio}','Chat\ConversationController@nueva_conversacion');
 
-
+//Notifications
+Route::get('notificaciones','HomeController@notificaciones');
+Route::post('markasread','HomeController@markasread');
 Route::get('testOrder', 'ApiRest\OrderController@testOrder');
 Route::get('test','Admin\NotificationsProvider@test');
