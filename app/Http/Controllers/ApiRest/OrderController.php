@@ -37,10 +37,15 @@ class OrderController extends ApiController
             $order->order_id = $order->id;
             $client = User::where('type',"ADMINISTRATOR")->first();
             $client->notify(new NewQuotation($order));
-
-            return Response(json_encode(array('success' => "La orden de servicio se realizó con éxito")));
+            return response()->json([
+                'success' => true,
+                'message' => "La orden de servicio se realizó con éxito"
+            ]);
         } catch (\Throwable $th) {
-            return Response(json_encode(array('failed' => "La orden de servicio no se realizó con éxito")));
+            return response()->json([
+                'success' => false,
+                'message' => "La orden de servicio no se realizó con éxito"
+            ]);
         }
     }
 
