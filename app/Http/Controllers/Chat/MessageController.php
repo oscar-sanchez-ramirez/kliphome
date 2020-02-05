@@ -13,7 +13,7 @@ class MessageController extends ApiController
 {
     public function __construct()
 	{
-	    // $this->middleware(['auth']);
+	    $this->middleware(['auth:api']);
     }
     public function messenger(){
         $carbon = new \Carbon\Carbon();
