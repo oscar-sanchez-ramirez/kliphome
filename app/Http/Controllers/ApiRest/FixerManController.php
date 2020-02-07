@@ -54,10 +54,14 @@ class FixerManController extends ApiController
             ])->toArray();
 
             //SAVE SELECTED DELEGATION
-            $selected = new SelectedDelegation;
-            $selected->user_id = $user["id"];
-            $selected->delegation_id = $request->workArea;
-            $selected->save();
+            $workAreas = explode(',',$request->workArea);
+            for ($i=0; $i < count($workAreas); $i++) {
+                $selected = new SelectedDelegation;
+                $selected->user_id = $user["id"];
+                $selected->colony = $workAreas[$i];
+                $selected->postal_code = $request->postal_code;
+                $selected->save();
+            }
             //SAVE SELECTED CATEGORIES
             $categories = explode(',',$request->categories);
             for ($i=0; $i < count($categories); $i++) {

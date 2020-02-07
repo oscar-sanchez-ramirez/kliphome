@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,8 +17,8 @@ class CreateSelectedDelegationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('delegation_id')->unsigned();
-            $table->foreign('delegation_id')->references('id')->on('delegations');
+            $table->string('colony');
+            $table->string('postal_code');
             $table->timestamps();
         });
     }
