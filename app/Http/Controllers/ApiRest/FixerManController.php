@@ -269,12 +269,21 @@ class FixerManController extends ApiController
         }else if($field == "Servicios"){
             DB::table('selected_categories')->where('user_id',$user_id)->delete();
             $new_value = explode(',', $value);
-            Log::notice($new_value);
             for ($i=0; $i < count($new_value); $i++) {
                 $sel = new SelectedCategories;
                 $sel->user_id = $user_id;
                 $sel->category_id = $new_value[$i];
                 $sel->save();
+            }
+        }else if($field == "Colonias"){
+            SelectedDelegation::where('user_id',$user_id)->delete();
+            $workAreas = explode(',',$value);
+            for ($i=0; $i < count($workAreas); $i++) {
+                $selected = new SelectedDelegation;
+                $selected->user_id = $user_id;
+                $selected->colony = $workAreas[$i];
+                $selected->postal_code = $request->postal_code;
+                $selected->save();
             }
         }
         else{
@@ -369,6 +378,9 @@ class FixerManController extends ApiController
                 break;
             case 'Servicios':
                 return "Servicios";
+                break;
+            case 'Colonias':
+                return "Colonias";
                 break;
             default:
                 # code...
