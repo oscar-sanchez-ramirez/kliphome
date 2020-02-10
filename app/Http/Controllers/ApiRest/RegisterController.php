@@ -34,7 +34,7 @@ class RegisterController extends ApiController
         $address = $request->delegation;
 
         // Test if string contains the word
-        if(strpos($address, "Ciudad de México") || strpos($address, "CDMX") || strpos($address, "Méx., México")){
+        if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
             $delegation = "1";
         } elseif(strpos($address, "Guadalajara") !== false){
             $delegation = "2";
