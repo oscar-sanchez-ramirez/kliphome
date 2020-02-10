@@ -14,6 +14,7 @@ use Carbon\Carbon;
 class RegisterController extends ApiController
 {
     public function register(Request $request){
+        Log::notice($request->all());
         $this->validate($request,[
             'email' => 'required|email|unique:users',
             'name' => 'required',
