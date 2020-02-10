@@ -17,6 +17,8 @@ class CreateAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->string('alias');
             $table->string('address');
+            $table->string('postal_code')->nullable();
+            $table->string('reference')->nullable();
             $table->string('delegation');
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');

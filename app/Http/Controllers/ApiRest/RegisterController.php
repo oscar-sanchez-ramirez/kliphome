@@ -30,7 +30,7 @@ class RegisterController extends ApiController
             'password' => bcrypt($request->password),
             'code' => $random
         ])->toArray();
-        $address = $request->address;
+        $address = $request->delegation;
 
         // Test if string contains the word
         if(strpos($address, "Ciudad de México") || strpos($address, "CDMX") || strpos($address, "Méx., México")){
@@ -41,6 +41,8 @@ class RegisterController extends ApiController
         Address::create([
             'alias' => $request->alias,
             'address' => $request->address,
+            'reference' => $request->reference,
+            'postal_code' => $request->postal_code,
             'user_id' => $user["id"],
             'delegation' => $delegation
         ]);
