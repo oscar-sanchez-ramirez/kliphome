@@ -6,6 +6,7 @@ use App\Address;
 use App\ResetPassword;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
+use App\Http\Requests\ClientRequest;
 use App\User;
 use Mail;
 use Illuminate\Support\Facades\Log;
@@ -13,14 +14,7 @@ use Carbon\Carbon;
 
 class RegisterController extends ApiController
 {
-    public function register(Request $request){
-        Log::notice($request->all());
-        $this->validate($request,[
-            'email' => 'required|email|unique:users',
-            'name' => 'required',
-            // 'lastName' => 'required',
-            'password' => 'required'
-            ]);
+    public function register(ClientRequest $request){
 
         $random = strtoupper(substr(md5(mt_rand()), 0, 10));
         $user = User::create([
