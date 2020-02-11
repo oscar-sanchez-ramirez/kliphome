@@ -144,9 +144,9 @@ class ApiServiceController extends ApiController
 
     }
 
-    public function testSubCategories($category){
+    public function testSubCategories($category_p){
         $category = new Category;
-        $subCategories = $category->SubCategories($category);
+        $subCategories = $category->SubCategories($category_p);
         return Response(json_encode(array('subCategories' => $subCategories)));
     }
 
