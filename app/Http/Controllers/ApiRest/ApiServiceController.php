@@ -20,8 +20,9 @@ class ApiServiceController extends ApiController
         $this->middleware('auth:api', ['only' => ['getSubCategories']]);
     }
     //Getting sub-categories for clientApp
-    public function getSubCategories($category){
-        $subCategories = DB::table('categories as c')->join('sub_categories as s','c.id','s.category_id')->where('c.title',$category)->select('s.title')->get();
+    public function getSubCategories($category_p){
+        $category = new Category;
+        $subCategories = $category->SubCategories($category_p);
         return Response(json_encode(array('subCategories' => $subCategories)));
     }
     //Getting services for clientApp
@@ -142,12 +143,6 @@ class ApiServiceController extends ApiController
                 break;
         }
 
-    }
-
-    public function testSubCategories($category_p){
-        $category = new Category;
-        $subCategories = $category->SubCategories($category_p);
-        return Response(json_encode(array('subCategories' => $subCategories)));
     }
 
 }

@@ -18,7 +18,6 @@ use App\Http\Controllers\ApiRest\ApiServiceController;
 //SERVICES
 Route::post('oauth/token','\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
 Route::get('sub-categories/{category}','ApiRest\ApiServiceController@getSubCategories');
-Route::get('testSubCategories/{category}','ApiRest\ApiServiceController@testSubCategories');
 Route::get('services/{subCategory}','ApiRest\ApiServiceController@getServices');
 //Orders**
 Route::post('orders/create','ApiRest\OrderController@create');
