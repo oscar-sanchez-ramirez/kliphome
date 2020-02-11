@@ -12,7 +12,11 @@ class Category extends Model
     }
     public function SubCategories($title){
         Log::notice($title);
-        return DB::table('categories as c')->join('sub_categories as s','c.id','s.category_id')->where('c.title',$title)->select('s.title')->get();
+        return DB::table('categories as c')
+        ->join('sub_categories as s','c.id','s.category_id')->join('services as se','se.subcategory_id','s.id')
+        ->select('s.title',DB::raw('count(se.id) as user_count'))
+        ->where('c.title',$title)
+        ->get();
     }
     protected $hidden = [
         'created_at', 'updated_at',
