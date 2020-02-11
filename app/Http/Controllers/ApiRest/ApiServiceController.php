@@ -145,8 +145,8 @@ class ApiServiceController extends ApiController
     }
 
     public function testSubCategories($category){
-        $subCategories = Category::SubCategories($category);
-
+        $category = new Category;
+        $subCategories = $category->SubCategories($category);
         return Response(json_encode(array('subCategories' => $subCategories)));
     }
 
