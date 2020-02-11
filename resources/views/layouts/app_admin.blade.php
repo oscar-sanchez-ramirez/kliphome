@@ -316,7 +316,7 @@
                                                         <p>Un Técnico aceptó un trabajo</p>
                                                         <form action="{{ url('') }}/ordenes/detalle-</{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                                                            <a href="" type="submit">Ver</a>
+                                                            <button type="submit">Ver</button>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
@@ -331,7 +331,7 @@
                                                         <p>Una órden necesita una cotización</p>
                                                         <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                                                            <a href="" type="submit">Cotizar</a>
+                                                            <button type="submit">Cotizar</button>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
@@ -346,7 +346,7 @@
                                                         <p>El usuario no aceptó la tarifa</p>
                                                         <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["id"])) }}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                                                            <a href="" type="submit">Ver Órden</a>
+                                                            <button type="submit">Ver Órden</button>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
@@ -361,7 +361,7 @@
                                                         <p>Un nuevo técnico se registró</p>
                                                         <form action="{{ url('') }}/tecnicos">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                                                            <a href="" type="submit">Ver</a>
+                                                            <button type="submit">Ver</button>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
