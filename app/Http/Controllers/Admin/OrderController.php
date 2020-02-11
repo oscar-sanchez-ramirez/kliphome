@@ -31,9 +31,7 @@ class OrderController extends Controller
 
     //Show one order
     public function orderDetail(Request $request,$id){
-        Log::notice($request->all());
         if($request->filled('notification_id')){
-            Log::notice($request->notification_id);
             DB::table('notifications')->where('id',$request->notification_id)->update(['read_at'=>Carbon::now()]);
         }
         $orden = Order::find($id);

@@ -15,7 +15,10 @@ class FixerManController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index(){
+    public function index(Request $request){
+        if($request->filled('notification_id')){
+            DB::table('notifications')->where('type',"App\Notifications\NewFixerMan")->update(['read_at'=>Carbon::now()]);
+        }
         $users = User::where('type','AppFixerMan')->get();
         return view('admin.fixerman.index')->with('users',$users);
     }
