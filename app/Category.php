@@ -14,7 +14,7 @@ class Category extends Model
         Log::notice($title);
         return DB::table('categories as c')
         ->join('sub_categories as s','c.id','s.category_id')->join('services as se','se.subcategory_id','s.id')
-        ->select('s.title',DB::raw('count(se.id) as user_count'))
+        ->select('s.title',DB::raw('count(se.id) as user_count'))->groupBy('s.title')
         ->where('c.title',$title)
         ->get();
     }
