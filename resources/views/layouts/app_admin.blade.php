@@ -315,7 +315,7 @@
                                                     <div class="content">
                                                         <p>Un Técnico aceptó un trabajo</p>
                                                         <form action="{{ url('') }}/ordenes/detalle-</{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
-                                                            <a href="#" type="submit">Ver</a>
+                                                            <a href="" type="submit">Ver</a>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
@@ -329,7 +329,7 @@
                                                     <div class="content">
                                                         <p>Una órden necesita una cotización</p>
                                                         <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
-                                                            <a href="#" type="submit">Cotizar</a>
+                                                            <a href="" type="submit">Cotizar</a>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
@@ -343,7 +343,7 @@
                                                     <div class="content">
                                                         <p>El usuario no aceptó la tarifa</p>
                                                         <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["id"])) }}">
-                                                            <a href="#" type="submit">Ver Órden</a>
+                                                            <a href="" type="submit">Ver Órden</a>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
@@ -357,7 +357,7 @@
                                                     <div class="content">
                                                         <p>Un nuevo técnico se registró</p>
                                                         <form action="{{ url('') }}/tecnicos">
-                                                            <a href="#" type="submit">Ver</a>
+                                                            <a href="" type="submit">Ver</a>
                                                         </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
@@ -368,7 +368,7 @@
                                                 <a href="{{ url('') }}/notificaciones">Todas las Notificaciones</a>
                                                 <form action="{{ url('') }}/markasread">
                                                     @csrf
-                                                    <a href="#" type="submit">Marcar todas como leidas</a>
+                                                    <a href="" type="submit">Marcar todas como leidas</a>
                                                 </form>
                                             </div>
                                         </div>
