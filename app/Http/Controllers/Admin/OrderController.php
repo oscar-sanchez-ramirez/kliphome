@@ -8,6 +8,7 @@ use App\User;
 use App\Order;
 use App\Quotation;
 use App\SelectedOrders;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Jobs\ApproveOrderFixerMan;
 use Illuminate\Support\Facades\Log;
@@ -29,7 +30,10 @@ class OrderController extends Controller
     }
 
     //Show one order
-    public function orderDetail($id){
+    public function orderDetail(Request $request,$id){
+        if($request->filled('notification_id')){
+            DB::table('notifications')->where('id',$request->notification_id)->update(['read_at'=>Carbon::now()]);
+        }
         $orden = Order::find($id);
         $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
 
