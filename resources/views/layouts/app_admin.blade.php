@@ -314,7 +314,9 @@
                                                     </div>
                                                     <div class="content">
                                                         <p>Un Técnico aceptó un trabajo</p>
-                                                        <a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Ver</a>
+                                                        <form action="{{ url('') }}/ordenes/detalle-</{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
+                                                            <a href="#" type="submit">Ver</a>
+                                                        </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
                                                 </div>
@@ -326,7 +328,9 @@
                                                     </div>
                                                     <div class="content">
                                                         <p>Una órden necesita una cotización</p>
-                                                        <a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">Cotizar</a>
+                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
+                                                            <a href="#" type="submit">Cotizar</a>
+                                                        </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
                                                 </div>
@@ -338,7 +342,9 @@
                                                     </div>
                                                     <div class="content">
                                                         <p>El usuario no aceptó la tarifa</p>
-                                                        <a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["id"])) }}">Ver Órden</a>
+                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["id"])) }}">
+                                                            <a href="#" type="submit">Ver Órden</a>
+                                                        </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
                                                 </div>
@@ -350,7 +356,9 @@
                                                     </div>
                                                     <div class="content">
                                                         <p>Un nuevo técnico se registró</p>
-                                                        <a href="{{ url('') }}/tecnicos">Ver</a>
+                                                        <form action="{{ url('') }}/tecnicos">
+                                                            <a href="#" type="submit">Ver</a>
+                                                        </form>
                                                         <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
                                                 </div>
