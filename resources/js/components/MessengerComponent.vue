@@ -39,6 +39,7 @@ export default{
   },
   mounted(){
     this.$store.commit('setUser',this.user);
+    this.$store.dispatch('getAccess');
     this.$store.dispatch('getConversations');
     Echo.private('users.'+this.user.id).listen('MessageSent',(data)=>{
       const message = data.message;

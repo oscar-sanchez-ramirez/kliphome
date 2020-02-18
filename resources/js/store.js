@@ -48,8 +48,22 @@ export default new Vuex.Store({
         },
     },
     actions: {
+      getAccess(context){
+        const params = {
+          grant_type: "password",
+          client_id : 2,
+          client_secret : "knnI4v0lLc34VyKg6vR25pWMWTstx2dB4I69bqfq",
+          username: "admin@kliphome.com",
+          password: "kliphome2019"
+        };
+        return axios.post('/oauth/token',params).then((response) => {
+          this.state.credentials = response.data;
+          console.log(this.state.credentials);
+          console.log(this.state.credentials.access_token);
+        });
+
+      },
       getMessages(context,conversation){
-        console.log(conversation);
         axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id).then(
           response=>{
             context.commit('selectConversation',conversation);
