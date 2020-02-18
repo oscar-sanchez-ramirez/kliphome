@@ -49,7 +49,8 @@ export default new Vuex.Store({
     },
     actions: {
       getMessages(context,conversation){
-        axios.get('/api/messages?contact_id='+conversation.contact_id).then(
+        console.log(conversation);
+        axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id).then(
           response=>{
             context.commit('selectConversation',conversation);
             context.commit('newMessagesList',response.data);
@@ -60,6 +61,14 @@ export default new Vuex.Store({
         axios.get('/api/conversations').then((response) => {
           if(response.data != ""){
             this.state.selectedConversation = response.data[0];
+          }
+          for (let index = 0; index < response.data.length; index++) {
+            if(index > 0){
+              if(response.data[index].contact_id == response.data[index-1].user_id){
+                response.data[index-1].group = response.data[index-1].contact_name.name+' '+response.data[index-1].contact_name.lastName+' con '+response.data[index].contact_name.name+' '+response.data[index].contact_name.lastName;
+                response.data.splice(response.data.indexOf(response.data[index]), 1);
+              }
+            }
           }
           context.commit('newConversationsList',response.data);
         });
@@ -79,20 +88,6 @@ export default new Vuex.Store({
           }
         });
       },
-      getAccess(context){
-        const params = {
-          grant_type: "password",
-          client_id : 8,
-          client_secret : "hxu9AKdphTDjWqR9q9MQdrGFrNKuQUAZwSNq2ekl",
-          username: "admin@kliphome.com",
-          password: "kliphome2019"
-        };
-        return axios.post('/oauth/token',params).then((response) => {
-          this.state.credentials = response.data;
-          console.log(this.state.credentials.access_token);
-        });
-
-      }
     },
     getters:{
       conversationsFiltered(state){

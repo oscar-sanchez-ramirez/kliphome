@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Chat;
 
+use DB;
 use Auth;
 use App\Order;
 use Carbon\Carbon;
@@ -16,13 +17,18 @@ class ConversationController extends ApiController
 {
   public function __construct()
   {
-      $this->middleware('auth:api');
+      $this->middleware('auth');
+      $this->middleware('checkadmin');
   }
   public function index()
   {
-    return Conversation::where('user_id',Auth::user()->id)->orderBy('last_time',"DESC")->get([
-        'id','contact_id','has_blocked','listen_notifications','last_message','last_time'
+    return Conversation::get([
+        'id','contact_id','user_id','has_blocked','listen_notifications','last_message','last_time'
     ]);
+
+    // Conversation::where('user_id',Auth::user()->id)->orderBy('last_time',"DESC")->get([
+    //     'id','contact_id','has_blocked','listen_notifications','last_message','last_time'
+    // ]);
   }
   public function indexRest($id){
     return Conversation::where('user_id',$id)->orderBy('last_time',"DESC")->get([

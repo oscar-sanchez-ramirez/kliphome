@@ -38,20 +38,13 @@ export default{
     user: Object
   },
   mounted(){
-    this.$store.dispatch('getAccess');
-
-
-
     this.$store.commit('setUser',this.user);
     this.$store.dispatch('getConversations');
-
     Echo.private('users.'+this.user.id).listen('MessageSent',(data)=>{
       const message = data.message;
       message.written_by_me = 0;
       this.addMessage1(message);
     });
-
-
     Echo.join('messenger')
     .here((users)=>{
       users.forEach(user => this.changeStatus(user,true));

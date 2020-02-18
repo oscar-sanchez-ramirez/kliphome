@@ -9,7 +9,7 @@
                 <p class="mb-0">
                   <status-component :online="conversation.online"></status-component>
 
-                  {{ conversation.contact_name["name"].substring(0,8) }}  {{ conversation.contact_name["lastName"].substring(0,8) }}
+                  {{ conversation.group }}
                 </p>
                 <p class="text-muted small mb-1">{{ conversation.last_message }}</p>
 

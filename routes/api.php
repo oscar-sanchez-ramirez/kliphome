@@ -70,7 +70,7 @@ Route::post('notifications/deleteNotification/{id}','ApiRest\NotificationsContro
 
 
 //Chat**
-Route::get('conversationsRest/{id}', 'Chat\ConversationController@indexRest');
-Route::get('messagesRest/{user_id}/{contact_id}/{page}', 'Chat\MessageController@indexRest');
-Route::post('messagesRest', 'Chat\MessageController@storeRest');
-Route::post('new_conversation','Chat\ConversationController@new_conversation');
+Route::get('conversationsRest/{id}', 'ApiRest\ConversationController@indexRest');
+Route::get('messagesRest/{user_id}/{contact_id}/{page}', 'ApiRest\MessageController@indexRest');
+Route::post('messagesRest', 'ApiRest\MessageController@storeRest');
+Route::post('new_conversation','ApiRest\ConversationController@new_conversation');

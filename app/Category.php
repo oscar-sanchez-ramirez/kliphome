@@ -11,7 +11,6 @@ class Category extends Model
         return SubCategory::where('category_id',$id)->count();
     }
     public function SubCategories($title){
-        Log::notice($title);
         return DB::table('categories as c')
         ->join('sub_categories as s','c.id','s.category_id')->LeftJoin('services as se','se.subcategory_id','s.id')
         ->select('s.title',DB::raw('count(se.id) as services_count'))->groupBy('s.title')

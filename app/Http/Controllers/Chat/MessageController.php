@@ -13,7 +13,8 @@ class MessageController extends ApiController
 {
     public function __construct()
 	{
-	    $this->middleware(['auth:api']);
+        $this->middleware('auth');
+        $this->middleware('checkadmin');
     }
     public function messenger(){
         $carbon = new \Carbon\Carbon();
@@ -25,7 +26,7 @@ class MessageController extends ApiController
     }
     public function index(Request $request)
     {
-        $userId = Auth::user()->id;
+        $userId = $request->user_id;
         $contactId = $request->contact_id;
         return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
         ->where(function ($query) use ($userId,$contactId){
