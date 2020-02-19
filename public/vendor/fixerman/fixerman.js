@@ -17,7 +17,7 @@ function listFixerManDetail(fixerman_id){
             console.log(data);
             $("#fixerManCategories").html('');
             for (let index = 0; index < data["delegations"].length; index++) {
-                $("#fixerManDelegation").append('&nbsp;&nbsp;&nbsp;&nbsp;<li>'+data["delegations"][index]["title"]+'</li>');
+                $("#fixerManDelegation").append('<li>'+data["delegations"][index]["title"]+'</li>');
             }
             for (let index = 0; index < data["categories"].length; index++) {
                 $("#fixerManCategories").append('<li>'+data["categories"][index]['title']+'</li>');
