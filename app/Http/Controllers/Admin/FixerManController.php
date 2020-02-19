@@ -24,7 +24,7 @@ class FixerManController extends Controller
         return view('admin.fixerman.index')->with('users',$users);
     }
     public function detail($id){
-        $delegation = DB::table('selected_delegations as s')->join('delegations as d','s.delegation_id','d.id')->select('s.id','d.id as delegation_id','d.title')->where('s.user_id',$id)->get();
+        $delegation = DB::table('selected_delegations')->select('colony as title','postal_code')->where('user_id',$id)->get();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
         return response()->json([
             'delegations' => $delegation,
