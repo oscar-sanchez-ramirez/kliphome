@@ -14,6 +14,7 @@ function listFixerManDetail(fixerman_id){
         type: "GET",
         url: url,
         success: function(data) {
+            console.log(data);
             $("#fixerManCategories").html('');
             $("#fixerManDelegation").html('&nbsp;&nbsp;&nbsp;&nbsp;'+data["delegations"][0]["title"]);
             for (let index = 0; index < data["categories"].length; index++) {
