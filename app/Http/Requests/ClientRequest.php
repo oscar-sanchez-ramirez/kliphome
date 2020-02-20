@@ -27,7 +27,7 @@ class ClientRequest extends FormRequest
             'email' => 'required|email|unique:users',
             'name' => 'required',
             'postal_code' => 'required',
-            'lastName' => 'required',
+            'last_name' => 'required',
             'password' => 'required'
         ];
     }
