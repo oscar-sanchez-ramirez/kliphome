@@ -89,8 +89,7 @@ class RegisterController extends ApiController
             'latitud' => $request->latitud
         ]);
         return response()->json([
-            'message' => "Dirección actualizada",
-            'user' => $user
+            'message' => "Dirección actualizada"
         ]);
     }
 
