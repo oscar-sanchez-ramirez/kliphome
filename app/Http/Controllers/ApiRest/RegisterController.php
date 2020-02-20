@@ -14,7 +14,7 @@ use Carbon\Carbon;
 
 class RegisterController extends ApiController
 {
-    public function register(ClientRequest $request){
+    public function register(Request $request){
         return $request->all();
         $random = strtoupper(substr(md5(mt_rand()), 0, 10));
         $user = User::create([
