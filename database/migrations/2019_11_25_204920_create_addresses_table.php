@@ -20,6 +20,8 @@ class CreateAddressesTable extends Migration
             $table->string('postal_code')->nullable();
             $table->string('reference')->nullable();
             $table->string('delegation');
+            $table->string('longitud')->nullable();
+            $table->string('latitud')->nullable();
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

@@ -39,7 +39,9 @@ class RegisterController extends ApiController
             'reference' => $request->reference,
             'postal_code' => $request->postal_code,
             'user_id' => $user["id"],
-            'delegation' => $delegation
+            'delegation' => $delegation,
+            'longitud' => $request->longitud,
+            'latitud' => $request->latitud
         ]);
         return response()->json([
             'message' => "Usuario creado correctamente",
