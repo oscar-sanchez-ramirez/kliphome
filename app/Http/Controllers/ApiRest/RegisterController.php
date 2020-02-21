@@ -71,6 +71,28 @@ class RegisterController extends ApiController
 
     }
 
+    public function newAddress(Request $request){
+        $address = $request->delegation;
+        if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
+            $delegation = "1";
+        } elseif(strpos($address, "Guadalajara") !== false){
+            $delegation = "2";
+        }
+        Address::create([
+            'user_id'=>$request->user_id,
+            'alias' => $request->alias,
+            'address' => $request->address,
+            'reference' => $request->reference,
+            'postal_code' => $request->postal_code,
+            'delegation' => $delegation,
+            'longitud' => $request->longitud,
+            'latitud' => $request->latitud
+        ]);
+        return response()->json([
+            'message' => "Dirección creada"
+        ]);
+    }
+
     public function updateAddress(Request $request){
         $address = $request->delegation;
         if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
