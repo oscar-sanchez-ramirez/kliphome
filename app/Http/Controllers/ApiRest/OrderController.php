@@ -35,6 +35,16 @@ class OrderController extends ApiController
             $order->price = $request->price;
             $order->save();
             $order->order_id = $order->id;
+
+            $price = floatval($request->price);
+            Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+            $pago = Stripe\Charge::create ([
+                "amount" => $price * 100,
+                "currency" => "MXN",
+                "source" => $request->token,
+                "description" => "Pago de visita para orden".$order->id
+            ]);
+            Log::notice($pago);
             $client = User::where('type',"ADMINISTRATOR")->first();
             $client->notify(new NewQuotation($order));
             return response()->json([

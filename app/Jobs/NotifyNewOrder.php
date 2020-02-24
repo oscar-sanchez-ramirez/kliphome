@@ -37,8 +37,16 @@ class NotifyNewOrder implements ShouldQueue
 
         Log::info('entrando a dispatch');
         $order = Order::where('id',$this->id)->first();
+        $postal_code = Address::where('id',$order->address)->pluck('postal_code');
         $category = $this->table($order->type_service,$order->selected_id);
-        $user_match_categories = DB::table('users as u')->join('selected_categories as sc','u.id','sc.user_id')->select('u.*')->where('sc.category_id',$category[0]->id)->where('u.state',1)->get();
+        $user_match_categories =
+        DB::table('users as u')
+        ->join('selected_categories as sc','u.id','sc.user_id')
+        ->join('selected_delegations as sd','u.id','sd.user_id')
+        ->select('u.*')
+        ->where('sc.category_id',$category[0]->id)
+        ->where('sd.postal_code',$postal_code)
+        ->where('u.state',1)->get();
         foreach ($user_match_categories as $key) {
             $user = User::where('id',$key->id)->first();
             $user->sendNotification($user->email,'sendNotificationOrderMatch');
@@ -54,6 +62,10 @@ class NotifyNewOrder implements ShouldQueue
         switch ($type_service) {
             case 'Category':
                 $category = DB::table('categories')->select('title as service','id','title as category','visit_price')->where('id',$id)->get();
+                return $category;
+                break;
+            case 'SubCategory':
+                $category  = DB::table('sub_categories as su')->join('categories as ca','su.category_id','ca.id')->select('ca.title','ca.id','ca.visit_price','su.title as service','ca.title as category','su.title as sub_category','su.title as serviceTrait')->where('su.id',$id)->get();
                 return $category;
                 break;
             case 'Service':

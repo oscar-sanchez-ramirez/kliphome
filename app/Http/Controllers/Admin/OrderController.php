@@ -61,7 +61,7 @@ class OrderController extends Controller
 
 
         $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
-        $date = $date->format('D-M-Y H:i');
+        $date = $date->format('d-M-Y H:i');
 
         $quotation->mensajeClient = "Recibiste la cotización de tu orden para el ".$date;
         $user->notify(new QuotationSended($quotation));
