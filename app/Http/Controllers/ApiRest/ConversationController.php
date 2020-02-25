@@ -65,7 +65,7 @@ class ConversationController extends ApiController
     }else{
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
       $order = $request->order_id;
-      $contact = $request->contact_id;
+      $contact = $request->to_id;
     }
 
     if(!$check_conversation){
@@ -77,8 +77,8 @@ class ConversationController extends ApiController
       $con_auth->order_id = $order;
       $con_auth->save();
       $con = new Conversation;
-      $con->user_id = $contact;
-      $con->contact_id = $request->user_id;
+      $con->user_id = $request->to_id;
+      $con->contact_id = $contact;
       $con->last_time = Carbon::now();
       $con_auth->last_message = "Pulsa aquí para empezar";
       $con->order_id = $order;
