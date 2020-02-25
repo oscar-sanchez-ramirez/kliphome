@@ -13,7 +13,7 @@ class Category extends Model
     public function SubCategories($title){
         return DB::table('categories as c')
         ->join('sub_categories as s','c.id','s.category_id')->LeftJoin('services as se','se.subcategory_id','s.id')
-        ->select('s.title','s.id',DB::raw('count(se.id) as services_count'))->groupBy('s.title')
+        ->select('s.title','s.id',DB::raw('count(se.id) as services_count'))
         ->where('c.title',$title)
         ->get();
     }
