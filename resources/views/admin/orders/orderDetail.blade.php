@@ -146,7 +146,7 @@
             <div class="modal-body" style="max-heigth:500px;overflow:scroll">
                 <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}" method="POST">
                     @csrf
-                    <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Escribe un precio: Ejemplo:300">
+                    <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Escribe un precio: Ejemplo:300"><br>
                     <button class="au-input-icon" type="button"><i class="fa fa-dollar"></i></button>
                     <textarea name="solution" class="au-input au-input--full au-input--h65" cols="10" rows="3" placeholder="Explica la solución al problema"></textarea>
                     <textarea name="materials" class="au-input au-input--full au-input--h65" cols="10" rows="3" placeholder="Explica los materiales necesarios"></textarea>
