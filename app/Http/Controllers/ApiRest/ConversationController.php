@@ -4,11 +4,13 @@ namespace App\Http\Controllers\ApiRest;
 
 use Auth;
 use App\Order;
+use App\User;
 use Carbon\Carbon;
 use App\Conversation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Notifications\Database\NewConversation;
+use App\Notifications\Database\NewConversationAdmin;
 use App\Http\Controllers\ApiController;
 
 class ConversationController extends ApiController
@@ -53,7 +55,16 @@ class ConversationController extends ApiController
     return Redirect::action('Chat\MessageController@messenger');
   }
   public function new_conversation(Request $request){
-    $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
+
+    if($request->to_id == "to_id"){
+      $admin = User::where('type','ADMINISTRATOR')->first();
+      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$user->id)->first();
+      $order = 0;
+      $admin->notify(new NewConversationAdmin($request->all()));
+    }else{
+      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
+      $order = $request->order_id;
+    }
 
     if(!$check_conversation){
       $con_auth = new Conversation;
@@ -61,14 +72,14 @@ class ConversationController extends ApiController
       $con_auth->contact_id = $request->to_id;
       $con_auth->last_time = Carbon::now();
       $con_auth->last_message = "Pulsa aquí para empezar";
-      $con_auth->order_id = $request->order_id;
+      $con_auth->order_id = $order;
       $con_auth->save();
       $con = new Conversation;
       $con->user_id = $request->to_id;
       $con->contact_id = $request->user_id;
       $con->last_time = Carbon::now();
       $con_auth->last_message = "Pulsa aquí para empezar";
-      $con->order_id = $request->order_id;
+      $con->order_id = $order;
       $con->save();
 
       // $usuario_anuncio = User::find($request->to_id);
