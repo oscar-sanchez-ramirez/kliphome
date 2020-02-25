@@ -65,7 +65,7 @@ class ConversationController extends ApiController
     }else{
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
       $order = $request->order_id;
-      $contact = $admin->user_id;
+      $contact = $request->user_id;
     }
 
     if(!$check_conversation){
