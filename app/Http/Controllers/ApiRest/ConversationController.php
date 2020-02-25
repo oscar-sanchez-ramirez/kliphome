@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Notifications\Database\NewConversation;
 use App\Notifications\Database\NewConversationAdmin;
 use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Log;
 
 class ConversationController extends ApiController
 {
@@ -58,6 +59,7 @@ class ConversationController extends ApiController
 
     if($request->to_id == "to_id"){
       $admin = User::where('type','ADMINISTRATOR')->first();
+      Log::notice($admin);
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$user->id)->first();
       $order = 0;
       $contact = $admin->id;
