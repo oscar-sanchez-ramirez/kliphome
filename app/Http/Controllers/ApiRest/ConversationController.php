@@ -60,22 +60,24 @@ class ConversationController extends ApiController
       $admin = User::where('type','ADMINISTRATOR')->first();
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$user->id)->first();
       $order = 0;
+      $contact = $admin->id;
       $admin->notify(new NewConversationAdmin($request->all()));
     }else{
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
       $order = $request->order_id;
+      $contact = $request->contact_id;
     }
 
     if(!$check_conversation){
       $con_auth = new Conversation;
       $con_auth->user_id = $request->user_id;
-      $con_auth->contact_id = $request->to_id;
+      $con_auth->contact_id = $contact;
       $con_auth->last_time = Carbon::now();
       $con_auth->last_message = "Pulsa aquí para empezar";
       $con_auth->order_id = $order;
       $con_auth->save();
       $con = new Conversation;
-      $con->user_id = $request->to_id;
+      $con->user_id = $contact;
       $con->contact_id = $request->user_id;
       $con->last_time = Carbon::now();
       $con_auth->last_message = "Pulsa aquí para empezar";
