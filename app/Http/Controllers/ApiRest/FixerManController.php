@@ -341,17 +341,17 @@ class FixerManController extends ApiController
         ->leftJoin('users as u','u.id','so.user_id')
         ->select('o.*','a.alias','a.address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('u.id',$id)->where('o.id',$order_id)->get();
-        $fetch_categories = new ApiServiceController();
-        foreach ($orders as $key) {
-            $category = $fetch_categories->table($key->type_service, $key->selected_id);
-            $key->category = $category[0]->category;
-            if ($key->type_service == "Category") {
-                $key->sub_category = "-";
-            }else{
-                $key->sub_category = $category[0]->sub_category;
-            }
-            $key->serviceTrait = $category[0]->service;
-        }
+        // $fetch_categories = new ApiServiceController();
+        // foreach ($orders as $key) {
+        //     $category = $fetch_categories->table($key->type_service, $key->selected_id);
+        //     $key->category = $category[0]->category;
+        //     if ($key->type_service == "Category") {
+        //         $key->sub_category = "-";
+        //     }else{
+        //         $key->sub_category = $category[0]->sub_category;
+        //     }
+        //     $key->serviceTrait = $category[0]->service;
+        // }
         return Response(json_encode(array('orders' => $orders)));
     }
 
