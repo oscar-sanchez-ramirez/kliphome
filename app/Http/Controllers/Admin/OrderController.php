@@ -57,6 +57,8 @@ class OrderController extends Controller
         $quotation = new Quotation;
         $quotation->order_id = $order_id;
         $quotation->price = $request->price;
+        $quotation->solution = $request->solution;
+        $quotation->materials = $request->materials;
         $quotation->save();
 
 
