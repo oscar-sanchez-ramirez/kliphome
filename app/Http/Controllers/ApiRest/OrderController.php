@@ -23,7 +23,7 @@ class OrderController extends ApiController
         $this->middleware('auth:api');
     }
     public function create(Request $request){
-        // try {
+        try {
             $order = new Order;
             $order->user_id = $request->user_id;
             $order->selected_id = $request->selected_id;
@@ -51,12 +51,12 @@ class OrderController extends ApiController
                 'success' => true,
                 'message' => "La orden de servicio se realizó con éxito"
             ]);
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => "La orden de servicio no se realizó con éxito"
-        //     ]);
-        // }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "La orden de servicio no se realizó"
+            ]);
+        }
     }
 
     public function suspend(Request $request){
