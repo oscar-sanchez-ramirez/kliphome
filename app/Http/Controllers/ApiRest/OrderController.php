@@ -8,6 +8,7 @@ use App\Order;
 use App\User;
 use App\Coupon;
 use App\Quotation;
+use App\Payment;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
 use App\Jobs\ApproveOrderFixerMan;
@@ -24,6 +25,9 @@ class OrderController extends ApiController
     }
     public function create(Request $request){
         try {
+            if($request->visit_price == ""){
+                $price == 'quotation';
+            }
             $order = new Order;
             $order->user_id = $request->user_id;
             $order->selected_id = $request->selected_id;
@@ -32,18 +36,32 @@ class OrderController extends ApiController
             $order->service_description = $request->service_description;
             $order->service_image = $request->service_image;
             $order->address = $request->address;
-            $order->price = $request->price;
+            $order->price = $price;
+            $order->visit_price = $request->visit_price;
             $order->save();
             $order->order_id = $order->id;
+            try {
 
-            $price = floatval($request->price);
-            Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-            $pago = Stripe\Charge::create ([
-                "amount" => $price * 100,
-                "currency" => "MXN",
-                "source" => $request->token,
-                "description" => "Pago de visita para orden".$order->id
-            ]);
+                $price = floatval($request->price);
+                Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+                $pago = Stripe\Charge::create ([
+                    "amount" => $price * 100,
+                    "currency" => "MXN",
+                    "source" => $request->token,
+                    "description" => "Pago de visita para orden".$order->id
+                ]);
+                $payment = new Payment;
+                $payment->order_id = $order->id;
+                $payment->description = "VISITA";
+                $payment->state = true;
+                $payment->save();
+            } catch (\Throwable $th) {
+                $payment = new Payment;
+                $payment->order_id = $order->id;
+                $payment->description = "VISITA";
+                $payment->state = false;
+                $payment->save();
+            }
             Log::notice($pago);
             $client = User::where('type',"ADMINISTRATOR")->first();
             $client->notify(new NewQuotation($order));

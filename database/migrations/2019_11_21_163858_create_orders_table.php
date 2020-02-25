@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->string('state')->default('PENDING');
             $table->string('finished_at')->nullable();
             $table->string('price')->nullable();
+            $table->string('visit_price')->nullable();
             $table->timestamps();
         });
     }
