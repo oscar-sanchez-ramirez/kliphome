@@ -333,6 +333,22 @@
                                                 </div>
                                             @endif
                                             @endforeach
+                                            @if($notification->type == "App\Notifications\Database\NewConversationAdmin")
+                                            <div class="notifi__item">
+                                                <div class="bg-c1 img-cir img-40">
+                                                    <i class="fa fa-wrench"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>Recibiste una nueva conversacion</p>
+                                                    <form action="{{ url('') }}/messenger">
+                                                        <input type="hidden" name="notification_id" value="{{ $notification->id }}">
+                                                        <button type="submit">Ver</button>
+                                                    </form>
+                                                    <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @endforeach
                                             <div class="notifi__footer">
                                                 <a href="{{ url('') }}/notificaciones">Todas las Notificaciones</a>
                                                 <form action="{{ url('') }}/markasread">

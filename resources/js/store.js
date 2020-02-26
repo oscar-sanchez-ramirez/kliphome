@@ -84,7 +84,6 @@ export default new Vuex.Store({
               }
             }
           }
-          console.log(response.data);
           context.commit('newConversationsList',response.data);
         });
       },
