@@ -43,7 +43,7 @@ class ApiServiceController extends ApiController
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
             $ids = array_column($categories, 'category_id');
-            $colonies = array_column($delegation,'colony');
+            $colonies = array_column($delegation,'postal_code');
             $orders = $this->categories($ids,$colonies,$user->id);
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             $accepted = $this->ordersAccepted($user->id);
@@ -77,8 +77,8 @@ class ApiServiceController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->whereNotIn('o.id',$selectedOrders)
         ->where('o.state','FIXERMAN_NOTIFIED')
-        ->whereIn('a.delegation',$colonies)
-            ->select('o.*','a.delegation','a.address','u.name','u.lastName','u.avatar')->get();
+        ->whereIn('a.postal_code',$colonies)
+            ->select('o.*','a.delegation','a.address','a.postal_code','u.name','u.lastName','u.avatar')->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
