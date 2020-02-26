@@ -90,9 +90,9 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-        try {
+        // try {
             $price = floatval($request->price);
-            try {
+            // try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
                 Stripe\Charge::create ([
                     "amount" => $price * 100,
@@ -106,14 +106,14 @@ class OrderController extends ApiController
                 $payment->state = true;
                 $payment->price = $price;
                 $payment->save();
-            } catch (\Throwable $th) {
-                $payment = new Payment;
-                $payment->order_id = $request->order_id;
-                $payment->description = "PAGO POR SERVICIO";
-                $payment->state = false;
-                $payment->price = $price;
-                $payment->save();
-            }
+            // } catch (\Throwable $th) {
+            //     $payment = new Payment;
+            //     $payment->order_id = $request->order_id;
+            //     $payment->description = "PAGO POR SERVICIO";
+            //     $payment->state = false;
+            //     $payment->price = $price;
+            //     $payment->save();
+            // }
 
             $quotation = Quotation::where('order_id',$request->order_id)->first();
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
@@ -128,11 +128,11 @@ class OrderController extends ApiController
             return response()->json([
                 'success' => true
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false
+        //     ]);
+        // }
     }
 
     public function coupon(Request $request){
