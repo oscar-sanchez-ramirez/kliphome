@@ -81,9 +81,6 @@ class ConversationController extends ApiController
       $con_auth->last_message = "Pulsa aquí para empezar";
       $con->order_id = $request->order_id;
       $con->save();
-
-      // $usuario_anuncio = User::find($request->to_id);
-      // $usuario_anuncio->notify(new NewConversation($con));
     }
   }
 }
