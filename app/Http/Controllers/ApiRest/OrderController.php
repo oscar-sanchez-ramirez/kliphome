@@ -40,9 +40,8 @@ class OrderController extends ApiController
             $order->visit_price = $request->visit_price;
             $order->save();
             $order->order_id = $order->id;
+            $price = floatval($request->price);
             try {
-
-                $price = floatval($request->price);
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
                 $pago = Stripe\Charge::create ([
                     "amount" => $price * 100,
@@ -54,17 +53,19 @@ class OrderController extends ApiController
                 $payment->order_id = $order->id;
                 $payment->description = "VISITA";
                 $payment->state = true;
+                $payment->price = $price;
                 $payment->save();
             } catch (\Throwable $th) {
                 $payment = new Payment;
                 $payment->order_id = $order->id;
                 $payment->description = "VISITA";
                 $payment->state = false;
+                $payment->price = $price;
                 $payment->save();
             }
-            Log::notice($pago);
-            $client = User::where('type',"ADMINISTRATOR")->first();
-            $client->notify(new NewQuotation($order));
+            dispatch(new NotifyNewOrder($order->id));
+            // $client = User::where('type',"ADMINISTRATOR")->first();
+            // $client->notify(new NewQuotation($order));
             return response()->json([
                 'success' => true,
                 'message' => "La orden de servicio se realizó con éxito"
@@ -91,13 +92,29 @@ class OrderController extends ApiController
     public function approve(Request $request){
         try {
             $price = floatval($request->price);
-            Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-            Stripe\Charge::create ([
-                "amount" => $price * 100,
-                "currency" => "MXN",
-                "source" => $request->stripeToken,
-                "description" => "Payment of order".$request->order_id
-            ]);
+            try {
+                Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+                Stripe\Charge::create ([
+                    "amount" => $price * 100,
+                    "currency" => "MXN",
+                    "source" => $request->stripeToken,
+                    "description" => "Payment of order".$request->order_id
+                ]);
+                $payment = new Payment;
+                $payment->order_id = $request->order_id;
+                $payment->description = "PAGO POR SERVICIO";
+                $payment->state = true;
+                $payment->price = $price;
+                $payment->save();
+            } catch (\Throwable $th) {
+                $payment = new Payment;
+                $payment->order_id = $request->order_id;
+                $payment->description = "PAGO POR SERVICIO";
+                $payment->state = false;
+                $payment->price = $price;
+                $payment->save();
+            }
+
             $quotation = Quotation::where('order_id',$request->order_id)->first();
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $quotation->price
@@ -108,7 +125,6 @@ class OrderController extends ApiController
                 $coupon->user_id = $request->user_id;
                 $coupon->save();
             }
-            dispatch(new NotifyNewOrder($request->order_id));
             return response()->json([
                 'success' => true
             ]);

@@ -19,6 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->foreign('order_id')->references('id')->on('orders');
             $table->text('description');
             $table->boolean('state');
+            $table->string('price');
             $table->timestamps();
         });
     }

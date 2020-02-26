@@ -34,8 +34,6 @@ class NotifyNewOrder implements ShouldQueue
      */
     public function handle()
     {
-
-        Log::info('entrando a dispatch');
         $order = Order::where('id',$this->id)->first();
         $postal_code = Address::where('id',$order->address)->pluck('postal_code');
         $category = $this->table($order->type_service,$order->selected_id);
