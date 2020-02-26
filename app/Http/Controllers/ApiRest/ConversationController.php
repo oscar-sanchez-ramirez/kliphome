@@ -61,26 +61,44 @@ class ConversationController extends ApiController
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$admin->id)->first();
       $contact = $admin->id;
       $admin->notify(new NewConversationAdmin($request->all()));
+      if(!$check_conversation){
+        $con = new Conversation;
+        $con->user_id = $contact;
+        $con->contact_id = $request->user_id;
+        $con->last_time = Carbon::now();
+        $con_auth->last_message = "Pulsa aquí para empezar";
+        $con->order_id = $request->order_id;
+        $con->save();
+        $con_auth = new Conversation;
+        $con_auth->user_id = $request->user_id;
+        $con_auth->contact_id = $contact;
+        $con_auth->last_time = Carbon::now();
+        $con_auth->last_message = "Pulsa aquí para empezar";
+        $con_auth->order_id = $request->order_id;
+        $con_auth->save();
+
+      }
     }else{
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
       $contact = $request->user_id;
+      if(!$check_conversation){
+        $con_auth = new Conversation;
+        $con_auth->user_id = $request->user_id;
+        $con_auth->contact_id = $contact;
+        $con_auth->last_time = Carbon::now();
+        $con_auth->last_message = "Pulsa aquí para empezar";
+        $con_auth->order_id = $request->order_id;
+        $con_auth->save();
+        $con = new Conversation;
+        $con->user_id = $contact;
+        $con->contact_id = $request->user_id;
+        $con->last_time = Carbon::now();
+        $con_auth->last_message = "Pulsa aquí para empezar";
+        $con->order_id = $request->order_id;
+        $con->save();
+      }
     }
 
-    if(!$check_conversation){
-      $con_auth = new Conversation;
-      $con_auth->user_id = $request->user_id;
-      $con_auth->contact_id = $contact;
-      $con_auth->last_time = Carbon::now();
-      $con_auth->last_message = "Pulsa aquí para empezar";
-      $con_auth->order_id = $request->order_id;
-      $con_auth->save();
-      $con = new Conversation;
-      $con->user_id = $contact;
-      $con->contact_id = $request->user_id;
-      $con->last_time = Carbon::now();
-      $con_auth->last_message = "Pulsa aquí para empezar";
-      $con->order_id = $request->order_id;
-      $con->save();
-    }
+
   }
 }
