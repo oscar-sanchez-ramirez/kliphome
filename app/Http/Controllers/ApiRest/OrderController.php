@@ -25,9 +25,8 @@ class OrderController extends ApiController
     }
     public function create(Request $request){
         // try {
-            if($request->visit_price == ""){
-                $price == 'quotation';
-            }
+            $price == 'quotation';
+
             $order = new Order;
             $order->user_id = $request->user_id;
             $order->selected_id = $request->selected_id;
