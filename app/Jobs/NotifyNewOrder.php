@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use DB;
 use App\User;
 use App\Order;
+use App\Address;
 use Illuminate\Support\Facades\Log;
 
 class NotifyNewOrder implements ShouldQueue
