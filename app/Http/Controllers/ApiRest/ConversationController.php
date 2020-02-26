@@ -75,8 +75,8 @@ class ConversationController extends ApiController
       $con_auth->order_id = $request->order_id;
       $con_auth->save();
       $con = new Conversation;
-      $con->user_id = $admin->id;
-      $con->contact_id = $contact;
+      $con->user_id = $contact;
+      $con->contact_id = $admin->id;
       $con->last_time = Carbon::now();
       $con_auth->last_message = "Pulsa aquí para empezar";
       $con->order_id = $request->order_id;
