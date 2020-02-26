@@ -43,7 +43,7 @@ class OrderController extends ApiController
             // try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
                 $pago = Stripe\Charge::create ([
-                    "amount" => $price * 100,
+                    "amount" => $request->visit_price * 100,
                     "currency" => "MXN",
                     "source" => $request->token,
                     "description" => "Pago de visita para orden".$order->id
@@ -52,7 +52,7 @@ class OrderController extends ApiController
                 $payment->order_id = $order->id;
                 $payment->description = "VISITA";
                 $payment->state = true;
-                $payment->price = $price;
+                $payment->price = $request->visit_price;
                 $payment->save();
             // } catch (\Throwable $th) {
             //     $payment = new Payment;
