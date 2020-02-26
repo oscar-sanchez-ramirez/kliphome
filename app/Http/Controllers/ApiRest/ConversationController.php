@@ -58,7 +58,7 @@ class ConversationController extends ApiController
 
     $admin = User::where('type','ADMINISTRATOR')->first();
     if($request->order_id == "contact"){
-      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$user->id)->first();
+      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$admin->id)->first();
       $order = 0;
       $contact = $admin->id;
       $admin->notify(new NewConversationAdmin($request->all()));
