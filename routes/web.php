@@ -51,6 +51,3 @@ Route::get('notificaciones','HomeController@notificaciones');
 Route::post('markasread','HomeController@markasread');
 Route::get('testOrder', 'ApiRest\OrderController@testOrder');
 Route::get('test','Admin\NotificationsProvider@test');
-
-
-Route::post('webhook_oxxo','ApiController@webhook_oxxo');
