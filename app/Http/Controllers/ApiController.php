@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
@@ -12,4 +13,8 @@ class ApiController extends Controller
         // $this->middleware('auth:api');
     }
     //
+
+    public function webhook_oxxo(Request $request){
+        Log::notice($request->all());
+    }
 }
