@@ -79,11 +79,13 @@ class FixerManController extends ApiController
             $client->notify(new NewFixerMan($user));
 
             return response()->json([
+                'status' => true,
                 'message' => "Tu cuenta se creó exitosamente, evaluaremos tu perfil.",
                 'user' => $user
             ]);
         } catch (\Throwable $th) {
             return response()->json([
+                'status' => false,
                 'fail' => "No se pudo registrar al trabajador, porfavor verifique sus datos"
             ]);
         }
