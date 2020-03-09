@@ -109,7 +109,8 @@ class RegisterController extends ApiController
             'user_id' => $request->user_id,
             'delegation' => $delegation,
             'longitud' => $request->longitud,
-            'latitud' => $request->latitud
+            'latitud' => $request->latitud,
+            'colonia' => $request->colonia
         ]);
         return response()->json([
             'message' => "Dirección actualizada"
