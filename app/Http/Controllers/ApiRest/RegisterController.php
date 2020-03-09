@@ -87,7 +87,8 @@ class RegisterController extends ApiController
             'postal_code' => $request->postal_code,
             'delegation' => $delegation,
             'longitud' => $request->longitud,
-            'latitud' => $request->latitud
+            'latitud' => $request->latitud,
+            'colonia' => $request->colonia
         ]);
         return response()->json([
             'message' => "Dirección creada"
