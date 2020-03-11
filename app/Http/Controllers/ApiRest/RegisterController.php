@@ -84,8 +84,8 @@ class RegisterController extends ApiController
             'alias' => $request->alias,
             'address' => $request->address,
             'reference' => $request->reference,
-            'postal_code' => "-",
-            'delegation' => $delegation,
+            'postal_code' => $request->postal_code,
+            'delegation' => "-",
             'longitud' => $request->longitud,
             'latitud' => $request->latitud,
             'colonia' => $request->colonia
