@@ -73,18 +73,18 @@ class RegisterController extends ApiController
     }
 
     public function newAddress(Request $request){
-        $address = $request->delegation;
-        if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
-            $delegation = "1";
-        } elseif(strpos($address, "Guadalajara") !== false){
-            $delegation = "2";
-        }
+        // $address = $request->delegation;
+        // if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
+        //     $delegation = "1";
+        // } elseif(strpos($address, "Guadalajara") !== false){
+        //     $delegation = "2";
+        // }
         Address::create([
             'user_id'=>$request->user_id,
             'alias' => $request->alias,
             'address' => $request->address,
             'reference' => $request->reference,
-            'postal_code' => $request->postal_code,
+            'postal_code' => "-",
             'delegation' => $delegation,
             'longitud' => $request->longitud,
             'latitud' => $request->latitud,
@@ -96,19 +96,19 @@ class RegisterController extends ApiController
     }
 
     public function updateAddress(Request $request){
-        $address = $request->delegation;
-        if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
-            $delegation = "1";
-        } elseif(strpos($address, "Guadalajara") !== false){
-            $delegation = "2";
-        }
+        // $address = $request->delegation;
+        // if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
+        //     $delegation = "1";
+        // } elseif(strpos($address, "Guadalajara") !== false){
+        //     $delegation = "2";
+        // }
         Address::where('user_id',$request->user_id)->update([
             'alias' => $request->alias,
             'address' => $request->address,
             'reference' => $request->reference,
             'postal_code' => $request->postal_code,
             'user_id' => $request->user_id,
-            'delegation' => $delegation,
+            'delegation' => "-",
             'longitud' => $request->longitud,
             'latitud' => $request->latitud,
             'colonia' => $request->colonia
