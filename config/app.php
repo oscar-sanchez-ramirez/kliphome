@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'America/Merida',
+    'timezone' => 'America/Mexico_City',
 
     /*
     |--------------------------------------------------------------------------
