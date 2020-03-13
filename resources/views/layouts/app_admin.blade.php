@@ -338,7 +338,7 @@
                                                             <i class="fa fa-wrench"></i>
                                                         </div>
                                                         <div class="content">
-                                                            <p>Recibiste una nueva conversacion</p>
+                                                            <p>Recibiste un nuevo mensaje</p>
                                                             <form action="{{ url('') }}/messenger">
                                                                 <input type="hidden" name="notification_id" value="{{ $notification->id }}">
                                                                 <button type="submit">Ver</button>

@@ -31,7 +31,7 @@ function listFixerManDetail(fixerman_id){
 }
 
 function aproveFixerMan(fixerman_id,name){
-    var r = confirm("¿Confirma aprobar registro a "+name+" ?");
+    var r = confirm("¿Confirmar registro a "+name+"?");
     if (r == true) {
         var url = window.location.origin+"/tecnicos/aprove";
         $.ajax({
