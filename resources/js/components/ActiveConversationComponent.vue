@@ -7,7 +7,12 @@
 					<message-conversation-component v-for="message in messages" :key="message.id"
 					:written-by-me="message.written_by_me"
 					:image="message.written_by_me ? myImage : selectedConversation.contact_name['foto']">
-						{{message.content}}
+						<div v-if="message.type == 'text'">
+							{{message.content}}
+						</div>
+						<div v-if="message.type == 'image'">
+							<b-img atl="image" class="m-1" :src="message.content" slot="aside"/>
+						</div>
 					</message-conversation-component>
 				</b-card-body>
 				<div slot="footer">
