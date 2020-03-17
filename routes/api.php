@@ -35,6 +35,7 @@ Route::post('validateCode','ApiRest\RegisterController@validateCode');
 Route::post('updatePassword','ApiRest\RegisterController@updatePassword');
 Route::post('updateAddress','ApiRest\RegisterController@updateAddress');
 Route::post('newAddress','ApiRest\RegisterController@newAddress');
+Route::post('verifyemail','ApiRest\RegisterController@verifyemail');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     $info = new ApiServiceController();

@@ -118,6 +118,12 @@ class RegisterController extends ApiController
         ]);
     }
 
+    public function verifyemail(Request $request){
+        $request->validate([
+            'email' => 'required|unique:users|max:255'
+        ]);
+    }
+
     public function reset(Request $request){
         $user = User::where('email',$request->email)->first();
         if(empty($user)){
