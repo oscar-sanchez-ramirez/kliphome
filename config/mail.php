@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'contacto@icebullsolutions.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'admin@kliphome.com'),
         'name' => env('MAIL_FROM_NAME', 'KlipHome'),
     ],
 

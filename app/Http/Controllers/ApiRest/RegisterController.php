@@ -25,21 +25,21 @@ class RegisterController extends ApiController
             'password' => bcrypt($request->password),
             'code' => $random
         ])->toArray();
-        $address = $request->delegation;
+        // $address = $request->delegation;
 
-        // Test if string contains the word
-        if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
-            $delegation = "1";
-        } elseif(strpos($address, "Guadalajara") !== false){
-            $delegation = "2";
-        }
+        // // Test if string contains the word
+        // if((strpos($address, "Ciudad de Mexico") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
+        //     $delegation = "1";
+        // } elseif(strpos($address, "Guadalajara") !== false){
+        //     $delegation = "2";
+        // }
         Address::create([
             'alias' => $request->alias,
             'address' => $request->address,
             'reference' => $request->reference,
             'postal_code' => $request->postal_code,
             'user_id' => $user["id"],
-            'delegation' => $delegation,
+            'delegation' => "-",
             'longitud' => $request->longitud,
             'latitud' => $request->latitud,
             'colonia' => $request->colonia
