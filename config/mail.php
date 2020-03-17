@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.zoho.com'),
+    'host' => env('MAIL_HOST', 'mail.kliphome.com'),
 
     /*
     |--------------------------------------------------------------------------
