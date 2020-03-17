@@ -124,7 +124,7 @@ class RegisterController extends ApiController
         ]);
         return response()->json([
             'success' => false,
-            'message' => $validate
+            'message' => $validate->errors()
         ]);
     }
 
