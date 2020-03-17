@@ -119,8 +119,12 @@ class RegisterController extends ApiController
     }
 
     public function verifyemail(Request $request){
-        $request->validate([
+        $validate = $request->validate([
             'email' => 'required|unique:users|max:255'
+        ]);
+        return response()->json([
+            'success' => false,
+            'message' => $validate
         ]);
     }
 
