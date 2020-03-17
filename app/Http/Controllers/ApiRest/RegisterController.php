@@ -11,7 +11,7 @@ use App\User;
 use Mail;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use Illuminate\Validation\Validator;
+use Validator;
 
 class RegisterController extends ApiController
 {
