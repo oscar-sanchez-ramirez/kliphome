@@ -11,6 +11,7 @@ use App\User;
 use Mail;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Validation\Validator;
 
 class RegisterController extends ApiController
 {
@@ -119,12 +120,18 @@ class RegisterController extends ApiController
     }
 
     public function verifyemail(Request $request){
-        $validate = $request->validate([
-            'email' => 'required|unique:users|max:255'
+        $v = Validator::make($request->all(), [
+            'email' => 'required|unique:users|email',
         ]);
+        if ($v->fails()){
+            return response()->json([
+                'success' => false,
+                'message' => "Email incorrecto"
+            ]);
+        }
         return response()->json([
-            'success' => false,
-            'message' => $validate->errors()
+            'success' => true,
+            'message' => "Email correcto"
         ]);
     }
 
