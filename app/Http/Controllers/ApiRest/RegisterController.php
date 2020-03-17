@@ -128,11 +128,25 @@ class RegisterController extends ApiController
                 'success' => false,
                 'message' => "Email incorrecto"
             ]);
+        }else{
+            $number = random_int(1000, 9999);
+            $new_code = new ResetPassword;
+            $new_code->email = $request->email;
+            $new_code->code = $number;
+            $new_code->save();
+
+            $usuario = array('code' =>  $number, 'email' => $request->email);
+            $mail = $request->email;
+            Mail::send('emails.confirmemail',$usuario, function($msj) use ($mail){
+                $msj->subject('KlipHome: Código para confirmar correo');
+                $msj->to($mail,"KlipHome: Código para confirmar correo");
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => "Email correcto"
+            ]);
         }
-        return response()->json([
-            'success' => true,
-            'message' => "Email correcto"
-        ]);
     }
 
     public function reset(Request $request){
