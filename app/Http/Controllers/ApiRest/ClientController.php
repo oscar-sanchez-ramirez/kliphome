@@ -100,7 +100,7 @@ class ClientController extends ApiController
         // $admin = User::where('type','ADMINISTRATOR')->first();
 
         OneSignal::sendNotificationUsingTags(
-            ucfirst(strtolower($fixerman->name))." ha marcardo el servicio como terminado. ¡Valóralo ahora!",
+            ucfirst(strtolower($fixerman->name))." ha indicado que llego a tu dirección, ¡Comunícate con el!",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
             ),
