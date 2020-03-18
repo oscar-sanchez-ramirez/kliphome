@@ -9,6 +9,7 @@ use DB;
 use App\Address;
 use App\User;
 use Illuminate\Support\Facades\Log;
+use OneSignal;
 
 class ClientController extends ApiController
 {
@@ -92,5 +93,21 @@ class ClientController extends ApiController
         return response()->json([
             'address' => $address
         ]);
+    }
+    public function confirmArrive(Request $request){
+        $fixerman = User::where('id',$request->user_id)->first();
+        $client = User::where('id',$request->to_id)->first();
+        // $admin = User::where('type','ADMINISTRATOR')->first();
+
+        OneSignal::sendNotificationUsingTags(
+            ucfirst(strtolower($fixerman->name))." ha marcardo el servicio como terminado. ¡Valóralo ahora!",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
+            ),
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
     }
 }
