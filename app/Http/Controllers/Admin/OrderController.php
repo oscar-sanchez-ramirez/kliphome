@@ -84,4 +84,20 @@ class OrderController extends Controller
         return back()->with('success',"Se envió la cotización");
     }
 
+    public function notify($order_id){
+        $order = Order::where('id',$order_id)->first();
+        $user = User::where('id',$order->user_id)->first();
+
+        OneSignal::sendNotificationUsingTags(
+            "Estamos realizando tu cotización, en breve la recibirás",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+            ),
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
+    }
+
 }
