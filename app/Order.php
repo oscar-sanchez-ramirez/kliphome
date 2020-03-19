@@ -10,7 +10,7 @@ class Order extends Model
         return User::where('id',$id)->first(['name','lastName','email','phone','avatar']);
     }
     public function clientAddress($id){
-        return Address::where('id',$id)->first(['alias','address']);
+        return Address::where('id',$id)->first(['alias','street']);
     }
     public function getService($type,$id){
         switch ($type) {
