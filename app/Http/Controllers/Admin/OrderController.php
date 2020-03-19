@@ -34,8 +34,8 @@ class OrderController extends Controller
         if($request->filled('notification_id')){
             DB::table('notifications')->where('id',$request->notification_id)->update(['read_at'=>Carbon::now()]);
         }
-        return $orden = Order::find($id);
-        $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
+        $orden = Order::find($id);
+        return $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
 
         return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman);
     }
