@@ -17,6 +17,10 @@
                                 <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
                                 @if($orden->price == "quotation" || $orden->state == "PENDING")
                                     <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
+                                    <form action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
+                                        @csrf
+                                        <button type="button" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
+                                    </form>
                                 @endif
                                 @if($orden->price == "waitquotation")
                                     <h4>Cotización enviada</h4>
@@ -34,46 +38,46 @@
                     </div>
                 </div>
                 @if($fixerman != null)
-                <div class="card">
-                    <div class="card-header">
-                        <strong class="card-title mb-3">Perfil Técnico del servicio</strong>
-                    </div>
-                    <div class="card-body">
-                        <div class="mx-auto d-block">
-                            <img class="rounded-circle mx-auto d-block" src="{{ url('') }}/images/icon/avatar-01.jpg" alt="Card image cap">
-                            <h5 class="text-sm-center mt-2 mb-1">{{ $fixerman->name }} {{ $fixerman->lastName }}</h5>
-                            <div class="location text-sm-center">
-                                {{-- <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }} --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title mb-3">Perfil Técnico del servicio</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="mx-auto d-block">
+                                <img class="rounded-circle mx-auto d-block" src="{{ url('') }}/images/icon/avatar-01.jpg" alt="Card image cap">
+                                <h5 class="text-sm-center mt-2 mb-1">{{ $fixerman->name }} {{ $fixerman->lastName }}</h5>
+                                <div class="location text-sm-center">
+                                    {{-- <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }} --}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="card-text text-sm-center">
+                                <i class="fa fa-envelope"></i> {{ $fixerman->email }}<br>
+                                <i class="fa fa-phone"></i> {{ $fixerman->phone }}
                             </div>
                         </div>
-                        <hr>
-                        <div class="card-text text-sm-center">
-                            <i class="fa fa-envelope"></i> {{ $fixerman->email }}<br>
-                            <i class="fa fa-phone"></i> {{ $fixerman->phone }}
+                        <div class="card-footer">
+                            <ul class="list-inline">
+                                <li>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope"></i></button>
+                                </li>
+                                <li>
+                                    <form method="POST" action="{{ url('') }}/ordenes/aprobarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{{ url('') }}/ordenes/eliminarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <ul class="list-inline">
-                            <li>
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope"></i></button>
-                            </li>
-                            <li>
-                                <form method="POST" action="{{ url('') }}/ordenes/aprobarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
-                                </form>
-                            </li>
-                            <li>
-                                <form action="{{ url('') }}/ordenes/eliminarSolicitudTecnico/{{ $fixerman->id }}/{{ $orden->id }}">
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 @endif
             </div>
-            <div class="col-md-8">
+            {{-- <div class="col-md-8">
                 <div class="card">
                     <img class="card-img-top" type="button" data-toggle="modal" data-target="#scrollmodal" src="{{ ($orden->service_image) }}" alt="Card image cap" >
                     <div class="card-body">
@@ -99,7 +103,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-md-12">
 
                 <div class="table-responsive table-responsive-data2">
