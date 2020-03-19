@@ -67,7 +67,7 @@
                                         <td>
                                             <div class="table-data-feature">
                                                 <a class="item" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
-                                                    <i class="zmdi zmdi-eye"></i>
+                                                    Revisar Solicitud
                                                 </a>
                                             </div>
                                         </td>
