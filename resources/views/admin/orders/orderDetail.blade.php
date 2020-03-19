@@ -19,7 +19,7 @@
                                     <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                     <form action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
                                         @csrf
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
+                                        <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
                                     </form>
                                 @endif
                                 @if($orden->price == "waitquotation")
