@@ -87,7 +87,7 @@ class OrderController extends Controller
     public function notify($order_id){
         $order = Order::where('id',$order_id)->first();
         $user = User::where('id',$order->user_id)->first();
-
+        return $user;
         OneSignal::sendNotificationUsingTags(
             "Estamos realizando tu cotización, en breve la recibirás",
             array(
@@ -98,6 +98,7 @@ class OrderController extends Controller
             $buttons = null,
             $schedule = null
         );
+        return back()->with('success',"Se notifico al cliente");
     }
 
 }
