@@ -85,7 +85,7 @@
                         \Carbon\Carbon::setLocale('es');
                          $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $orden->service_date);
                         @endphp
-                        {{-- <h4 class="card-title mb-3">{{ \Carbon\Carbon::parse($date)->format('d,M H:i') }} / {{ $orden->type_service }} / {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }} /
+                        <h4 class="card-title mb-3">{{ \Carbon\Carbon::parse($date)->format('d,M H:i') }} / {{ $orden->type_service }} / {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }} /
                             @if($orden->state == "PENDING")
                                 <span class="badge badge-danger">PENDIENTE DE COTIZACIÓN</span>
                             @elseif($orden->state == "FIXERMAN_NOTIFIED")
@@ -97,7 +97,7 @@
                             @elseif($orden->state == "DONE")
                                 <span class="badge badge-success">TERMINADO</span>
                             @endif
-                        </h4> --}}
+                        </h4>
                         <p class="card-text">
                             {{ $orden->service_description }}
                         </p>
