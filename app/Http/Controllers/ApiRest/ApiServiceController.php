@@ -43,8 +43,8 @@ class ApiServiceController extends ApiController
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
             $ids = array_column($categories, 'category_id');
-            $colonies = array_column($delegation,'postal_code');
-            $orders = $this->categories($ids,$colonies,$user->id);
+            $postal_code = array_column($delegation,'postal_code');
+            $orders = $this->categories($ids,$postal_code,$user->id);
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             $accepted = $this->ordersAccepted($user->id);
             return response()->json([
@@ -69,17 +69,15 @@ class ApiServiceController extends ApiController
 
     }
     //getting categories by fixerman preferences
-    public function categories($ids,$colonies,$user_id)
+    public function categories($ids,$postal_code,$user_id)
     {
-        Log::notice($colonies);
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
-        Log::notice($selectedOrders);
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
         ->whereNotIn('o.id',$selectedOrders)
-        ->where('o.state','FIXERMAN_NOTIFIED')
-        ->whereIn('a.postal_code',$colonies)
+        ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')
+        ->whereIn('a.postal_code',$postal_code)
             ->select('o.*','a.delegation','a.street','a.postal_code','u.name','u.lastName','u.avatar')->get();
         Log::notice($orders);
         foreach ($orders as $key) {
