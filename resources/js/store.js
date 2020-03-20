@@ -76,6 +76,7 @@ export default new Vuex.Store({
           if(response.data != ""){
             this.state.selectedConversation = response.data[0];
           }
+          console.log(response.data);
           for (let index = 0; index < response.data.length; index++) {
             if(index > 0){
               if(response.data[index].contact_id == response.data[index-1].user_id){
@@ -84,7 +85,7 @@ export default new Vuex.Store({
               }
             }
           }
-          console.log(response.data);
+
           context.commit('newConversationsList',response.data);
         });
       },
