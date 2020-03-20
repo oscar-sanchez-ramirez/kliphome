@@ -6,6 +6,13 @@ $(document).on('click', '#fixermanModal', function(){
     //Listing the fixerman_id detail
     listFixerManDetail(fixerman_id);
 });
+$(document).on('click', '#fixermanModalImage', function(){
+    //Getting id of current fixerman
+    fixerman_avatar = $(this).attr('data-id');
+    //Listing the fixerman_id detail
+    document.getElementById('idFixerman').value = $(this).attr('data-user');
+    document.getElementById("imageFixerman").src = fixerman_avatar;
+});
 
 function listFixerManDetail(fixerman_id){
     //Listing fixerman detail by id

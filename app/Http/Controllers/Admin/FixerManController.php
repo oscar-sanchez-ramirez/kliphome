@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\AproveFixerMan;
 use App\User;
 use DB;
+use Image;
 use Carbon\Carbon;
 
 
@@ -36,6 +37,20 @@ class FixerManController extends Controller
             'state' => true
         ]);
         dispatch(new AproveFixerMan($request->fixerman_id));
+    }
 
+    public function updateFixermanImage(Request $request){
+        $idFixerman = $request->idFixerman;
+        $file = $request->file('imagen');
+        $random = str_random(15);
+        $nombre = trim('images/'.$random.".png");
+        $image = Image::make($file->getRealPath())->resize(200, 240);
+        // ->orientate()
+        $image->save($nombre);
+
+        User::where('id',$request->idFixerman)->update([
+            'avatar' => $request->url.'/'.$nombre
+        ]);
+        return back()->with('success',"La imagen se actualizó");
     }
 }
