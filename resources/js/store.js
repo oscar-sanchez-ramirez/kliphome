@@ -36,6 +36,9 @@ export default new Vuex.Store({
           if (state.selectedConversation.contact_id == message.from_id || state.selectedConversation.contact_id == message.to_id) {
               state.messages.push(message);
           }
+          console.log(state.conversations);
+          console.log(state.selectedConversation);
+          console.log(state.messages);
         },
         selectConversation(state, conversation){
             state.selectedConversation = conversation;
