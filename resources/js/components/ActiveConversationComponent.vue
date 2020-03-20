@@ -16,7 +16,8 @@
 					</message-conversation-component>
 				</b-card-body>
 				<div slot="footer">
-					<b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off" v-if="message.contact_id != 19 && message.user_id != 19">
+					<div v-if="selectedConversation.contact_id != 19 && selectedConversation.user_id != 19">
+					<b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
 						<b-input-group id="activeConversationComponent">
 							<b-form-input class="text-center" type="text" placeholder="Mensaje" v-model="newMessage"></b-form-input>
 							<b-input-group-append>
@@ -24,6 +25,7 @@
 							</b-input-group-append>
 						</b-input-group>
 					</b-form>
+					</div>
 				</div>
 			</b-card>
         </b-col>
@@ -90,7 +92,7 @@
 			}
 		},
 		updated(){
-				this.ScrollToBottom();
+			this.ScrollToBottom();
 		}
 
 	}
