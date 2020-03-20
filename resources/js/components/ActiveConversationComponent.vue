@@ -65,7 +65,6 @@
 			};
 		},
 		mounted(){
-
 		},
 		methods:{
 			postMessage(){
@@ -85,6 +84,7 @@
 				return this.$store.state.user.foto;
 			},
 			idAdmin(){
+				console.log(this.$store.state.user.id);
 				return this.$store.state.user.id;
 			},
 			selectedConversation(){
