@@ -86,8 +86,9 @@ export default new Vuex.Store({
             }
           }
           response.data.sort( ( a, b) => {
-              return new new Date(b.last_time) - Date(a.last_time);
+              return new Date(a.last_time) - new Date(b.last_time);
           });
+          response.date.reverse();
           context.commit('newConversationsList',response.data);
         });
       },
