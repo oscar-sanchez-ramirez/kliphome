@@ -76,7 +76,6 @@ export default new Vuex.Store({
           if(response.data != ""){
             this.state.selectedConversation = response.data[0];
           }
-          console.log(response.data);
           for (let index = 0; index < response.data.length; index++) {
             if(index > 0){
               if(response.data[index].contact_id == response.data[index-1].user_id){
@@ -89,7 +88,6 @@ export default new Vuex.Store({
               return new Date(a.last_time) - new Date(b.last_time);
           });
           array.reverse();
-          console.log(array)
           context.commit('newConversationsList',array);
         });
       },
@@ -98,6 +96,7 @@ export default new Vuex.Store({
           to_id: context.state.selectedConversation.contact_id,
           content: newMessage
         };
+        console.log(params);
         return axios.post('/api/messages',params).then((response) => {
           if(response.data.success)
           {
