@@ -85,11 +85,11 @@
 			},
 			idAdmin(){
 				console.log(this.$store.state.user.id);
-				console.log(selectedConversation.contact_id);
-				console.log(selectedConversation.user_id);
 				return this.$store.state.user.id;
 			},
 			selectedConversation(){
+				console.log(selectedConversation.contact_id);
+				console.log(selectedConversation.user_id);
 				return this.$store.state.selectedConversation;
 			},
 			messages(){
