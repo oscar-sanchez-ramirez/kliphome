@@ -16,7 +16,7 @@
 					</message-conversation-component>
 				</b-card-body>
 				<div slot="footer">
-					<b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
+					<b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off" v-if="message.contact_id != 19 && message.user_id != 19">
 						<b-input-group id="activeConversationComponent">
 							<b-form-input class="text-center" type="text" placeholder="Mensaje" v-model="newMessage"></b-form-input>
 							<b-input-group-append>
