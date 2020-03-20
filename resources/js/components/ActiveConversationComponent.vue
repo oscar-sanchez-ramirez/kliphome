@@ -16,7 +16,7 @@
 					</message-conversation-component>
 				</b-card-body>
 				<div slot="footer">
-					<div v-if="selectedConversation.contact_id == idAdmin || selectedConversation.user_id != idAdmin">
+					<div v-if="selectedConversation.contact_id == idAdmin || selectedConversation.user_id == idAdmin">
 					<b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
 						<b-input-group id="activeConversationComponent">
 							<b-form-input class="text-center" type="text" placeholder="Mensaje" v-model="newMessage"></b-form-input>
