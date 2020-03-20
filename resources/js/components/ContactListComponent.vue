@@ -2,7 +2,7 @@
   <b-list-group>
       <a href="#activeConversationComponent">
         <contact-component
-  			v-for="conversation in conversationsFiltered" :key="conversation.id"
+  			v-for="conversation in ordered" :key="conversation.id"
   			:conversation="conversation" :selected="isSelected(conversation)"
   			@click.native="selectConversation(conversation)" >
 
@@ -26,6 +26,9 @@
       }
 		},
     computed:{
+      ordered () {
+				return _.orderBy(this.conversationsFiltered, 'last_time')
+			},
       selectedConversation(){
         return this.$store.state.selectedConversation;
 
