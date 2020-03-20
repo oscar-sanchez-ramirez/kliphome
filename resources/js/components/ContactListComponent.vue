@@ -27,7 +27,7 @@
 		},
     computed:{
       ordered () {
-				return _.orderBy(this.conversationsFiltered, 'last_time')
+				return _.orderBy(this.conversationsFiltered, 'last_time','DESC')
 			},
       selectedConversation(){
         return this.$store.state.selectedConversation;
