@@ -22,7 +22,7 @@ class ConversationController extends ApiController
   }
   public function index()
   {
-    return Conversation::get([
+    return Conversation::orderBy('last_message',"DESC")->get([
         'id','contact_id','user_id','has_blocked','listen_notifications','last_message','last_time'
     ]);
 
