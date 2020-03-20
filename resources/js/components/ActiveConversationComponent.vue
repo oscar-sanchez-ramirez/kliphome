@@ -88,8 +88,7 @@
 				return this.$store.state.user.id;
 			},
 			selectedConversation(){
-				console.log(this.$store.state.selectedConversation.contact_id);
-				console.log(this.$store.state.selectedConversation.user_id);
+				console.log(this.$store.state.selectedConversation);
 				return this.$store.state.selectedConversation;
 			},
 			messages(){
