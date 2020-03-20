@@ -16,7 +16,7 @@
 					</message-conversation-component>
 				</b-card-body>
 				<div slot="footer">
-					<div v-if="selectedConversation.contact_id != 19 && selectedConversation.user_id != 19">
+					<div v-if="selectedConversation.contact_id != idAdmin && selectedConversation.user_id != idAdmin">
 					<b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
 						<b-input-group id="activeConversationComponent">
 							<b-form-input class="text-center" type="text" placeholder="Mensaje" v-model="newMessage"></b-form-input>
@@ -83,6 +83,9 @@
 		computed:{
 			myImage(){
 				return this.$store.state.user.foto;
+			},
+			idAdmin(){
+				return this.$store.state.user.id;
 			},
 			selectedConversation(){
 				return this.$store.state.selectedConversation;
