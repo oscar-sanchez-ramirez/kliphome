@@ -26,6 +26,7 @@ export default new Vuex.Store({
           state.messages = messages;
         },
         addMessage(state,message){
+          message.type = 'text';
           const conversation = state.conversations.find((conversation)=>{
             return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
           });
