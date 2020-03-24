@@ -60,6 +60,7 @@ class FixerManController extends ApiController
                 $selected->user_id = $user["id"];
                 $selected->colony = $workAreas[$i];
                 $selected->postal_code = $request->postal_code;
+                $selected->municipio = $request->municipio;
                 $selected->save();
             }
             //SAVE SELECTED CATEGORIES

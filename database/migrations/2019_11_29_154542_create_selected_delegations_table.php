@@ -18,6 +18,7 @@ class CreateSelectedDelegationsTable extends Migration
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('colony');
+            $table->string('municipio')->nullable();
             $table->string('postal_code');
             $table->timestamps();
         });
