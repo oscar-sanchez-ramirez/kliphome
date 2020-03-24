@@ -35,7 +35,8 @@ class RegisterController extends ApiController
             'delegation' => "-",
             'exterior' => $request->exterior,
             'interior' => $request->interior,
-            'colonia' => $request->colonia
+            'colonia' => $request->colonia,
+            'municipio' => $request->municipio
         ]);
         return response()->json([
             'message' => "Usuario creado correctamente",
@@ -76,7 +77,8 @@ class RegisterController extends ApiController
             'delegation' => "-",
             'exterior' => $request->exterior,
             'interior' => $request->interior,
-            'colonia' => $request->colonia
+            'colonia' => $request->colonia,
+            'municipio' => $request->municipio
         ]);
         return response()->json([
             'message' => "Dirección creada"
@@ -93,7 +95,8 @@ class RegisterController extends ApiController
             'delegation' => "-",
             'exterior' => $request->exterior,
             'interior' => $request->interior,
-            'colonia' => $request->colonia
+            'colonia' => $request->colonia,
+            'municipio' => $request->municipio
         ]);
         return response()->json([
             'message' => "Dirección actualizada"

@@ -23,6 +23,7 @@ class CreateAddressesTable extends Migration
             $table->string('exterior')->nullable();
             $table->string('interior')->nullable();
             $table->string('colonia')->nullable();
+            $table->string('municipio')->nullable();
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
