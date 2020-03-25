@@ -56,7 +56,7 @@
                                 <i class="fa fa-phone"></i> {{ $fixerman->phone }}
                             </div>
                         </div>
-                        <div class="card-footer">
+                        {{-- <div class="card-footer">
                             <ul class="list-inline">
                                 <li>
                                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope"></i></button>
@@ -73,7 +73,7 @@
                                     </form>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 @endif
             </div>
