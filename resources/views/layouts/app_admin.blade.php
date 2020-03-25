@@ -271,7 +271,7 @@
                                             <div class="notifi__title">
                                                 <p>Tienes {{ Auth::user()->unreadNotifications->count() }} Notificaciones</p>
                                             </div>
-                                            @foreach(Auth::user()->unreadNotifications()->take(5)->get() as $notification)
+                                            @foreach(Auth::user()->unreadNotifications()->take(4)->get() as $notification)
                                             @if($notification->type == "App\Notifications\NotifyAcceptOrder")
                                                 @php
                                                     $orderNAO = str_replace('"','',json_encode($notification->data["order_id"]));
