@@ -300,7 +300,7 @@
                                                     </div>
                                                     <div class="content">
                                                         <p>Una órden necesita una cotización</p>
-                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
+                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}" id="NewQuotation{{ $orderNQ }}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
                                                             <button type="submit">Cotizar</button>
                                                         </form>
