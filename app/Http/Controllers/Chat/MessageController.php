@@ -19,7 +19,7 @@ class MessageController extends ApiController
     public function messenger(){
         $carbon = new \Carbon\Carbon();
         $date = $carbon->now();
-        DB::table('notifications')->where('type',"App\Notifications\NotificacionNuevaConversacion")->whereNull('read_at')->where('notifiable_id',Auth::user()->id)->update([
+        DB::table('notifications')->where('type',"App\Notifications\NotificacionNuevaConversacion")->where('read_at',null)->where('notifiable_id',Auth::user()->id)->update([
         'read_at' => $date = $carbon->now()
         ]);
         return view('admin.chat.index');

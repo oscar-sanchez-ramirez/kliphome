@@ -273,13 +273,16 @@
                                             </div>
                                             @foreach(Auth::user()->unreadNotifications()->take(5)->get() as $notification)
                                             @if($notification->type == "App\Notifications\NotifyAcceptOrder")
-                                                <div class="notifi__item">
+                                                @php
+                                                    $orderNAO = str_replace('"','',json_encode($notification->data["order_id"]));
+                                                @endphp
+                                                <div class="notifi__item" onclick="javascript:document.getElementById('NotifyAcceptOrder{{ $orderNAO }}').submit();">
                                                     <div class="bg-c1 img-cir img-40">
                                                         <i class="fa fa-wrench"></i>
                                                     </div>
                                                     <div class="content">
                                                         <p>Un Técnico aceptó un trabajo</p>
-                                                        <form action="{{ url('') }}/ordenes/detalle-</{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
+                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ $orderNAO }}" id="NotifyAcceptOrder{{ $orderNAO }}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
                                                             <button type="submit">Ver</button>
                                                         </form>
@@ -288,13 +291,16 @@
                                                 </div>
                                             @endif
                                             @if($notification->type == "App\Notifications\Database\NewQuotation")
-                                                <div class="notifi__item">
+                                                @php
+                                                    $orderNQ = str_replace('"','',json_encode($notification->data["order_id"]));
+                                                @endphp
+                                                <div class="notifi__item" onclick="javascript:document.getElementById('NewQuotation{{ $orderNQ }}').submit();">
                                                     <div class="bg-c1 img-cir img-40">
                                                         <i class="fa fa-wrench"></i>
                                                     </div>
                                                     <div class="content">
                                                         <p>Una órden necesita una cotización</p>
-                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["order_id"])) }}">
+                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ orderNQ }}" id="NewQuotation{{ $orderNQ }}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
                                                             <button type="submit">Cotizar</button>
                                                         </form>
@@ -303,13 +309,16 @@
                                                 </div>
                                             @endif
                                             @if($notification->type == "App\Notifications\Database\QuotationCancelled")
-                                                <div class="notifi__item">
+                                                @php
+                                                    $orderQC = str_replace('"','',json_encode($notification->data["id"]));
+                                                @endphp
+                                                <div class="notifi__item" onclick="javascript:document.getElementById('QuotationCancelled{{ $orderQC }}').submit();">
                                                     <div class="bg-c1 img-cir img-40">
                                                         <i class="fa fa-wrench"></i>
                                                     </div>
                                                     <div class="content">
                                                         <p>El usuario no aceptó la tarifa</p>
-                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($notification->data["id"])) }}">
+                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ $orderQC }}" id="QuotationCancelled{{$orderQC}}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
                                                             <button type="submit">Ver Órden</button>
                                                         </form>
@@ -318,13 +327,13 @@
                                                 </div>
                                             @endif
                                             @if($notification->type == "App\Notifications\NewFixerMan")
-                                                <div class="notifi__item">
+                                                <div class="notifi__item" onclick="javascript:document.getElementById('NewFixerMan{{ $notification->id }}').submit();">
                                                     <div class="bg-c1 img-cir img-40">
                                                         <i class="fa fa-wrench"></i>
                                                     </div>
                                                     <div class="content">
                                                         <p>Un nuevo técnico se registró</p>
-                                                        <form action="{{ url('') }}/tecnicos">
+                                                        <form action="{{ url('') }}/tecnicos" id="NewFixerMan{{ $notification->id }}">
                                                             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
                                                             <button type="submit">Ver</button>
                                                         </form>
@@ -333,13 +342,13 @@
                                                 </div>
                                                 @endif
                                                 @if($notification->type == "App\Notifications\Database\NewConversationAdmin")
-                                                    <div class="notifi__item">
+                                                    <div class="notifi__item" onclick="javascript:document.getElementById('NewConversationAdmin{{ $notification->id }}').submit();">
                                                         <div class="bg-c1 img-cir img-40">
                                                             <i class="fa fa-wrench"></i>
                                                         </div>
                                                         <div class="content">
                                                             <p>Recibiste un nuevo mensaje</p>
-                                                            <form action="{{ url('') }}/messenger">
+                                                            <form action="{{ url('') }}/messenger" id="NewConversationAdmin{{ $notification->id }}">
                                                                 <input type="hidden" name="notification_id" value="{{ $notification->id }}">
                                                                 <button type="submit">Ver</button>
                                                             </form>
