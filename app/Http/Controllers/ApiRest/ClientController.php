@@ -20,7 +20,7 @@ class ClientController extends ApiController
     public function historyOrders($id){
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
-        ->select('o.*','a.alias','a.street')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
+        ->select('o.*','a.alias','a.street as address')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
 
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
@@ -52,7 +52,7 @@ class ClientController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
-        ->select('o.*','a.alias','a.street','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
+        ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.user_id',$id)->where('o.id',$order_id)->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
