@@ -16,12 +16,14 @@ class MessageController extends ApiController
         $this->middleware('auth');
         $this->middleware('checkadmin');
     }
-    public function messenger(){
+    public function messenger(Request $request){
         $carbon = new \Carbon\Carbon();
         $date = $carbon->now();
-        DB::table('notifications')->where('type',"App\Notifications\NotificacionNuevaConversacion")->where('read_at',null)->where('notifiable_id',Auth::user()->id)->update([
-        'read_at' => $date = $carbon->now()
-        ]);
+        if($request->filled('notification_id')){
+            DB::table('notifications')->where('id',$request->notification_id)->update([
+                'read_at' => $date = $carbon->now()
+            ]);
+        }
         return view('admin.chat.index');
     }
     public function index(Request $request)
