@@ -11,6 +11,7 @@ use OneSignal;
 use App\User;
 use App\Order;
 use App\Qualify;
+use App\Payment;
 use App\FixermanStat;
 use App\SelectedOrders;
 use App\SelectedDelegation;
@@ -191,13 +192,35 @@ class FixerManController extends ApiController
             $user = User::where('id',$request->fixerman_id)->first();
             $price = floatval($request->price);
             if($price != 0){
-                Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
-                Stripe\Charge::create ([
-                    "amount" => $price * 100,
-                    "currency" => "MXN",
-                    "source" => $request->stripeToken,
-                    "description" => "Payment a ".$user->name." ".$user->lastName
-                ]);
+                try {
+                    Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+                    Stripe\Charge::create ([
+                        "amount" => $price * 100,
+                        "currency" => "MXN",
+                        "source" => $request->stripeToken,
+                        "description" => "Payment of order".$request->order_id
+                    ]);
+                    $payment = new Payment;
+                    $payment->order_id = $request->order_id;
+                    $payment->description = "PROPINA POR SERVICIO";
+                    $payment->state = true;
+                    $payment->price = $price;
+                    $payment->save();
+                } catch (\Throwable $th) {
+                    $payment = new Payment;
+                    $payment->order_id = $request->order_id;
+                    $payment->description = "PROPINA POR SERVICIO";
+                    $payment->state = false;
+                    $payment->price = $price;
+                    $payment->save();
+                }
+                // Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
+                // Stripe\Charge::create ([
+                //     "amount" => $price * 100,
+                //     "currency" => "MXN",
+                //     "source" => $request->stripeToken,
+                //     "description" => "Payment a ".$user->name." ".$user->lastName
+                // ]);
             }
             $qualify = new Qualify;
             $qualify->user_id = $request->fixerman_id;

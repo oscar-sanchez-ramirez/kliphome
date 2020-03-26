@@ -11,6 +11,7 @@ use DB;
 use App\User;
 use App\Order;
 use App\Address;
+use App\Notifications\Database\NoFixermanForOrder;
 use Illuminate\Support\Facades\Log;
 
 class NotifyNewOrder implements ShouldQueue
@@ -46,9 +47,15 @@ class NotifyNewOrder implements ShouldQueue
         ->where('sc.category_id',$category[0]->id)
         ->where('sd.postal_code',$postal_code)
         ->where('u.state',1)->get();
-        foreach ($user_match_categories as $key) {
-            $user = User::where('id',$key->id)->first();
-            $user->sendNotification($user->email,'sendNotificationOrderMatch');
+
+        if(count($user_match_categories) == 0){
+            $admin = User::where('type','ADMINISTRATOR')->first();
+            $admin->notify(new NoFixermanForOrder($order));
+        }else{
+            foreach ($user_match_categories as $key) {
+                $user = User::where('id',$key->id)->first();
+                $user->sendNotification($user->email,'sendNotificationOrderMatch');
+            }
         }
         Order::where('id',$this->id)->update([
             'state' => "FIXERMAN_NOTIFIED"
