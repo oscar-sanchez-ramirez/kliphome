@@ -303,12 +303,14 @@ class FixerManController extends ApiController
             }
         }else if($field == "Colonias"){
             SelectedDelegation::where('user_id',$user_id)->delete();
+
             $workAreas = explode(',',$value);
             for ($i=0; $i < count($workAreas); $i++) {
                 $selected = new SelectedDelegation;
                 $selected->user_id = $user_id;
                 $selected->colony = $workAreas[$i];
                 $selected->postal_code = $request->postal_code;
+                $selected->municipio = $request->municipio;
                 $selected->save();
             }
         }
