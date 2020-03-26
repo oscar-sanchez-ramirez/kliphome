@@ -326,6 +326,24 @@
                                                     </div>
                                                 </div>
                                             @endif
+                                            @if($notification->type == "App\Notifications\Database\NoFixermanForOrder")
+                                                @php
+                                                    $orderNFFO = str_replace('"','',json_encode($notification->data["id"]));
+                                                @endphp
+                                                <div class="notifi__item" onclick="javascript:document.getElementById('QuotationCancelled{{ $orderNFFO }}').submit();">
+                                                    <div class="bg-c1 img-cir img-40">
+                                                        <i class="fa fa-wrench"></i>
+                                                    </div>
+                                                    <div class="content">
+                                                        <p>Esta orden no cuenta con técnicos asignados</p>
+                                                        <form action="{{ url('') }}/ordenes/detalle-orden/{{ $orderNFFO }}" id="QuotationCancelled{{$orderNFFO}}">
+                                                            <input type="hidden" name="notification_id" value="{{ $notification->id }}">
+                                                            <button type="submit">Ver Órden</button>
+                                                        </form>
+                                                        <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             @if($notification->type == "App\Notifications\NewFixerMan")
                                                 <div class="notifi__item" onclick="javascript:document.getElementById('NewFixerMan{{ $notification->id }}').submit();">
                                                     <div class="bg-c1 img-cir img-40">
