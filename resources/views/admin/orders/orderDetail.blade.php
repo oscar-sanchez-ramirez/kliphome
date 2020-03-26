@@ -26,7 +26,7 @@
                                     <h4>Cotización enviada</h4>
                                 @endif
                                 @if($orden->state == "FIXERMAN_NOTIFIED")
-                                    <h4>Usuario aceptó cotización, se notificó a técnicos</h4>
+                                    <h4>Se notificó a técnicos</h4>
                                 @endif
                             </div>
                         </div>
