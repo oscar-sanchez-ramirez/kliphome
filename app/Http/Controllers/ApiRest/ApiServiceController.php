@@ -78,7 +78,7 @@ class ApiServiceController extends ApiController
         ->whereNotIn('o.id',$selectedOrders)
         ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')
         ->whereIn('a.postal_code',$postal_code)
-            ->select('o.*','a.delegation','a.street as address','a.postal_code','u.name','u.lastName','u.avatar')->get();
+            ->select('o.*','a.delegation','a.street as address','a.postal_code','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
@@ -105,7 +105,7 @@ class ApiServiceController extends ApiController
         ->join('selected_orders as so','o.id','so.order_id')
         ->where('so.user_id',$user_id)->where('so.state',1)
         // ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','FIXERMAN_APPROVED')->orWhere('o.state','FIXERMAN_DONE');})
-        ->select('o.*','a.delegation','a.alias','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->distinct('o.id')->get();
+        ->select('o.*','a.delegation','a.alias','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->distinct('o.id')->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $key->service = $category[0]->service;
