@@ -97,6 +97,9 @@ class ClientController extends ApiController
     public function confirmArrive(Request $request){
         $fixerman = User::where('id',$request->user_id)->first();
         $client = User::where('id',$request->to_id)->first();
+        Order::where('id',$request->order_id)->update([
+            'fixerman_arrive' => "SI"
+        ]);
         // $admin = User::where('type','ADMINISTRATOR')->first();
         OneSignal::sendNotificationUsingTags(
             ucfirst(strtolower($fixerman->name))." ha indicado que llego a tu dirección, ¡Comunícate con el!",

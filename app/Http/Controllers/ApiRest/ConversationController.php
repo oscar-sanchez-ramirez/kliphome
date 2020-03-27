@@ -56,9 +56,9 @@ class ConversationController extends ApiController
   }
   public function new_conversation(Request $request){
 
-    $admin = User::where('type','ADMINISTRATOR')->first();
     if($request->to_id == "admin"){
-      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$admin->id)->first();
+      $admin = User::where('type','ADMINISTRATOR')->first();
+      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$admin->id)->where('order_id',$request->order_id)->first();
       $contact = $admin->id;
       $admin->notify(new NewConversationAdmin($request->all()));
       if(!$check_conversation){
@@ -79,7 +79,7 @@ class ConversationController extends ApiController
 
       }
     }else{
-      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
+      $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->where('order_id',$request->order_id)->first();
       $contact = $request->user_id;
       if(!$check_conversation){
         $con_auth = new Conversation;
