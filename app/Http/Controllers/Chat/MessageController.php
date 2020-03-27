@@ -40,14 +40,6 @@ class MessageController extends ApiController
             })->orWhere(function ($query) use ($userId,$contactId){
             $query->where('m.to_id',$userId)->where('m.from_id',$contactId);
             })->orderBy('m.id',"ASC")->get();
-
-
-        // return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
-        // ->where(function ($query) use ($userId,$contactId){
-        // $query->where('from_id',$userId)->where('to_id',$contactId);
-        // })->orWhere(function ($query) use ($userId,$contactId){
-        // $query->where('to_id',$userId)->where('from_id',$contactId);
-        // })->get();
     }
     public function store(Request $request)
     {

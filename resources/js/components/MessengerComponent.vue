@@ -1,13 +1,13 @@
 <template>
   <b-container fluid style="height: 100%;margin-top:20px;">
-    <b-row no-gutters v-if="checkConversation != '' ">
+    <b-row no-gutters>
         <div class="col-md-4 listado-contactos">
           <b-tabs card>
-            <b-tab title="Mis Mensajes" active @click.native="getOtherConversations('admin')">
+            <b-tab title="Mis Mensajes" active @click="getOtherConversations('admin')">
               <contact-form-component />
               <contact-list-component />
             </b-tab>
-            <b-tab title="Otros" @click.native="getOtherConversations('user')">
+            <b-tab title="Otros" @click="getOtherConversations('user')">
               <contact-form-component />
               <contact-list-component />
             </b-tab>
@@ -17,11 +17,6 @@
         <div class="col-md-8">
             <active-conversation-component v-if="selectedConversation" />
         </div>
-    </b-row>
-    <b-row v-else-if="checkConversation == '' ">
-       <div class="mx-auto" >
-          <b>Aún no tienes conversaciones</b>
-       </div>
     </b-row>
   </b-container>
 </template>
@@ -60,6 +55,7 @@ export default{
   {
     getOtherConversations(type){
       this.$store.dispatch('getConversations',type);
+      this.$store.state.selectedConversation = null;
     },
     changeStatus(user,status){
       const index = this.$store.state.conversations.findIndex((conversation)=>{

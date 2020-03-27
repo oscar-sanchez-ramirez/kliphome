@@ -147,7 +147,7 @@
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="{{ url('') }}/#">
+                <a href="{{ url('') }}/admin">
                     <img src="{{ url('') }}/images/icon/kliphomelogo.png" alt="Klip Home Logo" height="30%" width="30%" />
                 </a>
             </div>

@@ -25,10 +25,6 @@ class ConversationController extends ApiController
     return Conversation::where('type',$type)->get([
         'id','contact_id','user_id','has_blocked','listen_notifications','last_message','last_time','order_id'
     ]);
-
-    // Conversation::where('user_id',Auth::user()->id)->orderBy('last_time',"DESC")->get([
-    //     'id','contact_id','has_blocked','listen_notifications','last_message','last_time'
-    // ]);
   }
   public function indexRest($id){
     return Conversation::where('user_id',$id)->orderBy('last_time',"DESC")->get([
@@ -58,28 +54,5 @@ class ConversationController extends ApiController
       $usuario_anuncio->notify(new NewConversation($con));
     }
     return Redirect::action('Chat\MessageController@messenger');
-  }
-  public function new_conversation(Request $request){
-    $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->first();
-
-    if(!$check_conversation){
-      $con_auth = new Conversation;
-      $con_auth->user_id = $request->user_id;
-      $con_auth->contact_id = $request->to_id;
-      $con_auth->last_time = Carbon::now();
-      $con_auth->last_message = "Pulsa aquí para empezar";
-      $con_auth->order_id = $request->order_id;
-      $con_auth->save();
-      $con = new Conversation;
-      $con->user_id = $request->to_id;
-      $con->contact_id = $request->user_id;
-      $con->last_time = Carbon::now();
-      $con_auth->last_message = "Pulsa aquí para empezar";
-      $con->order_id = $request->order_id;
-      $con->save();
-
-      // $usuario_anuncio = User::find($request->to_id);
-      // $usuario_anuncio->notify(new NewConversation($con));
-    }
   }
 }
