@@ -8,6 +8,7 @@ use App\Http\Controllers\ApiRest\ApiServiceController;
 use DB;
 use App\Address;
 use App\User;
+use App\Order;
 use Illuminate\Support\Facades\Log;
 use OneSignal;
 
