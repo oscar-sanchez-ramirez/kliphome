@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use DB;
 use Auth;
 use App\Order;
 use App\User;
