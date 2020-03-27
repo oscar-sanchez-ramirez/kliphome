@@ -3,12 +3,13 @@
     <b-row no-gutters v-if="checkConversation != '' ">
         <div class="col-md-4 listado-contactos">
           <b-tabs card>
-            <b-tab title="Mis Mensajes" active>
+            <b-tab title="Mis Mensajes" active @click.native="getOtherConversations('admin')">
               <contact-form-component />
               <contact-list-component />
             </b-tab>
-            <b-tab title="Otros">
-              <b-card-text>Tab contents 2</b-card-text>
+            <b-tab title="Otros" @click.native="getOtherConversations('user')">
+              <contact-form-component />
+              <contact-list-component />
             </b-tab>
           </b-tabs>
 
@@ -57,6 +58,9 @@ export default{
   },
   methods:
   {
+    getOtherConversations(type){
+      this.$store.dispatch('getConversations',type);
+    },
     changeStatus(user,status){
       const index = this.$store.state.conversations.findIndex((conversation)=>{
           return conversation.contact_id == user.id;
@@ -66,7 +70,6 @@ export default{
       }
     },
     addMessage1(message){
-      console.log(message);
       return this.$store.commit('addMessage',message);
     }
   },
