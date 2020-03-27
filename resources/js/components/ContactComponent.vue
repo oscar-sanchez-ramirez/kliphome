@@ -28,7 +28,7 @@
             selected: Boolean
         },
         mounted(){
-            console.log(this.conversation);
+            // console.log(this.conversation);
         },
         computed:{
           lastTime(){

@@ -37,9 +37,6 @@ export default new Vuex.Store({
           if (state.selectedConversation.contact_id == message.from_id || state.selectedConversation.contact_id == message.to_id) {
               state.messages.push(message);
           }
-          console.log(state.conversations);
-          console.log(state.selectedConversation);
-          console.log(state.messages);
         },
         selectConversation(state, conversation){
             state.selectedConversation = conversation;
@@ -71,14 +68,13 @@ export default new Vuex.Store({
         axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id+'&conversation_id='+conversation.id).then(
           response=>{
             context.commit('selectConversation',conversation);
+            console.log(response.data);
             context.commit('newMessagesList',response.data);
           }
         );
       },
       getConversations(context,type){
-        console.log(type);
         axios.get('/api/conversations/'+type).then((response) => {
-          console.log(response.data);
           if(response.data != ""){
             this.state.selectedConversation = response.data[0];
           }
@@ -103,7 +99,6 @@ export default new Vuex.Store({
           conversation_id:context.state.selectedConversation.id,
           content: newMessage
         };
-        console.log(params);
         return axios.post('/api/messages',params).then((response) => {
           if(response.data.success)
           {
