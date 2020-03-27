@@ -8,6 +8,7 @@
 	#imgUser{
 		height: 40px;
 		width: 40px;
+		padding-bottom: 5%;
 	}
 </style>
 <script>
@@ -18,10 +19,8 @@
 	},
 	mounted(){
 		if(this.writtenByMe == 1){
-			console.log("a:"+this.imageFromActive);
 			this.image = this.imageFromActive;
 		}else{
-			console.log("b:"+this.myImage);
 			this.image = this.myImage;
 		}
 	},

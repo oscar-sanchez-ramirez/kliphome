@@ -3,7 +3,7 @@
         <b-col cols="12">
 			<b-card no-body footer-bg-variant="light" footer-border-variant="dark" title="" class="h-85">
 				<b-card-body class="card-body-scroll">
-					<p>{{ selectedConversation.contact_name["nombres"]}}</p>
+					<p>{{ selectedConversation.contact_name["name"]}}</p>
 					<message-conversation-component v-for="message in messages" :key="message.id"
 					:written-by-me="message.written_by_me"
 					:imageFromActive="selectedConversation.contact_name['avatar']">
