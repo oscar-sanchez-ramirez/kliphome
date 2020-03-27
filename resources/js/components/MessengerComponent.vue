@@ -42,7 +42,7 @@ export default{
     this.$store.dispatch('getConversations','admin');
     Echo.private('users.'+this.user.id).listen('MessageSent',(data)=>{
       const message = data.message;
-      message.written_by_me = 0;
+      message.written_by_me = 1;
       this.addMessage1(message);
     });
     Echo.join('messenger')
