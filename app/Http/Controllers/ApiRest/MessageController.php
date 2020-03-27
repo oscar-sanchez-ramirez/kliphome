@@ -68,6 +68,7 @@ class MessageController extends ApiController
         $message->from_id = $request->user_id;
         $message->to_id = $request->to_id;
         $message->content = $request->content;
+        $message->conversation_id = $request->conversation_id;
         if($request->filled('type')){
             $message->type = $request->type;
         }
