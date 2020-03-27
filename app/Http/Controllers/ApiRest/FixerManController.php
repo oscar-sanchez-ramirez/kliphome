@@ -263,6 +263,7 @@ class FixerManController extends ApiController
         ->join('orders as o','so.order_id','o.id')
         ->join('users as u','o.user_id','u.id')
         ->select('q.presentation','q.puntuality','q.problemSolve','q.comment','q.created_at','u.name','u.lastName','u.avatar')
+        ->where('u.id',$id)
         ->take(5)->get();
         if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
             return response()->json([

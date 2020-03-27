@@ -23,7 +23,7 @@ class CreateQualifiesTable extends Migration
             $table->integer('puntuality');
             $table->integer('problemSolve');
             $table->longText('comment')->nullable();
-            $table->string('tip');
+            $table->string('tip')->default(0);
             $table->timestamps();
         });
     }
