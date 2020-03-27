@@ -30,7 +30,7 @@ export default new Vuex.Store({
           const conversation = state.conversations.find((conversation)=>{
             return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
           });
-          const author = state.user.id === message.from_id ? 'Tú' : conversation.contact_name["nombres"];
+          const author = state.user.id === message.from_id ? 'Tú' : conversation.contact_name["name"];
 
           conversation.last_message = author+': '+message.content;
           conversation.last_time = message.created_at;
