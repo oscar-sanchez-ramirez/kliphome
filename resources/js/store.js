@@ -104,7 +104,7 @@ export default new Vuex.Store({
           {
             newMessage = '';
             const message = response.data.message;
-            message.written_by_me = 1;
+            message.written_by_me = 0;
             context.commit('addMessage',message);
           }
         });
