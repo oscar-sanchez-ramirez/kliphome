@@ -9,9 +9,9 @@ class Conversation extends Model
     protected $appends = ['contact_name'];
     public function getContactNameAttribute()
     {
-      return $this->contact()->first(['name','lastName','avatar']);
+      return $this->user()->first(['name','lastName','avatar']);
     }
-    public function contact()
+    public function user()
     {
       return $this->belongsTo(User::class);
     }

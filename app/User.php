@@ -82,7 +82,7 @@ class User extends Authenticatable
 
     public function routeNotificationForOneSignal()
     {
-        Log::notice($this->email);
+        // Log::notice($this->email);
         return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
     }
 }
