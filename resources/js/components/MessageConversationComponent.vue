@@ -18,8 +18,10 @@
 	},
 	mounted(){
 		if(this.writtenByMe == 1){
+			console.log(this.imageFromActive);
 			this.image = this.imageFromActive;
 		}else{
+			console.log(this.myImage);
 			this.image = this.myImage;
 		}
 	},
