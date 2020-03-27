@@ -99,6 +99,7 @@ export default new Vuex.Store({
       postMessage(context,newMessage){
         const params = {
           to_id: context.state.selectedConversation.contact_id,
+          conversation_id:context.state.selectedConversation.order_id,
           content: newMessage
         };
         console.log(params);
