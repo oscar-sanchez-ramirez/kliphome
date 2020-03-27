@@ -26,7 +26,7 @@ class MessageController extends ApiController
         })->get();
     }
 
-    public function indexRest($userId,$contactId,$page){
+    public function indexRest($userId,$contactId,$order_id,$page){
         if($page == 0)
         {
             $page = 1;
@@ -34,17 +34,26 @@ class MessageController extends ApiController
 
         $page = (5 * $page)-5;
 
-
-        return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
+        return DB::table('conversations as c')
+        ->join('messages as m','c.id','m.conversation_id')
+        ->select('m.id',DB::raw('IF(m.from_id='.$userId.',1,0) as written_by_me'),'m.created_at','m.content','m.type')
+        ->where('c.order_id',$order_id)
         ->where(function ($query) use ($userId,$contactId){
-        $query->where('from_id',$userId)->where('to_id',$contactId);
-        })->orWhere(function ($query) use ($userId,$contactId){
-        $query->where('to_id',$userId)->where('from_id',$contactId);
-        })->offset($page)->take(5)->orderBy('id',"DESC")->get();
+            $query->where('m.from_id',$userId)->where('m.to_id',$contactId);
+            })->orWhere(function ($query) use ($userId,$contactId){
+            $query->where('m.to_id',$userId)->where('m.from_id',$contactId);
+            })->offset($page)->take(5)->orderBy('m.id',"DESC")->get();
+        // return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
+        // ->where(function ($query) use ($userId,$contactId){
+        // $query->where('from_id',$userId)->where('to_id',$contactId);
+        // })->orWhere(function ($query) use ($userId,$contactId){
+        // $query->where('to_id',$userId)->where('from_id',$contactId);
+        // })->offset($page)->take(5)->orderBy('id',"DESC")->get();
     }
     public function store(Request $request)
     {
         $message = new Message;
+        $message->conversation_id = $request->conversation_id;
         $message->from_id = Auth::user()->id;
         $message->to_id = $request->to_id;
         $message->content = $request->content;

@@ -15,7 +15,7 @@ use App\Http\Controllers\ApiController;
 
 class ConversationController extends ApiController
 {
-    public function __construct()
+  public function __construct()
   {
       $this->middleware('auth:api');
   }
