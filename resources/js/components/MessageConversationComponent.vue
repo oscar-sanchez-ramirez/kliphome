@@ -18,9 +18,9 @@
 	},
 	mounted(){
 		if(this.writtenByMe == 1){
-			this.image = this.imageFromActive;
+			this.image = imageFromActive;
 		}else{
-			this.image = myImage;
+			this.image = this.myImage;
 		}
 	},
 	data(){
