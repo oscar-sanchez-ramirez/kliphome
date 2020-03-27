@@ -48,6 +48,7 @@ class OrderController extends ApiController
                     "source" => $request->token,
                     "description" => "Pago de visita para orden".$order->id
                 ]);
+                Log::notice($pago);
                 $payment = new Payment;
                 $payment->order_id = $order->id;
                 $payment->description = "VISITA";
@@ -61,6 +62,9 @@ class OrderController extends ApiController
                 $payment->state = false;
                 $payment->price = $price;
                 $payment->save();
+                return response()->json([
+                    'success' => false
+                ]);
             }
             dispatch(new NotifyNewOrder($order->id));
             // $client = User::where('type',"ADMINISTRATOR")->first();
@@ -112,6 +116,9 @@ class OrderController extends ApiController
                 $payment->state = false;
                 $payment->price = $price;
                 $payment->save();
+                return response()->json([
+                    'success' => false
+                ]);
             }
 
             $quotation = Quotation::where('order_id',$request->order_id)->first();
