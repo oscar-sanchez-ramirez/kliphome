@@ -22,12 +22,12 @@ class ConversationController extends ApiController
   public function index()
   {
     return Conversation::where('user_id',Auth::user()->id)->orWhere('contact_id',Auth::user()->id)->orderBy('last_time',"DESC")->get([
-        'id','contact_id','has_blocked','listen_notifications','last_message','last_time'
+        'id','contact_id','has_blocked','listen_notifications','last_message','last_time','order_id'
     ]);
   }
   public function indexRest($id){
     return Conversation::where('user_id',$id)->orderBy('last_time',"DESC")->get([
-      'id','contact_id','has_blocked','listen_notifications','last_message','last_time'
+      'id','contact_id','has_blocked','listen_notifications','last_message','last_time','order_id'
     ]);
   }
   public function nueva_conversacion($id,$nombres,$id_anuncio){
