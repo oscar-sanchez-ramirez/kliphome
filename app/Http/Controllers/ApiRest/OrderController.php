@@ -97,12 +97,13 @@ class OrderController extends ApiController
             $price = floatval($request->price);
             try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-                Stripe\Charge::create ([
+                $pago = Stripe\Charge::create ([
                     "amount" => $price * 100,
                     "currency" => "MXN",
                     "source" => $request->stripeToken,
                     "description" => "Payment of order".$request->order_id
                 ]);
+                Log::notice($pago);
                 $payment = new Payment;
                 $payment->order_id = $request->order_id;
                 $payment->description = "PAGO POR SERVICIO";
