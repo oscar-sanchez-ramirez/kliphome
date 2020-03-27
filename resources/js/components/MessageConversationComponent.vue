@@ -14,12 +14,25 @@
 	export default{
     props:{
       	writtenByMe: Number,
-		image:String
-    },
+		imageFromActive:String
+	},
+	mounted(){
+		if(this.writtenByMe == 1){
+			this.image = this.imageFromActive;
+		}else{
+			this.image = myImage;
+		}
+	},
 	data(){
+
 		return{
-			content : 'abc'
+			content : 'abc',image:''
 		};
+	},
+	computed:{
+		myImage(){
+			return this.$store.state.user.avatar;
+		},
 	}
 	}
 </script>
