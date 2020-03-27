@@ -77,7 +77,7 @@ export default new Vuex.Store({
       },
       getConversations(context){
         axios.get('/api/conversations').then((response) => {
-          console.log(response.data);
+          console.log(response);
           if(response.data != ""){
             this.state.selectedConversation = response.data[0];
           }
