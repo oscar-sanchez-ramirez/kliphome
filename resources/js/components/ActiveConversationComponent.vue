@@ -6,7 +6,7 @@
 					<p>{{ selectedConversation.contact_name["nombres"]}}</p>
 					<message-conversation-component v-for="message in messages" :key="message.id"
 					:written-by-me="message.written_by_me"
-					:image="message.written_by_me ? myImage : selectedConversation.contact_name['foto']">
+					:image="message.written_by_me ? myImage : selectedConversation.contact_name['avatar']">
 						<div v-if="message.type == 'text'">
 							{{message.content}}
 						</div>
