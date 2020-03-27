@@ -1,5 +1,5 @@
 <template>
-	<b-media :right-align="!!writtenByMe" vertical-align="center" class="mb-2">
+	<b-media :right-align="!writtenByMe" vertical-align="center" class="mb-2">
 		<b-img atl="image" class="m-1" rounded="circle" id="imgUser" :src="image" slot="aside"  />
 		<b-card><slot></slot></b-card>
 	</b-media>
