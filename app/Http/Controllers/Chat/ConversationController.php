@@ -20,9 +20,9 @@ class ConversationController extends ApiController
       $this->middleware('auth');
       $this->middleware('checkadmin');
   }
-  public function index()
+  public function index($type)
   {
-    return Conversation::get([
+    return Conversation::where('type',$type)->get([
         'id','contact_id','user_id','has_blocked','listen_notifications','last_message','last_time','order_id'
     ]);
 

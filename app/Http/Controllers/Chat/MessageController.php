@@ -30,30 +30,25 @@ class MessageController extends ApiController
     {
         $userId = $request->user_id;
         $contactId = $request->contact_id;
-        return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
+        $conversationId = $request->conversation_id;
+        return DB::table('conversations as c')
+        ->join('messages as m','c.id','m.conversation_id')
+        ->select('m.id',DB::raw('IF(m.from_id='.$userId.',1,0) as written_by_me'),'m.created_at','m.content','m.type')
+        ->where('c.id',$conversationId)
         ->where(function ($query) use ($userId,$contactId){
-        $query->where('from_id',$userId)->where('to_id',$contactId);
-        })->orWhere(function ($query) use ($userId,$contactId){
-        $query->where('to_id',$userId)->where('from_id',$contactId);
-        })->get();
+            $query->where('m.from_id',$userId)->where('m.to_id',$contactId);
+            })->orWhere(function ($query) use ($userId,$contactId){
+            $query->where('m.to_id',$userId)->where('m.from_id',$contactId);
+            })->orderBy('m.id',"ASC")->get();
+
+
+        // return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
+        // ->where(function ($query) use ($userId,$contactId){
+        // $query->where('from_id',$userId)->where('to_id',$contactId);
+        // })->orWhere(function ($query) use ($userId,$contactId){
+        // $query->where('to_id',$userId)->where('from_id',$contactId);
+        // })->get();
     }
-
-    // public function indexRest($userId,$contactId,$page){
-    //     if($page == 0)
-    //     {
-    //         $page = 1;
-    //     }
-
-    //     $page = (5 * $page)-5;
-
-
-    //     return Message::select('id',DB::raw('IF(from_id='.$userId.',1,0) as written_by_me'),'created_at','content','type')
-    //     ->where(function ($query) use ($userId,$contactId){
-    //     $query->where('from_id',$userId)->where('to_id',$contactId);
-    //     })->orWhere(function ($query) use ($userId,$contactId){
-    //     $query->where('to_id',$userId)->where('from_id',$contactId);
-    //     })->offset($page)->take(5)->orderBy('id',"DESC")->get();
-    // }
     public function store(Request $request)
     {
         $message = new Message;
@@ -67,18 +62,4 @@ class MessageController extends ApiController
         $data['message'] = $message;
         return $data;
     }
-    // public function storeRest(Request $request){
-    //     $message = new Message;
-    //     $message->from_id = $request->user_id;
-    //     $message->to_id = $request->to_id;
-    //     $message->content = $request->content;
-    //     if($request->filled('type')){
-    //         $message->type = $request->type;
-    //     }
-    //     $saved = $message->save();
-    //     $data = [];
-    //     $data['success'] = $saved;
-    //     $data['message'] = $message;
-    //     return $data;
-    // }
 }

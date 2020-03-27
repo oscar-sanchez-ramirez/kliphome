@@ -68,27 +68,28 @@ export default new Vuex.Store({
 
       // },
       getMessages(context,conversation){
-        axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id).then(
+        axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id+'&conversation_id='+conversation.id).then(
           response=>{
             context.commit('selectConversation',conversation);
             context.commit('newMessagesList',response.data);
           }
         );
       },
-      getConversations(context){
-        axios.get('/api/conversations').then((response) => {
-          console.log(response);
+      getConversations(context,type){
+        console.log(type);
+        axios.get('/api/conversations/'+type).then((response) => {
+          console.log(response.data);
           if(response.data != ""){
             this.state.selectedConversation = response.data[0];
           }
-          for (let index = 0; index < response.data.length; index++) {
-            if(index > 0){
-              if(response.data[index].contact_id == response.data[index-1].user_id){
-                response.data[index-1].group = response.data[index-1].contact_name.name+' '+response.data[index-1].contact_name.lastName+' con '+response.data[index].contact_name.name+' '+response.data[index].contact_name.lastName;
-                response.data.splice(response.data.indexOf(response.data[index]), 1);
-              }
-            }
-          }
+          // for (let index = 0; index < response.data.length; index++) {
+          //   if(index > 0){
+          //     if(response.data[index].contact_id == response.data[index-1].user_id){
+          //       response.data[index-1].group = response.data[index-1].contact_name.name+' '+response.data[index-1].contact_name.lastName+' con '+response.data[index].contact_name.name+' '+response.data[index].contact_name.lastName;
+          //       response.data.splice(response.data.indexOf(response.data[index]), 1);
+          //     }
+          //   }
+          // }
           let array = response.data.sort( ( a, b) => {
               return new Date(a.last_time) - new Date(b.last_time);
           });

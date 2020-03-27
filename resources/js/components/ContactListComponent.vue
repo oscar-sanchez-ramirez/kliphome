@@ -1,13 +1,11 @@
 <template>
   <b-list-group>
-      <a href="#activeConversationComponent">
         <contact-component
   			v-for="conversation in ordered" :key="conversation.id"
   			:conversation="conversation" :selected="isSelected(conversation)"
   			@click.native="selectConversation(conversation)" >
 
         </contact-component>
-      </a>
   </b-list-group>
 </template>
 

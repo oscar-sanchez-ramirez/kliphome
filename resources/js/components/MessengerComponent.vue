@@ -2,8 +2,16 @@
   <b-container fluid style="height: 100%;margin-top:20px;">
     <b-row no-gutters v-if="checkConversation != '' ">
         <div class="col-md-4 listado-contactos">
-            <contact-form-component />
-            <contact-list-component />
+          <b-tabs card>
+            <b-tab title="Mis Mensajes" active>
+              <contact-form-component />
+              <contact-list-component />
+            </b-tab>
+            <b-tab title="Otros">
+              <b-card-text>Tab contents 2</b-card-text>
+            </b-tab>
+          </b-tabs>
+
         </div>
         <div class="col-md-8">
             <active-conversation-component v-if="selectedConversation" />
@@ -11,16 +19,7 @@
     </b-row>
     <b-row v-else-if="checkConversation == '' ">
        <div class="mx-auto" >
-          <b>Aún no tienes conversaciones, para hacerlo deberas iniciarlas desde el administrador de tus anuncios</b>
-       </div>
-
-    </b-row>
-    <b-row v-if="checkConversation == '' ">
-      <br>
-      <div class="mx-auto" style="padding-top:4%">
-         <form action="/perfil">
-           <b-button type="submit" style="background-color:#ca90f4;color:white">Ir a mis anuncios</b-button>
-         </form>
+          <b>Aún no tienes conversaciones</b>
        </div>
     </b-row>
   </b-container>
@@ -40,7 +39,7 @@ export default{
   mounted(){
     this.$store.commit('setUser',this.user);
     // this.$store.dispatch('getAccess');
-    this.$store.dispatch('getConversations');
+    this.$store.dispatch('getConversations','admin');
     Echo.private('users.'+this.user.id).listen('MessageSent',(data)=>{
       const message = data.message;
       message.written_by_me = 0;

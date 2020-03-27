@@ -1,5 +1,5 @@
 <template>
-  <v-form class="my-3 mx-2">
+  <v-form class="my-3 mx-2 form_search">
       <v-text-field class="text-center"
         type="text" v-model="querySearch"
          placeholder="Buscar Contacto..."></v-text-field>
