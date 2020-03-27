@@ -66,6 +66,7 @@ export default{
       }
     },
     addMessage1(message){
+      console.log(message);
       return this.$store.commit('addMessage',message);
     }
   },
