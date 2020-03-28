@@ -56,6 +56,7 @@ export default{
     getOtherConversations(type){
       this.$store.dispatch('getConversations',type);
       this.$store.state.selectedConversation = null;
+      this.$store.state.messages = [];
     },
     changeStatus(user,status){
       const index = this.$store.state.conversations.findIndex((conversation)=>{
