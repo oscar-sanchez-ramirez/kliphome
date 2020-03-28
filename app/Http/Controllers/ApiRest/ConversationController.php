@@ -23,7 +23,7 @@ class ConversationController extends ApiController
 
   public function indexRest($id){
     return DB::table('conversations as c')->join('users as u','c.contact_id','u.id')->select('c.id','c.contact_id','c.has_blocked','c.listen_notifications','c.last_message','c.last_time','c.order_id','u.name','u.lastName','u.avatar')
-    ->where('user_id',$id)->get();
+    ->where('user_id',$id)->orWhere('contact_id',$id)->get();
   }
   public function new_conversation(Request $request){
 
