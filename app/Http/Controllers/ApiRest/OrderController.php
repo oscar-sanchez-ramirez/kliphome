@@ -26,19 +26,6 @@ class OrderController extends ApiController
     public function create(Request $request){
         // try {
             $price = 'quotation';
-
-            $order = new Order;
-            $order->user_id = $request->user_id;
-            $order->selected_id = $request->selected_id;
-            $order->type_service = $request->type_service;
-            $order->service_date = $request->service_date;
-            $order->service_description = $request->service_description;
-            $order->service_image = $request->service_image;
-            $order->address = $request->address;
-            $order->price = $price;
-            $order->visit_price = $request->visit_price;
-            $order->save();
-            $order->order_id = $order->id;
             $price = floatval($request->price);
             try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
@@ -46,9 +33,23 @@ class OrderController extends ApiController
                     "amount" => $request->visit_price * 100,
                     "currency" => "MXN",
                     "source" => $request->token,
-                    "description" => "Pago de visita para orden".$order->id
+                    "description" => "Pago por visita"
                 ]);
                 Log::notice($pago);
+
+                $order = new Order;
+                $order->user_id = $request->user_id;
+                $order->selected_id = $request->selected_id;
+                $order->type_service = $request->type_service;
+                $order->service_date = $request->service_date;
+                $order->service_description = $request->service_description;
+                $order->service_image = $request->service_image;
+                $order->address = $request->address;
+                $order->price = $price;
+                $order->visit_price = $request->visit_price;
+                $order->save();
+                $order->order_id = $order->id;
+
                 $payment = new Payment;
                 $payment->order_id = $order->id;
                 $payment->description = "VISITA";
@@ -60,7 +61,7 @@ class OrderController extends ApiController
                 $payment->order_id = $order->id;
                 $payment->description = "VISITA";
                 $payment->state = false;
-                $payment->price = $price;
+                $payment->price = $request->visit_price;
                 $payment->save();
                 return response()->json([
                     'success' => false
