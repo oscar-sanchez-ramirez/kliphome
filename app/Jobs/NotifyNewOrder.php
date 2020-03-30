@@ -37,7 +37,7 @@ class NotifyNewOrder implements ShouldQueue
     public function handle()
     {
         $order = Order::where('id',$this->id)->first();
-        $postal_code = Address::where('id',$order->address)->pluck('postal_code');
+        $municipio = Address::where('id',$order->address)->pluck('municipio');
         $category = $this->table($order->type_service,$order->selected_id);
         $user_match_categories =
         DB::table('users as u')
@@ -45,7 +45,7 @@ class NotifyNewOrder implements ShouldQueue
         ->join('selected_delegations as sd','u.id','sd.user_id')
         ->select('u.*')
         ->where('sc.category_id',$category[0]->id)
-        ->where('sd.postal_code',$postal_code)
+        ->where('sd.municipio',$municipio)
         ->where('u.state',1)->get();
 
         if(count($user_match_categories) == 0){

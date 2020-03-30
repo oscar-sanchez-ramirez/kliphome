@@ -43,8 +43,8 @@ class ApiServiceController extends ApiController
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
             $ids = array_column($categories, 'category_id');
-            $postal_code = array_column($delegation,'postal_code');
-            $orders = $this->categories($ids,$postal_code,$user->id);
+            $municipio = array_column($delegation,'municipio');
+            $orders = $this->categories($ids,$municipio,$user->id);
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             $accepted = $this->ordersAccepted($user->id);
             return response()->json([
@@ -69,7 +69,7 @@ class ApiServiceController extends ApiController
 
     }
     //getting categories by fixerman preferences
-    public function categories($ids,$postal_code,$user_id)
+    public function categories($ids,$municipio,$user_id)
     {
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
         $final_orders = [];
@@ -77,8 +77,8 @@ class ApiServiceController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->whereNotIn('o.id',$selectedOrders)
         ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')
-        ->whereIn('a.postal_code',$postal_code)
-            ->select('o.*','a.delegation','a.street as address','a.postal_code','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
+        ->whereIn('a.municipio',$municipio)
+            ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
