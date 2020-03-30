@@ -41,6 +41,13 @@ class ConversationController extends ApiController
         $con_auth->type = 'admin';
         $con_auth->save();
         $admin->notify(new NewConversationAdmin($request->all()));
+        return response()->json([
+          'conversation' => $con_auth
+        ]);
+      }else{
+        return response()->json([
+          'conversation' => $check_conversation
+        ]);
       }
     }else{
       $check_conversation = Conversation::where('user_id',$request->user_id)->where('contact_id',$request->to_id)->where('order_id',$request->order_id)->first();
@@ -53,6 +60,13 @@ class ConversationController extends ApiController
         $con_auth->order_id = $request->order_id;
         $con_auth->type = 'user';
         $con_auth->save();
+        return response()->json([
+          'conversation' => $con_auth
+        ]);
+      }else{
+        return response()->json([
+          'conversation' => $check_conversation
+        ]);
       }
     }
   }
