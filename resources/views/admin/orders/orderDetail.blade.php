@@ -15,12 +15,14 @@
                             <h5 class="text-sm-center mt-2 mb-1">{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</h5>
                             <div class="location text-sm-center">
                                 <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
-                                @if($orden->price == "quotation" || $orden->state == "PENDING" || $fixerman != null)
-                                    <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
-                                    <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
-                                    </form>
+                                @if($fixerman != null)
+                                    @if($orden->price == "quotation" || $orden->state == "PENDING")
+                                        <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
+                                        <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
+                                        </form>
+                                    @endif
                                 @endif
                                 @if($orden->price == "waitquotation")
                                     <h4>Cotización enviada</h4>
