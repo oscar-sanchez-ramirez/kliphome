@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Carbon\Carbon;
 use DB;
+use Stripe;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
