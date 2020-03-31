@@ -377,10 +377,10 @@
                                             @endforeach
                                             <div class="notifi__footer">
                                                 <a href="{{ url('') }}/notificaciones">Todas las Notificaciones</a>
-                                                <form action="{{ url('') }}/markasread">
+                                                {{-- <form action="{{ url('') }}/markasread">
                                                     @csrf
                                                     <a href="" type="submit">Marcar todas como leidas</a>
-                                                </form>
+                                                </form> --}}
                                             </div>
                                         </div>
                                     </div>
