@@ -80,6 +80,7 @@ class ApiServiceController extends ApiController
         ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')
         ->whereIn('a.municipio',$municipio)
             ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
+        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);
