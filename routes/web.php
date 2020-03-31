@@ -51,6 +51,3 @@ Route::get('notificaciones','HomeController@notificaciones');
 Route::post('markasread','HomeController@markasread');
 Route::get('testOrder', 'ApiRest\OrderController@testOrder');
 Route::get('test','Admin\NotificationsProvider@test');
-
-
-Route::get('prueba_pago','HomeController@prueba_pago');

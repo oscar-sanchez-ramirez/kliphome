@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\User;
 use Carbon\Carbon;
 use DB;
-use Stripe;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -40,17 +39,6 @@ class HomeController extends Controller
         DB::table('notifications')->where('notifiable_id',$admin->id)->where('read_at',null)->update([
             'read_at' => Carbon::now()
         ]);
-    }
-
-    public function prueba_pago(){
-        Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-        $pago = Stripe\Charge::create ([
-            "amount" => 50 * 100,
-            "currency" => "MXN",
-            "card" => "card_1GSQuMCsoMg3FOVWnugt0zkh",
-            "description" => "Pago por visita"
-        ]);
-        return $pago;
     }
 
 }
