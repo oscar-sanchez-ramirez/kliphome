@@ -68,11 +68,15 @@ class OrderController extends Controller
         $quotation->mensajeClient = "Recibiste la cotización de tu orden para el ".$date;
         $user->notify(new QuotationSended($quotation));
 
+        $type = "App\Notifications\Database\QuotationSended";
+        $content = $quotation;
         OneSignal::sendNotificationUsingTags(
             "Acabas de recibir una cotización",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
             ),
+            $type,
+            $content,
             $url = null,
             $data = null,
             $buttons = null,

@@ -72,7 +72,6 @@ class ApiServiceController extends ApiController
     public function categories($ids,$municipio,$user_id)
     {
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
-        Log::notice($selectedOrders);
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
@@ -80,7 +79,6 @@ class ApiServiceController extends ApiController
         ->whereIn('a.municipio',$municipio)
         ->whereNotIn('o.id',$selectedOrders)
         ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $result = in_array($category[0]->id,$ids);

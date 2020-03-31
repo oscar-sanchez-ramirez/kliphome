@@ -168,11 +168,15 @@ class FixerManController extends ApiController
         $client = User::where('id',$order->user_id)->first();
         $client->notify(new FinishedOrder($order));
         //Onesignal Notification
+        $type = "App\Notifications\Database\FinishedOrder";
+        $content = $order;
         OneSignal::sendNotificationUsingTags(
             ucfirst(strtolower($fixerman->name))." ha marcardo el servicio como terminado. ¡Valóralo ahora!",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
             ),
+            $type,
+            $content,
             $url = null,
             $data = null,
             $buttons = null,
