@@ -41,4 +41,15 @@ class HomeController extends Controller
         ]);
     }
 
+    public function prueba_pago(){
+        Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+        $pago = Stripe\Charge::create ([
+            "amount" => 50 * 100,
+            "currency" => "MXN",
+            "card" => "card_1GSQuMCsoMg3FOVWnugt0zkh",
+            "description" => "Pago por visita"
+        ]);
+        return $pago;
+    }
+
 }
