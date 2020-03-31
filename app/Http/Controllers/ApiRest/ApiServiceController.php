@@ -76,10 +76,10 @@ class ApiServiceController extends ApiController
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
-        ->whereNotIn('o.id',$selectedOrders)
         ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')
         ->whereIn('a.municipio',$municipio)
-            ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
+        ->whereNotIn('o.id',$selectedOrders)
+        ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
         Log::notice($orders);
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
