@@ -58,7 +58,7 @@ class NotifyAcceptOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "NotifyAcceptOrter";
+        $type = "App\Notifications\NotifyAcceptOrder";
         $content = $this->selected_order;
         OneSignal::sendNotificationUsingTags(
             "Un Técnico ha aceptado el trabajo para tu solicitud",
