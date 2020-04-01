@@ -18,7 +18,6 @@ use App\SelectedDelegation;
 use App\SelectedCategories;
 use Carbon\Carbon;
 use App\Http\Controllers\ApiRest\ApiServiceController;
-use App\Jobs\ApproveOrderFixerMan;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
 use App\Notifications\NewFixerMan;
@@ -138,8 +137,7 @@ class FixerManController extends ApiController
         //Notification for Fixerman
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
-        $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
-        $fixerman->notify(new DatabaseApproveOrderFixerMan($order));
+        $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
 
         Order::where('id',$request->order_id)->update([
             'state' => 'FIXERMAN_APPROVED'
@@ -238,9 +236,9 @@ class FixerManController extends ApiController
 
             //Database notification
             $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
-            $user->notify(new ServiceQualified($qualify));
+            $user->notify(new ServiceQualified($qualify,$user->email));
             //OneSignal notification
-            $user->sendNotification($user->email,'ServiceQualified');
+            // $user->sendNotification($user->email,'ServiceQualified');
             //Update order
             DB::table('selected_orders as so')
             ->join('orders as o', 'so.order_id','o.id')

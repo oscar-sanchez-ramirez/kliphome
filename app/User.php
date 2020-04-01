@@ -8,9 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\AproveFixerMan;
 use App\Notifications\NotifyNewOrder;
-use App\Notifications\OneSignal\ApproveOrderFixerman;
 use App\Notifications\OneSignal\DisapproveOrderFixerman;
-use App\Notifications\OneSignal\ServiceQualified;
 use Illuminate\Support\Facades\Log;
 
 
@@ -57,11 +55,11 @@ class User extends Authenticatable
                 //Notify when a FixerMan is approved
                 $this->notify(new AproveFixerMan($this));
                 break;
-            case 'ApproveOrderFixerMan':
-                //Notify when a Fixerman Request was approved
-                $this->notify(new ApproveOrderFixerman($this));
-                # code...
-                break;
+            // case 'ApproveOrderFixerMan':
+            //     //Notify when a Fixerman Request was approved
+            //     $this->notify(new ApproveOrderFixerman($this));
+            //     # code...
+            //     break;
             case 'DisapproveOrderFixerMan':
                 //Notify when a Fixerman Request was disapproved
                 $this->notify(new DisapproveOrderFixerman($this));
@@ -70,9 +68,9 @@ class User extends Authenticatable
                 //Notify when user create a order and exists fixerman with the same category
                 $this->notify(new NotifyNewOrder($this));
                 break;
-            case 'ServiceQualified':
+            // case 'ServiceQualified':
                 //Notify when user create a order and exists fixerman with the same category
-                $this->notify(new ServiceQualified($this));
+                // $this->notify(new ServiceQualified($this));
             default:
                 # code...
                 break;

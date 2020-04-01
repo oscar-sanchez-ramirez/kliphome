@@ -11,14 +11,16 @@ class ApproveOrderFixerMan extends Notification
 {
     use Queueable;
     protected $order;
+    protected $email;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($order,$email)
     {
         $this->order = $order;
+        $this->email = $email;
     }
 
     /**
@@ -54,6 +56,20 @@ class ApproveOrderFixerMan extends Notification
      */
     public function toArray($notifiable)
     {
+        $type = "App\Notifications\Database\ApproveOrderFixerMan";
+        $content = $this->order;
+        OneSignal::sendNotificationUsingTags(
+            "Tu solicitud de trabajo fue aceptada",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
+            ),
+            $type,
+            $content,
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
         return $this->order;
     }
 }

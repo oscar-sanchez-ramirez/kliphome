@@ -11,7 +11,6 @@ use App\Quotation;
 use App\Payment;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
-use App\Jobs\ApproveOrderFixerMan;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
 use App\Notifications\Database\NewQuotation;
@@ -171,10 +170,5 @@ class OrderController extends ApiController
                 'message' => "No se encontraron datos"
             ]);
         }
-    }
-
-    public function testOrder(){
-        // dispatch(new NotifyNewOrder(8));
-        dispatch(new ApproveOrderFixerMan(78,8));
     }
 }
