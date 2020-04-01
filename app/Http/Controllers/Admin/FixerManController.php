@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\AproveFixerMan;
 use App\User;
+use App\Category;
 use DB;
 use Image;
 use Carbon\Carbon;
@@ -29,6 +30,14 @@ class FixerManController extends Controller
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
         return response()->json([
             'delegations' => $delegation,
+            'categories' => $categories
+        ]);
+    }
+    public function list(){
+        $categories = Category::all();
+        $fixerman = User::where('type',"AppFixerMan")->where('state',1)->with('categories')->get();
+        return response()->json([
+            'fixerman' => $fixerman,
             'categories' => $categories
         ]);
     }

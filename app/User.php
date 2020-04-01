@@ -10,6 +10,7 @@ use App\Notifications\AproveFixerMan;
 use App\Notifications\NotifyNewOrder;
 use App\Notifications\OneSignal\DisapproveOrderFixerman;
 use Illuminate\Support\Facades\Log;
+use DB;
 
 
 class User extends Authenticatable
@@ -82,5 +83,9 @@ class User extends Authenticatable
     {
         // Log::notice($this->email);
         return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
+    }
+
+    public function categories(){
+        return $this->hasMany(SelectedCategories::class, 'user_id')->orderBy('created_at', 'asc');
     }
 }
