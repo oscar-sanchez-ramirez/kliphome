@@ -80,3 +80,5 @@ Route::post('messagesRest', 'ApiRest\MessageController@storeRest');
 Route::post('new_conversation','ApiRest\ConversationController@new_conversation');
 
 Route::post('webhook_oxxo','ApiController@webhook_oxxo');
+
+Route::get('pruebausuario/{id}','ApiRest\ApiServiceController@userInfo');

@@ -69,7 +69,7 @@
                         </div>
                         <hr>
                         <div class="card-text text-sm-center">
-                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" type="button" data-toggle="modal" data-target="#fixermanModal" id="fixermanModalButton" title="Ver" href="#">
+                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" type="button" data-toggle="modal" data-target="#fixermanModal" id="fixermanModalButton" title="Ver" href="#" data-id="{{ $orden->id }}">
                                 Asignar Técnico
                             </button>
                         </div>

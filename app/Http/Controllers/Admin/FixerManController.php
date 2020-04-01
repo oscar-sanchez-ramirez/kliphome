@@ -41,6 +41,9 @@ class FixerManController extends Controller
             'categories' => $categories
         ]);
     }
+    public function asignarTecnico($id_tecnico,$id_orden){
+
+    }
     public function aprove(Request $request){
         User::where('id',$request->fixerman_id)->update([
             'state' => true
