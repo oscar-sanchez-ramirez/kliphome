@@ -42,9 +42,9 @@ class ApiServiceController extends ApiController
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
-            $ids = array_column($categories, 'category_id');
+            $categorias = array_column($categories, 'category_id');
             $municipio = array_column($delegation,'municipio');
-            $orders = $this->categories($ids,$municipio,$user->id);
+            $orders = $this->categories($categorias,$municipio,$user->id);
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             $accepted = $this->ordersAccepted($user->id);
             return response()->json([
@@ -75,7 +75,10 @@ class ApiServiceController extends ApiController
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
-        ->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING')
+        ->where(function ($query){
+                $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');
+        })
+        // ->where('o.state','FIXERMAN_NOTIFIED')->where('o.state','PENDING')
         ->whereIn('a.municipio',$municipio)
         ->whereNotIn('o.id',$selectedOrders)
         ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
