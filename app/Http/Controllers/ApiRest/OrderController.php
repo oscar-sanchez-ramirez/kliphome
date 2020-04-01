@@ -24,8 +24,8 @@ class OrderController extends ApiController
     }
     public function create(Request $request){
         // try {
-            $price = 'quotation';
-            $price = floatval($request->price);
+            // $price = 'quotation';
+            // $price = floatval($request->price);
             try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
                 $pago = Stripe\Charge::create ([
@@ -34,7 +34,7 @@ class OrderController extends ApiController
                     "source" => $request->token,
                     "description" => "Pago por visita"
                 ]);
-                Log::notice($pago);
+                // Log::notice($pago);
 
                 $order = new Order;
                 $order->user_id = $request->user_id;
@@ -44,7 +44,7 @@ class OrderController extends ApiController
                 $order->service_description = $request->service_description;
                 $order->service_image = $request->service_image;
                 $order->address = $request->address;
-                $order->price = $price;
+                $order->price = 'quotation';
                 $order->visit_price = $request->visit_price;
                 $order->save();
                 $order->order_id = $order->id;
@@ -101,7 +101,7 @@ class OrderController extends ApiController
                     "amount" => $price * 100,
                     "currency" => "MXN",
                     "source" => $request->stripeToken,
-                    "description" => "Payment of order".$request->order_id
+                    "description" => "Payment of order ".$request->order_id
                 ]);
                 Log::notice($pago);
                 $payment = new Payment;

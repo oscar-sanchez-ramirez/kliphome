@@ -23,7 +23,7 @@ function listFixerManDetail(id_orden){
                     const category = data["categories"].find( x => x.id === category_id );
                     categories = categories+' '+category.title;
                 }
-                $(".tbodyModal").append(' <tr><td>'+data['fixerman'][index]["name"]+'</td><td>'+data["fixerman"][index]["phone"]+'</td><td>'+categories+'</td><td><form action="tecnicos/asignarTecnico/'+data["fixerman"][index]["id"]+'/'+id_orden+'"><button class="au-btn au-btn-icon au-btn--green au-btn--small" type="submit" id="fixermanModalButton" title="Asignar">Asignar</button></form></td></tr>');
+                $(".tbodyModal").append(' <tr><td>'+data['fixerman'][index]["name"]+'</td><td>'+data["fixerman"][index]["phone"]+'</td><td>'+categories+'</td><td><form action="'+window.location.origin+'/tecnicos/asignarTecnico/'+data["fixerman"][index]["id"]+'/'+id_orden+'" method="POST"><input type="hidden" name="_token" value="'+token+'"><button class="au-btn au-btn-icon au-btn--green au-btn--small" type="submit" id="fixermanModalButton" title="Asignar">Asignar</button></form></td></tr>');
                 categories = "";
             }
         },
