@@ -78,7 +78,6 @@ class ApiServiceController extends ApiController
         ->where(function ($query){
                 $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');
         })
-        // ->where('o.state','FIXERMAN_NOTIFIED')->where('o.state','PENDING')
         ->whereIn('a.municipio',$municipio)
         ->whereNotIn('o.id',$selectedOrders)
         ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
