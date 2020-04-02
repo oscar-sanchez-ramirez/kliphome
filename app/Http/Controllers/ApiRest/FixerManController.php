@@ -324,7 +324,7 @@ class FixerManController extends ApiController
             $workAreas = explode(',',$value);
             for ($i=0; $i < count($workAreas); $i++) {
                 $selected = new SelectedDelegation;
-                $selected->user_id = $user["id"];
+                $selected->user_id =  $user_id;
                 $selected->colony = "-";
                 $selected->postal_code = "-";
                 $selected->municipio = $workAreas[$i];
