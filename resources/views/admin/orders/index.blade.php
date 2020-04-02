@@ -1,34 +1,14 @@
 @extends('layouts.app_admin')
 @section('content')
+<style>
+    .au-btn--small{
+        padding: 0 10px !important;
+    }
+</style>
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="row">
             <div class="col-md-12">
-                <!-- DATA TABLE -->
-                {{-- <div class="table-data__tool"> --}}
-                    {{-- <div class="table-data__tool-left">
-                        <div class="rs-select2--light rs-select2--md">
-                            <select class="js-select2" name="property">
-                                <option selected="selected">All</option>
-                                <option value="">Option 1</option>
-                                <option value="">Option 2</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="table-data__tool-right">
-                        <a href="{{ url('') }}/categorias/create" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            <i class="zmdi zmdi-plus"></i>Categoría</a>
-                        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
-                            <select class="js-select2" name="type">
-                                <option selected="selected">Exportar</option>
-                                <option value="">Excel</option>
-                                <option value="">PDF</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                    </div> --}}
-                {{-- </div> --}}
                 <div class="table-responsive table-responsive-data2">
                     @if(count($ordenes) == 0)
                         <div id="center">
