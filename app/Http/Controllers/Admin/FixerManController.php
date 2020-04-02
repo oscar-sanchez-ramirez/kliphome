@@ -12,6 +12,7 @@ use App\SelectedOrders;
 use DB;
 use Image;
 use Carbon\Carbon;
+use App\Notifications\Database\ManualSelectedOrder;
 use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
 use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
 
@@ -72,7 +73,7 @@ class FixerManController extends Controller
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "KlipHome ha  confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
-
+        $user_order->notify(new ManualSelectedOrder($order,$user_order->email));
         Order::where('id',$id_orden)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);
