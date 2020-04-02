@@ -30,12 +30,12 @@ class RegisterController extends ApiController
             'street' => $request->street,
             'alias' => $request->alias,
             'reference' => $request->reference,
-            'postal_code' => $request->postal_code,
+            'postal_code' => "-",
             'user_id' => $user["id"],
             'delegation' => "-",
             'exterior' => $request->exterior,
             'interior' => $request->interior,
-            'colonia' => $request->colonia,
+            'colonia' => "-",
             'municipio' => $request->municipio
         ]);
         return response()->json([
