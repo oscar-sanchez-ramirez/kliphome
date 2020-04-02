@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\AproveFixerMan;
 use App\User;
 use App\Category;
+use App\SelectedOrders;
 use DB;
 use Image;
 use Carbon\Carbon;
@@ -42,7 +43,37 @@ class FixerManController extends Controller
         ]);
     }
     public function asignarTecnico($id_tecnico,$id_orden){
+        $order = Order::where('id',$rid_orden)->first();
+        $fixerman = User::where('id',$id_tecnico)->first();
+        $date = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
+        $user_order = User::where('id',$order->user_id)->first();
+        $new_selected = new SelectedOrders;
+        $new_selected->user_id = $fixerman->id;
+        $new_selected->order_id = $id_orden;
+        $new_selected->state = 1;
+        $new_selected->save();
+        $otherRequest = DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->get();
+        if(!empty($otherRequest)){
+            $order["mensajeClient"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+            $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+            foreach ($otherRequest as $key) {
+                $notFixerman = User::where('id',$key->user_id)->first();
+                $notFixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
+                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
+            }
+            DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
+                'state' => 0
+            ]);
+        }
+        //Notification for Fixerman
+        $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $order["mensajeFixerMan"] = "KlipHome ha  confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
 
+        Order::where('id',$request->order_id)->update([
+            'state' => 'FIXERMAN_APPROVED'
+        ]);
+        return back()->with('success','Se asignó al técnico');
     }
     public function aprove(Request $request){
         User::where('id',$request->fixerman_id)->update([

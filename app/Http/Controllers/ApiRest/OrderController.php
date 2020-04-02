@@ -34,7 +34,6 @@ class OrderController extends ApiController
                     "source" => $request->token,
                     "description" => "Pago por visita"
                 ]);
-                // Log::notice($pago);
 
                 $order = new Order;
                 $order->user_id = $request->user_id;
@@ -67,8 +66,8 @@ class OrderController extends ApiController
                 ]);
             }
             dispatch(new NotifyNewOrder($order->id));
-            // $client = User::where('type',"ADMINISTRATOR")->first();
-            // $client->notify(new NewQuotation($order));
+            $client = User::where('type',"ADMINISTRATOR")->first();
+            $client->notify(new NewQuotation($order));
             return response()->json([
                 'success' => true,
                 'message' => "La orden de servicio se realizó con éxito"
