@@ -90,7 +90,7 @@
                                 <span class="badge badge-danger">PENDIENTE DE COTIZACIÓN</span>
                             @elseif($orden->state == "FIXERMAN_NOTIFIED")
                                 <span class="badge badge-info">TÉCNICOS NOTIFICADOS</span>
-                            @elseif($orden->state == "ACCEPTED")
+                            @elseif($orden->state == "ACCEPTED" || $orden->state == 'FIXERMAN_APPROVED')
                                 <span class="badge badge-info">TÉCNICO ACEPTÓ SOLICITUD</span>
                             @elseif($orden->state == "CANCELLED")
                                 <span class="badge badge-danger">CANCELADO</span>
