@@ -73,7 +73,7 @@ class FixerManController extends Controller
         $order["mensajeFixerMan"] = "KlipHome ha  confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
 
-        Order::where('id',$request->order_id)->update([
+        Order::where('id',$id_orden)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);
         return back()->with('success','Se asignó al técnico');
