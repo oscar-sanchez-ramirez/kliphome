@@ -16,7 +16,6 @@ use Validator;
 class RegisterController extends ApiController
 {
     public function register(ClientRequest $request){
-        Log::notice($request->all());
         $random = strtoupper(substr(md5(mt_rand()), 0, 10));
         $user = User::create([
             'name' => $request->name,
@@ -92,11 +91,8 @@ class RegisterController extends ApiController
             'street' => $request->street,
             'alias' => $request->alias,
             'reference' => $request->reference,
-            'postal_code' => $request->postal_code,
-            'delegation' => "-",
             'exterior' => $request->exterior,
             'interior' => $request->interior,
-            'colonia' => $request->colonia,
             'municipio' => $request->municipio
         ]);
         return response()->json([
