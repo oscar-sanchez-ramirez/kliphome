@@ -16,6 +16,7 @@ use Validator;
 class RegisterController extends ApiController
 {
     public function register(ClientRequest $request){
+        Log::notice($request->all());
         $random = strtoupper(substr(md5(mt_rand()), 0, 10));
         $user = User::create([
             'name' => $request->name,
