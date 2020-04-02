@@ -7,7 +7,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title mb-3">Perfil</strong>
+                        <strong class="card-title mb-3">Perfil del usuario</strong>
                     </div>
                     <div class="card-body">
                         <div class="mx-auto d-block">

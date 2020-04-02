@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\AproveFixerMan;
 use App\User;
+use App\Order;
 use App\Category;
 use App\SelectedOrders;
 use DB;
 use Image;
 use Carbon\Carbon;
+use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
+use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
 
 
 class FixerManController extends Controller

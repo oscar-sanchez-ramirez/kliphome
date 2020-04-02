@@ -2,7 +2,7 @@
 @section('content')
 <style>
     .au-btn--small{
-        padding: 0 10px !important;
+        padding: 0 2px !important;
     }
 </style>
 <div class="main-content">
