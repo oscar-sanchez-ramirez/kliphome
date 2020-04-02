@@ -58,9 +58,9 @@ class FixerManController extends ApiController
             for ($i=0; $i < count($workAreas); $i++) {
                 $selected = new SelectedDelegation;
                 $selected->user_id = $user["id"];
-                $selected->colony = $workAreas[$i];
-                $selected->postal_code = $request->postal_code;
-                $selected->municipio = $request->municipio;
+                $selected->colony = "-";
+                $selected->postal_code = "-";
+                $selected->municipio = $workAreas[$i];
                 $selected->save();
             }
             //SAVE SELECTED CATEGORIES
