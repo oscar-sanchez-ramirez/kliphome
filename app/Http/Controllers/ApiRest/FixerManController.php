@@ -9,6 +9,7 @@ use DB;
 use Stripe;
 use OneSignal;
 use App\User;
+use App\Address;
 use App\Order;
 use App\Qualify;
 use App\Payment;
@@ -52,6 +53,19 @@ class FixerManController extends ApiController
                 'password' => bcrypt($request->password),
                 'code' => $random
             ])->toArray();
+
+            Address::create([
+                'street' => $request->street,
+                'alias' => $request->alias,
+                'reference' => $request->reference,
+                'postal_code' => "-",
+                'user_id' => $user["id"],
+                'delegation' => "-",
+                'exterior' => $request->exterior,
+                'interior' => $request->interior,
+                'colonia' => "-",
+                'municipio' => "-"
+            ]);
 
             //SAVE SELECTED DELEGATION
             $workAreas = explode(',',$request->workArea);
