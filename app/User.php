@@ -65,10 +65,10 @@ class User extends Authenticatable
                 //Notify when a Fixerman Request was disapproved
                 $this->notify(new DisapproveOrderFixerman($this));
                 break;
-            case 'sendNotificationOrderMatch':
-                //Notify when user create a order and exists fixerman with the same category
-                $this->notify(new NotifyNewOrder($this));
-                break;
+            // case 'sendNotificationOrderMatch':
+            //     //Notify when user create a order and exists fixerman with the same category
+            //     $this->notify(new NotifyNewOrder($this));
+            //     break;
             // case 'ServiceQualified':
                 //Notify when user create a order and exists fixerman with the same category
                 // $this->notify(new ServiceQualified($this));

@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use DB;
+use OneSignal;
 use App\User;
 use App\Order;
 use App\Address;
@@ -54,7 +55,21 @@ class NotifyNewOrder implements ShouldQueue
         }else{
             foreach ($user_match_categories as $key) {
                 $user = User::where('id',$key->id)->first();
-                $user->sendNotification($user->email,'sendNotificationOrderMatch');
+                $type = "App\Notifications\NotifyNewOrder";
+                $content = $order;
+                OneSignal::sendNotificationUsingTags(
+                    "¡Tienes una nueva notificación de trabajo! Solo tienes unos minutos para aceptarlo ¡No pierdas la oportunidad!",
+                    array(
+                        ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+                    ),
+                    $type,
+                    $content,
+                    $url = null,
+                    $data = null,
+                    $buttons = null,
+                    $schedule = null
+                );
+                // $user->sendNotification($user->email,'sendNotificationOrderMatch');
             }
         }
         Order::where('id',$this->id)->update([
