@@ -174,7 +174,7 @@ class RegisterController extends ApiController
             $startTime = $validateCode->created_at;
             $finishTime = Carbon::now();
             $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
-            if($totalDuration > 5){
+            if($totalDuration > 10){
                 return response()->json([
                     'success' => false,
                     'message' => "Código ingresado expiró"
