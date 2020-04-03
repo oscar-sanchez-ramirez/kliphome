@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\User;
 use App\Order;
+use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
 
 class DisapproveOrderFixerMan implements ShouldQueue
 {
@@ -35,7 +36,7 @@ class DisapproveOrderFixerMan implements ShouldQueue
     {
         //Notification for Fixerman
         $fixerman = User::where('id',$this->fixerman_id)->first();
-        $fixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
+        $fixerman->notify(new DatabaseDisapproveOrderFixerMan($fixerman->email));
         //
         Order::where('id',$this->order_id)->update([
             'state' => 'FIXERMAN_NOTIFIED'

@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\ApiRest;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
-use App\Http\Controllers\ApiRest\ApiServiceController;
 use DB;
-use App\Address;
 use App\User;
 use App\Order;
+use App\Address;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use OneSignal;
+use App\Http\Controllers\ApiController;
+use App\Notifications\Database\ConfirmArrive;
+use App\Http\Controllers\ApiRest\ApiServiceController;
 
 class ClientController extends ApiController
 {
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth:api');
     }
     public function historyOrders($id){
@@ -48,13 +47,13 @@ class ClientController extends ApiController
         }
         return Response(json_encode(array('orders' => $orders)));
     }
-    public function orderDetail($id,$order_id){
+    public function orderDetail($order_id){
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
         ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
-        ->where('o.user_id',$id)->where('o.id',$order_id)->get();
+        ->where('o.id',$order_id)->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
@@ -69,18 +68,11 @@ class ClientController extends ApiController
         return Response(json_encode(array('orders' => $orders)));
     }
     public function addAddress(Request $request){
-        $address = $request->address;
-
-        if((strpos($address, "Ciudad de México") !== false) || strpos($address, "CDMX") || strpos($address, "Méx., México")){
-            $delegation = "1";
-        } elseif(strpos($address, "Guadalajara") !== false){
-            $delegation = "2";
-        }
         $add = new Address;
         $add->alias = $request->alias;
         $add->address = $request->address;
         $add->user_id = $request->user_id;
-        $add->delegation = $delegation;
+        $add->delegation = "-";
         $add->save();
 
         $address = Address::where('user_id',$request->user_id)->get();
@@ -101,16 +93,7 @@ class ClientController extends ApiController
         Order::where('id',$request->order_id)->update([
             'fixerman_arrive' => "SI"
         ]);
-        // $admin = User::where('type','ADMINISTRATOR')->first();
-        OneSignal::sendNotificationUsingTags(
-            ucfirst(strtolower($fixerman->name))." ha indicado que llego a tu dirección, ¡Comunícate con el!",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
-            ),
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
+        $client->notify(new ConfirmArrive($request->order_id,$fixerman->name,$client->email));
+
     }
 }

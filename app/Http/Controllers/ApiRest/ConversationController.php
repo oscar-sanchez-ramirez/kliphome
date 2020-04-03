@@ -9,15 +9,13 @@ use App\User;
 use Carbon\Carbon;
 use App\Conversation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use App\Notifications\Database\NewConversation;
-use App\Notifications\Database\NewConversationAdmin;
 use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Redirect;
+use App\Notifications\Database\NewConversationAdmin;
 
 class ConversationController extends ApiController
 {
-  public function __construct()
-  {
+  public function __construct(){
       $this->middleware('auth:api');
   }
 
@@ -26,6 +24,7 @@ class ConversationController extends ApiController
     ->select('c.id','c.contact_id','c.user_id','c.has_blocked','c.listen_notifications','c.last_message','c.last_time','c.order_id','u.name','u.lastName','u.avatar','us.name as name_to','us.lastName as lastName_to','us.avatar as avatar_to',DB::raw('IF(c.user_id='.$id.',1,0) as written_by_me'))
     ->where('c.user_id',$id)->orWhere('c.contact_id',$id)->get();
   }
+
   public function new_conversation(Request $request){
 
     if($request->to_id == "admin"){

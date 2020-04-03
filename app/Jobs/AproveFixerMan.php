@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\User;
-use Mail;
+use App\Notifications\Database\ApproveFixerMan;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,6 +32,6 @@ class AproveFixerMan implements ShouldQueue
     public function handle()
     {
         $user = User::where('id',$this->user_id)->first();
-        return $user->sendNotification($user->email,'AproveFixerMan');
+        $user->notify(new ApproveFixerMan($user->email));
     }
 }

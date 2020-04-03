@@ -19,7 +19,6 @@ class NotifyNewOrder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $id;
-
     /**
      * IN THIS JOB WILL NOTIFY TO FIXERMEN WITH CATEGORIES MATCHED
      *

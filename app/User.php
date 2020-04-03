@@ -6,9 +6,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-use App\Notifications\AproveFixerMan;
-use App\Notifications\NotifyNewOrder;
-use App\Notifications\OneSignal\DisapproveOrderFixerman;
 use Illuminate\Support\Facades\Log;
 use DB;
 
@@ -52,19 +49,19 @@ class User extends Authenticatable
     {
         $this->email = $email;
         switch ($type) {
-            case 'AproveFixerMan':
-                //Notify when a FixerMan is approved
-                $this->notify(new AproveFixerMan($this));
-                break;
+            // case 'AproveFixerMan':
+            //     //Notify when a FixerMan is approved
+            //     $this->notify(new AproveFixerMan($this));
+            //     break;
             // case 'ApproveOrderFixerMan':
             //     //Notify when a Fixerman Request was approved
             //     $this->notify(new ApproveOrderFixerman($this));
             //     # code...
             //     break;
-            case 'DisapproveOrderFixerMan':
-                //Notify when a Fixerman Request was disapproved
-                $this->notify(new DisapproveOrderFixerman($this));
-                break;
+            // case 'DisapproveOrderFixerMan':
+            //     //Notify when a Fixerman Request was disapproved
+            //     $this->notify(new DisapproveOrderFixerman($this));
+            //     break;
             // case 'sendNotificationOrderMatch':
             //     //Notify when user create a order and exists fixerman with the same category
             //     $this->notify(new NotifyNewOrder($this));

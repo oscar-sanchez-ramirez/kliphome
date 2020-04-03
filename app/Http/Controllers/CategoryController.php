@@ -13,9 +13,6 @@ class CategoryController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('checkadmin');
-        // parent::__construct();
-        //Usar cuando queramos usar login con token
-        // $this->middleware('client.credentials')->only(['index','show']);
     }
     /**
      * Display a listing of the resource.

@@ -2,17 +2,17 @@
 
 namespace App\Jobs;
 
+use DB;
+use App\User;
+use OneSignal;
+use App\Order;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use OneSignal;
-use DB;
-use App\Order;
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
 use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
 

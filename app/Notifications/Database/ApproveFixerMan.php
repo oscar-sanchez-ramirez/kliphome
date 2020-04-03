@@ -2,13 +2,12 @@
 
 namespace App\Notifications\Database;
 
-use OneSignal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DisapproveOrderFixerMan extends Notification
+class ApproveFixerMan extends Notification
 {
     use Queueable;
     protected $email;
@@ -55,10 +54,10 @@ class DisapproveOrderFixerMan extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\DisapproveOrderFixerMan";
-        $content = "-";
+        $type = "App\Notifications\Database\ApproveFixerMan";
+        $content = $this->email;
         OneSignal::sendNotificationUsingTags(
-            "Tu solicitud de trabajo fue rechazada",
+            "Tu Cuenta fue aprobada",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
             ),
@@ -69,6 +68,6 @@ class DisapproveOrderFixerMan extends Notification
             $buttons = null,
             $schedule = null
         );
-        return $this->order;
+        return $this->email;
     }
 }

@@ -15,8 +15,7 @@ use App\User;
 
 class ApiServiceController extends ApiController
 {
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth:api', ['only' => ['getSubCategories']]);
     }
     //Getting sub-categories for clientApp
@@ -38,7 +37,6 @@ class ApiServiceController extends ApiController
     //Return info after login, conditional if user is client or fixerman
     public function userInfo($id){
         $user = User::where('id',$id)->first();
-
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
@@ -66,20 +64,16 @@ class ApiServiceController extends ApiController
                 'notifications' => $notifications
             ]);
         }
-
     }
     //getting categories by fixerman preferences
     public function categories($ids,$municipio,$user_id)
     {
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
         $final_orders = [];
-        $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')
-        ->join('addresses as a','o.address','a.id')
+        $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')
         ->where(function ($query){
                 $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','PENDING');
-        })
-        ->whereIn('a.municipio',$municipio)
-        ->whereNotIn('o.id',$selectedOrders)
+        })->whereIn('a.municipio',$municipio)->whereNotIn('o.id',$selectedOrders)
         ->select('o.*','a.delegation','a.street as address','a.postal_code','a.municipio','u.name','u.lastName','u.avatar')->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
@@ -106,12 +100,11 @@ class ApiServiceController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->join('selected_orders as so','o.id','so.order_id')
         ->where('so.user_id',$user_id)->where('so.state',1)
-        // ->where(function($query){ return $query->where('o.state','FIXERMAN_NOTIFIED')->orWhere('o.state','FIXERMAN_APPROVED')->orWhere('o.state','FIXERMAN_DONE');})
-        ->select('o.*','a.delegation','a.alias','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->distinct('o.id')->orderBy('o.created_at',"DESC")->get();
+        ->select('o.*','a.municipio','a.alias','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->distinct('o.id')->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $key->service = $category[0]->service;
-            $key->service = $category[0]->service;
+            // $key->service = $category[0]->service;
             $key->category = $category[0]->category;
             if ($key->type_service == "Category") {
                 $key->sub_category = "-";

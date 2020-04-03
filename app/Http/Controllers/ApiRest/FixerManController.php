@@ -30,10 +30,10 @@ use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrde
 
 class FixerManController extends ApiController
 {
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth:api', ['only' => ['infoFixerman','aprobarSolicitudTecnico','updateUserField','terminarOrden','fixerManorderDetail','saveSelectedOrder','qualifyService','historyReviews','historyReviewsandOrders','filterReviews']]);
     }
+
     public function register(Request $request){
         try {
             $this->validate($request,[
@@ -141,8 +141,7 @@ class FixerManController extends ApiController
             $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
             foreach ($otherRequest as $key) {
                 $notFixerman = User::where('id',$key->user_id)->first();
-                $notFixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
-                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
+                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($notFixerman->email));
             }
             DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
                 'state' => 0
@@ -160,7 +159,8 @@ class FixerManController extends ApiController
 
     public function eliminarSolicitudTecnico(Request $request){
         $fixerman = User::where('id',$request->fixerman_id)->first();
-        $fixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
+
+        $fixerman->notify(new DatabaseDisapproveOrderFixerMan($fixerman->email));
         Order::where('id',$request->order_id)->update([
             'state' => 'FIXERMAN_NOTIFIED'
         ]);

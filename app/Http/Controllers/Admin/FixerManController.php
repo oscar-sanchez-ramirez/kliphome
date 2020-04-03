@@ -19,8 +19,7 @@ use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixer
 
 class FixerManController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
     public function index(Request $request){
@@ -31,7 +30,7 @@ class FixerManController extends Controller
         return view('admin.fixerman.index')->with('users',$users);
     }
     public function detail($id){
-        $delegation = DB::table('selected_delegations')->select('colony as title','postal_code')->where('user_id',$id)->get();
+        $delegation = DB::table('selected_delegations')->select('municipio as title','postal_code')->where('user_id',$id)->get();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
         return response()->json([
             'delegations' => $delegation,
@@ -85,7 +84,6 @@ class FixerManController extends Controller
         ]);
         dispatch(new AproveFixerMan($request->fixerman_id));
     }
-
     public function updateFixermanImage(Request $request){
         $idFixerman = $request->idFixerman;
         $file = $request->file('imagen');

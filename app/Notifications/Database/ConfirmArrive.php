@@ -1,25 +1,28 @@
 <?php
 
 namespace App\Notifications\Database;
-
 use OneSignal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DisapproveOrderFixerMan extends Notification
+class ConfirmArrive extends Notification
 {
     use Queueable;
-    protected $email;
+    protected $order_id;
+    protected $fixerman_name;
+    protected $client_email;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($email)
+    public function __construct($order_id,$fixerman_name,$client_email)
     {
-        $this->email = $email;
+        $this->order_id = $order_id;
+        $this->fixerman_name = $fixerman_name;
+        $this->client_email = $client_email;
     }
 
     /**
@@ -55,12 +58,12 @@ class DisapproveOrderFixerMan extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\DisapproveOrderFixerMan";
-        $content = "-";
+        $type = "App\Notifications\Database\ConfirmArrive";
+        $content = $this->order_id;
         OneSignal::sendNotificationUsingTags(
-            "Tu solicitud de trabajo fue rechazada",
+            ucfirst(strtolower($this->fixerman_name))." ha indicado que llego a tu dirección, ¡Comunícate con el!",
             array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->client_email],
             ),
             $type,
             $content,

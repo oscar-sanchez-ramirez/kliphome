@@ -102,7 +102,6 @@ class OrderController extends ApiController
                     "source" => $request->stripeToken,
                     "description" => "Payment of order ".$request->order_id
                 ]);
-                Log::notice($pago);
                 $payment = new Payment;
                 $payment->order_id = $request->order_id;
                 $payment->description = "PAGO POR SERVICIO";
