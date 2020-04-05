@@ -3,6 +3,7 @@
 namespace App\Notifications\Database;
 
 use OneSignal;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -59,6 +60,7 @@ class OneDayLeftNotification extends Notification
     {
         $type = "App\Notifications\Database\OneDayLeftNotification";
         $content = ["order" => $this->order];
+        Log::notice($this->email);
         OneSignal::sendNotificationUsingTags(
             "Mañana tienes una orden de servicio",
             array(
