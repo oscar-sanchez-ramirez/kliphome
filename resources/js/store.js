@@ -10,7 +10,8 @@ export default new Vuex.Store({
         conversations: [],
         querySearch: '',
         user: null,
-        credentials:[]
+        credentials:[],
+        conversationFromNotification:null
     },
     mutations: {
         setDialog(state, value) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
         },
         setUser(state,user){
           state.user = user;
+        },
+        setConversation(state,conversationFromNotification){
+          state.conversationFromNotification = conversationFromNotification
         },
         newMessagesList(state, messages){
           state.messages = messages;
@@ -50,6 +54,7 @@ export default new Vuex.Store({
     },
     actions: {
       getMessages(context,conversation){
+        console.log(conversation);
         axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id+'&conversation_id='+conversation.id).then(
           response=>{
             context.commit('selectConversation',conversation);
@@ -60,17 +65,21 @@ export default new Vuex.Store({
       },
       getConversations(context,type){
         axios.get('/api/conversations/'+type).then((response) => {
-          if(response.data != ""){
-            this.state.selectedConversation = response.data[0];
-          }
-          // for (let index = 0; index < response.data.length; index++) {
-          //   if(index > 0){
-          //     if(response.data[index].contact_id == response.data[index-1].user_id){
-          //       response.data[index-1].group = response.data[index-1].contact_name.name+' '+response.data[index-1].contact_name.lastName+' con '+response.data[index].contact_name.name+' '+response.data[index].contact_name.lastName;
-          //       response.data.splice(response.data.indexOf(response.data[index]), 1);
-          //     }
-          //   }
+          console.log(this.state.conversationFromNotification);
+          // if(response.data != ""){
           // }
+
+          if(this.state.conversationFromNotification != 0){
+            for (let index = 0; index < response.data.length; index++) {
+              if(this.state.conversationFromNotification == response.data[index]["order_id"]){
+                this.state.selectedConversation = response.data[index];
+                this.dispatch('getMessages',response.data[index]);
+              }
+             }
+          }else{
+            this.state.selectedConversation = response.data[0];
+            this.dispatch('getMessages',response.data[0]);
+          }
           let array = response.data.sort( ( a, b) => {
               return new Date(a.last_time) - new Date(b.last_time);
           });

@@ -30,9 +30,12 @@
 <script>
 export default{
   props:{
-    user: Object
+    user: Object,
+    order: Number
   },
   mounted(){
+      // console.log(this.order);
+    this.$store.commit('setConversation',this.order);
     this.$store.commit('setUser',this.user);
     // this.$store.dispatch('getAccess');
     this.$store.dispatch('getConversations','admin');

@@ -368,6 +368,7 @@
                                                             <p>Recibiste un nuevo mensaje</p>
                                                             <form action="{{ url('') }}/messenger" id="NewConversationAdmin{{ $notification->id }}">
                                                                 <input type="hidden" name="notification_id" value="{{ $notification->id }}">
+                                                                <input type="hidden" name="order" value="{{ json_encode($notification->data["order_id"]) }}">
                                                                 <button type="submit">Ver</button>
                                                             </form>
                                                             <span class="date">{{ $notification->created_at->diffForHumans() }}</span>

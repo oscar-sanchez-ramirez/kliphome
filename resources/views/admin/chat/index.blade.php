@@ -4,7 +4,7 @@
     <div class="main-content">
         <div class="section__content section__content--p30">
             <div class="card">
-                <messenger-component :user="{{ auth()->user() }}"></messenger-component>
+                <messenger-component :user="{{ auth()->user() }}" :order="{{ intval($order) }}"></messenger-component>
             </div>
         </div>
     </div>
