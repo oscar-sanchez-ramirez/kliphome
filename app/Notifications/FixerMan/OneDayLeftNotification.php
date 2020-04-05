@@ -58,6 +58,6 @@ class OneDayLeftNotification extends Notification
 
         return OneSignalMessage::create()
         ->subject("¡Mañana tienes una orden de servicio!")
-        ->body("¡No olvides de prepararte!")->setData("type",'OneDayLeftNotification')->setData('order',$this->order);
+        ->body("¡No olvides de prepararte!")->setData("type",'App\\Notifications\\Database\\OneDayLeftNotification')->setData('data',$this->order);
     }
 }
