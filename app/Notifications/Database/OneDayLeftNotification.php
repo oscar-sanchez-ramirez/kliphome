@@ -57,20 +57,20 @@ class OneDayLeftNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        // $type = "App\Notifications\Database\OneDayLeftNotification";
-        // $content = $this->order;
-        // OneSignal::sendNotificationUsingTags(
-        //     "Mañana tienes una orden de servicio",
-        //     array(
-        //         ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
-        //     ),
-        //     $type,
-        //     $content,
-        //     $url = null,
-        //     $data = null,
-        //     $buttons = null,
-        //     $schedule = null
-        // );
+        $type = "App\Notifications\Database\OneDayLeftNotification";
+        $content = $this->order;
+        OneSignal::sendNotificationUsingTags(
+            "Mañana tienes una orden de servicio",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
+            ),
+            $type,
+            $content,
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
         return $this->order;
 
     }
