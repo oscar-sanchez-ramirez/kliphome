@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notification;
 class OneDayLeftNotification extends Notification
 {
     // use Queueable;
-    protected $order;
+    protected $order = '';
     /**
      * Create a new notification instance.
      *
@@ -58,6 +58,6 @@ class OneDayLeftNotification extends Notification
 
         return OneSignalMessage::create()
         ->subject("¡Tienes una nueva notificación de trabajo!")
-        ->body("Solo tienes unos minutos para aceptarlo ¡No pierdas la oportunidad!")->setData(["type"=>'OneDayLeftNotification','order'=>$this->order]);
+        ->body("Solo tienes unos minutos para aceptarlo ¡No pierdas la oportunidad!")->setData(["type"=>'OneDayLeftNotification','order'=>'36']);
     }
 }
