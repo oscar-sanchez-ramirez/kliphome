@@ -2,7 +2,6 @@
 
 namespace App\Notifications\Database;
 
-use OneSignal;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -13,16 +12,14 @@ class OneDayLeftNotification extends Notification
 {
     use Queueable;
     protected $order;
-    protected $email;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($order,$email)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->email = $email;
     }
 
     /**
@@ -58,21 +55,6 @@ class OneDayLeftNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\OneDayLeftNotification";
-        $content = ["order" => $this->order,"mensajeFixerMan"=> "Mañana tienes una orden de servicio"];
-        Log::notice($this->email);
-        OneSignal::sendNotificationUsingTags(
-            "Mañana tienes una orden de servicio",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
-            ),
-            $type,
-            $content,
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
         return $this->order;
 
     }

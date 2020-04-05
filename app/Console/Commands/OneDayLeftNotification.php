@@ -49,7 +49,8 @@ class OneDayLeftNotification extends Command
         Log::notice($orders);
         foreach ($orders as $key) {
             $fixerman = User::where('id',$key->id_user)->first();
-            $fixerman->notify(new DatabaseOneDayLeftNotification($key->id,$fixerman->email));
+            $key["mensajeFixerMan"] = "Mañana tienes una orden de servicio";
+            $fixerman->notify(new DatabaseOneDayLeftNotification($key));
             $fixerman->sendNotification($fixerman->email,"OneDayLeftNotification",$key->id);
         }
     }
