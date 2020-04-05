@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ManualSelectedOrder extends Notification
+class FourHoursLeftNotification extends Notification
 {
     use Queueable;
     protected $order;
@@ -57,20 +57,20 @@ class ManualSelectedOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\ManualSelectedOrder";
-        $content = $this->order;
-        OneSignal::sendNotificationUsingTags(
-            "Un técnico fue asignado por nuestro equipo.",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
-            ),
-            $type,
-            $content,
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
+        // $type = "App\Notifications\Database\FourHoursLeftNotification";
+        // $content = $this->order;
+        // OneSignal::sendNotificationUsingTags(
+        //     "Mañana tienes una orden de servicio en pocas horas",
+        //     array(
+        //         ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
+        //     ),
+        //     $type,
+        //     $content,
+        //     $url = null,
+        //     $data = null,
+        //     $buttons = null,
+        //     $schedule = null
+        // );
         return $this->order;
     }
 }
