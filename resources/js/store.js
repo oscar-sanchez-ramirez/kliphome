@@ -66,6 +66,7 @@ export default new Vuex.Store({
       getConversations(context,type){
         axios.get('/api/conversations/'+type).then((response) => {
           console.log(this.state.conversationFromNotification);
+          console.log(response.data);
           // if(response.data != ""){
           // }
 
