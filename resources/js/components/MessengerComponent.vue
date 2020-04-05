@@ -21,6 +21,9 @@
   </b-container>
 </template>
 <style>
+    .tab-pane{
+      overflow: scroll;
+    }
 		.listado-contactos{
 		  max-height:700px;
 			width: 100%;

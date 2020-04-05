@@ -21,9 +21,9 @@ class MessageController extends ApiController
         if($request->filled('notification_id')){
             $carbon = new \Carbon\Carbon();
             $date = $carbon->now();
-            // DB::table('notifications')->where('id',$request->notification_id)->update([
-            //     'read_at' => $date = $carbon->now()
-            // ]);
+            DB::table('notifications')->where('id',$request->notification_id)->update([
+                'read_at' => $date = $carbon->now()
+            ]);
             $order = str_replace('"','',$request->order);
             // return $order;
         }else{
