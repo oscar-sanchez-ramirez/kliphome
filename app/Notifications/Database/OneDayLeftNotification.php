@@ -58,7 +58,7 @@ class OneDayLeftNotification extends Notification
     public function toArray($notifiable)
     {
         $type = "App\Notifications\Database\OneDayLeftNotification";
-        $content = $this->order;
+        $content = ["order" => $this->order];
         OneSignal::sendNotificationUsingTags(
             "Mañana tienes una orden de servicio",
             array(
