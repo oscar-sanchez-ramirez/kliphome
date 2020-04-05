@@ -9,6 +9,8 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Log;
 use DB;
 
+use App\Notifications\FixerMan\OneDayLeftNotification;
+
 
 class User extends Authenticatable
 {
@@ -45,10 +47,14 @@ class User extends Authenticatable
     public function children(){
         return $this->hasMany(Address::class, 'user_id')->orderBy('created_at', 'asc');
     }
-    public function sendNotification($email,$type)
+    public function sendNotification($email,$type,$data)
     {
         $this->email = $email;
         switch ($type) {
+            case 'OneDayLeftNotification':
+                //Notify when a FixerMan is approved
+                $this->notify(new OneDayLeftNotification($data));
+                break;
             // case 'AproveFixerMan':
             //     //Notify when a FixerMan is approved
             //     $this->notify(new AproveFixerMan($this));
