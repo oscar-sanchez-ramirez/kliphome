@@ -54,11 +54,9 @@ export default new Vuex.Store({
     },
     actions: {
       getMessages(context,conversation){
-        console.log(conversation);
         axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id+'&conversation_id='+conversation.id).then(
           response=>{
             context.commit('selectConversation',conversation);
-            console.log(response.data);
             context.commit('newMessagesList',response.data);
           }
         );
@@ -102,6 +100,13 @@ export default new Vuex.Store({
             message.written_by_me = 0;
             context.commit('addMessage',message);
           }
+        });
+      },
+      openChannel(context,id){
+        Echo.private('users.'+id).listen('MessageSent',(data)=>{
+          const message = data.message;
+          message.written_by_me = 1;
+          this.addMessage1(message);
         });
       },
     },

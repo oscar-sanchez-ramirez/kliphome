@@ -42,11 +42,8 @@ export default{
     this.$store.commit('setUser',this.user);
     // this.$store.dispatch('getAccess');
     this.$store.dispatch('getConversations','admin');
-    Echo.private('users.'+this.user.id).listen('MessageSent',(data)=>{
-      const message = data.message;
-      message.written_by_me = 1;
-      this.addMessage1(message);
-    });
+    this.$store.dispatch('openChannel',this.user.id);
+
     Echo.join('messenger')
     .here((users)=>{
       users.forEach(user => this.changeStatus(user,true));
