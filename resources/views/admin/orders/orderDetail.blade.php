@@ -16,8 +16,8 @@
                             <div class="location text-sm-center">
                                 <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
                                 @if($fixerman != null)
-                                   @if($orden->state == 'PENDING' && $orden->state == 'FIXERMAN_NOTIFIED')
-                                        @if($orden->price == "quotation" || $orden->state == "PENDING")
+                                   @if($orden->state != 'PENDING' && $orden->state != 'FIXERMAN_NOTIFIED')
+                                        @if($orden->price == "quotation")
                                             <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                             <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
                                                 @csrf
@@ -30,9 +30,6 @@
                                 @endif
                                 @if($orden->price == "waitquotation")
                                     <h4>Cotización enviada</h4>
-                                @endif
-                                @if($orden->state == "FIXERMAN_NOTIFIED")
-                                    <h4>Se notificó a técnicos</h4>
                                 @endif
                             </div>
                         </div>
