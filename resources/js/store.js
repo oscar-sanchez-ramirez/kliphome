@@ -63,8 +63,6 @@ export default new Vuex.Store({
       },
       getConversations(context,type){
         axios.get('/api/conversations/'+type).then((response) => {
-          console.log(this.state.conversationFromNotification);
-          console.log(response.data);
           // if(response.data != ""){
           // }
 
@@ -106,7 +104,7 @@ export default new Vuex.Store({
         Echo.private('users.'+id).listen('MessageSent',(data)=>{
           const message = data.message;
           message.written_by_me = 1;
-          this.addMessage1(message);
+          context.commit('addMessage',response);
         });
       },
     },
