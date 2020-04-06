@@ -39,7 +39,7 @@ class MailOrderAccepted implements ShouldQueue
         $visita = Payment::where('order_id',$this->order_id)->where('description',"VISITA")->where('state',1)->first();
         $monto = Payment::where('order_id',$this->order_id)->where('description',"PAGO POR SERVICIO")->where('state',1)->first();
         $fecha = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
-        $usuario = array('monto' => $monto, 'visita' => $visita->price,'fecha'=> $fecha,'service_image'=>$order->service_image);
+        $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha,'service_image'=>$order->service_image);
         $mail = $order->email;
         Log::notice($mail);
         Mail::send('emails.neworder',$usuario, function($msj) use ($mail){
