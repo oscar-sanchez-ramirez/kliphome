@@ -62,6 +62,7 @@ export default new Vuex.Store({
             window.Echo.connector.socket.removeListener('users'+this.state.selectedConversation.id);
             context.commit('selectConversation',conversation);
             context.commit('newMessagesList',response.data);
+            console.log(response.data);
             this.dispatch('openChannel',conversation.id);
           }
         );
