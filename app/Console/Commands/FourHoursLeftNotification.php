@@ -60,6 +60,7 @@ class FourHoursLeftNotification extends Command
                 Log::notice($totalDuration);
                 if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
                     $fixerman = User::where('id',$key->id_user)->first();
+                    Log::notice($fixerman);
                     $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
                     $notification = $fixerman->notifications()->first();
                     $key->created_at = $notification->id;
