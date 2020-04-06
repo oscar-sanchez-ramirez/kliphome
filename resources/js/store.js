@@ -80,6 +80,9 @@ export default new Vuex.Store({
           }else{
             this.state.selectedConversation = array[0];
             this.dispatch('getMessages',array[0]);
+            // this.dispatch('openChannel',array.[0].);
+            console.log(array[0]);
+
           }
 
           context.commit('newConversationsList',array);

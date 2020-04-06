@@ -42,7 +42,7 @@ export default{
     this.$store.commit('setUser',this.user);
     // this.$store.dispatch('getAccess');
     this.$store.dispatch('getConversations','admin');
-    this.$store.dispatch('openChannel',this.user.id);
+    // this.$store.dispatch('openChannel',this.user.id);
 
     Echo.join('messenger')
     .here((users)=>{
