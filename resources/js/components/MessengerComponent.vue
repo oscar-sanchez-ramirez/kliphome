@@ -61,7 +61,9 @@ export default{
       console.log(data.message);
       const message = data.message;
       message.written_by_me = 1;
-      this.addMessage1(message);
+      if(message.conversation_id == this.$store.state.selectedConversation.id){
+        this.addMessage1(message);
+      }
     });
     Echo.join('messenger')
     .here((users)=>{
