@@ -87,7 +87,7 @@
                     <img class="card-img-top" type="button" data-toggle="modal" data-target="#scrollmodal" src="{{ ($orden->service_image) }}" alt="Card image cap" >
                     <div class="card-body">
                         @php
-                            $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $orden->service_date);
+                            $date = \Carbon\Carbon::createFromFormat('Y/m/d H:i', $orden->service_date);
                             \Carbon\Carbon::setLocale('es');
                         @endphp
                         <h4 class="card-title mb-3">{{ \Carbon\Carbon::parse($date)->format('d,M H:i') }} / {{ $orden->type_service }} / {{ $orden->getService($orden->type_service,$orden->selected_id)["title"] }} /
