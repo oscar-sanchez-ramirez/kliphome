@@ -62,7 +62,7 @@ Route::get('fixerManorderDetail/{order_id}','ApiRest\FixerManController@fixerMan
 
 //Client**
 Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');
-Route::get('orderDetail/{id}/{order_id}','ApiRest\ClientController@orderDetail');
+Route::get('orderDetail{order_id}','ApiRest\ClientController@orderDetail');
 Route::post('addAddress','ApiRest\ClientController@addAddress');
 Route::post('deleteAddress','ApiRest\ClientController@deleteAddress');
 Route::post('confirmArrive','ApiRest\ClientController@confirmArrive');
