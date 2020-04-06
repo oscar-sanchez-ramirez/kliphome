@@ -379,13 +379,14 @@ class FixerManController extends ApiController
         ]);
     }
 
-    public function fixerManorderDetail($id,$order_id){
+    public function fixerManorderDetail($order_id){
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
         ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
-        ->where('u.id',$id)->where('o.id',$order_id)->get();
+        // ->where('u.id',$id)
+        ->where('o.id',$order_id)->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
