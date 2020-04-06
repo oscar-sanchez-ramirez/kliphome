@@ -59,6 +59,7 @@ export default new Vuex.Store({
           response=>{
             console.log("old: "+this.state.selectedConversation.id);
             console.log('new: '+conversation.id);
+            console.log(window.Echo.connector.socket.state);
             window.Echo.connector.socket.removeListener('users.'+this.state.selectedConversation.id+'.'+this.state.user.id);
             context.commit('selectConversation',conversation);
             context.commit('newMessagesList',response.data);
