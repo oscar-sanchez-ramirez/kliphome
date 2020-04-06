@@ -10,15 +10,15 @@ use Illuminate\Notifications\Messages\MailMessage;
 class NotifyNewOrder extends Notification
 {
     use Queueable;
-
+    protected $user;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -29,7 +29,7 @@ class NotifyNewOrder extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -54,8 +54,6 @@ class NotifyNewOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            //
-        ];
+        return $this->user;
     }
 }
