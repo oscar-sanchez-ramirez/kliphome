@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\Log;
+
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -16,10 +16,11 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('users.{id}', function ($user, $id) {
-    Log::notice($user);
-    Log::notice($id);
-    Log::notice((int) $user->id === (int) $id);
-    return true;
+    // Log::notice($user);
+    // Log::notice($id);
+    // Log::notice((int) $user->id === (int) $id);
+    // return true;
+    return (int) $user->id === (int) $id;
 });
 
 Broadcast::channel('messenger', function ($user) {

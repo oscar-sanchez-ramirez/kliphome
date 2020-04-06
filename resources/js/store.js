@@ -57,14 +57,14 @@ export default new Vuex.Store({
       getMessages(context,conversation){
         axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id+'&conversation_id='+conversation.id).then(
           response=>{
-            console.log("old: "+this.state.selectedConversation.id);
-            console.log('new: '+conversation.id);
-            console.log(window.Echo.connector.socket.state);
-            window.Echo.connector.socket.removeListener('users.'+this.state.selectedConversation.id+'.'+this.state.user.id);
+            // console.log("old: "+this.state.selectedConversation.id);
+            // console.log('new: '+conversation.id);
+            // console.log(window.Echo.connector.socket.state);
+            // window.Echo.connector.socket.removeListener('users.'+this.state.selectedConversation.id+'.'+this.state.user.id);
             context.commit('selectConversation',conversation);
             context.commit('newMessagesList',response.data);
-            console.log(response.data);
-            this.dispatch('openChannel',conversation.id);
+            // console.log(response.data);
+            // this.dispatch('openChannel',conversation.id);
           }
         );
       },

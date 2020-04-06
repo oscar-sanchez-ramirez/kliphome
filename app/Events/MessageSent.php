@@ -9,7 +9,6 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Facades\Log;
 
 class MessageSent implements ShouldBroadcast
 {
@@ -33,8 +32,8 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        Log::notice($this->message);
-        return new PrivateChannel('users.' . $this->message->conversation_id .'.'.$this->message->to_id);
+        // return new PrivateChannel('users.' . $this->message->conversation_id .'.'.$this->message->to_id);
+        return new PrivateChannel('users.' . $this->message->to_id);
     }
     public function broadcastWith()
     {
