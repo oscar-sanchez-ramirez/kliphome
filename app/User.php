@@ -11,7 +11,10 @@ use DB;
 
 use App\Notifications\FixerMan\OneDayLeftNotification;
 use App\Notifications\FixerMan\FourHoursLeftNotification;
-
+use App\Notifications\FixerMan\ApproveFixerMan;
+use App\Notifications\FixerMan\DisapproveOrderFixerman;
+use App\Notifications\FixerMan\ApproveOrderFixerMan;
+use App\Notifications\FixerMan\NotifyNewOrder;
 
 class User extends Authenticatable
 {
@@ -60,26 +63,26 @@ class User extends Authenticatable
                 //Notify when a FixerMan is approved
                 $this->notify(new FourHoursLeftNotification($data));
                 break;
-            // case 'AproveFixerMan':
-            //     //Notify when a FixerMan is approved
-            //     $this->notify(new AproveFixerMan($this));
-            //     break;
-            // case 'ApproveOrderFixerMan':
-            //     //Notify when a Fixerman Request was approved
-            //     $this->notify(new ApproveOrderFixerman($this));
-            //     # code...
-            //     break;
-            // case 'DisapproveOrderFixerMan':
-            //     //Notify when a Fixerman Request was disapproved
-            //     $this->notify(new DisapproveOrderFixerman($this));
-            //     break;
-            // case 'sendNotificationOrderMatch':
-            //     //Notify when user create a order and exists fixerman with the same category
-            //     $this->notify(new NotifyNewOrder($this));
-            //     break;
-            // case 'ServiceQualified':
+            case 'ApproveFixerMan':
+                //Notify when a FixerMan is approved
+                $this->notify(new ApproveFixerMan($data));
+                break;
+            case 'ApproveOrderFixerMan':
+                //Notify when a Fixerman Request was approved
+                $this->notify(new ApproveOrderFixerman($data));
+                # code...
+                break;
+            case 'DisapproveOrderFixerMan':
+                //Notify when a Fixerman Request was disapproved
+                $this->notify(new DisapproveOrderFixerman($data));
+                break;
+            case 'NotifyNewOrder':
                 //Notify when user create a order and exists fixerman with the same category
-                // $this->notify(new ServiceQualified($this));
+                $this->notify(new NotifyNewOrder($data));
+                break;
+            case 'ServiceQualified':
+                // Notify when user create a order and exists fixerman with the same category
+                $this->notify(new ServiceQualified($data));
             default:
                 # code...
                 break;

@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Notifications\Database;
+namespace App\Notifications\FixerMan;
 
-use OneSignal;
-use Illuminate\Bus\Queueable;
+use NotificationChannels\OneSignal\OneSignalChannel;
+use NotificationChannels\OneSignal\OneSignalMessage;
+use NotificationChannels\OneSignal\OneSignalWebButton;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
-class DisapproveOrderFixerMan extends Notification
+class DisapproveOrderFixerman extends Notification
 {
-    use Queueable;
-    protected $fixerman;
+    // use Queueable;
+    protected $user;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($fixerman)
+    public function __construct($user)
     {
-        $this->fixerman = $fixerman;
+        //
+        $this->user = $user;
     }
 
     /**
@@ -30,7 +30,7 @@ class DisapproveOrderFixerMan extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return [OneSignalChannel::class];
     }
 
     /**
@@ -53,8 +53,10 @@ class DisapproveOrderFixerMan extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toOneSignal($notifiable)
     {
-        return $this->fixerman;
+        return OneSignalMessage::create()
+        ->subject("Tu solicitud fue rechazada")
+        ->body("¡Sigue postulando a tu siguiente trabajo!")->setData("type",'App\\Notifications\\Database\\DisapproveOrderFixerman')->setData('data',$this->user);
     }
 }

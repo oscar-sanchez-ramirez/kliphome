@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Notifications\Database;
+namespace App\Notifications\FixerMan;
 
-use OneSignal;
-use Illuminate\Bus\Queueable;
+use NotificationChannels\OneSignal\OneSignalChannel;
+use NotificationChannels\OneSignal\OneSignalMessage;
+use NotificationChannels\OneSignal\OneSignalWebButton;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
-class DisapproveOrderFixerMan extends Notification
+class ServiceQualified extends Notification
 {
-    use Queueable;
-    protected $fixerman;
+    // use Queueable;
+    protected $order;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($fixerman)
+    public function __construct($order)
     {
-        $this->fixerman = $fixerman;
+        //
+        $this->order = $order;
     }
 
     /**
@@ -30,7 +30,7 @@ class DisapproveOrderFixerMan extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return [OneSignalChannel::class];
     }
 
     /**
@@ -53,8 +53,11 @@ class DisapproveOrderFixerMan extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toOneSignal($notifiable)
     {
-        return $this->fixerman;
+
+        return OneSignalMessage::create()
+        ->subject("¡Gracias por usar KlipHome! Tu servicio fue calificado")
+        ->body("Échale un vistazo")->setData("type",'App\\Notifications\\Database\\ServiceQualified')->setData('data',$this->order);
     }
 }

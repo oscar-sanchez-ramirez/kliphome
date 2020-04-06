@@ -94,57 +94,54 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-        dispatch(new MailOrderAccepted($request->order_id));
-        return response()->json([
-            'success' => true
-        ]);
-        // try {
-        //     $price = floatval($request->price);
-        //     try {
-        //         Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-        //         $pago = Stripe\Charge::create ([
-        //             "amount" => $price * 100,
-        //             "currency" => "MXN",
-        //             "source" => $request->stripeToken,
-        //             "description" => "Payment of order ".$request->order_id
-        //         ]);
-        //         $payment = new Payment;
-        //         $payment->order_id = $request->order_id;
-        //         $payment->description = "PAGO POR SERVICIO";
-        //         $payment->state = true;
-        //         $payment->price = $price;
-        //         $payment->save();
-        //         dispatch(new MailOrderAccepted($request->order_id));
-        //     } catch (\Throwable $th) {
-        //         $payment = new Payment;
-        //         $payment->order_id = $request->order_id;
-        //         $payment->description = "PAGO POR SERVICIO";
-        //         $payment->state = false;
-        //         $payment->price = $price;
-        //         $payment->save();
-        //         return response()->json([
-        //             'success' => false
-        //         ]);
-        //     }
 
-        //     $quotation = Quotation::where('order_id',$request->order_id)->first();
-        //     Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
-        //         'price' => $quotation->price
-        //     ]);
-        //     if($request->coupon != ""){
-        //         $coupon = new Coupon;
-        //         $coupon->code = $request->coupon;
-        //         $coupon->user_id = $request->user_id;
-        //         $coupon->save();
-        //     }
-        //     return response()->json([
-        //         'success' => true
-        //     ]);
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'success' => false
-        //     ]);
-        // }
+        try {
+            $price = floatval($request->price);
+            try {
+                Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+                $pago = Stripe\Charge::create ([
+                    "amount" => $price * 100,
+                    "currency" => "MXN",
+                    "source" => $request->stripeToken,
+                    "description" => "Payment of order ".$request->order_id
+                ]);
+                $payment = new Payment;
+                $payment->order_id = $request->order_id;
+                $payment->description = "PAGO POR SERVICIO";
+                $payment->state = true;
+                $payment->price = $price;
+                $payment->save();
+            } catch (\Throwable $th) {
+                $payment = new Payment;
+                $payment->order_id = $request->order_id;
+                $payment->description = "PAGO POR SERVICIO";
+                $payment->state = false;
+                $payment->price = $price;
+                $payment->save();
+                return response()->json([
+                    'success' => false
+                ]);
+            }
+
+            $quotation = Quotation::where('order_id',$request->order_id)->first();
+            Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+                'price' => $quotation->price
+            ]);
+            if($request->coupon != ""){
+                $coupon = new Coupon;
+                $coupon->code = $request->coupon;
+                $coupon->user_id = $request->user_id;
+                $coupon->save();
+            }
+            dispatch(new MailOrderAccepted($request->order_id));
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false
+            ]);
+        }
     }
 
     public function coupon(Request $request){

@@ -14,6 +14,7 @@ use App\Order;
 use App\Address;
 use App\Notifications\Database\NoFixermanForOrder;
 use Illuminate\Support\Facades\Log;
+use App\Notifications\Database\NotifyNewOrder as DatabaseNotifyNewOrder;
 
 class NotifyNewOrder implements ShouldQueue
 {
@@ -54,21 +55,11 @@ class NotifyNewOrder implements ShouldQueue
         }else{
             foreach ($user_match_categories as $key) {
                 $user = User::where('id',$key->id)->first();
-                $type = "App\Notifications\NotifyNewOrder";
-                $content = $order;
-                OneSignal::sendNotificationUsingTags(
-                    "¡Tienes una nueva notificación de trabajo! Solo tienes unos minutos para aceptarlo ¡No pierdas la oportunidad!",
-                    array(
-                        ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
-                    ),
-                    $type,
-                    $content,
-                    $url = null,
-                    $data = null,
-                    $buttons = null,
-                    $schedule = null
-                );
-                // $user->sendNotification($user->email,'sendNotificationOrderMatch');
+                $user->mensajeFixerMan = "Tu cuenta fue aprobada";
+                $user->notify(new DatabaseNotifyNewOrder($user));
+                $notification = $user->notifications()->first();
+                $user->created_at = $notification->id;
+                $user->sendNotification($user->email,'NotifyNewOrder',$user);
             }
         }
         Order::where('id',$this->id)->update([

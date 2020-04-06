@@ -132,7 +132,7 @@ class FixerManController extends ApiController
     public function aprobarSolicitudTecnico(Request $request){
         $order = Order::where('id',$request->order_id)->first();
         $fixerman = User::where('id',$request->fixerman_id)->first();
-        $date = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
+        $date = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $user_order = User::where('id',$order->user_id)->first();
 
         $otherRequest = DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->get();
@@ -141,7 +141,10 @@ class FixerManController extends ApiController
             $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
             foreach ($otherRequest as $key) {
                 $notFixerman = User::where('id',$key->user_id)->first();
-                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($notFixerman->email));
+                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($notFixerman));
+                $notification = $notFixerman->notifications()->first();
+                $notFixerman->created_at = $notification->id;
+                $notFixerman->sendNotification($notFixerman->email,'DisapproveOrderFixerMan',$notFixerman);
             }
             DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
                 'state' => 0
@@ -151,6 +154,9 @@ class FixerManController extends ApiController
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
+        $notification = $fixerman->notifications()->first();
+        $fixerman->created_at = $notification->id;
+        $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan',$order);
 
         Order::where('id',$request->order_id)->update([
             'state' => 'FIXERMAN_APPROVED'
@@ -160,7 +166,11 @@ class FixerManController extends ApiController
     public function eliminarSolicitudTecnico(Request $request){
         $fixerman = User::where('id',$request->fixerman_id)->first();
 
-        $fixerman->notify(new DatabaseDisapproveOrderFixerMan($fixerman->email));
+        $fixerman->notify(new DatabaseDisapproveOrderFixerMan($fixerman));
+        $notification = $fixerman->notifications()->first();
+        $fixerman->created_at = $notification->id;
+        $fixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan',$fixerman);
+
         Order::where('id',$request->order_id)->update([
             'state' => 'FIXERMAN_NOTIFIED'
         ]);
@@ -230,13 +240,6 @@ class FixerManController extends ApiController
                     $payment->price = $price;
                     $payment->save();
                 }
-                // Stripe\Stripe::setApiKey("sk_test_brFGYtiWSjTpj5z7y3B8lwsP");
-                // Stripe\Charge::create ([
-                //     "amount" => $price * 100,
-                //     "currency" => "MXN",
-                //     "source" => $request->stripeToken,
-                //     "description" => "Payment a ".$user->name." ".$user->lastName
-                // ]);
             }
             $qualify = new Qualify;
             $qualify->user_id = $request->fixerman_id;
@@ -250,9 +253,11 @@ class FixerManController extends ApiController
 
             //Database notification
             $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
-            $user->notify(new ServiceQualified($qualify,$user->email));
+            $user->notify(new ServiceQualified($qualify));
             //OneSignal notification
-            // $user->sendNotification($user->email,'ServiceQualified');
+            $notification = $user->notifications()->first();
+            $user->created_at = $notification->id;
+            $user->sendNotification($user->email,'ServiceQualified',$qualify);
             //Update order
             DB::table('selected_orders as so')
             ->join('orders as o', 'so.order_id','o.id')

@@ -2,24 +2,23 @@
 
 namespace App\Notifications\Database;
 
-use OneSignal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DisapproveOrderFixerMan extends Notification
+class NotifyNewOrder extends Notification
 {
     use Queueable;
-    protected $fixerman;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($fixerman)
+    public function __construct()
     {
-        $this->fixerman = $fixerman;
+        //
     }
 
     /**
@@ -30,7 +29,7 @@ class DisapproveOrderFixerMan extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -55,6 +54,8 @@ class DisapproveOrderFixerMan extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->fixerman;
+        return [
+            //
+        ];
     }
 }

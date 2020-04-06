@@ -2,7 +2,6 @@
 
 namespace App\Notifications\Database;
 
-use OneSignal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,15 +10,15 @@ use Illuminate\Notifications\Messages\MailMessage;
 class ApproveFixerMan extends Notification
 {
     use Queueable;
-    protected $email;
+    protected $user;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($email)
+    public function __construct($user)
     {
-        $this->email = $email;
+        $this->user = $user;
     }
 
     /**
@@ -55,20 +54,6 @@ class ApproveFixerMan extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\ApproveFixerMan";
-        $content = $this->email;
-        OneSignal::sendNotificationUsingTags(
-            "Tu Cuenta fue aprobada",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
-            ),
-            $type,
-            $content,
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
-        return $this->email;
+        return $this->user;
     }
 }

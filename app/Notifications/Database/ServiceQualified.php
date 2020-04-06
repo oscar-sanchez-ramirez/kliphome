@@ -6,22 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use OneSignal;
 
 class ServiceQualified extends Notification
 {
     use Queueable;
     protected $order;
-    protected $email;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($order,$email)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->email = $email;
     }
 
     /**
@@ -57,20 +54,6 @@ class ServiceQualified extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\ServiceQualified";
-        $content = $this->order;
-        OneSignal::sendNotificationUsingTags(
-            "Tu servicio fue calificado, ¡Échale un vistazo!",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
-            ),
-            $type,
-            $content,
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
         return $this->order;
     }
 }

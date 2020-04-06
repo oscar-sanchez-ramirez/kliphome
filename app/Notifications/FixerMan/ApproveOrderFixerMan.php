@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\FixerMan;
 
 use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\OneSignalMessage;
 use NotificationChannels\OneSignal\OneSignalWebButton;
 use Illuminate\Notifications\Notification;
 
-class NotifyNewOrder extends Notification
+class ApproveOrderFixerMan extends Notification
 {
     // use Queueable;
-
+    protected $order;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($order)
     {
         //
+        $this->order = $order;
     }
 
     /**
@@ -54,9 +55,8 @@ class NotifyNewOrder extends Notification
      */
     public function toOneSignal($notifiable)
     {
-        //now you can build your message with the $this->data information
         return OneSignalMessage::create()
-            ->subject("¡Tienes una nueva notificación de trabajo!")
-            ->body("Solo tienes unos minutos para aceptarlo ¡No pierdas la oportunidad!");
+        ->subject("Solicitud Aprovada")
+        ->body($this->order["mensajeFixerMan"])->setData("type",'App\\Notifications\\Database\\ApproveOrderFixerMan')->setData('data',$this->order);
     }
 }

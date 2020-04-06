@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Jobs\AproveFixerMan;
+use DB;
+use Image;
 use App\User;
 use App\Order;
 use App\Category;
-use App\SelectedOrders;
-use DB;
-use Image;
 use Carbon\Carbon;
+use App\SelectedOrders;
+use Illuminate\Http\Request;
+use App\Jobs\AproveFixerMan;
+use App\Http\Controllers\Controller;
 use App\Notifications\Database\ManualSelectedOrder;
 use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
 use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
