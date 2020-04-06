@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use DB;
 
 use App\Notifications\FixerMan\OneDayLeftNotification;
+use App\Notifications\FixerMan\FourHoursLeftNotification;
 
 
 class User extends Authenticatable
@@ -54,6 +55,10 @@ class User extends Authenticatable
             case 'OneDayLeftNotification':
                 //Notify when a FixerMan is approved
                 $this->notify(new OneDayLeftNotification($data));
+                break;
+            case 'FourHoursLeftNotification':
+                //Notify when a FixerMan is approved
+                $this->notify(new FourHoursLeftNotification($data));
                 break;
             // case 'AproveFixerMan':
             //     //Notify when a FixerMan is approved

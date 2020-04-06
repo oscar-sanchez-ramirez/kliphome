@@ -46,15 +46,12 @@ class OneDayLeftNotification extends Command
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')
         ->select('o.id','u.id as id_user')
         ->whereDate('o.service_date',$mañana)->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $fixerman = User::where('id',$key->id_user)->first();
             $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
             $fixerman->notify(new DatabaseOneDayLeftNotification($key));
             $notification = $fixerman->notifications()->first();
             $key->created_at = $notification->id;
-            Log::notice($notification);
-
             $fixerman->sendNotification($fixerman->email,"OneDayLeftNotification",$key);
         }
     }

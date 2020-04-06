@@ -7,7 +7,7 @@ use NotificationChannels\OneSignal\OneSignalMessage;
 use NotificationChannels\OneSignal\OneSignalWebButton;
 use Illuminate\Notifications\Notification;
 
-class OneDayLeftNotification extends Notification
+class FourHoursLeftNotification extends Notification
 {
     // use Queueable;
     protected $order;
@@ -57,7 +57,7 @@ class OneDayLeftNotification extends Notification
     {
 
         return OneSignalMessage::create()
-        ->subject("¡Mañana tienes una orden de servicio!")
-        ->body("¡No olvides prepararte!")->setData("type",'App\\Notifications\\Database\\OneDayLeftNotification')->setData('data',$this->order);
+        ->subject("Hoy tienes una orden de servicio!")
+        ->body("¡No olvides prepararte!")->setData("type",'App\\Notifications\\Database\\FourHoursLeftNotification')->setData('data',$this->order);
     }
 }
