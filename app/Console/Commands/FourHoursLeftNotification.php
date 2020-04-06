@@ -50,23 +50,24 @@ class FourHoursLeftNotification extends Command
         ->get();
         Log::notice($orders);
         foreach ($orders as $key) {
-            $string = '{"id":'.$key->id.',"id_user":'.$key->id_user.',"mensajeFixerMan":"Ma\u00f1ana tienes una orden de servicio"}';
+            $string = '{"id":'.$key->id.',"id_user":'.$key->id_user.',"service_date":"'.$key->service_date.'","mensajeFixerMan":"Ma\u00f1ana tienes una orden de servicio"}';
+            Log::notice($string);
             $check = DB::table('notifications')->where('type','App\Notifications\Database\FourHoursLeftNotification')->where('data',$string)->first();
             Log::notice($check);
             if(!$check){
 
-                $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
-                $ahora = Carbon::now('America/Lima')->format('Y/m/d H:i');
-                $totalDuration = $fecha_orden->diffInSeconds($ahora);
-                Log::notice($totalDuration);
-                if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
-                    $fixerman = User::where('id',$key->id_user)->first();
-                    Log::notice($fixerman);
-                    $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
-                    $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
-                    $notification = $fixerman->notifications()->first();
-                    $key->created_at = $notification->id;
-                    $fixerman->sendNotification($fixerman->email,"FourHoursLeftNotification",$key);
+                // $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
+                // $ahora = Carbon::now('America/Lima')->format('Y/m/d H:i');
+                // $totalDuration = $fecha_orden->diffInSeconds($ahora);
+                // Log::notice($totalDuration);
+                // if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
+                //     $fixerman = User::where('id',$key->id_user)->first();
+                //     Log::notice($fixerman);
+                //     $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
+                //     $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
+                //     $notification = $fixerman->notifications()->first();
+                //     $key->created_at = $notification->id;
+                //     $fixerman->sendNotification($fixerman->email,"FourHoursLeftNotification",$key);
                 }
             }
         }
