@@ -37,34 +37,35 @@ class NotifyNewOrder implements ShouldQueue
      */
     public function handle()
     {
-        // $order = Order::where('id',$this->id)->first();
-        // $municipio = Address::where('id',$order->address)->pluck('municipio');
-        // $category = $this->table($order->type_service,$order->selected_id);
-        // $user_match_categories =
-        // DB::table('users as u')
-        // ->join('selected_categories as sc','u.id','sc.user_id')
-        // ->join('selected_delegations as sd','u.id','sd.user_id')
-        // ->select('u.*')
-        // ->where('sc.category_id',$category[0]->id)
-        // ->where('sd.municipio',$municipio)
-        // ->where('u.state',1)->get();
-
-        // if(count($user_match_categories) == 0){
-        //     $admin = User::where('type','ADMINISTRATOR')->first();
-        //     $admin->notify(new NoFixermanForOrder($order));
-        // }else{
-        //     foreach ($user_match_categories as $key) {
-        //         $user = User::where('id',$key->id)->first();
-        //         $user->mensajeFixerMan = "Tu cuenta fue aprobada";
-        //         $user->notify(new DatabaseNotifyNewOrder($user));
-        //         $notification = $user->notifications()->first();
-        //         $user->created_at = $notification->id;
-        //         $user->sendNotification($user->email,'NotifyNewOrder',$user);
-        //     }
-        // }
-        // Order::where('id',$this->id)->update([
-        //     'state' => "FIXERMAN_NOTIFIED"
-        // ]);
+        $order = Order::where('id',$this->id)->first();
+        $municipio = Address::where('id',$order->address)->pluck('municipio');
+        $category = $this->table($order->type_service,$order->selected_id);
+        $user_match_categories =
+        DB::table('users as u')
+        ->join('selected_categories as sc','u.id','sc.user_id')
+        ->join('selected_delegations as sd','u.id','sd.user_id')
+        ->select('u.*')
+        ->where('sc.category_id',$category[0]->id)
+        ->where('sd.municipio',$municipio)
+        ->where('u.state',1)->get();
+        Log::notice($user_match_categories);
+        if(count($user_match_categories) == 0){
+            $admin = User::where('type','ADMINISTRATOR')->first();
+            $admin->notify(new NoFixermanForOrder($order));
+        }else{
+            foreach ($user_match_categories as $key) {
+                $user = User::where('id',$key->id)->first();
+                $user->mensajeFixerMan = "Tienes una solicitud nueva de trabajo";
+                $user->notify(new DatabaseNotifyNewOrder($user));
+                $notification = $user->notifications()->first();
+                Log::notice($user);
+                $user->created_at = $notification->id;
+                $user->sendNotification($user->email,'NotifyNewOrder',$user);
+            }
+        }
+        Order::where('id',$this->id)->update([
+            'state' => "FIXERMAN_NOTIFIED"
+        ]);
     }
 
 
