@@ -110,7 +110,7 @@ export default new Vuex.Store({
       },
       openChannel(context,id){
         console.log(id)
-        window.Echo.private('users.'+id).listen('MessageSent',(data)=>{
+        window.Echo.private('users.'+id+'.'+state.user.id).listen('MessageSent',(data)=>{
           const message = data.message;
           console.log(message);
           message.written_by_me = 1;
