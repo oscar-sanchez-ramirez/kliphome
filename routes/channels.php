@@ -19,7 +19,7 @@ Broadcast::channel('users.{id}', function ($user, $id) {
     Log::notice($user);
     Log::notice($id);
     Log::notice((int) $user->id === (int) $id);
-    return (int) $user->id === (int) $id;
+    return true;
 });
 
 Broadcast::channel('messenger', function ($user) {
