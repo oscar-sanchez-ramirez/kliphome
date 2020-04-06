@@ -52,7 +52,7 @@ class OneDayLeftNotification extends Command
             $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
             $fixerman->notify(new DatabaseOneDayLeftNotification($key));
             $notification = $fixerman->notifications()->first();
-            $key->created_at = $notification->created_at;
+            $key->created_at = $notification->id;
             Log::notice($notification);
 
             $fixerman->sendNotification($fixerman->email,"OneDayLeftNotification",$key);
