@@ -56,8 +56,12 @@ export default new Vuex.Store({
       getMessages(context,conversation){
         axios.get('/api/messages?contact_id='+conversation.contact_id+'&user_id='+conversation.user_id+'&conversation_id='+conversation.id).then(
           response=>{
+            console.log("old: "+this.state.selectedConversation.id);
+            console.log('new: '+conversation.id);
+            Echo.connector.socket.removeListener('users'+this.state.selectedConversation.id);
             context.commit('selectConversation',conversation);
             context.commit('newMessagesList',response.data);
+            this.dispatch('openChannel',conversation.id);
           }
         );
       },
@@ -80,8 +84,7 @@ export default new Vuex.Store({
           }else{
             this.state.selectedConversation = array[0];
             this.dispatch('getMessages',array[0]);
-            // this.dispatch('openChannel',array.[0].);
-            console.log(array);
+            this.dispatch('openChannel',array[0].id);
 
           }
 
@@ -105,6 +108,7 @@ export default new Vuex.Store({
         });
       },
       openChannel(context,id){
+        console.log(id)
         Echo.private('users.'+id).listen('MessageSent',(data)=>{
           const message = data.message;
           message.written_by_me = 1;
