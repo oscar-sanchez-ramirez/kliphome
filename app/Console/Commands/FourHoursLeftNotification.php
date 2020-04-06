@@ -44,20 +44,16 @@ class FourHoursLeftNotification extends Command
     public function handle()
     {
         $hoy = Carbon::now()->format('Y/m/d');
-        Log::notice($hoy);
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')
         ->select('o.id','u.id as id_user','o.service_date')
         ->whereDate('o.service_date',$hoy)->where('o.is_notified',0)
         ->get();
-        Log::notice($orders);
         foreach ($orders as $key) {
             $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
             $ahora = Carbon::now('America/Lima')->format('Y/m/d H:i');
             $totalDuration = $fecha_orden->diffInSeconds($ahora);
-            Log::notice($totalDuration);
             if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
                 $fixerman = User::where('id',$key->id_user)->first();
-                Log::notice($fixerman);
                 $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
                 $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
                 $notification = $fixerman->notifications()->first();

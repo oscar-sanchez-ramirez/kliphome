@@ -2,12 +2,12 @@
 
 namespace App\Jobs;
 
+use DB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use DB;
 use OneSignal;
 use App\User;
 use App\Order;

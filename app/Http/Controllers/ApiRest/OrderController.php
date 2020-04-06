@@ -11,6 +11,7 @@ use App\Quotation;
 use App\Payment;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
+use App\Jobs\Mail\MailOrderAccepted;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
 use App\Notifications\Database\NewQuotation;
@@ -54,6 +55,13 @@ class OrderController extends ApiController
                 $payment->state = true;
                 $payment->price = $request->visit_price;
                 $payment->save();
+                dispatch(new NotifyNewOrder($order->id));
+                $client = User::where('type',"ADMINISTRATOR")->first();
+                $client->notify(new NewQuotation($order));
+                return response()->json([
+                    'success' => true,
+                    'message' => "La orden de servicio se realizó con éxito"
+                ]);
             } catch (\Throwable $th) {
                 $payment = new Payment;
                 $payment->order_id = $order->id;
@@ -65,13 +73,7 @@ class OrderController extends ApiController
                     'success' => false
                 ]);
             }
-            dispatch(new NotifyNewOrder($order->id));
-            $client = User::where('type',"ADMINISTRATOR")->first();
-            $client->notify(new NewQuotation($order));
-            return response()->json([
-                'success' => true,
-                'message' => "La orden de servicio se realizó con éxito"
-            ]);
+
         // } catch (\Throwable $th) {
         //     return response()->json([
         //         'success' => false,
@@ -108,6 +110,7 @@ class OrderController extends ApiController
                 $payment->state = true;
                 $payment->price = $price;
                 $payment->save();
+                dispatch(new MailOrderAccepted($request->order_id));
             } catch (\Throwable $th) {
                 $payment = new Payment;
                 $payment->order_id = $request->order_id;
