@@ -65,6 +65,10 @@ export default new Vuex.Store({
         axios.get('/api/conversations/'+type).then((response) => {
           // if(response.data != ""){
           // }
+          let array = response.data.sort( ( a, b) => {
+              return new Date(a.last_time) - new Date(b.last_time);
+          });
+          array.reverse();
 
           if(this.state.conversationFromNotification != 0){
             for (let index = 0; index < response.data.length; index++) {
@@ -77,10 +81,7 @@ export default new Vuex.Store({
             this.state.selectedConversation = response.data[0];
             this.dispatch('getMessages',response.data[0]);
           }
-          let array = response.data.sort( ( a, b) => {
-              return new Date(a.last_time) - new Date(b.last_time);
-          });
-          array.reverse();
+
           context.commit('newConversationsList',array);
         });
       },
