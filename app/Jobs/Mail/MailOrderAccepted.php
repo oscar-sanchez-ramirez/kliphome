@@ -7,6 +7,7 @@ use Mail;
 use App\Payment;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -40,6 +41,7 @@ class MailOrderAccepted implements ShouldQueue
         $fecha = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
         $usuario = array('monto' =>  $monto, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
         $mail = $order->email;
+        Log::notice($mail);
         Mail::send('emails.neworder',$usuario, function($msj) use ($mail){
             $msj->subject('KlipHome: Tu order de servicio fue procesado');
             $msj->to($mail,"Detalle");
