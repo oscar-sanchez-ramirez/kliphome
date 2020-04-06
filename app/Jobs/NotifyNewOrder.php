@@ -58,8 +58,8 @@ class NotifyNewOrder implements ShouldQueue
                 $user->mensajeFixerMan = "Tienes una solicitud nueva de trabajo";
                 $user->notify(new DatabaseNotifyNewOrder($user));
                 $notification = $user->notifications()->first();
-                Log::notice($user);
                 $user->notification_id = $notification->id;
+                Log::notice($user);
                 $user->sendNotification($user->email,'NotifyNewOrder',$user);
             }
         }
