@@ -78,8 +78,8 @@ export default new Vuex.Store({
               }
              }
           }else{
-            this.state.selectedConversation = response.data[0];
-            this.dispatch('getMessages',response.data[0]);
+            this.state.selectedConversation = array.data[0];
+            this.dispatch('getMessages',array.data[0]);
           }
 
           context.commit('newConversationsList',array);
