@@ -143,7 +143,7 @@ class FixerManController extends ApiController
                 $notFixerman = User::where('id',$key->user_id)->first();
                 $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($notFixerman));
                 $notification = $notFixerman->notifications()->first();
-                $notFixerman->created_at = $notification->id;
+                $notFixerman->notification_id = $notification->id;
                 $notFixerman->sendNotification($notFixerman->email,'DisapproveOrderFixerMan',$notFixerman);
             }
             DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
@@ -155,7 +155,7 @@ class FixerManController extends ApiController
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
         $notification = $fixerman->notifications()->first();
-        $fixerman->created_at = $notification->id;
+        $fixerman->notification_id = $notification->id;
         $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan',$order);
 
         Order::where('id',$request->order_id)->update([
@@ -168,7 +168,7 @@ class FixerManController extends ApiController
 
         $fixerman->notify(new DatabaseDisapproveOrderFixerMan($fixerman));
         $notification = $fixerman->notifications()->first();
-        $fixerman->created_at = $notification->id;
+        $fixerman->notification_id = $notification->id;
         $fixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan',$fixerman);
 
         Order::where('id',$request->order_id)->update([
@@ -256,7 +256,7 @@ class FixerManController extends ApiController
             $user->notify(new ServiceQualified($qualify));
             //OneSignal notification
             $notification = $user->notifications()->first();
-            $user->created_at = $notification->id;
+            $user->notification_id = $notification->id;
             $user->sendNotification($user->email,'ServiceQualified',$qualify);
             //Update order
             DB::table('selected_orders as so')
