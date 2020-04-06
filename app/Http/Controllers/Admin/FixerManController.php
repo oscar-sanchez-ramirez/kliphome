@@ -48,7 +48,7 @@ class FixerManController extends Controller
     public function asignarTecnico($id_tecnico,$id_orden){
         $order = Order::where('id',$id_orden)->first();
         $fixerman = User::where('id',$id_tecnico)->first();
-        $date = Carbon::createFromFormat('d/m/Y H:i', $order->service_date);
+        $date = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $user_order = User::where('id',$order->user_id)->first();
         $new_selected = new SelectedOrders;
         $new_selected->user_id = $fixerman->id;
@@ -82,7 +82,7 @@ class FixerManController extends Controller
         User::where('id',$request->fixerman_id)->update([
             'state' => true
         ]);
-        dispatch(new AproveFixerMan($request->fixerman_id));
+        // dispatch(new AproveFixerMan($request->fixerman_id));
     }
     public function updateFixermanImage(Request $request){
         $idFixerman = $request->idFixerman;
