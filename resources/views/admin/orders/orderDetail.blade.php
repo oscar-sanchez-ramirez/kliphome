@@ -16,13 +16,17 @@
                             <div class="location text-sm-center">
                                 <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
                                 @if($fixerman != null)
-                                    @if($orden->price == "quotation" || $orden->state == "PENDING")
-                                        <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
-                                        <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
-                                        </form>
-                                    @endif
+                                   @if($orden->state == 'PENDING' && $orden->state == 'FIXERMAN_NOTIFIED')
+                                        @if($orden->price == "quotation" || $orden->state == "PENDING")
+                                            <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
+                                            <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
+                                            </form>
+                                        @endif
+                                    @else
+                                    <h4>Esperando confirmación del cliente</h4>
+                                   @endif
                                 @endif
                                 @if($orden->price == "waitquotation")
                                     <h4>Cotización enviada</h4>
@@ -42,7 +46,7 @@
                 @if($fixerman != null)
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title mb-3">Perfil Técnico del servicio</strong>
+                            <strong class="card-title mb-3">Perfil Técnico del servicio @if($orden->state == 'PENDING' || $orden->state == 'FIXERMAN_NOTIFIED') (Pendiente)  @endif</strong>
                         </div>
                         <div class="card-body">
                             <div class="mx-auto d-block">
