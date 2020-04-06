@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use DB;
 use App\User;
+use App\Order;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
