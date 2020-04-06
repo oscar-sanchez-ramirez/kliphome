@@ -27,7 +27,7 @@ class OrderController extends ApiController
         // try {
             // $price = 'quotation';
             // $price = floatval($request->price);
-            try {
+            // try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
                 $pago = Stripe\Charge::create ([
                     "amount" => $request->visit_price * 100,
@@ -62,17 +62,17 @@ class OrderController extends ApiController
                     'success' => true,
                     'message' => "La orden de servicio se realizó con éxito"
                 ]);
-            } catch (\Throwable $th) {
-                $payment = new Payment;
-                $payment->order_id = $order->id;
-                $payment->description = "VISITA";
-                $payment->state = false;
-                $payment->price = $request->visit_price;
-                $payment->save();
-                return response()->json([
-                    'success' => false
-                ]);
-            }
+            // } catch (\Throwable $th) {
+            //     $payment = new Payment;
+            //     $payment->order_id = $order->id;
+            //     $payment->description = "VISITA";
+            //     $payment->state = false;
+            //     $payment->price = $request->visit_price;
+            //     $payment->save();
+            //     return response()->json([
+            //         'success' => false
+            //     ]);
+            // }
 
         // } catch (\Throwable $th) {
         //     return response()->json([
