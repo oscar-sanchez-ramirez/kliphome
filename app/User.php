@@ -65,7 +65,7 @@ class User extends Authenticatable
                 break;
             case 'ApproveFixerMan':
                 //Notify when a FixerMan is approved
-                // $this->notify(new ApproveFixerMan($data));
+                $this->notify(new ApproveFixerMan($data));
                 break;
             case 'ApproveOrderFixerMan':
                 //Notify when a Fixerman Request was approved
