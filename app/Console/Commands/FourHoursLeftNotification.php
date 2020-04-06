@@ -68,7 +68,7 @@ class FourHoursLeftNotification extends Command
                 //     $notification = $fixerman->notifications()->first();
                 //     $key->created_at = $notification->id;
                 //     $fixerman->sendNotification($fixerman->email,"FourHoursLeftNotification",$key);
-                }
+                // }
             }
         }
     }
