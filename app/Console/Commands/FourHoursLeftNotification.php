@@ -50,7 +50,8 @@ class FourHoursLeftNotification extends Command
         ->get();
         Log::notice($orders);
         foreach ($orders as $key) {
-            $check = DB::table('notifications')->where('type','App\Notifications\Database\FourHoursLeftNotification')->where('data',$key->id)->first();
+            $string = '{"id":'.$key->id.',"id_user":'.$key->id_user.',"mensajeFixerMan":"Ma\u00f1ana tienes una orden de servicio"}';
+            $check = DB::table('notifications')->where('type','App\Notifications\Database\FourHoursLeftNotification')->where('data',$string)->first();
             Log::notice($check);
             if(!$check){
 
@@ -61,6 +62,7 @@ class FourHoursLeftNotification extends Command
                 if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
                     $fixerman = User::where('id',$key->id_user)->first();
                     Log::notice($fixerman);
+                    $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
                     $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
                     $notification = $fixerman->notifications()->first();
                     $key->created_at = $notification->id;
