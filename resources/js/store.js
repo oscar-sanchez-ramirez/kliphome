@@ -111,6 +111,7 @@ export default new Vuex.Store({
         console.log(id)
         Echo.private('users.'+id).listen('MessageSent',(data)=>{
           const message = data.message;
+          console.log(message);
           message.written_by_me = 1;
           context.commit('addMessage',message);
         });
