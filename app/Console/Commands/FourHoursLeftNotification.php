@@ -50,9 +50,9 @@ class FourHoursLeftNotification extends Command
         ->get();
         Log::notice($orders);
         foreach ($orders as $key) {
-            $string = str_replace('/','\/','{"id":'.$key->id.',"id_user":'.$key->id_user.',"service_date":"'.$key->service_date.'","mensajeFixerMan":"Ma\u00f1ana tienes una orden de servicio"}');
+            $string = '{"id":'.$key->id.',"id_user":'.$key->id_user.',"service_date":"'.$key->service_date.'","mensajeFixerMan":"Ma\u00f1ana tienes una orden de servicio"}';
             Log::notice($string);
-            $check = DB::table('notifications')->where('type','App\Notifications\Database\FourHoursLeftNotification')->where('data',$string)->first();
+            $check = DB::table('notifications')->where('type','App\Notifications\Database\FourHoursLeftNotification')->where('data',str_replace('/','\/',$string))->first();
             Log::notice($check);
             if(!$check){
 
