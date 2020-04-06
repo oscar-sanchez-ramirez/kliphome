@@ -69,9 +69,9 @@ export default{
           this.$set(this.$store.state.conversations[index],'online',status);
       }
     },
-    addMessage1(message){
-      return this.$store.commit('addMessage',message);
-    }
+    // addMessage1(message){
+    //   return this.$store.commit('addMessage',message);
+    // }
   },
   computed:{
     selectedConversation(){
