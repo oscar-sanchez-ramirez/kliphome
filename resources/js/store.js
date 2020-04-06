@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Echo from 'laravel-echo';
+
 Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
@@ -59,7 +60,7 @@ export default new Vuex.Store({
           response=>{
             console.log("old: "+this.state.selectedConversation.id);
             console.log('new: '+conversation.id);
-            Echo.connector.socket.removeListener('users'+this.state.selectedConversation.id);
+            window.Echo.connector.socket.removeListener('users'+this.state.selectedConversation.id);
             context.commit('selectConversation',conversation);
             context.commit('newMessagesList',response.data);
             this.dispatch('openChannel',conversation.id);
@@ -110,7 +111,7 @@ export default new Vuex.Store({
       },
       openChannel(context,id){
         console.log(id)
-        Echo.private('users.'+id).listen('MessageSent',(data)=>{
+        window.Echo.private('users.'+id).listen('MessageSent',(data)=>{
           const message = data.message;
           console.log(message);
           message.written_by_me = 1;
