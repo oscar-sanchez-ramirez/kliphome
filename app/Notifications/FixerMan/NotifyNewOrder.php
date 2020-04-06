@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 
 class NotifyNewOrder extends Notification
 {
-    use Queueable;
+    // use Queueable;
 
     /**
      * Create a new notification instance.
