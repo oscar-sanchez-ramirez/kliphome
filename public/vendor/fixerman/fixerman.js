@@ -50,7 +50,6 @@ function aproveFixerMan(fixerman_id,name){
                 $("#state"+fixerman_id).html('<span class="badge badge-success">Validado</span>');
             },
             error: function(data) {
-                console.log(data);
                 alert("Error al aprobar registro, Porfavor intente de nuevo");
             }
         });
