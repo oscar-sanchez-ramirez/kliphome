@@ -51,10 +51,13 @@ class FourHoursLeftNotification extends Command
         Log::notice($orders);
         foreach ($orders as $key) {
             $check = DB::table('notifications')->where('type','App\Notifications\Database\FourHoursLeftNotification')->where('data',$key->id)->first();
+            Log::notice($check);
             if(!$check){
+
                 $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
                 $ahora = Carbon::now('America/Lima')->format('Y/m/d H:i');
                 $totalDuration = $fecha_orden->diffInSeconds($ahora);
+                Log::notice($totalDuration);
                 if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
                     $fixerman = User::where('id',$key->id_user)->first();
                     $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
