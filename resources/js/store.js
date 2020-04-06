@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Echo from 'laravel-echo';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
