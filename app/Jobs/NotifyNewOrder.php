@@ -59,7 +59,7 @@ class NotifyNewOrder implements ShouldQueue
                 $user->notify(new DatabaseNotifyNewOrder($user));
                 $notification = $user->notifications()->first();
                 Log::notice($user);
-                $user->created_at = $notification->id;
+                $user->notification_id = $notification->id;
                 $user->sendNotification($user->email,'NotifyNewOrder',$user);
             }
         }
