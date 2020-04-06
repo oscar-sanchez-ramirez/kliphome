@@ -82,7 +82,7 @@ class FixerManController extends Controller
         User::where('id',$request->fixerman_id)->update([
             'state' => true
         ]);
-        // dispatch(new AproveFixerMan($request->fixerman_id));
+        dispatch(new AproveFixerMan($request->fixerman_id));
     }
     public function updateFixermanImage(Request $request){
         $idFixerman = $request->idFixerman;

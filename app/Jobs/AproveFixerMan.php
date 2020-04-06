@@ -34,8 +34,8 @@ class AproveFixerMan implements ShouldQueue
         $user = User::where('id',$this->user_id)->first();
         $user->mensajeFixerMan = "Tu cuenta fue aprobada";
         $user->notify(new ApproveFixerMan($user));
-        $notification = $user->notifications()->first();
-        $user->created_at = $notification->id;
-        $user->sendNotification($user->email,'ApproveFixerMan',$user);
+        // $notification = $user->notifications()->first();
+        // $user->created_at = $notification->id;
+        // $user->sendNotification($user->email,'ApproveFixerMan',$user);
     }
 }
