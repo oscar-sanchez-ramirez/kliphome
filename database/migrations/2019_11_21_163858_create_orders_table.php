@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->longText('service_image');
             $table->text('address');
             $table->string('state')->default('PENDING');
+            $table->integer('is_notified')->default(0);
             $table->string('finished_at')->nullable();
             $table->string('price')->nullable();
             $table->string('visit_price')->nullable();

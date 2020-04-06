@@ -46,29 +46,23 @@ class FourHoursLeftNotification extends Command
         Log::notice($hoy);
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')
         ->select('o.id','u.id as id_user','o.service_date')
-        ->whereDate('o.service_date',$hoy)
+        ->whereDate('o.service_date',$hoy)->where('o.is_notified',0)
         ->get();
         Log::notice($orders);
         foreach ($orders as $key) {
-            // $string = '{"id":40,"id_user":77,"service_date":"2020\/04\/05 21:00","mensajeFixerMan":"Ma\u00f1ana tienes una orden de servicio"}';
-            // '{"id":'.$key->id.',"id_user":'.$key->id_user.',"service_date":"'.$key->service_date.'","mensajeFixerMan":"Ma\u00f1ana tienes una orden de servicio"}';
-            $check = DB::table('notifications')->where('type','App\Notifications\Database\FourHoursLeftNotification')->where('data->id',$key->id)->first();
-            Log::notice($check);
-            if(!$check){
-
-                // $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
-                // $ahora = Carbon::now('America/Lima')->format('Y/m/d H:i');
-                // $totalDuration = $fecha_orden->diffInSeconds($ahora);
-                // Log::notice($totalDuration);
-                // if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
-                //     $fixerman = User::where('id',$key->id_user)->first();
-                //     Log::notice($fixerman);
-                //     $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
-                //     $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
-                //     $notification = $fixerman->notifications()->first();
-                //     $key->created_at = $notification->id;
-                //     $fixerman->sendNotification($fixerman->email,"FourHoursLeftNotification",$key);
-                // }
+            $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
+            $ahora = Carbon::now('America/Lima')->format('Y/m/d H:i');
+            $totalDuration = $fecha_orden->diffInSeconds($ahora);
+            Log::notice($totalDuration);
+            if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
+                $fixerman = User::where('id',$key->id_user)->first();
+                Log::notice($fixerman);
+                $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
+                $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
+                $notification = $fixerman->notifications()->first();
+                $key->created_at = $notification->id;
+                $fixerman->sendNotification($fixerman->email,"FourHoursLeftNotification",$key);
+                Order::where('id',$key->id)->increment('is_notified');
             }
         }
     }
