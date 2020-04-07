@@ -482,6 +482,10 @@
     <script src="{{ url('') }}/js/main.js"></script>
 
     @if(Request::is('messenger'))
+        <script>
+            var height = $('.page-wrapper:visible').height();
+            console.log(height);
+        </script>
         <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
 
