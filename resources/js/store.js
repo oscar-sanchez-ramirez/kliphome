@@ -33,13 +33,13 @@ export default new Vuex.Store({
         addMessage(state,message){
           message.type = 'text';
           const conversation = state.conversations.find((conversation)=>{
-            return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
+            return conversation.id == message.conversation_id;
           });
           const author = state.user.id === message.from_id ? 'Tú' : conversation.contact_name["name"];
 
           conversation.last_message = author+': '+message.content;
           conversation.last_time = message.created_at;
-          if (state.selectedConversation.contact_id == message.from_id || state.selectedConversation.contact_id == message.to_id) {
+          if (state.selectedConversation.id == message.conversation_id) {
               state.messages.push(message);
           }
         },
