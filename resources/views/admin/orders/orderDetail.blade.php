@@ -147,7 +147,7 @@
                                                 <td>{{ $item->description }}</td>
                                                 <td class="text-right">${{ $item->price }}</td>
                                                 <td>
-                                                    @if($item->status == "1")
+                                                    @if($item->state > 0)
                                                         <span class="status--process">Procesado</span>
                                                     @else
                                                         <span class="status--denied">Denegado</span>
