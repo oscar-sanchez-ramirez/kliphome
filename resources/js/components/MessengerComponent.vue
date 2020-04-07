@@ -1,6 +1,6 @@
 <template>
   <b-container fluid style="height: 100%;margin-top:20px;">
-    <b-row no-gutters>
+    <b-row no-gutters id="guttersHeight">
         <div class="col-md-4 listado-contactos">
           <b-tabs card>
             <b-tab title="Mis Mensajes" active @click="getOtherConversations('admin')">

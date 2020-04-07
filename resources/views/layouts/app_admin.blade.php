@@ -484,9 +484,13 @@
     @if(Request::is('messenger'))
         <script>
             var height = $('.page-wrapper:visible').height();
-            $("#cardContent").height(height);
-            console.log(height);
+            $("#cardContent").height(height - 200);
         </script>
+        <style>
+            #guttersHeight{
+                height: 96% !important;
+            }
+        </style>
         <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
 
