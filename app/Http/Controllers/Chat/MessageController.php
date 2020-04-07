@@ -25,7 +25,6 @@ class MessageController extends ApiController
                 'read_at' => $date = $carbon->now()
             ]);
             $order = str_replace('"','',$request->order);
-            // return $order;
         }else{
             $order = 0;
         }
@@ -39,11 +38,6 @@ class MessageController extends ApiController
         return DB::table('conversations as c')
         ->join('messages as m','c.id','m.conversation_id')
         ->select('m.id',DB::raw('IF(m.from_id='.$userId.',1,0) as written_by_me'),'m.created_at','m.content','m.type')
-        // ->where(function ($query) use ($userId,$contactId){
-        //     $query->where('m.from_id',$userId)->where('m.to_id',$contactId);
-        //     })->orWhere(function ($query) use ($userId,$contactId){
-        //     $query->where('m.to_id',$userId)->where('m.from_id',$contactId);
-        //     })
             ->where('c.id',$conversationId)->orderBy('m.id',"ASC")->get();
     }
     public function store(Request $request)

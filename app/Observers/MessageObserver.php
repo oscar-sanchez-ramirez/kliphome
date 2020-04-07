@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Observers;
-
+use Illuminate\Support\Facades\Log;
 use App\Message;
 use App\Conversation;
 use App\Events\MessageSent;
@@ -10,7 +10,9 @@ class MessageObserver
 {
     public function created(Message $message)
     {
+      Log::notice($message);
         $conversation = Conversation::where('user_id',$message->from_id)->where('contact_id',$message->to_id)->first();
+
         if ($conversation) {
           if($message->type == "image"){
             $conversation->last_message = 'Tú: Imagen';
