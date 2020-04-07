@@ -6,9 +6,10 @@ use DB;
 use OneSignal;
 use App\User;
 use App\Order;
+use App\Payment;
 use App\Quotation;
-use App\SelectedOrders;
 use Carbon\Carbon;
+use App\SelectedOrders;
 use Illuminate\Http\Request;
 use App\Jobs\ApproveOrderFixerMan;
 use Illuminate\Support\Facades\Log;
@@ -35,8 +36,8 @@ class OrderController extends Controller
         }
         $orden = Order::find($id);
         $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
-
-        return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman);
+        $payments = Payment::where('order_id',$id)->get();
+        return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman)->with('payments',$payments);
     }
 
     public function aprobarSolicitudTecnico($fixerman_id,$order_id){
