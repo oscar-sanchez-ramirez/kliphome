@@ -248,7 +248,7 @@ class FixerManController extends ApiController
             $qualify->puntuality = $request->puntuality;
             $qualify->problemSolve = $request->problemSolve;
             $qualify->comment = $request->comment;
-            $qualify->tip = $request->tip;
+            $qualify->tip = $request->price;
             $qualify->save();
 
             //Database notification
