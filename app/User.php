@@ -15,6 +15,7 @@ use App\Notifications\FixerMan\ApproveFixerMan;
 use App\Notifications\FixerMan\DisapproveOrderFixerman;
 use App\Notifications\FixerMan\ApproveOrderFixerMan;
 use App\Notifications\FixerMan\NotifyNewOrder;
+use App\Notifications\FixerMan\ServiceQualified;
 
 class User extends Authenticatable
 {

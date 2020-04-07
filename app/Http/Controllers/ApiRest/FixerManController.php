@@ -250,7 +250,11 @@ class FixerManController extends ApiController
             $qualify->comment = $request->comment;
             $qualify->tip = $request->price;
             $qualify->save();
-
+            //Update order
+            DB::table('selected_orders as so')
+            ->join('orders as o', 'so.order_id','o.id')
+            ->where('so.id',$request->idOrderAccepted)
+            ->update([ 'o.state' => "QUALIFIED" ]);
             //Database notification
             $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
             $user->notify(new ServiceQualified($qualify));
@@ -258,11 +262,7 @@ class FixerManController extends ApiController
             $notification = $user->notifications()->first();
             $user->notification_id = $notification->id;
             $user->sendNotification($user->email,'ServiceQualified',$qualify);
-            //Update order
-            DB::table('selected_orders as so')
-            ->join('orders as o', 'so.order_id','o.id')
-            ->where('so.id',$request->idOrderAccepted)
-            ->update([ 'o.state' => "QUALIFIED" ]);
+
             return response()->json([
                 'success' => true
             ]);
