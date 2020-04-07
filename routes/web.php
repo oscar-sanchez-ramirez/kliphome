@@ -19,9 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('admin', function () {
-    return view('admin.admin');
-})->middleware('auth','checkadmin');
+Route::get('admin', 'HomeController@admin')->middleware('auth','checkadmin');
 
 Route::resource('categorias', 'CategoryController');
 Route::resource('servicios', 'ServiceController');

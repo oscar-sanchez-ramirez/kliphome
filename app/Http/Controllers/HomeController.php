@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Order;
 use App\User;
+use App\Payment;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -26,6 +28,14 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function admin(){
+        $clientes = User::where('type','AppUser')->where('state',1)->count();
+        $tecnicos = User::where('type','AppFixerMan')->where('state',1)->count();
+        $pagos = Payment::where('state',1)->sum('price');
+        $ordenes = Order::count();
+        return view('admin.admin',compact('clientes','tecnicos','pagos','ordenes'));
     }
 
     public function notificaciones(){
