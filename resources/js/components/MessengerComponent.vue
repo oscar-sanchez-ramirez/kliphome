@@ -50,6 +50,7 @@ export default{
     Echo.join('messenger')
     .here((users)=>{
       console.log(users);
+      console.log(this.$store.state.conversations);
       users.forEach(user => this.changeStatus(user,true));
     }).joining(
       user => this.changeStatus(user,true)
