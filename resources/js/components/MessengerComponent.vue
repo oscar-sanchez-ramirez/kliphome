@@ -68,7 +68,7 @@ export default{
     },
     changeStatus(user,status){
       const index = this.$store.state.conversations.findIndex((conversation)=>{
-          return conversation.contact_id == user.id;
+          return conversation.user_id == user.id;
       });
       if (index >= 0) {
           this.$set(this.$store.state.conversations[index],'online',status);
