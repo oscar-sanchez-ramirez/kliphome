@@ -214,7 +214,7 @@ class FixerManController extends ApiController
     }
 
     public function qualifyService(Request $request){
-        try {
+        // try {
             $user = User::where('id',$request->fixerman_id)->first();
             $price = floatval($request->price);
             if($price != 0){
@@ -266,11 +266,11 @@ class FixerManController extends ApiController
             return response()->json([
                 'success' => true
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false
+        //     ]);
+        // }
     }
 
     public function infoFixerman($id,$order_id){
