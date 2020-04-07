@@ -155,7 +155,7 @@ class FixerManController extends ApiController
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
         $notification = $fixerman->notifications()->first();
-        $fixerman->notification_id = $notification->id;
+        $order->notification_id = $notification->id;
         $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan',$order);
 
         Order::where('id',$request->order_id)->update([
