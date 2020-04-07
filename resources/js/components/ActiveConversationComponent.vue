@@ -1,5 +1,5 @@
 <template>
-	<b-row style="height:100%;min-height:600px">
+	<b-row style="height:100%;">
         <b-col cols="12">
 			<b-card no-body footer-bg-variant="light" footer-border-variant="dark" title="" class="h-85">
 				<b-card-body class="card-body-scroll">

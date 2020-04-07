@@ -25,7 +25,6 @@
       overflow: scroll;
     }
 		.listado-contactos{
-		  max-height:700px;
 			width: 100%;
 		  overflow-y: hidden;
     }
