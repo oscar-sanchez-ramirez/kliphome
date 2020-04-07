@@ -484,7 +484,9 @@
     @if(Request::is('messenger'))
         <script>
             var height = $('.page-wrapper:visible').height();
-            $("#cardContent").height(height - 200);
+            if(height > 650){
+                $("#cardContent").height(height - 200);
+            }
         </script>
         <style>
             #guttersHeight{
