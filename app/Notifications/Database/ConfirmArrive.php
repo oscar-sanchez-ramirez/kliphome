@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Database;
 use OneSignal;
+use App\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -59,7 +60,7 @@ class ConfirmArrive extends Notification
     public function toArray($notifiable)
     {
         $type = "App\Notifications\Database\ConfirmArrive";
-        $content = $this->order_id;
+        $content = Order::where('id',$this->order_id)->first();
         OneSignal::sendNotificationUsingTags(
             ucfirst(strtolower($this->fixerman_name))." ha indicado que llego a tu dirección, ¡Comunícate con el!",
             array(
@@ -72,6 +73,6 @@ class ConfirmArrive extends Notification
             $buttons = null,
             $schedule = null
         );
-        return $this->order;
+        return $content;
     }
 }
