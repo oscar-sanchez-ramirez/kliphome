@@ -11,7 +11,7 @@ class MessageObserver
     public function created(Message $message)
     {
       Log::notice($message);
-        $conversation = Conversation::where('user_id',$message->from_id)->where('contact_id',$message->to_id)->first();
+        $conversation = Conversation::where('user_id',$message->from_id)->where('contact_id',$message->to_id)->where('id',$message->conversation_id)->first();
 
         if ($conversation) {
           if($message->type == "image"){
@@ -22,7 +22,7 @@ class MessageObserver
           $conversation->last_time = $message->created_at;
           $conversation->save();
         }
-        $conversation = Conversation::where('contact_id',$message->from_id)->where('user_id',$message->to_id)->first();
+        $conversation = Conversation::where('contact_id',$message->from_id)->where('user_id',$message->to_id)->where('id',$message->conversation_id)->first();
         if ($conversation) {
           if($message->type == "image"){
             $conversation->last_message = $conversation->contact_name["name"].': Imagen';
