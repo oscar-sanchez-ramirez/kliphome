@@ -484,6 +484,7 @@
     @if(Request::is('messenger'))
         <script>
             var height = $('.page-wrapper:visible').height();
+            $("#cardContent").height() = height;
             console.log(height);
         </script>
         <script src="{{ asset('js/app.js') }}" defer></script>

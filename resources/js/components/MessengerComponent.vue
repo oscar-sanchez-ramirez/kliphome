@@ -2,7 +2,7 @@
   <b-container fluid style="height: 100%;margin-top:20px;">
     <b-row no-gutters>
         <div class="col-md-4 listado-contactos">
-          <b-tabs card>
+          <b-tabs card id="cardContent">
             <b-tab title="Mis Mensajes" active @click="getOtherConversations('admin')">
               <contact-form-component />
               <contact-list-component />
