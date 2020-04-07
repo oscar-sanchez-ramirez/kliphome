@@ -37,28 +37,10 @@ export default{
     order: Number
   },
   mounted(){
-    // this.$store.commit('setConversation',this.order);
-    // this.$store.commit('setUser',this.user);
-    // this.$store.dispatch('getConversations','admin');
-
-    // Echo.join('messenger')
-    // .here((users)=>{
-    //   users.forEach(user => this.changeStatus(user,true));
-    // }).joining(
-    //   user => this.changeStatus(user,true)
-    // ).leaving(
-    //   user => this.changeStatus(user,false)
-    // );
-
-
-
-      // console.log(this.order);
     this.$store.commit('setConversation',this.order);
     this.$store.commit('setUser',this.user);
-    // this.$store.dispatch('getAccess');
     this.$store.dispatch('getConversations','admin');
     Echo.private('users.'+this.user.id).listen('MessageSent',(data)=>{
-      console.log(data.message);
       const message = data.message;
       message.written_by_me = 1;
       if(message.conversation_id == this.$store.state.selectedConversation.id){
@@ -67,6 +49,7 @@ export default{
     });
     Echo.join('messenger')
     .here((users)=>{
+      console.log(users);
       users.forEach(user => this.changeStatus(user,true));
     }).joining(
       user => this.changeStatus(user,true)
