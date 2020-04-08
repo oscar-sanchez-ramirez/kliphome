@@ -299,6 +299,9 @@ class FixerManController extends ApiController
         Order::where('id',$request->order_id)->update([
             'price' => "waitquotation"
         ]);
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     public function infoFixerman($id,$order_id){
