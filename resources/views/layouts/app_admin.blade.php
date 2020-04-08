@@ -292,7 +292,7 @@
                                             @endif
                                             @if($notification->type == "App\Notifications\Database\NewQuotation")
                                                 @php
-                                                    $orderNQ = str_replace('"','',json_encode($notification->data["order_id"]));
+                                                    $orderNQ = str_replace('"','',json_encode($notification->data["id"]));
                                                 @endphp
                                                 <div class="notifi__item" onclick="javascript:document.getElementById('NewQuotation{{ $orderNQ }}').submit();">
                                                     <div class="bg-c1 img-cir img-40">
@@ -485,7 +485,6 @@
         <script>
             var height = $('.page-wrapper:visible').height();
             var width = $('.page-wrapper:visible').width();
-            console.log(width);
             if(width > 500){
                 $("#cardContent").height(height - 200);
             }
