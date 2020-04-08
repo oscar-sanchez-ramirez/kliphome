@@ -36,7 +36,7 @@
                                                             @if($orden->fixerman_arrive == "NO")
                                                                 <h4>Técnico aun no llego al punto</h4>
                                                             @else
-                                                                @if($orden->price == "quotation")
+                                                                @if($orden->price == "quotation" || $orden->price == "waitquotation")
                                                                     <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                                                     <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
                                                                         @csrf
@@ -48,9 +48,9 @@
                                                         <h4>Esperando confirmación del cliente</h4>
                                                     @endif
                                                     @endif
-                                                    @if($orden->price == "waitquotation")
+                                                    {{-- @if($orden->price == "waitquotation")
                                                         <h4>Cotización enviada</h4>
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
                                             </div>
                                             <hr>
