@@ -70,7 +70,6 @@
                     <textarea name="materials" class="au-input au-input--full" cols="10" rows="3" placeholder="Explica los materiales necesarios"></textarea>
                         <br><br>
                     <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Escribe un precio: Ejemplo:300">
-                    <button class="au-input-icon" type="button"><i class="fa fa-dollar"></i></button><br><br><br>
                     <button type="submit" class="btn btn-primary">Enviar a {{ $orden->clientName($orden->user_id)["name"] }}</button>
                 </form>
             </div>
