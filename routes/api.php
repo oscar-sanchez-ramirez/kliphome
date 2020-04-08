@@ -59,6 +59,7 @@ Route::post('eliminarSolicitudTecnico','ApiRest\FixerManController@eliminarSolic
 Route::post('terminarOrden','ApiRest\FixerManController@terminarOrden');
 Route::post('qualifyService','ApiRest\FixerManController@qualifyService');
 Route::get('fixerManorderDetail/{order_id}','ApiRest\FixerManController@fixerManorderDetail');
+Route::post('requirequotation','ApiRest\FixerManController@requirequotation');
 
 //Client**
 Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');

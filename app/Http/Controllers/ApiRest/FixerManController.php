@@ -13,25 +13,26 @@ use App\Address;
 use App\Order;
 use App\Qualify;
 use App\Payment;
+use Carbon\Carbon;
 use App\FixermanStat;
 use App\SelectedOrders;
 use App\SelectedDelegation;
 use App\SelectedCategories;
-use Carbon\Carbon;
-use App\Http\Controllers\ApiRest\ApiServiceController;
+use App\Notifications\NewFixerMan;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
-use App\Notifications\NewFixerMan;
+use App\Notifications\Database\NewQuotation;
+use App\Notifications\Database\WaitQuotation;
 use App\Notifications\Database\FinishedOrder;
 use App\Notifications\Database\ServiceQualified;
-
+use App\Http\Controllers\ApiRest\ApiServiceController;
 use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
 use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
 
 class FixerManController extends ApiController
 {
     public function __construct(){
-        $this->middleware('auth:api', ['only' => ['infoFixerman','aprobarSolicitudTecnico','updateUserField','terminarOrden','fixerManorderDetail','saveSelectedOrder','qualifyService','historyReviews','historyReviewsandOrders','filterReviews']]);
+        $this->middleware('auth:api', ['only' => ['infoFixerman','aprobarSolicitudTecnico','updateUserField','terminarOrden','fixerManorderDetail','saveSelectedOrder','qualifyService','historyReviews','historyReviewsandOrders','filterReviews','requirequotation']]);
     }
 
     public function register(Request $request){
@@ -271,6 +272,33 @@ class FixerManController extends ApiController
                 'success' => false
             ]);
         }
+    }
+
+    public function requirequotation(Request $request){
+        $order = Order::where('id',$request->order_id)->first();
+        $order["mensajeClient"] = "Estamos realizando tu cotización, en breve la recibirás ";
+        $client = User::where('id',$order->user_id)->first();
+        $client->notify(new WaitQuotation($order));
+        $type = "App\Notifications\Database\WaitQuotation";
+        $content = $order;
+        OneSignal::sendNotificationUsingTags(
+            "Estamos realizando tu cotización, en breve la recibirás",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
+            ),
+            $type,
+            $content,
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
+        $admin = User::where('type',"ADMINISTRATOR")->first();
+        $admin->notify(new NewQuotation($order));
+
+        Order::where('id',$request->order_id)->update([
+            'price' => "waitquotation"
+        ]);
     }
 
     public function infoFixerman($id,$order_id){

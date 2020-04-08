@@ -14,7 +14,6 @@ use App\Jobs\NotifyNewOrder;
 use App\Jobs\Mail\MailOrderAccepted;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
-use App\Notifications\Database\NewQuotation;
 use App\Notifications\Database\QuotationCancelled;
 
 class OrderController extends ApiController
@@ -55,8 +54,7 @@ class OrderController extends ApiController
                 $payment->state = true;
                 $payment->price = $request->visit_price;
                 $payment->save();
-                $client = User::where('type',"ADMINISTRATOR")->first();
-                $client->notify(new NewQuotation($order));
+
                 dispatch(new NotifyNewOrder($order->id));
                 return response()->json([
                     'success' => true,
