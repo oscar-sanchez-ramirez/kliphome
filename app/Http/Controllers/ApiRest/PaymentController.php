@@ -16,13 +16,11 @@ class PaymentController extends ApiController
     public function saveCustomer(Request $request)
     {
         $user = $request->user();
-        Log::notice($user);
         Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
         $customer = Stripe\Customer::create ([
             "source" => $request->stripeToken,
-            "description" => "Card of".$user->name
+            "description" => "Card of".$user->name.' '.$user->lastName
         ]);
-        Log::notice($customer);
         return response()->json([
             'success' => true,
             'card' => $customer

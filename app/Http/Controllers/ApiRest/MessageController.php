@@ -21,10 +21,12 @@ class MessageController extends ApiController
             $page = 1;
         }
         $page = (5 * $page)-5;
+
+
         return DB::table('conversations as c')
         ->join('messages as m','c.id','m.conversation_id')
         ->select('m.id',DB::raw('IF(m.from_id='.$userId.',1,0) as written_by_me'),'m.created_at','m.content','m.type')
-        ->where('c.order_id',$order_id)->offset($page)->take(5)->orderBy('m.id',"DESC")->get();
+        ->where('c.id',$conversationId)->offset($page)->take(5)->orderBy('m.id',"DESC")->get();
     }
 
     public function storeRest(Request $request){
