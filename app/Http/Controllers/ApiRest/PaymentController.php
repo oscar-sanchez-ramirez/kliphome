@@ -22,7 +22,7 @@ class PaymentController extends ApiController
             "source" => $request->stripeToken,
             "description" => "Card of".$user->name
         ]);
-        Log::notice($user);
+        Log::notice($customer);
         return response()->json([
             'success' => true,
             'card' => $customer
