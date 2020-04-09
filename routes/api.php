@@ -73,6 +73,8 @@ Route::get('notifications/{id}','ApiRest\NotificationsController@getNotification
 Route::post('notifications/markAsRead/{id}','ApiRest\NotificationsController@markAsRead');
 Route::post('notifications/deleteNotification/{id}','ApiRest\NotificationsController@deleteNotification');
 
+//Payments
+Route::post('saveCustomer','ApiRest\PaymentController@saveCustomer');
 
 //Chat**
 Route::get('conversationsRest/{id}', 'ApiRest\ConversationController@indexRest');

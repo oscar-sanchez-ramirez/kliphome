@@ -227,6 +227,7 @@ class FixerManController extends ApiController
                         "source" => $request->stripeToken,
                         "description" => "Payment of order".$request->order_id
                     ]);
+
                     $payment = new Payment;
                     $payment->order_id = $request->order_id;
                     $payment->description = "PROPINA POR SERVICIO";
