@@ -221,13 +221,21 @@ class FixerManController extends ApiController
             if($price != 0){
                 try {
                     Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-                    Stripe\Charge::create ([
-                        "amount" => $price * 100,
-                        "currency" => "MXN",
-                        "source" => $request->stripeToken,
-                        "description" => "Payment of order".$request->order_id
-                    ]);
-
+                    if(substr($request->token,0,3) == "cus"){
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $price * 100,
+                            "currency" => "MXN",
+                            "customer" => $request->stripeToken,
+                            "description" => "Payment of order ".$request->order_id
+                        ]);
+                    }else{
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $price * 100,
+                            "currency" => "MXN",
+                            "source" => $request->stripeToken,
+                            "description" => "Payment of order ".$request->order_id
+                        ]);
+                    }
                     $payment = new Payment;
                     $payment->order_id = $request->order_id;
                     $payment->description = "PROPINA POR SERVICIO";
