@@ -15,7 +15,7 @@ class MessageController extends ApiController
 	    $this->middleware('auth:api');
     }
 
-    public function indexRest($userId,$contactId,$order_id,$page){
+    public function indexRest($userId,$contactId,$conversationId,$page){
         if($page == 0)
         {
             $page = 1;
