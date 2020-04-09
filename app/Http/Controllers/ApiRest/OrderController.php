@@ -26,14 +26,24 @@ class OrderController extends ApiController
         // try {
             // $price = 'quotation';
             // $price = floatval($request->price);
-            // try {
+            try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-                $pago = Stripe\Charge::create ([
-                    "amount" => $request->visit_price * 100,
-                    "currency" => "MXN",
-                    "source" => $request->token,
-                    "description" => "Pago por visita"
-                ]);
+                if(substr($request->token,0,3) == "cus"){
+                    $pago = Stripe\Charge::create ([
+                        "amount" => $request->visit_price * 100,
+                        "currency" => "MXN",
+                        "customer" => $request->token,
+                        "description" => "Pago por visita"
+                    ]);
+                }else{
+                    $pago = Stripe\Charge::create ([
+                        "amount" => $request->visit_price * 100,
+                        "currency" => "MXN",
+                        "source" => $request->token,
+                        "description" => "Pago por visita"
+                    ]);
+                }
+                Log::notice($pago);
 
                 $order = new Order;
                 $order->user_id = $request->user_id;
@@ -60,17 +70,17 @@ class OrderController extends ApiController
                     'success' => true,
                     'message' => "La orden de servicio se realizó con éxito"
                 ]);
-            // } catch (\Throwable $th) {
-            //     $payment = new Payment;
-            //     $payment->order_id = $order->id;
-            //     $payment->description = "VISITA";
-            //     $payment->state = false;
-            //     $payment->price = $request->visit_price;
-            //     $payment->save();
-            //     return response()->json([
-            //         'success' => false
-            //     ]);
-            // }
+            } catch (\Throwable $th) {
+                $payment = new Payment;
+                $payment->order_id = $order->id;
+                $payment->description = "VISITA";
+                $payment->state = false;
+                $payment->price = $request->visit_price;
+                $payment->save();
+                return response()->json([
+                    'success' => false
+                ]);
+            }
 
         // } catch (\Throwable $th) {
         //     return response()->json([
