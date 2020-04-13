@@ -63,7 +63,6 @@ class NotifyNewOrder implements ShouldQueue
                 $user->notify(new DatabaseNotifyNewOrder($user));
                 $notification = $user->notifications()->first();
                 $user->notification_id = $notification->id;
-                Log::notice($user);
                 $user->sendNotification($user->email,'NotifyNewOrder',$user);
             }
         }
@@ -74,7 +73,6 @@ class NotifyNewOrder implements ShouldQueue
         $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $usuario = array('visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
         $mail = $this->email;
-        Log::notice($mail);
         Mail::send('emails.visitorder',$usuario, function($msj) use ($mail){
             $msj->subject('KlipHome: Tu order de servicio fue procesado');
             $msj->to($mail,"Detalle");
