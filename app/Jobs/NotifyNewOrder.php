@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use DB;
+use Mail;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,6 +14,7 @@ use OneSignal;
 use App\User;
 use App\Order;
 use App\Address;
+use App\Payment;
 use App\Notifications\Database\NoFixermanForOrder;
 use Illuminate\Support\Facades\Log;
 use App\Notifications\Database\NotifyNewOrder as DatabaseNotifyNewOrder;
@@ -65,6 +68,14 @@ class NotifyNewOrder implements ShouldQueue
         Order::where('id',$this->id)->update([
             'state' => "FIXERMAN_NOTIFIED"
         ]);
+        $visita = Payment::where('order_id',$this->id)->where('description',"VISITA")->where('state',1)->first();
+        $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
+        $usuario = array('visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
+        $mail = $order->email;
+        Mail::send('emails.visitorder',$usuario, function($msj) use ($mail){
+            $msj->subject('KlipHome: Tu order de servicio fue procesado');
+            $msj->to($mail,"Detalle");
+        });
     }
 
 
