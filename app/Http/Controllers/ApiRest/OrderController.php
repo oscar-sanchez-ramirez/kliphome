@@ -64,8 +64,8 @@ class OrderController extends ApiController
                 $payment->state = true;
                 $payment->price = $request->visit_price;
                 $payment->save();
-
-                dispatch(new NotifyNewOrder($order->id));
+                $user = $request->user();
+                dispatch(new NotifyNewOrder($order->id,$user->email));
                 return response()->json([
                     'success' => true,
                     'message' => "La orden de servicio se realizó con éxito"

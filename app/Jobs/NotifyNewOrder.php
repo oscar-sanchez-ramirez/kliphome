@@ -23,14 +23,16 @@ class NotifyNewOrder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $id;
+    protected $email;
     /**
      * IN THIS JOB WILL NOTIFY TO FIXERMEN WITH CATEGORIES MATCHED
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct($id,$email)
     {
         $this->id = $id;
+        $this->email = $email;
     }
 
     /**
@@ -71,7 +73,8 @@ class NotifyNewOrder implements ShouldQueue
         $visita = Payment::where('order_id',$this->id)->where('description',"VISITA")->where('state',1)->first();
         $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $usuario = array('visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
-        $mail = $order->email;
+        $mail = $this->email;
+        Log::notice($mail);
         Mail::send('emails.visitorder',$usuario, function($msj) use ($mail){
             $msj->subject('KlipHome: Tu order de servicio fue procesado');
             $msj->to($mail,"Detalle");
