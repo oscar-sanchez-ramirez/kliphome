@@ -48,7 +48,6 @@ class NotifyNewOrder implements ShouldQueue
         ->where('sc.category_id',$category[0]->id)
         ->where('sd.municipio',$municipio)
         ->where('u.state',1)->get();
-        Log::notice($user_match_categories);
         if(count($user_match_categories) == 0){
             $admin = User::where('type','ADMINISTRATOR')->first();
             $admin->notify(new NoFixermanForOrder($order));

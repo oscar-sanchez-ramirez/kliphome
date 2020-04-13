@@ -105,7 +105,7 @@ class OrderController extends ApiController
 
         try {
             $price = floatval($request->price);
-            try {
+            // try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
                 if(substr($request->token,0,3) == "cus"){
                     $pago = Stripe\Charge::create ([
@@ -128,32 +128,32 @@ class OrderController extends ApiController
                 $payment->state = true;
                 $payment->price = $price;
                 $payment->save();
-            } catch (\Throwable $th) {
-                $payment = new Payment;
-                $payment->order_id = $request->order_id;
-                $payment->description = "PAGO POR SERVICIO";
-                $payment->state = false;
-                $payment->price = $price;
-                $payment->save();
-                return response()->json([
-                    'success' => false
-                ]);
-            }
+            // } catch (\Throwable $th) {
+            //     $payment = new Payment;
+            //     $payment->order_id = $request->order_id;
+            //     $payment->description = "PAGO POR SERVICIO";
+            //     $payment->state = false;
+            //     $payment->price = $price;
+            //     $payment->save();
+            //     return response()->json([
+            //         'success' => false
+            //     ]);
+            // }
 
-            $quotation = Quotation::where('order_id',$request->order_id)->first();
-            Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
-                'price' => $quotation->price
-            ]);
-            if($request->coupon != ""){
-                $coupon = new Coupon;
-                $coupon->code = $request->coupon;
-                $coupon->user_id = $request->user_id;
-                $coupon->save();
-            }
-            dispatch(new MailOrderAccepted($request->order_id));
-            return response()->json([
-                'success' => true
-            ]);
+            // $quotation = Quotation::where('order_id',$request->order_id)->first();
+            // Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+            //     'price' => $quotation->price
+            // ]);
+            // if($request->coupon != ""){
+            //     $coupon = new Coupon;
+            //     $coupon->code = $request->coupon;
+            //     $coupon->user_id = $request->user_id;
+            //     $coupon->save();
+            // }
+            // dispatch(new MailOrderAccepted($request->order_id));
+            // return response()->json([
+            //     'success' => true
+            // ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false
