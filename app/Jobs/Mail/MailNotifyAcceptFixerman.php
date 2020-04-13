@@ -41,7 +41,6 @@ class MailNotifyAcceptFixerman implements ShouldQueue
         $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $usuario = array('fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'name'=>$this->name);
         $mail = $this->fixerman_mail;
-        Log::notice($mail);
         Mail::send('emails.fixermanAccepted',$usuario, function($msj) use ($mail){
             $msj->subject('KlipHome: Tu solicitud de servicio fue aprobado');
             $msj->to($mail,"Detalle");
