@@ -102,8 +102,8 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-
-        try {
+        // L
+        // try {
             $price = floatval($request->price);
             // try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
@@ -154,11 +154,11 @@ class OrderController extends ApiController
             // return response()->json([
             //     'success' => true
             // ]);
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
             return response()->json([
                 'success' => false
             ]);
-        }
+        // }
     }
 
     public function coupon(Request $request){
