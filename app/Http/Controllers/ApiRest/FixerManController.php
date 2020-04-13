@@ -221,7 +221,7 @@ class FixerManController extends ApiController
             if($price != 0){
                 try {
                     Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
-                    if(substr($request->token,0,3) == "cus"){
+                    if(substr($request->stripeToken,0,3) == "cus"){
                         $pago = Stripe\Charge::create ([
                             "amount" => $price * 100,
                             "currency" => "MXN",
