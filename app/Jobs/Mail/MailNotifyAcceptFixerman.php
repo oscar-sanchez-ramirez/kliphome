@@ -6,6 +6,7 @@ use Mail;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -40,6 +41,7 @@ class MailNotifyAcceptFixerman implements ShouldQueue
         $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $usuario = array('fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'name'=>$this->name);
         $mail = $this->fixerman_mail;
+        Log::notice($mail);
         Mail::send('emails.fixermanAccepted',$usuario, function($msj) use ($mail){
             $msj->subject('KlipHome: Tu order de servicio fue procesado');
             $msj->to($mail,"Detalle");
