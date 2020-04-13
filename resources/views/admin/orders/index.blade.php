@@ -49,7 +49,6 @@
                                                 @if($orden->state == "CANCELLED")
                                                     <span class="status--denied">Cancelado</span>
                                                 @else
-                                                {{ $orden->state }}
                                                     <a class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
                                                         Revisar Solicitud
                                                     </a>
