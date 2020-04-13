@@ -43,7 +43,7 @@ class MailNotifyAcceptFixerman implements ShouldQueue
         $mail = $this->fixerman_mail;
         Log::notice($mail);
         Mail::send('emails.fixermanAccepted',$usuario, function($msj) use ($mail){
-            $msj->subject('KlipHome: Tu order de servicio fue procesado');
+            $msj->subject('KlipHome: Tu solicitud de servicio fue aprobado');
             $msj->to($mail,"Detalle");
         });
     }
