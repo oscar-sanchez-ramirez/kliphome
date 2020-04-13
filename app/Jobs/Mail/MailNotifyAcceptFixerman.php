@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Mail;
 
+use Mail;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
