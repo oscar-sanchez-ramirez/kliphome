@@ -39,7 +39,7 @@ class NewMessageNotification implements ShouldQueue
         Log::notice($this->message);
         if($this->user->id == $this->message->from_id){
             $user = User::where('id',$this->message->to_id)->first();
-            $user->notify(new NNewMessageNotification($last_message));
+            $user->notify(new NNewMessageNotification($this->message));
         }
     }
 }
