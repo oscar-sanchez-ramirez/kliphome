@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 
 class NewMessageNotification extends Notification
 {
-    use Queueable;
+    // use Queueable;
     protected $message;
 
     /**
