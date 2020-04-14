@@ -4,6 +4,7 @@ namespace App\Jobs;
 use App\Conversation;
 use App\User;
 use App\Message;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -37,11 +38,16 @@ class NewMessageNotification implements ShouldQueue
     {
         if($this->user->id == $this->message->from_id){
             $lastmessage = Message::where('conversation_id',$this->message->conversation_id)->orderBy('id',"desc")->offset(1)->limit(2)->first();
-            Log::notice($lastmessage);
-            $user = User::where('id',$this->message->to_id)->first();
-            $this->message["mensajeClient"] = "Tienes un nuevo mensaje";
-            $this->message["mensajeFixerMan"] = "Tienes un nuevo mensaje";
-            $user->notify(new NNewMessageNotification($this->message));
+            $startTime = $lastmessage->created_at;
+            $finishTime = Carbon::now();
+            $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
+            if($totalDuration > 1){
+                $user = User::where('id',$this->message->to_id)->first();
+                $this->message["mensajeClient"] = "Tienes un nuevo mensaje";
+                $this->message["mensajeFixerMan"] = "Tienes un nuevo mensaje";
+                $user->notify(new NNewMessageNotification($this->message,$this->message->to_id));
+            }
+
         }
     }
 }

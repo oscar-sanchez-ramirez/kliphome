@@ -2,6 +2,8 @@
 
 namespace App\Notifications\Database;
 
+use OneSignal;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,16 +12,18 @@ use Illuminate\Notifications\Messages\MailMessage;
 class NewMessageNotification extends Notification
 {
     use Queueable;
-    protected $conversation;
+    protected $message;
+    protected $user_id;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($conversation)
+    public function __construct($message,$user_id)
     {
-        $this->conversation = $conversation;
+        $this->message = $message;
+        $this->user_id = $user_id;
     }
 
     /**
@@ -55,6 +59,25 @@ class NewMessageNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->conversation;
+        $user = User::where('id',$this->user_id)->first();
+        if($user->type == "AppFixerMan"){
+            $user->sendNotification($user->email,'NewMessageNotification',$this->message);
+        }else{
+            $type = "App\\Notifications\\Database\\NewMessageNotification";
+            $content = $this->message;
+            OneSignal::sendNotificationUsingTags(
+                "¡Tienes un nuevo mensaje!",
+                array(
+                    ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+                ),
+                $type,
+                $content,
+                $url = null,
+                $data = null,
+                $buttons = null,
+                $schedule = null
+            );
+        }
+        return $this->message;
     }
 }

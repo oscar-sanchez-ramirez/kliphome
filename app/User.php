@@ -16,6 +16,7 @@ use App\Notifications\FixerMan\DisapproveOrderFixerman;
 use App\Notifications\FixerMan\ApproveOrderFixerMan;
 use App\Notifications\FixerMan\NotifyNewOrder;
 use App\Notifications\FixerMan\ServiceQualified;
+use App\Notifications\FixerMan\NewMessageNotification;
 
 class User extends Authenticatable
 {
@@ -84,6 +85,9 @@ class User extends Authenticatable
             case 'ServiceQualified':
                 // Notify when user create a order and exists fixerman with the same category
                 $this->notify(new ServiceQualified($data));
+            case 'NewMessageNotification':
+                $this->notify(new NewMessageNotification($data));
+                break;
             default:
                 # code...
                 break;
