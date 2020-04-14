@@ -35,7 +35,7 @@ class NewMessageNotification implements ShouldQueue
     {
         $last_message = Conversation::where('id',$this->message->conversation_id)->orderBy('id', 'desc')->first();
         if($last_message->to_id != $this->message->contact_id){
-            $user = User::where('id',$last_message->user_id)->first();
+            $user = User::where('id',$last_message->to_id)->first();
             $user->notify(new NNewMessageNotification($last_message));
         }
     }
