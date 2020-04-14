@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Jobs;
-
+use App\Conversation;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
