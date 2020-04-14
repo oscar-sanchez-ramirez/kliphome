@@ -34,11 +34,10 @@ class NewMessageNotification implements ShouldQueue
      */
     public function handle()
     {
-        // $last_message = Conversation::where('id',$this->message->conversation_id)->orderBy('id', 'desc')->first();
-        Log::notice($this->user);
-        Log::notice($this->message);
         if($this->user->id == $this->message->from_id){
             $user = User::where('id',$this->message->to_id)->first();
+            $this->message["mensajeClient"] = "Tienes un nuevo mensaje";
+            $this->message["mensajeFixerMan"] = "Tienes un nuevo mensaje";
             $user->notify(new NNewMessageNotification($this->message));
         }
     }
