@@ -21,12 +21,13 @@ class ClientController extends ApiController
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
         ->select('o.*','a.alias','a.street as address')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
-
+        Log::notice($orders);
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             if($key->state == "FIXERMAN_APPROVED" || $key->state == "FIXERMAN_DONE" || $key->state == "QUALIFIED"){
                 $user = DB::table('selected_orders as so')->join('users as u','u.id','so.user_id')
                 ->where('so.state',1)->where('order_id',$key->id)->select('u.*','so.created_at as orderAcepted','so.id as idOrderAccepted')->get();
+                Log::notice($user);
                 $userArray = json_decode( json_encode($user), true);
                 $key->name = $userArray[0]["name"];
                 $key->lastName = $userArray[0]["lastName"];
