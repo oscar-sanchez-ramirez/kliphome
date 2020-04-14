@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Notifications\Database\NewMessageNotification as NNewMessageNotification;
+use Illuminate\Support\Facades\Log;
 
 class NewMessageNotification implements ShouldQueue
 {
@@ -34,6 +35,8 @@ class NewMessageNotification implements ShouldQueue
     public function handle()
     {
         // $last_message = Conversation::where('id',$this->message->conversation_id)->orderBy('id', 'desc')->first();
+        Log::notice($this->user);
+        Log::notice($this->message);
         if($this->user->id == $this->message->contact_id){
             $user = User::where('id',$this->message->to_id)->first();
             $user->notify(new NNewMessageNotification($last_message));
