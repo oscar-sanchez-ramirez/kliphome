@@ -4,7 +4,6 @@ namespace App\Observers;
 use App\Message;
 use App\Conversation;
 use App\Events\MessageSent;
-use App\Jobs\NewMessageNotification;
 
 class MessageObserver
 {
@@ -33,7 +32,6 @@ class MessageObserver
           $conversation->save();
 
         }
-        dispatch(new NewMessageNotification($message));
         event(new MessageSent($message));
     }
 }

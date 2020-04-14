@@ -7,6 +7,8 @@ use Auth;
 use App\Message;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Jobs\NewMessageNotification;
+
 
 class MessageController extends ApiController
 {
@@ -30,6 +32,7 @@ class MessageController extends ApiController
     }
 
     public function storeRest(Request $request){
+        $user = $request->user();
         $message = new Message;
         $message->from_id = $request->user_id;
         $message->to_id = $request->to_id;
@@ -42,6 +45,7 @@ class MessageController extends ApiController
         $data = [];
         $data['success'] = $saved;
         $data['message'] = $message;
+        dispatch(new NewMessageNotification($message,$user));
         return $data;
     }
 }
