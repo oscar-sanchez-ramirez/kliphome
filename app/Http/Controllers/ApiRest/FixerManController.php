@@ -110,24 +110,29 @@ class FixerManController extends ApiController
     }
 
     public function saveSelectedOrder(Request $request){
-        try {
-            $order = Order::where('id',$request->order_id)->first();
-            $new_selected_order = new SelectedOrders;
-            $new_selected_order->user_id = $request->user_id;
-            $new_selected_order->order_id = $request->order_id;
-            $new_selected_order->state = $request->state;
-            $new_selected_order->save();
-            if($request->state == 1){
-                $user = User::where('id',$order->user_id)->first();
-                $fixerman = User::where('id',$request->user_id)->first();
-                $new_selected_order["mensajeClient"] = $fixerman->name." aceptó tu trabajo. Échale un vistazo";
-                $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
-            }else{
-                DB::table('fixerman_stats')->where('user_id',$request->user_id)->increment('rejected');
+        $check = SelectedOrders::where('order_id',$request->order_id)->where('user_id',$request->user_id)->first();
+        if(!$check){
+            try {
+                $order = Order::where('id',$request->order_id)->first();
+                $new_selected_order = new SelectedOrders;
+                $new_selected_order->user_id = $request->user_id;
+                $new_selected_order->order_id = $request->order_id;
+                $new_selected_order->state = $request->state;
+                $new_selected_order->save();
+                if($request->state == 1){
+                    $user = User::where('id',$order->user_id)->first();
+                    $fixerman = User::where('id',$request->user_id)->first();
+                    $new_selected_order["mensajeClient"] = $fixerman->name." aceptó tu trabajo. Échale un vistazo";
+                    $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
+                }else{
+                    DB::table('fixerman_stats')->where('user_id',$request->user_id)->increment('rejected');
+                }
+                return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
+            } catch (\Throwable $th) {
+                return Response(json_encode(array('failed' => "Error al guardar")));
             }
-            return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
-        } catch (\Throwable $th) {
-            return Response(json_encode(array('failed' => "Error al guardar")));
+        }else{
+            return Response(json_encode(array('success' => "Registro ya fue guardado")));
         }
     }
 
