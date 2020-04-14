@@ -4,6 +4,7 @@ namespace App\Observers;
 use App\Message;
 use App\Conversation;
 use App\Events\MessageSent;
+use App\Jobs\NewMessageNotification;
 
 class MessageObserver
 {
@@ -19,6 +20,7 @@ class MessageObserver
           }
           $conversation->last_time = $message->created_at;
           $conversation->save();
+
         }
         $conversation = Conversation::where('contact_id',$message->from_id)->where('user_id',$message->to_id)->where('id',$message->conversation_id)->first();
         if ($conversation) {
@@ -29,7 +31,9 @@ class MessageObserver
           }
           $conversation->last_time = $message->created_at;
           $conversation->save();
+
         }
+        dispatch(new NewMessageNotification($message));
         event(new MessageSent($message));
     }
 }
