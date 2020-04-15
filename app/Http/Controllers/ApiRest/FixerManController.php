@@ -330,7 +330,7 @@ class FixerManController extends ApiController
         ->join('orders as o','so.order_id','o.id')
         ->join('users as u','o.user_id','u.id')
         ->select('q.presentation','q.puntuality','q.problemSolve','q.comment','q.created_at','u.name','u.lastName','u.avatar')
-        ->where('u.id',$id)
+        ->where('q.id',$id)
         ->take(5)->get();
         if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
             return response()->json([
@@ -399,14 +399,12 @@ class FixerManController extends ApiController
     }
 
     public function historyReviewsandOrders($id){
-        Log::notice($id);
         $reviews = DB::table('qualifies as q')
         ->join('selected_orders as so','so.id','q.selected_order_id')
         ->join('orders as o','o.id','so.order_id')->join('users as u','u.id','o.user_id')
         ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->orderBy('q.created_at','DESC')->get();
         $selected_orders = DB::table('selected_orders')->where('user_id',$id)->get();
         $completed = DB::table('selected_orders as so')->join('orders as o','o.id','so.order_id')->where('so.user_id',$id)->where('o.state',"FIXERMAN_DONE")->count();
-        Log::notice($reviews);
         return response()->json([
             'reviews' => $reviews,
             'selected_orders' => $selected_orders,
