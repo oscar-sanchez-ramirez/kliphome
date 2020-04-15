@@ -29,7 +29,7 @@ class MessageObserver
           }else{
             $conversation->last_message = $conversation->contact_name["name"].': '.$message->content;
           }
-          $conversation->last_readed = $message->from_id;
+          $conversation->last_readed = $message->to_id;
           $conversation->save();
 
         }
