@@ -403,7 +403,7 @@ class FixerManController extends ApiController
         ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->orderBy('q.created_at','DESC')->get();
         $selected_orders = DB::table('selected_orders')->where('user_id',$id)->get();
         $completed = DB::table('selected_orders as so')->join('orders as o','o.id','so.order_id')->where('so.user_id',$id)->where('o.state',"FIXERMAN_DONE")->count();
-
+        Log::notice($reviews);
         return response()->json([
             'reviews' => $reviews,
             'selected_orders' => $selected_orders,
