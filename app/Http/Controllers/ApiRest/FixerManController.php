@@ -399,6 +399,7 @@ class FixerManController extends ApiController
     }
 
     public function historyReviewsandOrders($id){
+        Log::notice($id);
         $reviews = DB::table('qualifies as q')->join('orders as o','o.id','q.selected_order_id')->join('users as u','u.id','o.user_id')
         ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->orderBy('q.created_at','DESC')->get();
         $selected_orders = DB::table('selected_orders')->where('user_id',$id)->get();
