@@ -325,13 +325,15 @@ class FixerManController extends ApiController
         $order_category = new ApiServiceController();
         $user = User::where('id',$id)->where('type','AppFixerMan')->first();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
-        $qualifies = DB::table('qualifies as q')
-        ->join('selected_orders as so','q.selected_order_id','so.id')
-        ->join('orders as o','so.order_id','o.id')
-        ->join('users as u','o.user_id','u.id')
-        ->select('q.presentation','q.puntuality','q.problemSolve','q.comment','q.created_at','u.name','u.lastName','u.avatar')
-        ->where('q.id',$id)
-        ->take(5)->get();
+        // $qualifies = DB::table('qualifies as q')
+        // ->join('selected_orders as so','q.selected_order_id','so.id')
+        // ->join('orders as o','so.order_id','o.id')
+        // ->join('users as u','o.user_id','u.id')
+        // ->select('q.presentation','q.puntuality','q.problemSolve','q.comment','q.created_at','u.name','u.lastName','u.avatar')
+        // ->where('q.id',$id)
+        // ->take(5)->get();
+        $qualifies = DB::table('qualifies as q')->join('selected_orders as so','so.id','q.selected_order_id')->join('orders as o','o.id','so.order_id')->join('users as u','u.id','o.user_id')
+        ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->orderBy('q.created_at','DESC')->get();
         Log::notice($qualifies);
         if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
             return response()->json([
