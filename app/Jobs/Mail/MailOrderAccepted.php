@@ -42,7 +42,7 @@ class MailOrderAccepted implements ShouldQueue
         $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
         $mail = $order->email;
         Mail::send('emails.neworder',$usuario, function($msj) use ($mail){
-            $msj->subject('KlipHome: Tu order de servicio fue procesado');
+            $msj->subject('KlipHome: Tu orden de servicio fue procesado');
             $msj->to($mail,"Detalle");
         });
     }
