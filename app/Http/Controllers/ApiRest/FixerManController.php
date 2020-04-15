@@ -320,8 +320,8 @@ class FixerManController extends ApiController
     }
 
     public function infoFixerman($id,$order_id){
+        Log::notice($id);
         $order = Order::where('id',$order_id)->first();
-
         $order_category = new ApiServiceController();
         $user = User::where('id',$id)->where('type','AppFixerMan')->first();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get();
@@ -332,6 +332,7 @@ class FixerManController extends ApiController
         ->select('q.presentation','q.puntuality','q.problemSolve','q.comment','q.created_at','u.name','u.lastName','u.avatar')
         ->where('q.id',$id)
         ->take(5)->get();
+        Log::notice($qualifies);
         if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
             return response()->json([
                 'message' => "Este trabajo ya ha sido asignado",
