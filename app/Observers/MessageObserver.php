@@ -18,6 +18,7 @@ class MessageObserver
             $conversation->last_message = 'Tú: '.$message->content;
           }
           $conversation->last_time = $message->created_at;
+          $conversation->last_readed = null;
           $conversation->save();
 
         }
@@ -28,7 +29,7 @@ class MessageObserver
           }else{
             $conversation->last_message = $conversation->contact_name["name"].': '.$message->content;
           }
-          $conversation->last_time = $message->created_at;
+          $conversation->last_readed = null;
           $conversation->save();
 
         }

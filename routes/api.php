@@ -81,5 +81,6 @@ Route::get('conversationsRest/{id}', 'ApiRest\ConversationController@indexRest')
 Route::get('messagesRest/{user_id}/{contact_id}/{order_id}/{page}', 'ApiRest\MessageController@indexRest');
 Route::post('messagesRest', 'ApiRest\MessageController@storeRest');
 Route::post('new_conversation','ApiRest\ConversationController@new_conversation');
+Route::post('markConversationAsRead','ApiRest\ConversationController@markConversationAsRead');
 
 Route::post('webhook_oxxo','ApiController@webhook_oxxo');

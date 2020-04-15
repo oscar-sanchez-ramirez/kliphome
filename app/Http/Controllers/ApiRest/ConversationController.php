@@ -21,8 +21,14 @@ class ConversationController extends ApiController
 
   public function indexRest($id){
     return DB::table('conversations as c')->join('users as u','c.contact_id','u.id')->join('users as us','c.user_id','us.id')
-    ->select('c.id','c.contact_id','c.user_id','c.has_blocked','c.listen_notifications','c.last_message','c.last_time','c.order_id','u.name','u.lastName','u.avatar','us.name as name_to','us.lastName as lastName_to','us.avatar as avatar_to',DB::raw('IF(c.user_id='.$id.',1,0) as written_by_me'))
+    ->select('c.id','c.contact_id','c.user_id','c.has_blocked','c.listen_notifications','c.last_readed','c.last_message','c.last_time','c.order_id','u.name','u.lastName','u.avatar','us.name as name_to','us.lastName as lastName_to','us.avatar as avatar_to',DB::raw('IF(c.user_id='.$id.',1,0) as written_by_me'))
     ->where('c.user_id',$id)->orWhere('c.contact_id',$id)->get();
+  }
+
+  public function markConversationAsRead(Request $request){
+    Conversation::where('id',$request->conversation_id)->update([
+      'last_readed' => Carbon::now()
+    ]);
   }
 
   public function new_conversation(Request $request){
