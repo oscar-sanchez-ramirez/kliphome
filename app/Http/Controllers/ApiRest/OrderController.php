@@ -23,7 +23,7 @@ class OrderController extends ApiController
         $this->middleware('auth:api');
     }
     public function create(Request $request){
-        try {
+        // try {
             $price = 'quotation';
             $price = floatval($request->price);
             // try {
@@ -84,12 +84,12 @@ class OrderController extends ApiController
             //     ]);
             // }
 
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => "La orden de servicio no se realizó"
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => "La orden de servicio no se realizó"
+        //     ]);
+        // }
     }
 
     public function suspend(Request $request){
