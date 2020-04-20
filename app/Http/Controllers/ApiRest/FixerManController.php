@@ -242,10 +242,12 @@ class FixerManController extends ApiController
                             "description" => "Payment of order ".$request->order_id
                         ]);
                     }
+
                     $payment = new Payment;
                     $payment->order_id = $request->order_id;
                     $payment->description = "PROPINA POR SERVICIO";
                     $payment->state = true;
+                    $payment->code_payment = $pago["id"];
                     $payment->price = $price;
                     $payment->save();
                 } catch (\Throwable $th) {
@@ -439,7 +441,7 @@ class FixerManController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
-        ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
+        ->select('o.*','a.alias','a.street as address','a.reference','a.exterior','a.interior','a.municipio','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.id',$order_id)->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {

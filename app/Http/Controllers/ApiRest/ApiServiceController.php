@@ -100,7 +100,7 @@ class ApiServiceController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->join('selected_orders as so','o.id','so.order_id')
         ->where('so.user_id',$user_id)->where('so.state',1)
-        ->select('o.*','a.municipio','a.alias','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->distinct('o.id')->orderBy('o.created_at',"DESC")->get();
+        ->select('o.*','a.municipio','a.alias','a.reference','a.interior','a.exterior','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')->distinct('o.id')->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $key->service = $category[0]->service;

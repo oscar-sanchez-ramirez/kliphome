@@ -32,7 +32,7 @@
                                                 <div class="location text-sm-center">
                                                     <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
                                                     @if($fixerman != null)
-                                                    @if($orden->state != 'PENDING' && $orden->state != 'FIXERMAN_NOTIFIED')
+                                                        @if($orden->state != 'PENDING' && $orden->state != 'FIXERMAN_NOTIFIED')
                                                             @if($orden->fixerman_arrive == "NO")
                                                                 <h4>Técnico aun no llego al punto</h4>
                                                             @endif
@@ -44,8 +44,8 @@
                                                                 </form> --}}
                                                             @endif
                                                         @else
-                                                        <h4>Esperando confirmación del cliente</h4>
-                                                    @endif
+                                                            <h4>Esperando confirmación del cliente</h4>
+                                                        @endif
                                                     @endif
                                                     {{-- @if($orden->price == "waitquotation")
                                                         <h4>Cotización enviada</h4>
