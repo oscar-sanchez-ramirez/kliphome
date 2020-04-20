@@ -44,34 +44,40 @@ class OrderController extends ApiController
                         "description" => "Pago por visita"
                     ]);
                 }
-                Log::notice($pago);
+                Log::notice($pago->status);
 
-                $order = new Order;
-                $order->user_id = $request->user_id;
-                $order->selected_id = $request->selected_id;
-                $order->type_service = $request->type_service;
-                $order->service_date = $request->service_date;
-                $order->service_description = $request->service_description;
-                $order->service_image = $request->service_image;
-                $order->address = $request->address;
-                $order->price = 'quotation';
-                $order->visit_price = $request->visit_price;
-                $order->save();
-                $order->order_id = $order->id;
+                Log::notice($pago->id);
 
-                $payment = new Payment;
-                $payment->order_id = $order->id;
-                $payment->code_payment = json_decode($pago["id"]);
-                $payment->description = "VISITA";
-                $payment->state = true;
-                $payment->price = $request->visit_price;
-                $payment->save();
-                $user = $request->user();
-                dispatch(new NotifyNewOrder($order->id,$user->email));
-                return response()->json([
-                    'success' => true,
-                    'message' => "La orden de servicio se realizó con éxito"
-                ]);
+                $charge_json = $pago->__toJSON();
+
+                Log::notice($charge_json);
+
+                // $order = new Order;
+                // $order->user_id = $request->user_id;
+                // $order->selected_id = $request->selected_id;
+                // $order->type_service = $request->type_service;
+                // $order->service_date = $request->service_date;
+                // $order->service_description = $request->service_description;
+                // $order->service_image = $request->service_image;
+                // $order->address = $request->address;
+                // $order->price = 'quotation';
+                // $order->visit_price = $request->visit_price;
+                // $order->save();
+                // $order->order_id = $order->id;
+
+                // $payment = new Payment;
+                // $payment->order_id = $order->id;
+                // $payment->code_payment = json_decode($pago["id"]);
+                // $payment->description = "VISITA";
+                // $payment->state = true;
+                // $payment->price = $request->visit_price;
+                // $payment->save();
+                // $user = $request->user();
+                // dispatch(new NotifyNewOrder($order->id,$user->email));
+                // return response()->json([
+                //     'success' => true,
+                //     'message' => "La orden de servicio se realizó con éxito"
+                // ]);
             // } catch (\Throwable $th) {
             //     $payment = new Payment;
             //     $payment->order_id = $order->id;
