@@ -23,6 +23,7 @@ class OrderController extends ApiController
         $this->middleware('auth:api');
     }
     public function create(Request $request){
+        Log::notice($request->all());
         // try {
             $price = 'quotation';
             $price = floatval($request->price);
