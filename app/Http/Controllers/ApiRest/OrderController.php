@@ -55,14 +55,13 @@ class OrderController extends ApiController
                 $order->service_image = $request->service_image;
                 $order->address = $request->address;
                 $order->price = 'quotation';
-                $payment->code_payment = $pago["id"];
                 $order->visit_price = $request->visit_price;
                 $order->save();
                 $order->order_id = $order->id;
 
                 $payment = new Payment;
                 $payment->order_id = $order->id;
-                $payment->code_payment = $pago["id"];
+                $payment->code_payment = json_decode($pago["id"]);
                 $payment->description = "VISITA";
                 $payment->state = true;
                 $payment->price = $request->visit_price;
