@@ -24,10 +24,10 @@ class OrderController extends ApiController
     }
     public function create(Request $request){
         Log::notice($request->all());
-        // try {
+        try {
             $price = 'quotation';
             $price = floatval($request->price);
-            // try {
+            try {
                 Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
                 if(substr($request->token,0,3) == "cus"){
                     $pago = Stripe\Charge::create ([
@@ -44,58 +44,52 @@ class OrderController extends ApiController
                         "description" => "Pago por visita"
                     ]);
                 }
-                Log::notice($pago->status);
 
-                Log::notice($pago->id);
 
-                $charge_json = $pago->__toJSON();
+                $order = new Order;
+                $order->user_id = $request->user_id;
+                $order->selected_id = $request->selected_id;
+                $order->type_service = $request->type_service;
+                $order->service_date = $request->service_date;
+                $order->service_description = $request->service_description;
+                $order->service_image = $request->service_image;
+                $order->address = $request->address;
+                $order->price = 'quotation';
+                $order->visit_price = $request->visit_price;
+                $order->save();
+                $order->order_id = $order->id;
 
-                Log::notice($charge_json);
+                $payment = new Payment;
+                $payment->order_id = $order->id;
+                $payment->code_payment = $pago->id;
+                $payment->description = "VISITA";
+                $payment->state = true;
+                $payment->price = $request->visit_price;
+                $payment->save();
+                $user = $request->user();
+                dispatch(new NotifyNewOrder($order->id,$user->email));
+                return response()->json([
+                    'success' => true,
+                    'message' => "La orden de servicio se realizó con éxito"
+                ]);
+            } catch (\Throwable $th) {
+                $payment = new Payment;
+                $payment->order_id = $order->id;
+                $payment->description = "VISITA";
+                $payment->state = false;
+                $payment->price = $request->visit_price;
+                $payment->save();
+                return response()->json([
+                    'success' => false
+                ]);
+            }
 
-                // $order = new Order;
-                // $order->user_id = $request->user_id;
-                // $order->selected_id = $request->selected_id;
-                // $order->type_service = $request->type_service;
-                // $order->service_date = $request->service_date;
-                // $order->service_description = $request->service_description;
-                // $order->service_image = $request->service_image;
-                // $order->address = $request->address;
-                // $order->price = 'quotation';
-                // $order->visit_price = $request->visit_price;
-                // $order->save();
-                // $order->order_id = $order->id;
-
-                // $payment = new Payment;
-                // $payment->order_id = $order->id;
-                // $payment->code_payment = json_decode($pago["id"]);
-                // $payment->description = "VISITA";
-                // $payment->state = true;
-                // $payment->price = $request->visit_price;
-                // $payment->save();
-                // $user = $request->user();
-                // dispatch(new NotifyNewOrder($order->id,$user->email));
-                // return response()->json([
-                //     'success' => true,
-                //     'message' => "La orden de servicio se realizó con éxito"
-                // ]);
-            // } catch (\Throwable $th) {
-            //     $payment = new Payment;
-            //     $payment->order_id = $order->id;
-            //     $payment->description = "VISITA";
-            //     $payment->state = false;
-            //     $payment->price = $request->visit_price;
-            //     $payment->save();
-            //     return response()->json([
-            //         'success' => false
-            //     ]);
-            // }
-
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => "La orden de servicio no se realizó"
-        //     ]);
-        // }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "La orden de servicio no se realizó"
+            ]);
+        }
     }
 
     public function suspend(Request $request){
