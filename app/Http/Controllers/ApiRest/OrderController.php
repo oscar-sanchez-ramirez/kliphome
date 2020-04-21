@@ -23,7 +23,6 @@ class OrderController extends ApiController
         $this->middleware('auth:api');
     }
     public function create(Request $request){
-        Log::notice($request->all());
         try {
             $price = 'quotation';
             $price = floatval($request->price);
@@ -127,7 +126,7 @@ class OrderController extends ApiController
                 $payment = new Payment;
                 $payment->order_id = $request->order_id;
                 $payment->description = "PAGO POR SERVICIO";
-                $payment->code_payment = $pago["id"];
+                $payment->code_payment = $pago->id;
                 $payment->state = true;
                 $payment->price = $price;
                 $payment->save();

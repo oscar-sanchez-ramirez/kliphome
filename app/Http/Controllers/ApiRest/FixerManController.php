@@ -247,7 +247,7 @@ class FixerManController extends ApiController
                     $payment->order_id = $request->order_id;
                     $payment->description = "PROPINA POR SERVICIO";
                     $payment->state = true;
-                    $payment->code_payment = $pago["id"];
+                    $payment->code_payment = $pago->id;
                     $payment->price = $price;
                     $payment->save();
                 } catch (\Throwable $th) {
