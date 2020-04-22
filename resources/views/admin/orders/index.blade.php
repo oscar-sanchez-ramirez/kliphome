@@ -40,7 +40,7 @@
                                                 <p>Cancelado</p>
                                            @elseif($orden->state == "QUALIFIED")
                                                 <p>Terminado</p>
-                                           @elseif($orden->state == "ACCEPTED" || $orden->estado == "FIXERMAN_APPROVED")
+                                           @elseif($orden->state == "ACCEPTED" || $orden->state == "FIXERMAN_APPROVED")
                                                 <p>Con Técnico</p>
                                            @elseif($orden->state == "FIXERMAN_NOTIFIED" || $orden->state == "PENDING")
                                                 <p>Sin Técnico</p>
