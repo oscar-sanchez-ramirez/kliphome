@@ -66,7 +66,7 @@
                 <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}" method="POST">
                     @csrf
 
-                    <textarea name="solution" class="au-input au-input--full" cols="10" rows="3" placeholder="Explica la solución al problema"></textarea>
+                    <textarea name="solution" class="au-input au-input--full my-editor" cols="10" rows="3" placeholder="Explica la solución al problema"></textarea>
                     <textarea name="materials" class="au-input au-input--full" cols="10" rows="3" placeholder="Explica los materiales necesarios"></textarea>
                         <br><br>
                     <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Escribe un precio: Ejemplo:300">
@@ -79,4 +79,20 @@
         </div>
     </div>
 </div>
+<script src="{{url('')}}/js/tinymce.min.js"></script>
+  <script>
+    var editor_config = {
+    path_absolute : "/",
+    selector: "textarea.my-editor",
+    plugins: [
+      "advlist autolink lists link charmap print preview hr anchor pagebreak",
+      "searchreplace wordcount visualblocks visualchars code fullscreen",
+      "insertdatetime media nonbreaking save table contextmenu directionality",
+      "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+    relative_urls: false
+  };
+    tinymce.init(editor_config);
+</script>
 <!-- end modal quotation -->
