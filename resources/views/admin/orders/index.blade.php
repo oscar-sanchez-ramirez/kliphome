@@ -4,6 +4,18 @@
     .au-btn--small{
         padding: 0 2px !important;
     }
+    #danger{
+      color:red;
+    }
+    #success{
+      color:green;
+    }
+    #proccess{
+      color:#1686FE;
+    }
+    #second{
+      color:#3FC7FE;
+    }
 </style>
 <div class="main-content">
     <div class="section__content section__content--p30">
@@ -37,15 +49,15 @@
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
                                         <td>
                                            @if($orden->state == "CANCELLED")
-                                                <p>Cancelado</p>
+                                                <p id="danger">Cancelado</p>
                                            @elseif($orden->state == "QUALIFIED")
-                                                <p>Terminado</p>
+                                                <p id="success">Terminado</p>
                                            @elseif($orden->state == "ACCEPTED" || $orden->state == "FIXERMAN_APPROVED")
-                                                <p>Con Técnico</p>
+                                                <p id="proccess">Con Técnico</p>
                                            @elseif($orden->state == "FIXERMAN_NOTIFIED" || $orden->state == "PENDING")
-                                                <p>Sin Técnico</p>
+                                                <p id="second">Sin Técnico</p>
                                            @elseif($orden->state == "FIXERMAN_DONE")
-                                                <p>Calificar</p>
+                                                <p id="second">Calificar</p>
                                            @endif
                                         </td>
                                         <td>
