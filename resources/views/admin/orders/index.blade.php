@@ -18,32 +18,36 @@
                         <table class="table table-data2">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <label class="au-checkbox">
-                                            <input type="checkbox">
-                                            <span class="au-checkmark"></span>
-                                        </label>
-                                    </th>
+
                                     <th>Client</th>
                                     <th>Descripción</th>
                                     <th>Fecha de Atención</th>
                                     <th>Fecha Registro</th>
+                                    <th>Estado</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($ordenes as $orden)
                                     <tr class="tr-shadow">
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
+
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
-                                        <td>{{ $orden->service_description }}</td>
+                                        <td>{{ substr($orden->service_description,0,5) }}...</td>
                                         <td>{{ $orden->service_date }}</td>
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
+                                        <td>
+                                           @if($orden->state == "CANCELLED")
+                                                <p>Cancelado</p>
+                                           @elseif($orden->state == "QUALIFIED")
+                                                <p>Terminado</p>
+                                           @elseif($orden->state == "ACCEPTED" || $orden->estado == "FIXERMAN_APPROVED")
+                                                <p>Con Técnico</p>
+                                           @elseif($orden->state == "FIXERMAN_NOTIFIED" || $orden->state == "PENDING")
+                                                <p>Sin Técnico</p>
+                                           @elseif($orden->state == "FIXERMAN_DONE")
+                                                <p>Calificar</p>
+                                           @endif
+                                        </td>
                                         <td>
                                             <div class="table-data-feature">
                                                 @if($orden->state == "CANCELLED")
