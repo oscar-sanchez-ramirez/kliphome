@@ -67,7 +67,7 @@
                     @csrf
 
                     <textarea name="solution" class="au-input au-input--full my-editor" cols="10" rows="3" placeholder="Explica la solución al problema"></textarea>
-                    <textarea name="materials" class="au-input au-input--full" cols="10" rows="3" placeholder="Explica los materiales necesarios"></textarea>
+                    <textarea name="materials" class="au-input au-input--full my-editor" cols="10" rows="3" placeholder="Explica los materiales necesarios"></textarea>
                         <br><br>
                     <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Escribe un precio: Ejemplo:300">
                     <button type="submit" class="btn btn-primary">Enviar a {{ $orden->clientName($orden->user_id)["name"] }}</button>
