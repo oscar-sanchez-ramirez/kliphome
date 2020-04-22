@@ -61,9 +61,9 @@ class ConfirmArrive extends Notification
     {
         $type = "App\Notifications\Database\ConfirmArrive";
         $content = Order::where('id',$this->order_id)->first();
-        $content["mensajeClient"] = ucfirst(strtolower($this->fixerman_name))." ha indicado que llego a tu dirección, ¡Comunícate con el!";
+        $content["mensajeClient"] = "Tu kliper ha llegado a tu domicilio";
         OneSignal::sendNotificationUsingTags(
-            ucfirst(strtolower($this->fixerman_name))." ha indicado que llego a tu dirección, ¡Comunícate con el!",
+            "Tu kliper ha llegado a tu domicilio",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->client_email],
             ),
