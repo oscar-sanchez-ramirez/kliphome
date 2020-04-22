@@ -18,6 +18,7 @@ class CreateQuotationsTable extends Migration
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders');
             $table->string('price');
+            $table->string('workforce');
             $table->text('solution');
             $table->text('materials');
             $table->timestamps();
