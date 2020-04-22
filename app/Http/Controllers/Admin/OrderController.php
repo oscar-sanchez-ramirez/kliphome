@@ -67,6 +67,7 @@ class OrderController extends Controller
         $date = $date->format('d-M-Y H:i');
 
         $quotation->mensajeClient = "Recibiste la cotización de tu orden para el ".$date;
+        $quotation->visit_price = $order->visit_price;
         $user->notify(new QuotationSended($quotation));
 
         $type = "App\Notifications\Database\QuotationSended";
