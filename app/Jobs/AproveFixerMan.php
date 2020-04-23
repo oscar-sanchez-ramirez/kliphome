@@ -38,6 +38,6 @@ class AproveFixerMan implements ShouldQueue
         $notification = $user->notifications()->first();
         $user->notification_id = $notification->id;
         $user->sendNotification($user->email,'ApproveFixerMan',$user);
-        dispatch(new MailNotifyAcceptFixerman($user->email,$user_order->name,$user->avatar));
+        dispatch(new MailNotifyAcceptFixerman($user->email,$user->name,$user->avatar));
     }
 }
