@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Jobs\Mail\MailNotifyAcceptFixerman;
 
 class AproveFixerMan implements ShouldQueue
 {
@@ -37,5 +38,6 @@ class AproveFixerMan implements ShouldQueue
         $notification = $user->notifications()->first();
         $user->notification_id = $notification->id;
         $user->sendNotification($user->email,'ApproveFixerMan',$user);
+        dispatch(new MailNotifyAcceptFixerman($user->email,$user_order->name,$user->avatar));
     }
 }

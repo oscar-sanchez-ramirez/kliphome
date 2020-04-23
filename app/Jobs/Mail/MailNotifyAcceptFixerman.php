@@ -15,19 +15,19 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class MailNotifyAcceptFixerman implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $order_id;
     protected $fixerman_mail;
     protected $name;
+    protected $avatar;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($order_id,$fixerman_mail,$name)
+    public function __construct($fixerman_mail,$name,$avatar)
     {
-        $this->order_id = $order_id;
         $this->fixerman_mail = $fixerman_mail;
         $this->name = $name;
+        $this->avatar = $avatar;
     }
 
     /**
@@ -37,13 +37,11 @@ class MailNotifyAcceptFixerman implements ShouldQueue
      */
     public function handle()
     {
-        $order = Order::where('id',$this->order_id)->first();
-        $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
-        $usuario = array('fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'name'=>$this->name);
+        $usuario = array('service_image'=>$this->avatar,'name'=>$this->name);
         $mail = $this->fixerman_mail;
         Mail::send('emails.fixermanAccepted',$usuario, function($msj) use ($mail){
-            $msj->subject('KlipHome: Tu solicitud de servicio fue aprobado');
-            $msj->to($mail,"Detalle");
+            $msj->subject('KlipHome: Bienvenido a la comunidad Klip');
+            $msj->to($mail,"Tu registro fue aprobado");
         });
     }
 }

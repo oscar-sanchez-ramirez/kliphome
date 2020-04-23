@@ -21,7 +21,6 @@ use App\SelectedCategories;
 use App\Notifications\NewFixerMan;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
-use App\Jobs\Mail\MailNotifyAcceptFixerman;
 use App\Notifications\Database\NewQuotation;
 use App\Notifications\Database\WaitQuotation;
 use App\Notifications\Database\FinishedOrder;
@@ -167,7 +166,6 @@ class FixerManController extends ApiController
         Order::where('id',$request->order_id)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);
-        dispatch(new MailNotifyAcceptFixerman($order->id,$fixerman->email,$user_order->name));
     }
 
     public function eliminarSolicitudTecnico(Request $request){
