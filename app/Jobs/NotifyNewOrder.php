@@ -70,13 +70,16 @@ class NotifyNewOrder implements ShouldQueue
             'state' => "FIXERMAN_NOTIFIED"
         ]);
         $visita = Payment::where('order_id',$this->id)->where('description',"VISITA")->where('state',1)->first();
-        $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
-        $usuario = array('visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
-        $mail = $this->email;
-        Mail::send('emails.visitorder',$usuario, function($msj) use ($mail){
-            $msj->subject('KlipHome: Tu order de servicio fue procesado');
-            $msj->to($mail,"Detalle");
-        });
+        if($visita){
+            $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
+
+            $usuario = array('visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
+            $mail = $this->email;
+            Mail::send('emails.visitorder',$usuario, function($msj) use ($mail){
+                $msj->subject('KlipHome: Tu order de servicio fue procesado');
+                $msj->to($mail,"Detalle");
+            });
+        }
     }
 
 
