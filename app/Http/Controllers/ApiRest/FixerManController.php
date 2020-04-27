@@ -320,7 +320,6 @@ class FixerManController extends ApiController
     }
 
     public function infoFixerman($id,$order_id){
-        Log::notice($id);
         $order = Order::where('id',$order_id)->first();
         $order_category = new ApiServiceController();
         $user = User::where('id',$id)->where('type','AppFixerMan')->first();
@@ -334,7 +333,6 @@ class FixerManController extends ApiController
         // ->take(5)->get();
         $qualifies = DB::table('qualifies as q')->join('selected_orders as so','so.id','q.selected_order_id')->join('orders as o','o.id','so.order_id')->join('users as u','u.id','o.user_id')
         ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->orderBy('q.created_at','DESC')->take(5)->get();
-        Log::notice($qualifies);
         if($order->state == "FIXERMAN_APPROVED" || $order->state == "QUALIFIED"){
             return response()->json([
                 'message' => "Este trabajo ya ha sido asignado",
@@ -440,7 +438,7 @@ class FixerManController extends ApiController
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
         ->select('o.*','a.alias','a.street as address','a.reference','a.exterior','a.interior','a.municipio','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
-        ->where('o.id',$order_id)->get();
+        ->where('o.id',$order_id)->where('so.state',1)->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
