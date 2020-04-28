@@ -92,7 +92,7 @@
 
                             <h3 style="text-align: left;display: block;margin: 0;padding: 0;color: #444444;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;"><span style="font-size:15px">Monto Pagado: ${{ $monto }}</span></h3>
                             @if($cupon != '')
-                            <h3 style="text-align: left;display: block;margin: 0;padding: 0;color: #444444;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;"><span style="font-size:15px">Descuento por cupón: ${{ $cupon }}</span></h3>
+                            <h3 style="text-align: left;display: block;margin: 0;padding: 0;color: #444444;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;"><span style="font-size:15px">Descuento por cupón: 5% - {{ $cupon }}</span></h3>
                             @endif
 
 <div style="text-align: left;">Monto pagado por visita: ${{ $visita }}</div>
