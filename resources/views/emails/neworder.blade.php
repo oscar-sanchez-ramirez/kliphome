@@ -90,9 +90,12 @@
 
                         <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #757575;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;">
 
-                            <h3 style="text-align: left;display: block;margin: 0;padding: 0;color: #444444;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;"><span style="font-size:15px">Monto Pagado: {{ $monto }}</span></h3>
+                            <h3 style="text-align: left;display: block;margin: 0;padding: 0;color: #444444;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;"><span style="font-size:15px">Monto Pagado: ${{ $monto }}</span></h3>
+                            @if($cupon != '')
+                            <h3 style="text-align: left;display: block;margin: 0;padding: 0;color: #444444;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;"><span style="font-size:15px">Descuento por cupón: ${{ $cupon }}</span></h3>
+                            @endif
 
-<div style="text-align: left;">Monto pagado por visita: {{ $visita }}</div>
+<div style="text-align: left;">Monto pagado por visita: ${{ $visita }}</div>
 
                         </td>
                     </tr>

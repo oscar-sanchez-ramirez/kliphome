@@ -5,6 +5,7 @@ namespace App\Jobs\Mail;
 use DB;
 use Mail;
 use App\Payment;
+use App\Coupon;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -39,7 +40,8 @@ class MailOrderAccepted implements ShouldQueue
         $visita = Payment::where('order_id',$this->order_id)->where('description',"VISITA")->where('state',1)->first();
         $monto = Payment::where('order_id',$this->order_id)->where('description',"PAGO POR SERVICIO")->where('state',1)->first();
         $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
-        $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
+        $cupon = Coupon::where('order_id',$order->id)->first();
+        $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>$cupon);
         $mail = $order->email;
         Mail::send('emails.neworder',$usuario, function($msj) use ($mail){
             $msj->subject('KlipHome: Tu orden de servicio fue procesado');

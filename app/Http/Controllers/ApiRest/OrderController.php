@@ -171,6 +171,7 @@ class OrderController extends ApiController
                 $coupon = new Coupon;
                 $coupon->code = $request->coupon;
                 $coupon->user_id = $request->user_id;
+                $coupon->order_id = $request->order_id;
                 $coupon->save();
             }
             dispatch(new MailOrderAccepted($request->order_id));
