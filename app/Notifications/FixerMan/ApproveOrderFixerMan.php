@@ -56,7 +56,7 @@ class ApproveOrderFixerMan extends Notification
     public function toOneSignal($notifiable)
     {
         return OneSignalMessage::create()
-        ->subject("Solicitud Aprovada")
+        ->subject("Solicitud Aprobada")
         ->body($this->order["mensajeFixerMan"])->setData("type",'App\\Notifications\\Database\\ApproveOrderFixerMan')->setData('data',$this->order);
     }
 }
