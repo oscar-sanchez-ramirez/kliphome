@@ -135,6 +135,7 @@
                                         <tr>
                                             <th>Fecha</th>
                                             <th>Concepto</th>
+                                            <th>Cod. Pago</th>
                                             <th class="text-right">Monto</th>
                                             <th class="text-right">Status</th>
                                         </tr>
@@ -144,6 +145,7 @@
                                             <tr>
                                                 <td>{{ $item->created_at }}</td>
                                                 <td>{{ $item->description }}</td>
+                                                <td>{{ $item->code_payment }}</td>
                                                 <td class="text-right">${{ $item->price }}</td>
                                                 <td>
                                                     @if($item->state > 0)
