@@ -32,7 +32,7 @@ use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrde
 class FixerManController extends ApiController
 {
     public function __construct(){
-        $this->middleware('auth:api', ['only' => ['infoFixerman','aprobarSolicitudTecnico','updateUserField','terminarOrden','fixerManorderDetail','saveSelectedOrder','qualifyService','historyReviews','historyReviewsandOrders','filterReviews','requirequotation']]);
+        $this->middleware('auth:api', ['only' => ['infoFixerman','aprobarSolicitudTecnico','updateUserField','terminarOrden','fixerManorderDetail','saveSelectedOrder','qualifyService','historyReviews','historyReviewsandOrders','filterReviews','requirequotation','paymentsFixerman']]);
     }
 
     public function register(Request $request){
