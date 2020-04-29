@@ -321,6 +321,7 @@ class FixerManController extends ApiController
 
     public function paymentsFixerman(Request $request){
         $user = $request->user();
+        Log::notice($user);
         $user = User::where('id',$user->id)->first();
         $payments = DB::table('selected_orders as so')->join('orders as o','o.id','so.order_id')->leftJoin('quotations as q','o.id','q.order_id')->join('payments as p','p.order_id','o.id')
         ->select('p.*','q.workforce')->where('so.user_id',$user_id)->where('so.state',1)->get();
