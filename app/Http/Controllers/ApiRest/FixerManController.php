@@ -319,6 +319,16 @@ class FixerManController extends ApiController
         ]);
     }
 
+    public function paymentsFixerman($user_id){
+        $user = User::where('id',$user_id)->first();
+        $payments = DB::table('selected_orders as so')->join('orders as o','o.id','so.order_id')->join('payments as p','p.order_id','o.id')
+        ->select('p.*')->where('so.user_id',$user_id)->where('so.state',1)->get();
+
+        return response()->json([
+            'payments' => $payments
+        ]);
+    }
+
     public function infoFixerman($id,$order_id){
         $order = Order::where('id',$order_id)->first();
         $order_category = new ApiServiceController();

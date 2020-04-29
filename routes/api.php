@@ -47,6 +47,7 @@ Route::get('delegations','ApiRest\DelegationController@index');
 
 //FixerMan
 Route::get('infoFixerman/{id}/{order_id}','ApiRest\FixerManController@infoFixerman');
+Route::get('paymentsFixerman/{id}','ApiRest\FixerManController@paymentsFixerman');
 Route::get('homeFixerMan/{id}','ApiRest\FixerManController@homeFixerMan');
 Route::get('historyReviews/{id}','ApiRest\FixerManController@historyReviews');
 Route::get('historyReviewsandOrders/{id}','ApiRest\FixerManController@historyReviewsandOrders');
