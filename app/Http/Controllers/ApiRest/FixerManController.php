@@ -109,8 +109,8 @@ class FixerManController extends ApiController
     }
 
     public function saveSelectedOrder(Request $request){
-        $check = SelectedOrders::where('order_id',$request->order_id)->where('user_id',$request->user_id)->first();
-        if(!$check){
+        $check = SelectedOrders::where('order_id',$request->order_id)->first();
+        if(!$check || $check->state == 0){
             try {
                 $order = Order::where('id',$request->order_id)->first();
                 $new_selected_order = new SelectedOrders;
@@ -119,19 +119,25 @@ class FixerManController extends ApiController
                 $new_selected_order->state = $request->state;
                 $new_selected_order->save();
                 if($request->state == 1){
+                    Order::where('id',$request->order_id)->update([
+                        'state' => 'FIXERMAN_APPROVED'
+                    ]);
+
                     $user = User::where('id',$order->user_id)->first();
-                    $fixerman = User::where('id',$request->user_id)->first();
+                    $fixerman = $request->user();
                     $new_selected_order["mensajeClient"] = $fixerman->name." aceptó tu trabajo. Échale un vistazo";
                     $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
+                    return Response(json_encode(array('success' => 1,'message'=>'Fuiste asignado correctamente')));
                 }else{
                     DB::table('fixerman_stats')->where('user_id',$request->user_id)->increment('rejected');
+                    return Response(json_encode(array('success' => 0,'message'=>'Eliminado correctamente')));
                 }
-                return Response(json_encode(array('success' => "Se mandó solicitud de servicio")));
+
             } catch (\Throwable $th) {
-                return Response(json_encode(array('failed' => "Error al guardar")));
+                return Response(json_encode(array('success' => 0,'message'=>'Error al guardar, intente de nuevo mas tarde')));
             }
         }else{
-            return Response(json_encode(array('success' => "Registro ya fue guardado")));
+            return Response(json_encode(array('success' => 0,'message'=>'Ya se asigno un técnico para esta orden')));
         }
     }
 
@@ -156,6 +162,7 @@ class FixerManController extends ApiController
                 'state' => 0
             ]);
         }
+
         //Notification for Fixerman
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
