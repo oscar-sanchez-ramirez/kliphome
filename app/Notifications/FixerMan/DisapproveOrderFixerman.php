@@ -56,7 +56,7 @@ class DisapproveOrderFixerman extends Notification
     public function toOneSignal($notifiable)
     {
         return OneSignalMessage::create()
-        ->subject("Tu solicitud fue rechazada")
-        ->body("¡Sigue postulando a tu siguiente trabajo!")->setData("type",'App\\Notifications\\Database\\DisapproveOrderFixerman')->setData('data',$this->user);
+        ->subject("Este trabajo ya fue asignado a otro técnico")
+        ->body("Espera al siguiente servicio")->setData("type",'App\\Notifications\\Database\\DisapproveOrderFixerman')->setData('data',$this->user);
     }
 }
