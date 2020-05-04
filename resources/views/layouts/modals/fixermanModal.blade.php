@@ -20,6 +20,7 @@
                         <div class="form-check"><input type="checkbox" class="form-check-input" id="foto"><label class="form-check-label" for="exampleCheck1">Foto</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" id="kit_bienvenida"><label class="form-check-label" for="exampleCheck1">Kit de bienvenida</label></div>
                     </div>
+                    <button class="btn btn-primary">Guardar</button>
                 </form>
                 <h4>Delegación seleccionada :</h4>
                 <p id="fixerManDelegation"></p>

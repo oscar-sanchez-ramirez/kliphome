@@ -24,6 +24,13 @@ $(document).on('click', '#fixermanModalImage', function(){
 
 
 function listFixerManDetail(fixerman_id){
+    document.getElementById("acuerdo_laboral").checked = false;
+    document.getElementById("prueba_psicologica").checked = false;
+    document.getElementById("comprobante_domicilio").checked = false;
+    document.getElementById("asistencia_entrevista").checked = false;
+    document.getElementById("copia_dni").checked = false;
+    document.getElementById("foto").checked = false;
+    document.getElementById("kit_bienvenida").checked = false;
     //Listing fixerman detail by id
     var url = window.location.origin+"/tecnicos/detalle/"+fixerman_id;
     $.ajax({
@@ -31,6 +38,27 @@ function listFixerManDetail(fixerman_id){
         url: url,
         success: function(data) {
             console.log(data);
+            if(data["ficha"]["acuerdo_laboral"] == "S"){
+                document.getElementById("acuerdo_laboral").checked = true;
+            }
+            if(data["ficha"]["prueba_psicologica"] == "S"){
+                document.getElementById("prueba_psicologica").checked = true;
+            }
+            if(data["ficha"]["comprobante_domicilio"] == "S"){
+                document.getElementById("comprobante_domicilio").checked = true;
+            }
+            if(data["ficha"]["asistencia_entrevista"] == "S"){
+                document.getElementById("asistencia_entrevista").checked = true;
+            }
+            if(data["ficha"]["copia_dni"] == "S"){
+                document.getElementById("copia_dni").checked = true;
+            }
+            if(data["ficha"]["foto"] == "S"){
+                document.getElementById("foto").checked = true;
+            }
+            if(data["ficha"]["kit_bienvenida"] == "S"){
+                document.getElementById("kit_bienvenida").checked = true;
+            }
             $("#fixerManCategories").html('');
             $("#fixerManDelegation").html('');
             for (let index = 0; index < data["delegations"].length; index++) {
