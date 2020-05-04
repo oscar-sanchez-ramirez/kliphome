@@ -11,7 +11,15 @@
             <div class="modal-body">
                 <form action="">
                     <h4>Ficha :</h4>
-                    <div id="ficha"></div>
+                    <div id="ficha">
+                        <div class="form-check"><input type="checkbox" class="form-check-input" id="prueba_psicologica"><label class="form-check-label" for="exampleCheck1">Prueba Psicologica</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" id="acuerdo_laboral"><label class="form-check-label" for="exampleCheck1">Acuerdo Laboral</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" id="comprobante_domicilio"><label class="form-check-label" for="exampleCheck1">Comprobante de domicilio</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" id="asistencia_entrevista"><label class="form-check-label" for="exampleCheck1">Asistencia a entrevista</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" id="copia_dni"><label class="form-check-label" for="exampleCheck1">Copia de identificación oficial</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" id="foto"><label class="form-check-label" for="exampleCheck1">Foto</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" id="kit_bienvenida"><label class="form-check-label" for="exampleCheck1">Kit de bienvenida</label></div>
+                    </div>
                 </form>
                 <h4>Delegación seleccionada :</h4>
                 <p id="fixerManDelegation"></p>
