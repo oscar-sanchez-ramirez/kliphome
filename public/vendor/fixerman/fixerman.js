@@ -24,7 +24,7 @@ $(document).on('click', '#fixermanModalImage', function(){
     let copia_dni = '<div class="form-check"><input type="checkbox" class="form-check-input" id="copia_dni"><label class="form-check-label" for="exampleCheck1">Copia de identificación oficial</label></div>';
     let foto = '<div class="form-check"><input type="checkbox" class="form-check-input" id="foto"><label class="form-check-label" for="exampleCheck1">Foto</label></div>';
     let kit_bienvenida = '<div class="form-check"><input type="checkbox" class="form-check-input" id="kit_bienvenida"><label class="form-check-label" for="exampleCheck1">Kit de bienvenida</label></div>';
-    $("#ficha").append(prueba_psicologica,acuerdo_laboral,comprobante_domicilio,asistencia_entrevista,copia_dni,foto,kit_bienvenida);
+    $("#ficha").append(prueba_psicologica);
 
     document.getElementById('idFixerman').value = $(this).attr('data-user');
     document.getElementById("imageFixerman").src = fixerman_avatar;
