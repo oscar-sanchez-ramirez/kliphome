@@ -12,6 +12,7 @@ use App\SelectedOrders;
 use Illuminate\Http\Request;
 use App\Jobs\AproveFixerMan;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use App\Notifications\Database\ManualSelectedOrder;
 use App\Notifications\Database\DisapproveOrderFixerMan as DatabaseDisapproveOrderFixerMan;
 use App\Notifications\Database\ApproveOrderFixerMan as DatabaseApproveOrderFixerMan;
@@ -37,6 +38,21 @@ class FixerManController extends Controller
             'delegations' => $delegation,
             'categories' => $categories,
             'ficha' => $ficha
+        ]);
+    }
+    public function guardar_ficha(Request $request){
+        Log::notice($request->all());
+        DB::table('fixerman_stats')->where('user_id',$request->fixerman_id)->update([
+            'acuerdo_laboral'=>$request->acuerdo_laboral,
+            'prueba_psicologica'=>$request->prueba_psicologica,
+            'comprobante_domicilio'=>$request->comprobante_domicilio,
+            'asistencia_entrevista'=>$request->asistencia_entrevista,
+            'copia_dni'=>$request->copia_dni,
+            'foto'=>$request->foto,
+            'kit_bienvenida'=>$request->kit_bienvenida
+        ]);
+        return response()->json([
+            'success' => true
         ]);
     }
     public function list(){

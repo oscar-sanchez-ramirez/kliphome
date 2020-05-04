@@ -3,21 +3,15 @@ var token = $('meta[name="csrf-token"]').attr('content');
 $(document).on('click', '#fixermanModal', function(){
     //Getting id of current fixerman
     fixerman_id = $(this).attr('data-id');
+    document.getElementById('idFixerman').value = $(this).attr('data-user');
     //Listing the fixerman_id detail
     listFixerManDetail(fixerman_id);
 });
-$(document).on('click', '#fichatecnica', function(){
-    //Getting id of current fixerman
-    fixerman_id = $(this).attr('data-id');
-    //Listing the fixerman_id detail
-    listFixerManDetail(fixerman_id);
-});
+
 $(document).on('click', '#fixermanModalImage', function(){
     //Getting id of current fixerman
     fixerman_avatar = $(this).attr('data-id');
     //Listing the fixerman_id detail
-    // $("#ficha").append(prueba_psicologica);
-
     document.getElementById('idFixerman').value = $(this).attr('data-user');
     document.getElementById("imageFixerman").src = fixerman_avatar;
 });
@@ -71,6 +65,29 @@ function listFixerManDetail(fixerman_id){
         },
         error: function(data) {
             console.log("Error al obtener en busqueda");
+        }
+    });
+}
+
+function guardar_ficha(){
+    let id_fixerman = document.getElementById('idFixerman').value
+    let acuerdo_laboral = document.getElementById("acuerdo_laboral").value;
+    let prueba_psicologica = document.getElementById("prueba_psicologica").value;
+    let comprobante_domicilio = document.getElementById("comprobante_domicilio").value;
+    let asistencia_entrevista = document.getElementById("asistencia_entrevista").value;
+    let copia_dni = document.getElementById("copia_dni").value;
+    let foto = document.getElementById("foto").value;
+    let kit_bienvenida = document.getElementById("kit_bienvenida").value;
+    var url = url = window.location.origin+"/tecnicos/guardar_ficha";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { 'fixerman_id': id_fixerman,'_token': token,'acuerdo_laboral':acuerdo_laboral,'prueba_psicologica':prueba_psicologica,'comprobante_domicilio':comprobante_domicilio,'asistencia_entrevista':asistencia_entrevista,'copia_dni':copia_dni,'foto':foto,'kit_bienvenida':kit_bienvenida },
+        success: function(data) {
+            alert("Datos actulizados");
+        },
+        error: function(data) {
+            alert("Error al aprobar registro, Porfavor intente de nuevo");
         }
     });
 }
