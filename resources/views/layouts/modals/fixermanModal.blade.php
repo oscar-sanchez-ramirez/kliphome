@@ -10,8 +10,8 @@
             </div>
             <div class="modal-body">
                     <h4>Ficha :</h4>
+                    <input type="hidden" id="idFixerman" name="idFixerman" value="">
                     <div id="ficha">
-                        <input type="hidden" id="idFixerman" name="idFixerman" value="">
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="prueba_psicologica" id="prueba_psicologica"><label class="form-check-label" for="exampleCheck1">Prueba Psicologica</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="acuerdo_laboral" id="acuerdo_laboral"><label class="form-check-label" for="exampleCheck1">Acuerdo Laboral</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="comprobante_domicilio" id="comprobante_domicilio"><label class="form-check-label" for="exampleCheck1">Comprobante de domicilio</label></div>
