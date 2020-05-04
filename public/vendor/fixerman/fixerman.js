@@ -76,7 +76,6 @@ function guardar_ficha(){
     let prueba_psicologica ;if(document.getElementById("prueba_psicologica").checked === true){prueba_psicologica = "S";}else{prueba_psicologica = "N";}
     let comprobante_domicilio ;if(document.getElementById("comprobante_domicilio").checked === true){comprobante_domicilio = "S";}else{comprobante_domicilio = "N";}
     let asistencia_entrevista ;if(document.getElementById("asistencia_entrevista").checked === true){asistencia_entrevista = "S";}else{asistencia_entrevista = "N";}
-    let asistencia_entrevista ;if(document.getElementById("asistencia_entrevista").checked === true){asistencia_entrevista = "S";}else{asistencia_entrevista = "N";}
     let copia_dni ;if(document.getElementById("copia_dni").checked === true){copia_dni = "S";}else{copia_dni = "N";}
     let foto ;if(document.getElementById("foto").checked === true){foto = "S";}else{foto = "N";}
     let kit_bienvenida ;if(document.getElementById("kit_bienvenida").checked === true){kit_bienvenida = "S";}else{kit_bienvenida = "N";}
