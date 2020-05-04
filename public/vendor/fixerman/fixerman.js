@@ -18,7 +18,7 @@ $(document).on('click', '#fixermanModalImage', function(){
 
 function listFixerManDetail(fixerman_id){
     console.log(fixerman_id);
-    document.getElementById("acuerdo_laboral").checked = true;
+    document.getElementById("acuerdo_laboral").checked = false;
     document.getElementById("prueba_psicologica").checked = false;
     document.getElementById("comprobante_domicilio").checked = false;
     document.getElementById("asistencia_entrevista").checked = false;
@@ -73,6 +73,7 @@ function listFixerManDetail(fixerman_id){
 function guardar_ficha(){
     let id_fixerman = document.getElementById('idFixerman').checked;
     let acuerdo_laboral = document.getElementById("acuerdo_laboral").checked;
+    if(acuerdo_laboral.checked){acuerdo_laboral = "S";}
     let prueba_psicologica = document.getElementById("prueba_psicologica").checked;
     let comprobante_domicilio = document.getElementById("comprobante_domicilio").checked;
     let asistencia_entrevista = document.getElementById("asistencia_entrevista").checked;
