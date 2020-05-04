@@ -3,7 +3,7 @@ var token = $('meta[name="csrf-token"]').attr('content');
 $(document).on('click', '#fixermanModal', function(){
     //Getting id of current fixerman
     fixerman_id = $(this).attr('data-id');
-    document.getElementById('idFixerman').value = $(this).attr('data-user');
+    document.getElementById('idFixerman').value = fixerman_id;
     //Listing the fixerman_id detail
     listFixerManDetail(fixerman_id);
 });
@@ -70,7 +70,7 @@ function listFixerManDetail(fixerman_id){
 }
 
 function guardar_ficha(){
-    let id_fixerman = document.getElementById('idFixerman').value
+    let id_fixerman = document.getElementById('idFixerman').value;
     let acuerdo_laboral = document.getElementById("acuerdo_laboral").value;
     let prueba_psicologica = document.getElementById("prueba_psicologica").value;
     let comprobante_domicilio = document.getElementById("comprobante_domicilio").value;
