@@ -3,7 +3,6 @@ var token = $('meta[name="csrf-token"]').attr('content');
 $(document).on('click', '#fixermanModal', function(){
     //Getting id of current fixerman
     fixerman_id = $(this).attr('data-id');
-    document.getElementById('idFixerman').value = fixerman_id;
     //Listing the fixerman_id detail
     listFixerManDetail(fixerman_id);
 });
@@ -18,6 +17,7 @@ $(document).on('click', '#fixermanModalImage', function(){
 
 
 function listFixerManDetail(fixerman_id){
+    console.log(fixerman_id);
     document.getElementById("acuerdo_laboral").checked = false;
     document.getElementById("prueba_psicologica").checked = false;
     document.getElementById("comprobante_domicilio").checked = false;
@@ -25,6 +25,7 @@ function listFixerManDetail(fixerman_id){
     document.getElementById("copia_dni").checked = false;
     document.getElementById("foto").checked = false;
     document.getElementById("kit_bienvenida").checked = false;
+    document.getElementById('idFixerman').value = fixerman_id;
     //Listing fixerman detail by id
     var url = window.location.origin+"/tecnicos/detalle/"+fixerman_id;
     $.ajax({
