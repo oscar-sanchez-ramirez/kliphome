@@ -9,6 +9,10 @@
                 </button>
             </div>
             <div class="modal-body">
+                <form action="">
+                    <h4>Ficha :</h4>
+                    <div id="ficha"></div>
+                </form>
                 <h4>Delegación seleccionada :</h4>
                 <p id="fixerManDelegation"></p>
                 <h4>Categorías seleccionadas :</h4>

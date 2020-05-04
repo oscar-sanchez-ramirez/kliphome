@@ -65,21 +65,9 @@
                                         <td>{{ $user->phone }}</td>
                                         <td id="state{{ $user->id }}">
                                             @if($user->state == 0)
-                                            {{-- onclick="aproveFixerMan({{ $user->id }},'{{ $user->name }}')" --}}
-                                            <button class="item" data-toggle="modal" data-target="#fichatecnica" id="fichatecnica" data-id="{{ $user->id }}">
-                                                <span class="badge badge-danger" >Pendiente</span>
-                                            </button>
-                                            <div class="table-data-feature">
-                                            <button class="item" data-toggle="modal" data-target="#fichatecnica" id="fichatecnica" data-id="{{ $user->id }}">
-                                                <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-eye"></i>
-                                            </button>
-                                        </div>
+                                                <span class="badge badge-danger" onclick="aproveFixerMan({{ $user->id }},'{{ $user->name }}')">Pendiente</span>
                                             @else
-
-                                                <button class="item" data-toggle="modal" data-target="#fichatecnica" id="fichatecnica" data-id="{{ $user->id }}">
-                                                    <span class="badge badge-success" >Validado</span>
-                                                </button>
-
+                                                <span class="badge badge-success">Validado</span>
                                             @endif
                                         </td>
                                         <td>

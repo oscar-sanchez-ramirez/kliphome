@@ -30,19 +30,13 @@ class FixerManController extends Controller
         return view('admin.fixerman.index')->with('users',$users);
     }
     public function detail($id){
+        $ficha = DB::table('fixerman_stats')->where('user_id',$id)->first();
         $delegation = DB::table('selected_delegations')->select('municipio as title','postal_code')->where('user_id',$id)->get();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
         return response()->json([
             'delegations' => $delegation,
-            'categories' => $categories
-        ]);
-    }
-    public function ficha_tecnica($id){
-        $ficha = DB::table('fixerman_stats')->where('user_id',$id)->first();
-        $fixerman = User::where('id',$id)->first();
-        return response()->json([
-            'ficha' => $ficha,
-            'fixerman' => $fixerman
+            'categories' => $categories,
+            'ficha' => $ficha
         ]);
     }
     public function list(){
