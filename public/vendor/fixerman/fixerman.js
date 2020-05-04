@@ -21,12 +21,14 @@ $(document).on('click', '#fixermanModalImage', function(){
 });
 
 function listFichaTecnica(fixerman_id){
+    console.log(fixerman_id);
     //Listing fixerman detail by id
     var url = window.location.origin+"/tecnicos/ficha_tecnica/"+fixerman_id;
     $.ajax({
         type: "GET",
         url: url,
         success: function(data) {
+            console.log(data);
             $("#ficha").html('');
             let prueba_psicologica = '<div class="form-check"><input type="checkbox" class="form-check-input" id="prueba_psicologica"><label class="form-check-label" for="exampleCheck1">Prueba Psicologica</label></div>';
             let acuerdo_laboral = '<div class="form-check"><input type="checkbox" class="form-check-input" id="acuerdo_laboral"><label class="form-check-label" for="exampleCheck1">Acuerdo Laboral</label></div>';

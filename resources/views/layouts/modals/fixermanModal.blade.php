@@ -61,7 +61,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="mediumModalLabel">Ficha Técnica</h5>
-                <input type="hidden" id="categoryIdModal">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -71,9 +70,7 @@
                     <h4>Ficha :</h4>
                     <div id="ficha"></div>
                 </form>
-                <p id="fixerManDelegation"></p>
-                <h4>Categorías seleccionadas :</h4>
-                <p id="fixerManCategories"></p>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
