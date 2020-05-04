@@ -37,6 +37,14 @@ class FixerManController extends Controller
             'categories' => $categories
         ]);
     }
+    public function ficha_tecnica($id){
+        $ficha = DB::table('fixerman_stats')->where('user_id',$id)->first();
+        $fixerman = User::where('id',$id)->first();
+        return response()->json([
+            'ficha' => $ficha,
+            'fixerman' => $fixerman
+        ]);
+    }
     public function list(){
         $categories = Category::all();
         $fixerman = User::where('type',"AppFixerMan")->where('state',1)->with('categories')->get();
