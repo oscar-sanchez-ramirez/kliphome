@@ -66,9 +66,14 @@
                                         <td id="state{{ $user->id }}">
                                             @if($user->state == 0)
                                             {{-- onclick="aproveFixerMan({{ $user->id }},'{{ $user->name }}')" --}}
-                                                <span class="badge badge-danger" data-toggle="modal" data-target="#fixermanModal" id="fichatecnica" data-id="{{ $user->id }}" >Pendiente</span>
+                                            <button class="item" data-toggle="modal" data-target="#fichatecnica" id="fichatecnica" data-id="{{ $user->id }}">
+                                                <span class="badge badge-danger" >Pendiente</span>
+                                            </button>
+
                                             @else
-                                                <span class="badge badge-success" data-toggle="modal" data-target="#fixermanModal" id="fichatecnica" data-id="{{ $user->id }}" >Validado</span>
+                                            <button class="item" data-toggle="modal" data-target="#fichatecnica" id="fichatecnica" data-id="{{ $user->id }}">
+                                                <span class="badge badge-success" >Validado</span>
+                                            </button>
                                             @endif
                                         </td>
                                         <td>
