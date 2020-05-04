@@ -18,7 +18,7 @@ $(document).on('click', '#fixermanModalImage', function(){
 
 function listFixerManDetail(fixerman_id){
     console.log(fixerman_id);
-    document.getElementById("acuerdo_laboral").checked = false;
+    document.getElementById("acuerdo_laboral").checked = true;
     document.getElementById("prueba_psicologica").checked = false;
     document.getElementById("comprobante_domicilio").checked = false;
     document.getElementById("asistencia_entrevista").checked = false;
