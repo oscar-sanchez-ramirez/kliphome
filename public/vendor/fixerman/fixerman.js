@@ -71,14 +71,14 @@ function listFixerManDetail(fixerman_id){
 }
 
 function guardar_ficha(){
-    let id_fixerman = document.getElementById('idFixerman').value;
-    let acuerdo_laboral = document.getElementById("acuerdo_laboral").value;
-    let prueba_psicologica = document.getElementById("prueba_psicologica").value;
-    let comprobante_domicilio = document.getElementById("comprobante_domicilio").value;
-    let asistencia_entrevista = document.getElementById("asistencia_entrevista").value;
-    let copia_dni = document.getElementById("copia_dni").value;
-    let foto = document.getElementById("foto").value;
-    let kit_bienvenida = document.getElementById("kit_bienvenida").value;
+    let id_fixerman = document.getElementById('idFixerman').checked;
+    let acuerdo_laboral = document.getElementById("acuerdo_laboral").checked;
+    let prueba_psicologica = document.getElementById("prueba_psicologica").checked;
+    let comprobante_domicilio = document.getElementById("comprobante_domicilio").checked;
+    let asistencia_entrevista = document.getElementById("asistencia_entrevista").checked;
+    let copia_dni = document.getElementById("copia_dni").checked;
+    let foto = document.getElementById("foto").checked;
+    let kit_bienvenida = document.getElementById("kit_bienvenida").checked;
     var url = url = window.location.origin+"/tecnicos/guardar_ficha";
     $.ajax({
         type: "POST",
