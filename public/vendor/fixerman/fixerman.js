@@ -72,7 +72,7 @@ function listFixerManDetail(fixerman_id){
 
 function guardar_ficha(){
     let id_fixerman = document.getElementById('idFixerman').checked;
-    let acuerdo_laboral = document.getElementById("acuerdo_laboral").checked; if(acuerdo_laboralal === true){acuerdo_laboral = "S";}else{acuerdo_laboral = "N";}
+    let acuerdo_laboral = document.getElementById("acuerdo_laboral").checked; if(acuerdo_laboral === true){acuerdo_laboral = "S";}else{acuerdo_laboral = "N";}
     let prueba_psicologica = document.getElementById("prueba_psicologica").checked;
     let comprobante_domicilio = document.getElementById("comprobante_domicilio").checked;
     let asistencia_entrevista = document.getElementById("asistencia_entrevista").checked;
