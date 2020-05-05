@@ -97,4 +97,12 @@ class ClientController extends ApiController
         $client->notify(new ConfirmArrive($request->order_id,$fixerman->name,$client->email));
 
     }
+    public function list_payments(Request $request){
+        $user = $request->user();
+        $payments = DB::table('payments as p')->join('orders as o','p.order_id','o.id')
+        ->select('p.*')->where('o.user_id',$user->id)->where('p.state',1)->get();
+        return response()->json([
+            'payments' => $payments
+        ]);
+    }
 }
