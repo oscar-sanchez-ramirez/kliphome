@@ -76,7 +76,7 @@ class NotifyNewOrder implements ShouldQueue
             $usuario = array('visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image);
             $mail = $this->email;
             Mail::send('emails.visitorder',$usuario, function($msj) use ($mail){
-                $msj->subject('KlipHome: Tu order de servicio fue procesado');
+                $msj->subject('KlipHome: Tu orden de servicio fue procesado');
                 $msj->to($mail,"Detalle");
             });
         }
