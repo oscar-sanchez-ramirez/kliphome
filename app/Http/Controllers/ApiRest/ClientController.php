@@ -6,6 +6,7 @@ use DB;
 use App\User;
 use App\Order;
 use App\Address;
+use App\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
@@ -48,13 +49,15 @@ class ClientController extends ApiController
         }
         return Response(json_encode(array('orders' => $orders)));
     }
-    public function orderDetail($order_id){
+    public function orderDetail(Request $request,$order_id){
+        $user = $request->user();
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','so.user_id')
         ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.id',$order_id)->get();
+        $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
@@ -66,7 +69,7 @@ class ClientController extends ApiController
             }
             $key->serviceTrait = $category[0]->service;
         }
-        return Response(json_encode(array('orders' => $orders)));
+        return Response(json_encode(array('orders' => $orders,"coupon"=>$check_coupon)));
     }
     public function addAddress(Request $request){
         $add = new Address;
