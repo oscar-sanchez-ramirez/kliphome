@@ -167,12 +167,19 @@ class OrderController extends ApiController
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $price
             ]);
-            if($request->coupon != ""){
-                $coupon = new Coupon;
-                $coupon->code = $request->coupon;
-                $coupon->user_id = $request->user_id;
-                $coupon->order_id = $request->order_id;
-                $coupon->save();
+            if($request->isCharged == "Y"){
+                Coupon::where('id',$request->coupon)->update([
+                    'is_charged' => "Y",
+                    'order_id_charged' => $request->order_id
+                ]);
+            }else{
+                if($request->coupon != ""){
+                    $coupon = new Coupon;
+                    $coupon->code = $request->coupon;
+                    $coupon->user_id = $request->user_id;
+                    $coupon->order_id = $request->order_id;
+                    $coupon->save();
+                }
             }
             dispatch(new MailOrderAccepted($request->order_id));
             return response()->json([
