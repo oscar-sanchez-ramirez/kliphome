@@ -67,9 +67,10 @@ class FixerManController extends ApiController
                 'colonia' => "-",
                 'municipio' => "-"
             ]);
-
+            Log::notice($request->all());
             //SAVE SELECTED DELEGATION
             $workAreas = explode(',',$request->workArea);
+            Log::notice($workAreas);
             for ($i=0; $i < count($workAreas); $i++) {
                 $selected = new SelectedDelegation;
                 $selected->user_id = $user["id"];
@@ -80,6 +81,7 @@ class FixerManController extends ApiController
             }
             //SAVE SELECTED CATEGORIES
             $categories = explode(',',$request->categories);
+            Log::notice($categories);
             for ($i=0; $i < count($categories); $i++) {
                 $category = new SelectedCategories;
                 $category->user_id = $user["id"];

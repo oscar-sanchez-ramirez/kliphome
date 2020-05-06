@@ -36,13 +36,9 @@ class NewMessageNotification implements ShouldQueue
      */
     public function handle()
     {
-        Log::notice($this->user->id);
-        Log::notice($this->message->from_id);
         if($this->user->id == $this->message->from_id){
             $lastmessage = Message::where('conversation_id',$this->message->conversation_id)->orderBy('id',"desc")->offset(1)->limit(2)->first();
             if($lastmessage != ""){
-                Log::notice("1");
-                Log::notice($lastmessage);
                 $startTime = $lastmessage->created_at;
                 $finishTime = Carbon::now();
                 $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
@@ -53,7 +49,6 @@ class NewMessageNotification implements ShouldQueue
                     $user->notify(new NNewMessageNotification($this->message,$this->message->to_id));
                 }
             }else{
-                Log::notice("2");
                 $lastmessage = Message::where('conversation_id',$this->message->conversation_id)->orderBy('id',"desc")->first();
                 $startTime = $lastmessage->created_at;
                 $finishTime = Carbon::now();
