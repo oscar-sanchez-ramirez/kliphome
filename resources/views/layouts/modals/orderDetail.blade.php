@@ -72,7 +72,7 @@
                     <br><br>
                     <div class="row">
                         <div class="col-md-6">
-                            <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Precio por servicio">
+                            <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Precio por materiales">
                         </div>
                         <div class="col-md-6">
                             <input class="au-input au-input--full au-input--h65" type="number" name="workforce" placeholder="Precio por mano de obra">
