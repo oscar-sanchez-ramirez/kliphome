@@ -1,0 +1,106 @@
+@extends('layouts.app_admin')
+@section('content')
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                        <div class="rs-select2--light rs-select2--md">
+                            {{-- <select class="js-select2" name="property">
+                                <option selected="selected">All Categories</option>
+                                <option value="">Option 1</option>
+                                <option value="">Option 2</option>
+                            </select>
+                            <div class="dropDownSelect2"></div> --}}
+                        </div>
+                    </div>
+                    <div class="table-data__tool-right">
+                        <a href="{{ url('') }}/cupones/nuevo-cupon" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            <i class="zmdi zmdi-plus"></i>Nuevo Cupon</a>
+                        {{-- <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
+                            <select class="js-select2" name="type">
+                                <option selected="selected">Exportar</option>
+                                <option value="">Excel</option>
+                                <option value="">PDF</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div> --}}
+                    </div>
+                </div>
+                <div class="table-responsive table-responsive-data2">
+                    @if(count($coupons) == 0)
+                        <div id="center">
+                            <h4>No se regitraron cupones</h4>
+                        </div>
+                    @else
+                        <table class="table table-data2">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label class="au-checkbox">
+                                            <input type="checkbox">
+                                            <span class="au-checkmark"></span>
+                                        </label>
+                                    </th>
+                                    <th>Código</th>
+                                    <th>Disponibilidad</th>
+                                    <th>Descuento</th>
+                                    <th>Usuario</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($coupons as $coupon)
+                                    <tr class="tr-shadow">
+                                        <td>
+                                            <label class="au-checkbox">
+                                                <input type="checkbox">
+                                                <span class="au-checkmark"></span>
+                                            </label>
+                                        </td>
+                                        <td>{{ $coupon->code }}</td>
+                                        <td>
+                                            @if($coupon->is_charged == "N")
+                                                <span class="badge badge-success">Disponible</span>
+                                            @else
+                                            <span class="badge badge-danger">Usado</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $coupon->discount }}%</td>
+                                        <td>
+                                            @if($coupon->is_charged == "N")
+                                                -
+                                            @else
+                                                {{ $coupon->getUser($coupon->user_id)["name"] }} {{ $coupon->getUser($coupon->user_id)["lastName"] }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($coupon->is_charged == "Y")
+                                                <a class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $coupon->order_id }}">
+                                                    Revisar Solicitud
+                                                </a>
+                                            @else
+                                                <div class="table-data-feature">
+                                                    <form action="{{ url('') }}/cupones/eliminar/{{ $coupon->id }}" method="POST">
+                                                        @csrf
+                                                        <button class="item">
+                                                            <i data-toggle="tooltip" data-placement="top" title="SubCategorias" class="zmdi zmdi-delete"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr class="spacer"></tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@include('layouts.modals.fixermanModal');
+@endsection

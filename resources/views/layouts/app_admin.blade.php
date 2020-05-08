@@ -84,59 +84,9 @@
                             <a href="{{ url('') }}/tecnicos">
                                 <i class="fas fa-users"></i>Técnicos</a>
                         </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="{{ url('') }}/#">
-                                <i class="fas fa-copy"></i>Pages</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="{{ url('') }}/login.html">Login</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/register.html">Register</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/forget-pass.html">Forget Password</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="{{ url('') }}/#">
-                                <i class="fas fa-desktop"></i>UI Elements</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="{{ url('') }}/button.html">Button</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/badge.html">Badges</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/tab.html">Tabs</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/card.html">Cards</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/alert.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/progress-bar.html">Progress Bars</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/modal.html">Modals</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/switch.html">Switchs</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/grid.html">Grids</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/fontawesome.html">Fontawesome Icon</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/typo.html">Typography</a>
-                                </li>
-                            </ul>
+                        <li class="{{ active_menu('cupones')}} {{ active_menu('cupones/*')}}">
+                            <a href="{{ url('') }}/cupones">
+                                <i class="fas fa-users"></i>Cupones</a>
                         </li>
                     </ul>
                 </div>
@@ -187,48 +137,10 @@
                             <a href="{{ url('') }}/tecnicos">
                                 <i class="fas fa-users"></i>Técnicos</a>
                         </li>
-                        {{-- <li class="has-sub">
-                            <a class="js-arrow" href="{{ url('') }}/#">
-                                <i class="fas fa-desktop"></i>Solicitudes</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="{{ url('') }}/button.html">Button</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/badge.html">Badges</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/tab.html">Tabs</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/card.html">Cards</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/alert.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/progress-bar.html">Progress Bars</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/modal.html">Modals</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/switch.html">Switchs</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/grid.html">Grids</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/fontawesome.html">Fontawesome Icon</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('') }}/typo.html">Typography</a>
-                                </li>
-                            </ul>
-                        </li> --}}
-                        {{-- <li>
-                            <a href="{{ url('') }}/map.html"><i class="fas fa-bookmark"></i>Cupones</a>
-                        </li> --}}
+                        <li class="{{ active_menu('cupones')}} {{ active_menu('cupones/*')}}">
+                            <a href="{{ url('') }}/cupones">
+                                <i class="fas fa-ticket-alt"></i>Cupones</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
