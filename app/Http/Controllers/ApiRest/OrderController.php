@@ -196,7 +196,7 @@ class OrderController extends ApiController
     public function coupon(Request $request){
         $user = User::where('id',$request->user_id)->first();
         $coupon = User::where('code',$request->coupon)->where('code','!=',$user->code)->first();
-        $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('id_charged','N')->first();
+        $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
         //Validacion si no existe ningun cupon
         if(empty($coupon) && empty($admin_coupon)){
             return response()->json([
