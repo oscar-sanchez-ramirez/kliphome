@@ -175,11 +175,20 @@ class OrderController extends ApiController
                 ]);
             }else{
                 if($request->coupon != ""){
-                    $coupon = new Coupon;
-                    $coupon->code = $request->coupon;
-                    $coupon->user_id = $request->user_id;
-                    $coupon->order_id = $request->order_id;
-                    $coupon->save();
+                    $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                    if($admin_coupon){
+                        AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->update([
+                            'user_id' => $request->user_id,
+                            'is_charged' => "Y",
+                            'order_id' => $request->order_id
+                        ]);
+                    }else{
+                        $coupon = new Coupon;
+                        $coupon->code = $request->coupon;
+                        $coupon->user_id = $request->user_id;
+                        $coupon->order_id = $request->order_id;
+                        $coupon->save();
+                    }
                 }
             }
             dispatch(new MailOrderAccepted($request->order_id));
