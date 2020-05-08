@@ -195,13 +195,24 @@ class OrderController extends ApiController
     public function coupon(Request $request){
         $user = User::where('id',$request->user_id)->first();
         $coupon = User::where('code',$request->coupon)->where('code','!=',$user->code)->first();
-        if(empty($coupon)){
+        $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('id_charged','N')->first();
+        //Validacion si no existe ningun cupon
+        if(empty($coupon) && empty($admin_coupon)){
             return response()->json([
                 'success' => false,
                 'message' => "Cupón no encontrado"
             ]);
         }
 
+        //Validando cupon de admin
+        if(!empty($admin_coupon)){
+            return response()->json([
+                'success' => true,
+                'message' => "Cupón válido",
+                'discount' => $admin_coupon->discount
+            ]);
+        }
+        //Validando cupon de usuario
         $valid = Coupon::where('user_id',$request->user_id)->first();
         if(!empty($valid)){
             return response()->json([
@@ -212,7 +223,8 @@ class OrderController extends ApiController
         if(!empty($coupon) && empty($valid)){
             return response()->json([
                 'success' => true,
-                'message' => "Cupón válido"
+                'message' => "Cupón válido",
+                'discount' => "5"
             ]);
         }else{
             return response()->json([
