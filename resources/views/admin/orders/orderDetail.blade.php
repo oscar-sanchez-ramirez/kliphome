@@ -51,8 +51,9 @@
                                                             <div>
                                                                 @php
                                                                     $coupon = $orden->orderCoupon($orden->pre_coupon);
+                                                                    dd($coupon)
                                                                 @endphp
-                                                                <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $coupon->discount }}% ({{ $coupon->code }})</b><br>
+                                                                <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $coupon["discount"] }}% ({{ $coupon["code"] }})</b><br>
                                                                                 Descuento
                                                             </div>
                                                         @endif
