@@ -36,6 +36,9 @@
                                                             @if($orden->fixerman_arrive == "NO")
                                                                 <h4>Técnico aun no llego al punto</h4>
                                                             @endif
+                                                            @if($orden->coupon != "")
+                                                            @endif
+                                                            <i class="fa fa-ticket"></i>
                                                             @if($orden->price == "quotation" || $orden->price == "waitquotation")
                                                                 <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                                                 {{-- <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
