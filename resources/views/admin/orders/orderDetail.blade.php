@@ -47,17 +47,12 @@
                                                         @else
                                                             <h4>Esperando confirmación del cliente</h4>
                                                         @endif
-                                                        {{ $orden->pre_coupon }}
                                                         @if($orden->pre_coupon != "")
                                                             <div>
                                                                 <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $orden->orderCoupon($orden->pre_coupon)["discount"] }}% ({{ $orden->orderCoupon($orden->pre_coupon)["code"] }})</b><br>
-                                                                                Descuento
                                                             </div>
                                                         @endif
                                                     @endif
-                                                    {{-- @if($orden->price == "waitquotation")
-                                                        <h4>Cotización enviada</h4>
-                                                    @endif --}}
                                                 </div>
                                             </div>
                                             <hr>

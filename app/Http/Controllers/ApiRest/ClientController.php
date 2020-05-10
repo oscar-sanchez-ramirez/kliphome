@@ -7,6 +7,7 @@ use App\User;
 use App\Order;
 use App\Address;
 use App\Coupon;
+use App\AdminCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
@@ -58,6 +59,13 @@ class ClientController extends ApiController
         ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.id',$order_id)->get();
         $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
+        $pre_coupon = [];
+        if($orders[0]->pre_coupon != ""){
+            $pre_coupon = Coupon::where('code',$orders[0]->pre_coupon)->first();
+            if(empty($pre_coupon)){
+                $pre_coupon = AdminCoupon::where('code',$orders[0]->pre_coupon)->where('is_charged','N')->first();
+            }
+        }
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
@@ -69,7 +77,7 @@ class ClientController extends ApiController
             }
             $key->serviceTrait = $category[0]->service;
         }
-        return Response(json_encode(array('orders' => $orders,"coupon"=>$check_coupon)));
+        return Response(json_encode(array('orders' => $orders,"coupon"=>$check_coupon,"pre_coupon"=>$pre_coupon)));
     }
     public function addAddress(Request $request){
         $add = new Address;
