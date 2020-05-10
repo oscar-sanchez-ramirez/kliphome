@@ -36,15 +36,6 @@
                                                             @if($orden->fixerman_arrive == "NO")
                                                                 <h4>Técnico aun no llego al punto</h4>
                                                             @endif
-                                                            @if($orden->coupon != "")
-                                                            <div>
-                                                                @php
-                                                                    $coupon = $orden->orderCoupon($orden->coupon);
-                                                                @endphp
-                                                                <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $coupon->discount }}% ({{ $coupon->code }})</b><br>
-                                                                                Descuento
-                                                            </div>
-                                                            @endif
 
                                                             @if($orden->price == "quotation" || $orden->price == "waitquotation")
                                                                 <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
@@ -55,6 +46,15 @@
                                                             @endif
                                                         @else
                                                             <h4>Esperando confirmación del cliente</h4>
+                                                        @endif
+                                                        @if($orden->coupon != "")
+                                                            <div>
+                                                                @php
+                                                                    $coupon = $orden->orderCoupon($orden->coupon);
+                                                                @endphp
+                                                                <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $coupon->discount }}% ({{ $coupon->code }})</b><br>
+                                                                                Descuento
+                                                            </div>
                                                         @endif
                                                     @endif
                                                     {{-- @if($orden->price == "waitquotation")
