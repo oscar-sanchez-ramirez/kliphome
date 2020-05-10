@@ -25,8 +25,8 @@ class OrderController extends ApiController
     }
     public function create(Request $request){
         try {
-
             if($request->visit_price == "quotation"){
+                //No necesita pago de visita (Telefono, Computadora)
                 $order = new Order;
                 $order->user_id = $request->user_id;
                 $order->selected_id = $request->selected_id;
@@ -37,6 +37,7 @@ class OrderController extends ApiController
                 $order->address = $request->address;
                 $order->price = 'quotation';
                 $order->visit_price = $request->visit_price;
+                $order->coupon = $request->coupon;
                 $order->save();
                 $user = $request->user();
                 dispatch(new NotifyNewOrder($order->id,$user->email));
@@ -76,6 +77,7 @@ class OrderController extends ApiController
                     $order->address = $request->address;
                     $order->price = 'quotation';
                     $order->visit_price = $request->visit_price;
+                    $order->coupon = $request->coupon;
                     $order->save();
                     $order->order_id = $order->id;
 
@@ -219,7 +221,8 @@ class OrderController extends ApiController
             return response()->json([
                 'success' => true,
                 'message' => "Cupón válido",
-                'discount' => $admin_coupon->discount
+                'discount' => $admin_coupon->discount,
+                'type' => "AdminCoupon"
             ]);
         }
         //Validando cupon de usuario
@@ -234,7 +237,8 @@ class OrderController extends ApiController
             return response()->json([
                 'success' => true,
                 'message' => "Cupón válido",
-                'discount' => "5"
+                'discount' => "5",
+                'type' => "Coupon"
             ]);
         }else{
             return response()->json([

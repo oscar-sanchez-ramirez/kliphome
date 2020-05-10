@@ -15,7 +15,6 @@ class PaymentController extends ApiController
     }
     public function saveCustomer(Request $request)
     {
-        Log::notice($request->all());
         $user = $request->user();
         Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
         try {
