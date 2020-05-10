@@ -47,10 +47,10 @@
                                                         @else
                                                             <h4>Esperando confirmación del cliente</h4>
                                                         @endif
-                                                        @if($orden->coupon != "")
+                                                        @if($orden->pre_coupon != "")
                                                             <div>
                                                                 @php
-                                                                    $coupon = $orden->orderCoupon($orden->coupon);
+                                                                    $coupon = $orden->orderCoupon($orden->pre_coupon);
                                                                 @endphp
                                                                 <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $coupon->discount }}% ({{ $coupon->code }})</b><br>
                                                                                 Descuento
