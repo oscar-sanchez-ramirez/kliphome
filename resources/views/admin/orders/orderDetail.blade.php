@@ -50,11 +50,8 @@
                                                         {{ $orden->pre_coupon }}
                                                         @if($orden->pre_coupon != "")
                                                             <div>
-                                                                @php
-                                                                    $coupon = $orden->orderCoupon($orden->pre_coupon);
-                                                                @endphp
-                                                                {{-- <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $coupon["discount"] }}% ({{ $coupon["code"] }})</b><br>
-                                                                                Descuento --}}
+                                                                <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $orden->orderCoupon($orden->pre_coupon)["discount"] }}% ({{ $orden->orderCoupon($orden->pre_coupon)["code"] }})</b><br>
+                                                                                Descuento
                                                             </div>
                                                         @endif
                                                     @endif
