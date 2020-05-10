@@ -17,7 +17,7 @@ class Order extends Model
         if(!empty($coupon)){
             return $coupon;
         }else{
-            $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+            $admin_coupon = AdminCoupon::where('code',$coupon)->where('is_charged','N')->first();
             return $admin_coupon;
         }
     }
