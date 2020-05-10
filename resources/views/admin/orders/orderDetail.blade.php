@@ -37,9 +37,15 @@
                                                                 <h4>Técnico aun no llego al punto</h4>
                                                             @endif
                                                             @if($orden->coupon != "")
+                                                            <div>
+                                                                @php
+                                                                    $coupon = $orden->orderCoupon($orden->coupon);
+                                                                @endphp
+                                                                <b><i class="fas fa-ticket-alt"></i>Cupón Activo de {{ $coupon->discount }}% ({{ $coupon->code }})</b><br>
+                                                                                Descuento
+                                                            </div>
                                                             @endif
-                                                            <i class="fa fa-ticket"></i>Cupón Activo
-                                                            <b>Descuento</b>
+
                                                             @if($orden->price == "quotation" || $orden->price == "waitquotation")
                                                                 <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
                                                                 {{-- <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">

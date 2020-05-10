@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->integer('is_notified')->default(0);
             $table->string('finished_at')->nullable();
             $table->string('price')->nullable();
-            $table->string('coupon')->nullable();
+            $table->string('pre_coupon')->nullable();
             $table->string('visit_price')->nullable();
             $table->timestamps();
         });

@@ -12,6 +12,15 @@ class Order extends Model
     public function clientAddress($id){
         return Address::where('id',$id)->first(['alias','street']);
     }
+    public function orderCoupon($coupon){
+        $coupon = Coupon::where('code',$coupon)->first();
+        if(!empty($coupon)){
+            return $coupon;
+        }else{
+            $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+            return $admin_coupon;
+        }
+    }
     public function getService($type,$id){
         switch ($type) {
             case 'SubService':

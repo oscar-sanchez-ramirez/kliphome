@@ -37,7 +37,7 @@ class OrderController extends ApiController
                 $order->address = $request->address;
                 $order->price = 'quotation';
                 $order->visit_price = $request->visit_price;
-                $order->coupon = $request->coupon;
+                $order->pre_coupon = $request->coupon;
                 $order->save();
                 $user = $request->user();
                 dispatch(new NotifyNewOrder($order->id,$user->email));
@@ -77,7 +77,7 @@ class OrderController extends ApiController
                     $order->address = $request->address;
                     $order->price = 'quotation';
                     $order->visit_price = $request->visit_price;
-                    $order->coupon = $request->coupon;
+                    $order->pre_coupon = $request->coupon;
                     $order->save();
                     $order->order_id = $order->id;
 
