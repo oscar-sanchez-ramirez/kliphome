@@ -59,7 +59,7 @@ class ClientController extends ApiController
         ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.id',$order_id)->get();
         $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
-        $pre_coupon = [];
+        $pre_coupon;
         if($orders[0]->pre_coupon != ""){
             $pre_coupon = Coupon::where('code',$orders[0]->pre_coupon)->first();
             if(empty($pre_coupon)){
