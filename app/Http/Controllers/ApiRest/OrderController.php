@@ -170,7 +170,7 @@ class OrderController extends ApiController
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $price
             ]);
-
+            Log::notice($request->all());
             if($request->type_coupon == "pre_coupon"){
                 $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
                 if($admin_coupon){
