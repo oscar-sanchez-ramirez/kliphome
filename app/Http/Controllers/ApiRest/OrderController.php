@@ -170,29 +170,54 @@ class OrderController extends ApiController
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $price
             ]);
-            if($request->isCharged == "Y"){
+
+            if($request->type_coupon == "pre_coupon"){
+                $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                if($admin_coupon){
+                    AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->update([
+                        'user_id' => $request->user_id,
+                        'is_charged' => "Y",
+                        'order_id' => $request->order_id
+                    ]);
+                }
+            }elseif($request->type_coupon == "coupon"){
                 Coupon::where('id',$request->coupon)->update([
                     'is_charged' => "Y",
                     'order_id_charged' => $request->order_id
                 ]);
             }else{
                 if($request->coupon != ""){
-                    $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
-                    if($admin_coupon){
-                        AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->update([
-                            'user_id' => $request->user_id,
-                            'is_charged' => "Y",
-                            'order_id' => $request->order_id
-                        ]);
-                    }else{
-                        $coupon = new Coupon;
-                        $coupon->code = $request->coupon;
-                        $coupon->user_id = $request->user_id;
-                        $coupon->order_id = $request->order_id;
-                        $coupon->save();
-                    }
+                    $coupon = new Coupon;
+                    $coupon->code = $request->coupon;
+                    $coupon->user_id = $request->user_id;
+                    $coupon->order_id = $request->order_id;
+                    $coupon->save();
                 }
             }
+
+            // if($request->isCharged == "Y"){
+            //     Coupon::where('id',$request->coupon)->update([
+            //         'is_charged' => "Y",
+            //         'order_id_charged' => $request->order_id
+            //     ]);
+            // }else{
+            //     if($request->coupon != ""){
+            //         $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+            //         if($admin_coupon){
+            //             AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->update([
+            //                 'user_id' => $request->user_id,
+            //                 'is_charged' => "Y",
+            //                 'order_id' => $request->order_id
+            //             ]);
+            //         }else{
+            //             $coupon = new Coupon;
+            //             $coupon->code = $request->coupon;
+            //             $coupon->user_id = $request->user_id;
+            //             $coupon->order_id = $request->order_id;
+            //             $coupon->save();
+            //         }
+            //     }
+            // }
             dispatch(new MailOrderAccepted($request->order_id));
             return response()->json([
                 'success' => true

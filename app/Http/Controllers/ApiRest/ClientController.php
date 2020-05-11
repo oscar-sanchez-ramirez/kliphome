@@ -60,10 +60,13 @@ class ClientController extends ApiController
         ->where('o.id',$order_id)->get();
         $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
         $pre_coupon= null;
+        $type_coupon = '';
         if($orders[0]->pre_coupon != ""){
             $pre_coupon = Coupon::where('code',$orders[0]->pre_coupon)->first();
+            $type_coupon = 'coupon';
             if(empty($pre_coupon)){
                 $pre_coupon = AdminCoupon::where('code',$orders[0]->pre_coupon)->where('is_charged','N')->first();
+                $type_coupon = 'pre_coupon';
             }
         }
         $fetch_categories = new ApiServiceController();
@@ -77,7 +80,7 @@ class ClientController extends ApiController
             }
             $key->serviceTrait = $category[0]->service;
         }
-        return Response(json_encode(array('orders' => $orders,"coupon"=>$check_coupon,"pre_coupon"=>$pre_coupon)));
+        return Response(json_encode(array('orders' => $orders,"coupon"=>$check_coupon,"pre_coupon"=>$pre_coupon,"type_coupon"=>$type_coupon)));
     }
     public function addAddress(Request $request){
         $add = new Address;
