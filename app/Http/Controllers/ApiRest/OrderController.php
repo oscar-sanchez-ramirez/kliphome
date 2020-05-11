@@ -127,7 +127,7 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-        // L
+        Log::notice($request->all());
         try {
             $price = floatval($request->price);
             try {
@@ -171,6 +171,7 @@ class OrderController extends ApiController
                 'price' => $price
             ]);
             $order = Order::where('id',$request->order_id)->first();
+            Log::notice($order);
             if($order->pre_coupon != ""){
                 if($request->type_coupon == "pre_coupon"){
                     $admin_coupon = AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->first();
