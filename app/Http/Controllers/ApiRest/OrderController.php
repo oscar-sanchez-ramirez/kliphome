@@ -197,7 +197,7 @@ class OrderController extends ApiController
                         ]);
                     }
 
-                }elseif($request->type_coupon == "coupon"){
+                }elseif($request->type_coupon == "Coupon"){
                     Coupon::where('id',$order->coupon)->update([
                         'is_charged' => "Y",
                         'order_id_charged' => $request->order_id
