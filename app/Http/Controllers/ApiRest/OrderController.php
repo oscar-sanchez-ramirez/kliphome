@@ -170,7 +170,6 @@ class OrderController extends ApiController
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $price
             ]);
-            Log::notice($request->all());
             $order = Order::where('id',$request->order_id)->first();
             if($order->pre_coupon != ""){
                 if($request->type_coupon == "pre_coupon"){
@@ -246,6 +245,15 @@ class OrderController extends ApiController
                 'success' => false
             ]);
         }
+    }
+
+    public function check_active_coupon(Request $request){
+        $user = $request->user();
+        $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
+        return response()->json([
+            "success" => true,
+            "coupon" => $check_coupon
+        ]);
     }
 
     public function coupon(Request $request){
