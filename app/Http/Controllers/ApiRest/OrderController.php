@@ -171,27 +171,30 @@ class OrderController extends ApiController
                 'price' => $price
             ]);
             Log::notice($request->all());
-            if($request->type_coupon == "pre_coupon"){
-                $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
-                if($admin_coupon){
-                    AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->update([
-                        'user_id' => $request->user_id,
+            $order = Order::where('id',$request->order_id)->first();
+            if($order->pre_coupon != ""){
+                if($request->type_coupon == "pre_coupon"){
+                    $admin_coupon = AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->first();
+                    if($admin_coupon){
+                        AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
+                            'user_id' => $request->user_id,
+                            'is_charged' => "Y",
+                            'order_id' => $request->order_id
+                        ]);
+                    }
+                }elseif($request->type_coupon == "coupon"){
+                    Coupon::where('code',$order->pre_coupon)->update([
                         'is_charged' => "Y",
-                        'order_id' => $request->order_id
+                        'order_id_charged' => $request->order_id
                     ]);
-                }
-            }elseif($request->type_coupon == "coupon"){
-                Coupon::where('id',$request->coupon)->update([
-                    'is_charged' => "Y",
-                    'order_id_charged' => $request->order_id
-                ]);
-            }else{
-                if($request->coupon != ""){
-                    $coupon = new Coupon;
-                    $coupon->code = $request->coupon;
-                    $coupon->user_id = $request->user_id;
-                    $coupon->order_id = $request->order_id;
-                    $coupon->save();
+                }else{
+                    if($request->coupon != ""){
+                        $coupon = new Coupon;
+                        $coupon->code = $order->pre_coupon;
+                        $coupon->user_id = $request->user_id;
+                        $coupon->order_id = $request->order_id;
+                        $coupon->save();
+                    }
                 }
             }
 
