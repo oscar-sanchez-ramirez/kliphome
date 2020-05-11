@@ -19,7 +19,7 @@ class Order extends Model
             $coupon->discount = 5;
             return $coupon;
         }else{
-            $admin_coupon = AdminCoupon::where('code',$coupon_code)->where('is_charged','N')->first();
+            $admin_coupon = AdminCoupon::where('code',$coupon_code)->first();
             return $admin_coupon;
         }
     }
