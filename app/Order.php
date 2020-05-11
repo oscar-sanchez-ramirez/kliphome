@@ -14,8 +14,9 @@ class Order extends Model
     }
     public function orderCoupon($coupon_code){
         // Log::notice($coupon);
-        $coupon = Coupon::where('code',$coupon_code)->first();
+        $coupon = User::where('code',$coupon_code)->first();
         if(!empty($coupon)){
+            $coupon->discount = 5;
             return $coupon;
         }else{
             $admin_coupon = AdminCoupon::where('code',$coupon_code)->where('is_charged','N')->first();
