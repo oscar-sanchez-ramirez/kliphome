@@ -182,8 +182,24 @@ class OrderController extends ApiController
                             'order_id' => $request->order_id
                         ]);
                     }
+                    $new_used_coupon = Coupon::where('id',$order->coupon)->first();
+                    if(empty($new_used_coupon)){
+                        $coupon = new Coupon;
+                        $coupon->code = $order->pre_coupon;
+                        $coupon->user_id = $request->user_id;
+                        $coupon->order_id = $request->order_id;
+                        $coupon->save();
+                    }
+                    if($admin_coupon){
+                        AdminCoupon::where('id',$order->coupon)->where('is_charged','N')->update([
+                            'user_id' => $request->user_id,
+                            'is_charged' => "Y",
+                            'order_id' => $request->order_id
+                        ]);
+                    }
+
                 }elseif($request->type_coupon == "coupon"){
-                    Coupon::where('code',$order->pre_coupon)->update([
+                    Coupon::where('id',$order->coupon)->update([
                         'is_charged' => "Y",
                         'order_id_charged' => $request->order_id
                     ]);
