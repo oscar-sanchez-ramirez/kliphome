@@ -58,7 +58,7 @@ class ClientController extends ApiController
         ->leftJoin('users as u','u.id','so.user_id')
         ->select('o.*','a.alias','a.street as address','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.id',$order_id)->get();
-
+        $check_coupon = null;
         $pre_coupon= null;
         $type_coupon = '';
         if($orders[0]->pre_coupon != ""){
