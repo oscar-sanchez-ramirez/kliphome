@@ -66,7 +66,7 @@ class ClientController extends ApiController
             if(empty($pre_coupon)){
                 $type_coupon = 'pre_coupon';
                 $pre_coupon = User::where('code',$orders[0]->pre_coupon)->first();
-                $pre_coupon->discount = 5;
+                $pre_coupon["discount"] = 5;
             }
         }else{
             $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
