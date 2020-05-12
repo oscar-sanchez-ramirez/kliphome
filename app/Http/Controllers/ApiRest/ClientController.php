@@ -60,11 +60,11 @@ class ClientController extends ApiController
         ->where('o.id',$order_id)->get();
         $check_coupon = null;
         $pre_coupon= null;
-        $type_coupon = '';
+        $type_coupon = 'pre_coupon';
         if($orders[0]->pre_coupon != ""){
             $pre_coupon = AdminCoupon::where('code',$orders[0]->pre_coupon)->where('is_charged','N')->first();
             if(empty($pre_coupon)){
-                $type_coupon = 'pre_coupon';
+                // $type_coupon = 'pre_coupon';
                 $pre_coupon = Coupon::where('code',$user->code)->where('is_charged','N')->first();
                 $pre_coupon["discount"] = 5;
             }
