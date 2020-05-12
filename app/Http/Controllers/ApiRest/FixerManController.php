@@ -283,7 +283,7 @@ class FixerManController extends ApiController
             //OneSignal notification
             $notification = $user->notifications()->first();
             $user->notification_id = $notification->id;
-            $user->sendNotification($user->email,'ServiceQualified',$qualify);
+            //$user->sendNotification($user->email,'ServiceQualified',$qualify);
 
             return response()->json([
                 'success' => true
