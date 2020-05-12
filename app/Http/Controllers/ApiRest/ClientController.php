@@ -68,9 +68,10 @@ class ClientController extends ApiController
                 $pre_coupon = Coupon::where('code',$user->code)->where('is_charged','N')->first();
                 $pre_coupon["discount"] = 5;
             }
-        }else{
-            $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
         }
+        // else{
+        //     $check_coupon = Coupon::where('code',$user->code)->where('is_charged',"N")->first();
+        // }
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
