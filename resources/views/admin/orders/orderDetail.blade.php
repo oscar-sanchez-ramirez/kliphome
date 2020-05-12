@@ -30,7 +30,10 @@
                                                 <img class="rounded-circle mx-auto d-block" src="{{ $orden->clientName($orden->user_id)["avatar"] }}" alt="Card image cap">
                                                 <h5 class="text-sm-center mt-2 mb-1">{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</h5>
                                                 <div class="location text-sm-center">
-                                                    <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["address"] }}
+                                                    <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["street"] }} {{ $orden->clientAddress($orden->address)["reference"] }}
+                                                    <p>Municipio: {{ $orden->clientAddress($orden->address)["municipio"] }}</p>
+                                                    <p>Ext: {{ $orden->clientAddress($orden->address)["exterior"] }}</p>
+                                                    <p>Int: {{ $orden->clientAddress($orden->address)["interior"] || "-" }}</p>
                                                     @if($fixerman != null)
                                                         @if($orden->state != 'PENDING' && $orden->state != 'FIXERMAN_NOTIFIED')
                                                             @if($orden->fixerman_arrive == "NO")
