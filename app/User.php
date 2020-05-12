@@ -85,6 +85,7 @@ class User extends Authenticatable
             case 'ServiceQualified':
                 // Notify when user create a order and exists fixerman with the same category
                 $this->notify(new ServiceQualified($data));
+                break;
             case 'NewMessageNotification':
                 $this->notify(new NewMessageNotification($data));
                 break;
