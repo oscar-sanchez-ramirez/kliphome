@@ -225,6 +225,7 @@ class FixerManController extends ApiController
     }
 
     public function qualifyService(Request $request){
+        Log::notice($request->all());
         try {
             $user = User::where('id',$request->fixerman_id)->first();
             $price = floatval($request->price);
