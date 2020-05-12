@@ -189,7 +189,7 @@ class OrderController extends ApiController
                             $coupon->order_id = $request->order_id;
                             $coupon->save();
                         }else{
-                            Coupon::where('id',$request->coupon)->where('is_charged',"N")->update([
+                            Coupon::where('code',$request->coupon)->where('is_charged',"N")->update([
                                 'is_charged' => "Y",
                                 'order_id_charged' => $request->order_id
                             ]);
@@ -197,7 +197,7 @@ class OrderController extends ApiController
                     }
 
                 }elseif($request->type_coupon == "Coupon"){
-                    Coupon::where('id',$order->coupon)->update([
+                    Coupon::where('code',$order->coupon)->update([
                         'is_charged' => "Y",
                         'order_id_charged' => $request->order_id
                     ]);
