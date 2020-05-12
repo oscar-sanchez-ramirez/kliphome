@@ -127,7 +127,7 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-        Log::notice($request->all());
+        // L
         try {
             $price = floatval($request->price);
             try {
@@ -166,36 +166,34 @@ class OrderController extends ApiController
                 ]);
             }
 
-            $quotation = Quotation::where('order_id',$request->order_id)->first();
+            // $quotation = Quotation::where('order_id',$request->order_id)->first();
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $price
             ]);
             $order = Order::where('id',$request->order_id)->first();
-            Log::notice($order);
             if($order->pre_coupon != ""){
                 if($request->type_coupon == "pre_coupon"){
-                    $admin_coupon = AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->first();
+                    $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
                     if($admin_coupon){
                         AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
                             'user_id' => $request->user_id,
                             'is_charged' => "Y",
                             'order_id' => $request->order_id
                         ]);
-                    }
-                    $new_used_coupon = Coupon::where('id',$order->coupon)->first();
-                    if(empty($new_used_coupon)){
-                        $coupon = new Coupon;
-                        $coupon->code = $order->pre_coupon;
-                        $coupon->user_id = $request->user_id;
-                        $coupon->order_id = $request->order_id;
-                        $coupon->save();
-                    }
-                    if($admin_coupon){
-                        AdminCoupon::where('id',$order->coupon)->where('is_charged','N')->update([
-                            'user_id' => $request->user_id,
-                            'is_charged' => "Y",
-                            'order_id' => $request->order_id
-                        ]);
+                    }else{
+                        $new_used_coupon = Coupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                        if(empty($new_used_coupon)){
+                            $coupon = new Coupon;
+                            $coupon->code = $order->pre_coupon;
+                            $coupon->user_id = $request->user_id;
+                            $coupon->order_id = $request->order_id;
+                            $coupon->save();
+                        }else{
+                            Coupon::where('id',$request->coupon->where('is_charged',"N"))->update([
+                                'is_charged' => "Y",
+                                'order_id_charged' => $request->order_id
+                            ]);
+                        }
                     }
 
                 }elseif($request->type_coupon == "Coupon"){
