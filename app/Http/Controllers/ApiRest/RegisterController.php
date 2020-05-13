@@ -15,6 +15,9 @@ use Validator;
 
 class RegisterController extends ApiController
 {
+    public function __construct(){
+        $this->middleware('auth:api', ['only' => ['newAddress']]);
+    }
     public function register(ClientRequest $request){
         $random = strtoupper(substr(md5(mt_rand()), 0, 10));
         $user = User::create([
@@ -68,16 +71,17 @@ class RegisterController extends ApiController
     }
 
     public function newAddress(Request $request){
+        $user = $request->user();
         Address::create([
             'street' => $request->street,
             'alias' => $request->alias,
             'reference' => $request->reference,
-            'postal_code' => "-",
-            'user_id'=>$request->user_id,
+            'postal_code' => $request->postal_code,
+            'user_id'=>$user->id,
             'delegation' => "-",
             'exterior' => $request->exterior,
             'interior' => $request->interior,
-            'colonia' => "-",
+            'colonia' => $request->colonia,
             'municipio' => $request->municipio
         ]);
         return response()->json([
