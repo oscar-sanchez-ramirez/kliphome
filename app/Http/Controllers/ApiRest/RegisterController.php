@@ -90,6 +90,7 @@ class RegisterController extends ApiController
     }
 
     public function updateAddress(Request $request){
+        Log::notice($request->all());
         Address::where('id',$request->id)->update([
             'street' => $request->street,
             'alias' => $request->alias,
