@@ -16,7 +16,7 @@ use Validator;
 class RegisterController extends ApiController
 {
     public function __construct(){
-        $this->middleware('auth:api', ['only' => ['newAddress']]);
+        $this->middleware('auth:api', ['only' => ['newAddress','updateAddress']]);
     }
     public function register(ClientRequest $request){
         $random = strtoupper(substr(md5(mt_rand()), 0, 10));
