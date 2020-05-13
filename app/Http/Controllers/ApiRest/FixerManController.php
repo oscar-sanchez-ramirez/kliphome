@@ -55,18 +55,18 @@ class FixerManController extends ApiController
                 'code' => $random
             ])->toArray();
 
-            Address::create([
-                'street' => $request->street,
-                'alias' => $request->alias,
-                'reference' => $request->reference,
-                'postal_code' => "-",
-                'user_id' => $user["id"],
-                'delegation' => "-",
-                'exterior' => $request->exterior,
-                'interior' => $request->interior,
-                'colonia' => "-",
-                'municipio' => "-"
-            ]);
+            // Address::create([
+            //     'street' => $request->street,
+            //     'alias' => $request->alias,
+            //     'reference' => $request->reference,
+            //     'postal_code' => "-",
+            //     'user_id' => $user["id"],
+            //     'delegation' => "-",
+            //     'exterior' => $request->exterior,
+            //     'interior' => $request->interior,
+            //     'colonia' => "-",
+            //     'municipio' => "-"
+            // ]);
             //SAVE SELECTED DELEGATION
             $workAreas = explode(',',$request->workArea);
             for ($i=0; $i < count($workAreas); $i++) {
