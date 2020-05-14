@@ -50,7 +50,7 @@ class FourHoursLeftNotification extends Command
         ->get();
         foreach ($orders as $key) {
             $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
-            $ahora = Carbon::now('America/Lima')->format('Y/m/d H:i');
+            $ahora = Carbon::now('America/Mexico_City')->format('Y/m/d H:i');
             $totalDuration = $fecha_orden->diffInSeconds($ahora);
             if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
                 $fixerman = User::where('id',$key->id_user)->first();
