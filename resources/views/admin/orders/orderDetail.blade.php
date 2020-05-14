@@ -33,7 +33,7 @@
                                                     <i class="fa fa-map-marker"></i> {{ $orden->clientAddress($orden->address)["alias"] }}, {{ $orden->clientAddress($orden->address)["street"] }} {{ $orden->clientAddress($orden->address)["reference"] }}
                                                     <p>Municipio: {{ $orden->clientAddress($orden->address)["municipio"] }}</p>
                                                     <p>Ext: {{ $orden->clientAddress($orden->address)["exterior"] }}</p>
-                                                    <p>Int: {{ $orden->clientAddress($orden->address)["interior"] || "-" }}</p>
+                                                    <p>Int: {{ $orden->clientAddress($orden->address)["interior"] }}</p>
                                                     @if($fixerman != null)
                                                         @if($orden->state != 'PENDING' && $orden->state != 'FIXERMAN_NOTIFIED')
                                                             @if($orden->fixerman_arrive == "NO")
