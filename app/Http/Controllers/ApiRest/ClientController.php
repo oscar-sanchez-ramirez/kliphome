@@ -22,7 +22,7 @@ class ClientController extends ApiController
     public function historyOrders($id){
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
-        ->select('o.*','a.alias','a.street as address','a.municipio','a.colonia','a.postal_code','a.exterior','a.interior')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
+        ->select('o.*','a.alias','a.street as address','a.municipio','a.colonia','a.postal_code','a.exterior','a.interior','a.reference')->where('o.user_id',$id)->orderBy('o.id',"DESC")->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             if($key->state == "FIXERMAN_APPROVED" || $key->state == "FIXERMAN_DONE" || $key->state == "QUALIFIED" ){
