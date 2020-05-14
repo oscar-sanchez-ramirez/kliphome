@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('fixerman:onedayleft')->dailyAt('19:00');
-        $schedule->command('fixerman:onedayleft')->dailyAt('15:45');
+        $schedule->command('fixerman:onedayleft')->dailyAt('16:00');
         $schedule->command('fixerman:fourhoursleft')->hourly()->between('4:00', '19:00');
     }
 
