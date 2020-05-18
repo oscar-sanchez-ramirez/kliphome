@@ -16,7 +16,7 @@ use App\User;
 class ApiServiceController extends ApiController
 {
     public function __construct(){
-        $this->middleware('auth:api', ['only' => ['getSubCategories']]);
+        $this->middleware('auth:api', ['only' => ['getSubCategories','getAccepted']]);
     }
     //Getting sub-categories for clientApp
     public function getSubCategories($category_p){
