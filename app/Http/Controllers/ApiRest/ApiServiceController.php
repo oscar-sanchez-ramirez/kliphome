@@ -4,14 +4,15 @@ namespace App\Http\Controllers\ApiRest;
 
 // use Illuminate\Http\Request;
 
+use DB;
+use App\User;
+use App\Address;
 use App\Category;
+use App\SubCategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ServiceCollection;
-use Illuminate\Support\Facades\Log;
-use App\SubCategory;
-use DB;
-use App\Address;
-use App\User;
 
 class ApiServiceController extends ApiController
 {
