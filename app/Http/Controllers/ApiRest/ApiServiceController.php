@@ -96,13 +96,15 @@ class ApiServiceController extends ApiController
 
     public function getAccepted(Request $request,$page){
         $user = $request->user();
+
+        Log::notice($user);
+
         if($page == 0)
         {
             $page = 1;
         }
         $page = (5 * $pagina)-5;
         $final_orders = [];
-
         $orders = DB::table('orders as o')
         ->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
