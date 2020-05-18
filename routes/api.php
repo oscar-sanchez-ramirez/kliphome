@@ -74,7 +74,10 @@ Route::get('list_payments','ApiRest\ClientController@list_payments');
 //Notifications**
 Route::get('notifications/{id}','ApiRest\NotificationsController@getNotifications');
 Route::post('notifications/markAsRead/{id}','ApiRest\NotificationsController@markAsRead');
+Route::post('notifications/markAllAsRead','ApiRest\NotificationsController@markAllAsRead');
+Route::post('notifications/deleteAllNotifications','ApiRest\NotificationsController@deleteAllNotifications');
 Route::post('notifications/deleteNotification/{id}','ApiRest\NotificationsController@deleteNotification');
+
 
 //Payments
 Route::post('saveCustomer','ApiRest\PaymentController@saveCustomer');

@@ -18,6 +18,18 @@ class NotificationsController extends ApiController
         return Response(json_encode(array('notifications' => $notifications)));
     }
 
+    public function markAllAsRead(Request $request){
+        $user = $request->user();
+        DB::table('notifications')->where('notifiable_id',$user->id)->update([
+            'read_at' => Carbon::now()
+        ]);
+    }
+
+    public function deleteAllNotifications(Request $request){
+        $user = $request->user();
+        DB::table('notifications')->where('notifiable_id',$user->id)->delete();
+    }
+
     public function markAsRead($id){
         DB::table('notifications')->where('id',$id)->update([
             'read_at' => Carbon::now()
