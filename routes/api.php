@@ -43,6 +43,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     $final = $info->userInfo($user->id);
     return $final;
 });
+Route::get('getAccepted/{page}','ApiRest\ApiServiceController@getAccepted');
 //DELEGATIONS
 Route::get('delegations','ApiRest\DelegationController@index');
 

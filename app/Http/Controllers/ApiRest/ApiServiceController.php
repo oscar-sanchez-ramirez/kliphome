@@ -92,6 +92,39 @@ class ApiServiceController extends ApiController
         }
         return $final_orders;
     }
+
+    public function getAccepted(Request $request,$page){
+        $user = $request->user();
+        if($page == 0)
+        {
+            $page = 1;
+        }
+        $page = (5 * $pagina)-5;
+        $final_orders = [];
+
+        $orders = DB::table('orders as o')
+        ->join('users as u','u.id','o.user_id')
+        ->join('addresses as a','o.address','a.id')
+        ->join('selected_orders as so','o.id','so.order_id')
+        ->where('so.user_id',$user->id)->where('so.state',1)
+        ->select('o.*','a.municipio','a.alias','a.reference','a.interior','a.colonia','a.postal_code','a.exterior','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')
+        ->distinct('o.id')->offset($page)->take(5)->orderBy('o.created_at','DESC')->get();
+
+        foreach ($orders as $key) {
+            $category = $this->table($key->type_service,$key->selected_id);
+            $key->service = $category[0]->service;
+            // $key->service = $category[0]->service;
+            $key->category = $category[0]->category;
+            if ($key->type_service == "Category") {
+                $key->sub_category = "-";
+            }else{
+                $key->sub_category = $category[0]->sub_category;
+            }
+            $key->serviceTrait = $category[0]->service;
+            array_push($final_orders,$key);
+        }
+        return $final_orders;
+    }
     public function ordersAccepted($user_id){
         $final_orders = [];
 
