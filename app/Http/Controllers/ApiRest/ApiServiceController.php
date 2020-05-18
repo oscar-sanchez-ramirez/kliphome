@@ -103,7 +103,7 @@ class ApiServiceController extends ApiController
         {
             $page = 1;
         }
-        $page = (5 * $pagina)-5;
+        $page = (5 * $page)-5;
         $final_orders = [];
         $orders = DB::table('orders as o')
         ->join('users as u','u.id','o.user_id')
