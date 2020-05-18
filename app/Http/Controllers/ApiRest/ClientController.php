@@ -19,11 +19,15 @@ class ClientController extends ApiController
     public function __construct(){
         $this->middleware('auth:api');
     }
-    public function historyOrders(Request $request,$id){
+    public function historyOrders(Request $request,$page){
+        $page = (5 * $page);
+
         $user = $request->user();
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
-        ->select('o.*','a.alias','a.street as address','a.municipio','a.colonia','a.postal_code','a.exterior','a.interior','a.reference')->where('o.user_id',$user->id)->orderBy('o.id',"DESC")->get();
+        ->select('o.*','a.alias','a.street as address','a.municipio','a.colonia','a.postal_code','a.exterior','a.interior','a.reference')
+        ->where('o.user_id',$user->id)->offset($page)->take(5)->orderBy('o.id',"DESC")->get();
+
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             if($key->state == "FIXERMAN_APPROVED" || $key->state == "FIXERMAN_DONE" || $key->state == "QUALIFIED" ){

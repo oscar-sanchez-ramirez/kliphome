@@ -98,7 +98,7 @@ class ApiServiceController extends ApiController
         $user = $request->user();
         if($page == 0){
             $page = 1;
-        }else{}
+        }
         $page = (5 * $page);
         $final_orders = [];
         $orders = DB::table('orders as o')
