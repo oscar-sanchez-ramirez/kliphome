@@ -21,7 +21,6 @@ class ClientController extends ApiController
     }
     public function historyOrders(Request $request,$page){
         $page = (5 * $page);
-
         $user = $request->user();
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')

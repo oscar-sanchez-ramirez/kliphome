@@ -13,8 +13,11 @@ class NotificationsController extends ApiController
         $this->middleware('auth:api');
     }
 
-    public function getNotifications($id){
-        $notifications  = DB::table('notifications')->where('notifiable_id',$id)->orderby('created_at',"DESC")->get();
+    public function getNotifications(Request $request,$page){
+        $page = (5 * $page);
+        $user = $request->user();
+        $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)
+        ->offset($page)->take(5)->orderby('created_at',"DESC")->get();
         return Response(json_encode(array('notifications' => $notifications)));
     }
 
