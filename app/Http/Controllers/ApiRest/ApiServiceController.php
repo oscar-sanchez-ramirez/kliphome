@@ -96,9 +96,6 @@ class ApiServiceController extends ApiController
 
     public function getAccepted(Request $request,$page){
         $user = $request->user();
-
-        Log::notice($user);
-
         if($page == 0){
             $page = 1;
         }else{}
@@ -137,9 +134,6 @@ class ApiServiceController extends ApiController
         ->where('so.user_id',$user_id)->where('so.state',1)
         ->select('o.*','a.municipio','a.alias','a.reference','a.interior','a.colonia','a.postal_code','a.exterior','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')
         ->distinct('o.id')->take(5)->orderBy('o.created_at',"DESC")->get();
-
-        Log::notice($orders);
-
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);
             $key->service = $category[0]->service;
