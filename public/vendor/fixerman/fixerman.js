@@ -66,10 +66,10 @@ function listFixerManDetail(fixerman_id){
                 let presentation = star_function(Number(data["reviews"][index]["presentation"]));
                 let problemSolve = star_function(Number(data["reviews"][index]["problemSolve"]));
                 let puntuality = star_function(Number(data["reviews"][index]["puntuality"]));
-                let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body"><div class="row"><b>Presentación:  </b> '+presentation+'</div><div class="row"><b>Puntualidad  :  </b> '+puntuality+'</div><div class="row"><b>Solución al problema:  </b> '+problemSolve+'</div></div></div>';
+                let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body"><div class="row"><b>Presentación:  </b> '+presentation+'</div><div class="row"><b>Puntualidad  :  </b> '+puntuality+'</div><div class="row"><b>Solución al problema:  </b> '+problemSolve+'</div><div class="row"><b>Comentario  :  </b> '+data["reviews"][index]['comment']+'</div></div></div>';
                 let star_average = star_function(average);
                 console.log(star_average);
-                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star_average+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
+                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star_average+'</a>'+collapse+'</div>');
             }
 
         },
