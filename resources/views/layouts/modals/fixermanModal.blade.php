@@ -90,7 +90,7 @@
 </div>
 <style>
 .checked {
-    color: orange;
+    color: orange !important;
 }
 .fa-star{
     color:#FDFDFD;
