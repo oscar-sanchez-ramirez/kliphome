@@ -64,7 +64,9 @@ function listFixerManDetail(fixerman_id){
             for(let index = 0; index < data["reviews"].length; index++){
                 let average = (Number(data["reviews"][index]['presentation']) + Number(data["reviews"][index]['problemSolve']) + Number(data["reviews"][index]['puntuality'])) / 3;
                 let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body">hola</div></div>';
-                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star_function(average)+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
+                let star_average = star_function(average);
+                console.log(star_average);
+                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star_average+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
             }
 
         },
@@ -128,7 +130,6 @@ function star_function(val){
         return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
     }
     if(val > 2.5 && val < 3.5){
-        console.log("aaa");
         return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
     }
     if(val > 3.5 && val < 4.5){
