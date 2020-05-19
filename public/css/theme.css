@@ -97,10 +97,6 @@ p {
     border-radius: 3px;
 }
 
-.checked {
-    color: orange;
-}
-
 /* ----- Typography ----- */
 body {
     font-family: "Poppins", sans-serif;

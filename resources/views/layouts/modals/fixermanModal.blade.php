@@ -88,3 +88,8 @@
         </div>
     </div>
 </div>
+<style>
+.checked {
+    color: orange;
+}
+</style>
