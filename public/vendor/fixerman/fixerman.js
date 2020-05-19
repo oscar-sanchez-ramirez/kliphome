@@ -61,7 +61,7 @@ function listFixerManDetail(fixerman_id){
             for (let index = 0; index < data["categories"].length; index++) {
                 $("#fixerManCategories").append('<li>'+data["categories"][index]['title']+'</li>');
             }
-            for(let index = 0; index > data["reviews"].length; index++){
+            for(let index = 0; index < data["reviews"].length; index++){
                 $("#fixerManReviews").append('<li>'+data["reviews"][index]['comment']+'</li>');
             }
 

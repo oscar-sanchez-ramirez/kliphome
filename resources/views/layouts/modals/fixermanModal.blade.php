@@ -42,7 +42,7 @@
                     </div>
                     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                         <h3>Calificaciones</h3>
-                        <div id="fixerManReviews"></div>
+                        <p id="fixerManReviews"></p>
                     </div>
                 </div>
 
