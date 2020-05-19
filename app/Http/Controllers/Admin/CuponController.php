@@ -17,11 +17,16 @@ class CuponController extends Controller
         return view('admin.cupones.new_coupon');
     }
     public function save(Request $request){
-        $new_coupon = new AdminCoupon;
-        $new_coupon->code = $request->code;
-        $new_coupon->discount = $request->discount;
-        $new_coupon->save();
-        return Redirect::action('Admin\CuponController@index');
+        $check_coupon = AdminCoupon::where('code',$request->code)->first();
+        if($check_coupon){
+            return back()->with('failed',"El cupón ya existe");
+        }else{
+            $new_coupon = new AdminCoupon;
+            $new_coupon->code = $request->code;
+            $new_coupon->discount = $request->discount;
+            $new_coupon->save();
+            return Redirect::action('Admin\CuponController@index');
+        }
     }
     public function eliminar($id){
         AdminCoupon::where('id',$id)->delete();
