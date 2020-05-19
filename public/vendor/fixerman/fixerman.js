@@ -66,7 +66,7 @@ function listFixerManDetail(fixerman_id){
                 console.log(average);
                 let star = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
                 let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body">hola</div></div>';
-                $("#fixerManReviews").append('<div><a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
+                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
             }
 
         },
