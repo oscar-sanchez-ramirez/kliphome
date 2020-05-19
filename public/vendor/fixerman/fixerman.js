@@ -120,6 +120,7 @@ function aproveFixerMan(fixerman_id,name){
 }
 
 function star(val){
+    console.log(star);
     if(val < 1.5){
         return '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
     }
