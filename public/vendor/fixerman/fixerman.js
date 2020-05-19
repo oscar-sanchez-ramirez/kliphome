@@ -62,7 +62,9 @@ function listFixerManDetail(fixerman_id){
                 $("#fixerManCategories").append('<li>'+data["categories"][index]['title']+'</li>');
             }
             for(let index = 0; index < data["reviews"].length; index++){
-                $("#fixerManReviews").append('<div><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><li>'+data["reviews"][index]['comment']+'</li></div>');
+                let average = Number(data["reviews"][index]['presentation']) + Number(data["reviews"][index]['problemSolve']) + Number(data["reviews"][index]['puntuality']);
+                let star = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+                $("#fixerManReviews").append('<div><li>'+data["reviews"][index]['comment']+'</li></div>');
             }
 
         },
