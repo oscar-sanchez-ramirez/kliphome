@@ -34,7 +34,8 @@ class FixerManController extends Controller
         $ficha = DB::table('fixerman_stats')->where('user_id',$id)->first();
         $delegation = DB::table('selected_delegations')->select('municipio as title','postal_code')->where('user_id',$id)->get();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
-        $reviews = DB::table('qualifies')->where('user_id',$id)->get();
+        $reviews = DB::table('qualifies as q')->join('selected_orders as so','so.id','q.selected_order_id')->join('orders as o','o.id','so.order_id')->join('users as u','u.id','o.user_id')
+        ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->orderBy('q.created_at','DESC')->get();
         return response()->json([
             'delegations' => $delegation,
             'categories' => $categories,

@@ -41,8 +41,8 @@
                         <p id="fixerManCategories"></p>
                     </div>
                     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                        <h3>Menu 2</h3>
-                        <p>Some content here.</p>
+                        <h3>Calificaciones</h3>
+                        <div id="fixerManReviews"></div>
                     </div>
                 </div>
 
