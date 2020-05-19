@@ -34,14 +34,15 @@ class FixerManController extends Controller
         $ficha = DB::table('fixerman_stats')->where('user_id',$id)->first();
         $delegation = DB::table('selected_delegations')->select('municipio as title','postal_code')->where('user_id',$id)->get();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
+        $reviews = DB::table('qualifies')->where('user_id',$id)->get();
         return response()->json([
             'delegations' => $delegation,
             'categories' => $categories,
-            'ficha' => $ficha
+            'ficha' => $ficha,
+            'reviews' => $reviews
         ]);
     }
     public function guardar_ficha(Request $request){
-        Log::notice($request->all());
         DB::table('fixerman_stats')->where('user_id',$request->fixerman_id)->update([
             'acuerdo_laboral'=>$request->acuerdo_laboral,
             'prueba_psicologica'=>$request->prueba_psicologica,
