@@ -93,6 +93,6 @@
     color: orange !important;
 }
 .fa-star{
-    color:#FDFDFD;
+    color:#3333;
 }
 </style>
