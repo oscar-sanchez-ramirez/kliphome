@@ -63,6 +63,7 @@ function listFixerManDetail(fixerman_id){
             }
             for(let index = 0; index < data["reviews"].length; index++){
                 let average = Number(data["reviews"][index]['presentation']) + Number(data["reviews"][index]['problemSolve']) + Number(data["reviews"][index]['puntuality']);
+                console.log(average);
                 let star = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
                 $("#fixerManReviews").append('<div><li>'+data["reviews"][index]['comment']+'</li></div>');
             }
