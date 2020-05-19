@@ -1,12 +1,12 @@
 @extends('layouts.app_admin')
 @section('content')
     <div class="main-content">
-        @if(Session::has('failed'))
-            <div class="alert alert-danger" role="alert">
-                El cupón ya existe
-            </div>
-        @endif
         <div class="section__content section__content--p30">
+            @if(Session::has('failed'))
+                <div class="alert alert-danger" role="alert">
+                    El cupón ya existe
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">Creación de un nuevo Cupón</div>
                 <div class="card-body">
