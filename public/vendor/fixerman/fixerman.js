@@ -64,7 +64,9 @@ function listFixerManDetail(fixerman_id){
             for(let index = 0; index < data["reviews"].length; index++){
                 let average = (Number(data["reviews"][index]['presentation']) + Number(data["reviews"][index]['problemSolve']) + Number(data["reviews"][index]['puntuality'])) / 3;
                 let presentation = star_function(Number(data["reviews"][index]["presentation"]));
-                let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body"><div class="row"><b>Presentación</b>'+presentation+'</div></div></div>';
+                let problemSolve = star_function(Number(data["reviews"][index]["problemSolve"]));
+                let puntuality = star_function(Number(data["reviews"][index]["puntuality"]));
+                let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body"><div class="row"><b>Presentación:  </b> '+presentation+'</div><div class="row"><b>Puntualidad  :  </b> '+puntuality+'</div><div class="row"><b>Solución al problema:  </b> '+problemSolve+'</div></div></div>';
                 let star_average = star_function(average);
                 console.log(star_average);
                 $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star_average+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
