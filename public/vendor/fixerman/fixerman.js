@@ -62,7 +62,7 @@ function listFixerManDetail(fixerman_id){
                 $("#fixerManCategories").append('<li>'+data["categories"][index]['title']+'</li>');
             }
             for(let index = 0; index < data["reviews"].length; index++){
-                $("#fixerManReviews").append('<li>'+data["reviews"][index]['comment']+'</li>');
+                $("#fixerManReviews").append('<div><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><li>'+data["reviews"][index]['comment']+'</li></div>');
             }
 
         },
