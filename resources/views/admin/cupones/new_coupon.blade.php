@@ -15,11 +15,11 @@
                         @csrf
                         <div class="form-group">
                             <label for="code" class="control-label mb-1">Código</label>
-                            <input id="code" name="code" type="text" class="form-control" required>
+                            <input id="code" name="code" type="text" class="form-control" value="{{ old('code') }}" required>
                         </div>
                         <div class="form-group">
                             <label for="discount" class="control-label mb-1">Descuento (%)</label>
-                            <input id="discount" name="discount" type="number" class="form-control" required>
+                            <input id="discount" name="discount" type="number" class="form-control" value="{{ old('discount') }}" required>
                         </div>
                         <div>
                         <div>
