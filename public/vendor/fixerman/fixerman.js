@@ -63,10 +63,8 @@ function listFixerManDetail(fixerman_id){
             }
             for(let index = 0; index < data["reviews"].length; index++){
                 let average = (Number(data["reviews"][index]['presentation']) + Number(data["reviews"][index]['problemSolve']) + Number(data["reviews"][index]['puntuality'])) / 3;
-                console.log(average);
-                let star = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
                 let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body">hola</div></div>';
-                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
+                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star(average)+'</a><li>'+data["reviews"][index]['comment']+'</li>'+collapse+'</div>');
             }
 
         },
@@ -118,5 +116,23 @@ function aproveFixerMan(fixerman_id,name){
         });
     } else {
     txt = "You pressed Cancel!";
+    }
+}
+
+function star(val){
+    if(val < 1.5){
+        return '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+    }
+    if(val > 1.5 && val < 2.5){
+        return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+    }
+    if(val > 2.5 && val < 3.5){
+        return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+    }
+    if(val > 3.5 && val < 4.5){
+        return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';
+    }
+    if(val > 4.5){
+        return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';
     }
 }

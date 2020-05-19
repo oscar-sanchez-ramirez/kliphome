@@ -92,4 +92,7 @@
 .checked {
     color: orange;
 }
+.fa-star{
+    color:#FDFDFD;
+}
 </style>
