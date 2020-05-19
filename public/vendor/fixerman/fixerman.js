@@ -128,6 +128,7 @@ function star_function(val){
         return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
     }
     if(val > 2.5 && val < 3.5){
+        console.log("aaa");
         return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
     }
     if(val > 3.5 && val < 4.5){
