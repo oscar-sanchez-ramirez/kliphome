@@ -66,7 +66,7 @@ function listFixerManDetail(fixerman_id){
                 let presentation = star_function(Number(data["reviews"][index]["presentation"]));
                 let problemSolve = star_function(Number(data["reviews"][index]["problemSolve"]));
                 let puntuality = star_function(Number(data["reviews"][index]["puntuality"]));
-                let comment = data["reviews"][index]['comment'] || "-";
+                let comment = data["reviews"][index]['comment'] || " -";
                 let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body"><div class="row"><b>Presentación:  </b> '+presentation+'</div><div class="row"><b>Puntualidad  :  </b> '+puntuality+'</div><div class="row"><b>Solución al problema:  </b> '+problemSolve+'</div><div class="row"><b>Comentario  :  </b> '+comment+'</div></div></div>';
                 let star_average = star_function(average);
                 console.log(star_average);

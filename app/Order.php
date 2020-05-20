@@ -10,7 +10,7 @@ class Order extends Model
         return User::where('id',$id)->first(['name','lastName','email','phone','avatar']);
     }
     public function clientAddress($id){
-        return Address::where('id',$id)->first(['alias','street','exterior','interior','municipio']);
+        return Address::where('id',$id)->first(['alias','street','exterior','interior','municipio','postal_code']);
     }
     public function orderCoupon($coupon_code){
         // Log::notice($coupon);

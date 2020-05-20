@@ -34,6 +34,7 @@
                                                     <p>Municipio: {{ $orden->clientAddress($orden->address)["municipio"] }}</p>
                                                     <p>Ext: {{ $orden->clientAddress($orden->address)["exterior"] }}</p>
                                                     <p>Int: {{ $orden->clientAddress($orden->address)["interior"] }}</p>
+                                                    <p>Cód Postal: {{ $orden->clientAddress($orden->address)["postal_code"] }}</p>
                                                     @if($fixerman != null)
                                                         @if($orden->state != 'PENDING' && $orden->state != 'FIXERMAN_NOTIFIED')
                                                             @if($orden->fixerman_arrive == "NO")

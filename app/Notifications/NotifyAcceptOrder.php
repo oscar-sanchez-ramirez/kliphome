@@ -61,7 +61,7 @@ class NotifyAcceptOrder extends Notification
         $type = "App\Notifications\NotifyAcceptOrder";
         $content = $this->selected_order;
         OneSignal::sendNotificationUsingTags(
-            "Un Técnico ha aceptado el trabajo para tu solicitud",
+            "Te hemos asignado un técnico",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
             ),
