@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class NotificationsController extends ApiController
 {
@@ -14,6 +15,9 @@ class NotificationsController extends ApiController
     }
 
     public function getNotifications(Request $request,$page){
+
+        Log::notice($page);
+
         $page = (5 * $page);
         $user = $request->user();
         $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)
