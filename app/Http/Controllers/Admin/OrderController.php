@@ -106,4 +106,13 @@ class OrderController extends Controller
         return back()->with('success',"Se notifico al cliente");
     }
 
+    public function check(){
+        $hoy = Carbon::now()->format('Y/m/d');
+        $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')
+        ->select('o.id','u.id as id_user','o.service_date')
+        ->whereDate('o.service_date',$hoy)
+        ->get();
+
+        return $orders;
+    }
 }
