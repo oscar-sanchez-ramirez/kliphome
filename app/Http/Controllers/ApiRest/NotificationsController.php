@@ -20,8 +20,14 @@ class NotificationsController extends ApiController
 
         $page = (5 * $page);
         $user = $request->user();
-        $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)
-        ->offset(0)->take(5)->orderby('created_at',"DESC")->get();
+        if($page == 0){
+
+            $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)
+            ->take(5)->orderby('created_at',"DESC")->get();
+        }else{
+            $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)
+            ->offset($page)->take(5)->orderby('created_at',"DESC")->get();
+        }
         return Response(json_encode(array('notifications' => $notifications)));
     }
 
