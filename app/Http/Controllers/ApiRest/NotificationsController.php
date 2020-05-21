@@ -15,6 +15,7 @@ class NotificationsController extends ApiController
     }
 
     public function getNotifications(Request $request,$page){
+        $user = $request->user();
         $page = (5 * $page);
         if($page == 0){
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)
