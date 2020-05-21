@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Log;
 use DB;
-
 use App\Notifications\FixerMan\OneDayLeftNotification;
 use App\Notifications\FixerMan\FourHoursLeftNotification;
 use App\Notifications\FixerMan\ApproveFixerMan;
@@ -17,6 +16,7 @@ use App\Notifications\FixerMan\ApproveOrderFixerMan;
 use App\Notifications\FixerMan\NotifyNewOrder;
 use App\Notifications\FixerMan\ServiceQualified;
 use App\Notifications\FixerMan\NewMessageNotification;
+use App\Notifications\FixerMan\OrderCancelled;
 
 class User extends Authenticatable
 {
@@ -89,6 +89,9 @@ class User extends Authenticatable
             case 'NewMessageNotification':
                 $this->notify(new NewMessageNotification($data));
                 break;
+            case 'OrderCancelled':
+                $this->notify(new OrderCancelled($data));
+                break;
             default:
                 # code...
                 break;
@@ -98,7 +101,6 @@ class User extends Authenticatable
 
     public function routeNotificationForOneSignal()
     {
-        // Log::notice($this->email);
         return ['tags' => ['key' => 'email', 'relation' => '=', 'value' => $this->email]];
     }
 
