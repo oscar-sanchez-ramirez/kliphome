@@ -57,7 +57,7 @@ class OrderCancelled extends Notification
     {
 
         return OneSignalMessage::create()
-        ->subject("Tu servicio con ".$this->user->name." ha sido cancelado")
+        ->subject("Tu servicio con ".$this->client->name." ha sido cancelado")
         ->body("¡No olvides prepararte!")->setData("type",'App\\Notifications\\Database\\OrderCancelled')->setData('data',$this->client);
     }
 }

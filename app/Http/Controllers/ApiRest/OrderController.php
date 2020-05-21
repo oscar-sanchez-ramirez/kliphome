@@ -122,10 +122,11 @@ class OrderController extends ApiController
             'state' => "CANCELLED"
         ]);
         $order = Order::where('id',$request->order_id)->first();
-        $client = User::where('type',"ADMINISTRATOR")->first();
-        $client->notify(new QuotationCancelled($order));
+        $admin = User::where('type',"ADMINISTRATOR")->first();
+        $admin->notify(new QuotationCancelled($order));
         $selected_order = DB::table('selected_orders')->where('order_id',$request->order_id)->where('state',1)->first();
         if($selected_order){
+            $client = User::where('id',$order->user_id)->first();
             $client["mensajeFixerMan"] = "Tu servicio con ".$client->name." ha sido cancelado";
             $fixerman = User::where('id',$selected_order->user_id)->first();
             $fixerman->notify(new OrderCancelled($client));
