@@ -45,7 +45,7 @@ class OneDayLeftNotification extends Command
         $mañana = Carbon::now()->addDay()->format('Y/m/d');
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')
         ->select('o.id','u.id as id_user')
-        ->whereDate('o.service_date',$mañana)->get();
+        ->whereDate('o.service_date',$mañana)->where('o.state','!=',"CANCELLED")->get();
         foreach ($orders as $key) {
             $fixerman = User::where('id',$key->id_user)->first();
             $key->mensajeFixerMan = "Mañana tienes una orden de servicio";

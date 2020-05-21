@@ -46,7 +46,7 @@ class FourHoursLeftNotification extends Command
         $hoy = Carbon::now()->format('Y/m/d');
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')
         ->select('o.id','u.id as id_user','o.service_date')
-        ->whereDate('o.service_date',$hoy)->where('o.is_notified',0)
+        ->whereDate('o.service_date',$hoy)->where('o.is_notified',0)->where('o.state','!=',"CANCELLED")
         ->get();
         foreach ($orders as $key) {
             $fecha_orden = Carbon::createFromFormat('Y/m/d H:i', $key->service_date);
