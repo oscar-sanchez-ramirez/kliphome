@@ -54,7 +54,7 @@ class FourHoursLeftNotification extends Command
             $totalDuration = $fecha_orden->diffInSeconds($ahora);
             if(($totalDuration/60) > 0 && ($totalDuration/60) <= 240){
                 $fixerman = User::where('id',$key->id_user)->first();
-                $key->mensajeFixerMan = "Mañana tienes una orden de servicio";
+                $key->mensajeFixerMan = "Hoy tienes una orden de servicio";
                 $fixerman->notify(new DatabaseFourHoursLeftNotification($key,$fixerman->email));
                 $notification = $fixerman->notifications()->first();
                 $key->created_at = $notification->id;
