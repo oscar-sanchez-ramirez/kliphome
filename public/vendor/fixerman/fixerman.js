@@ -55,6 +55,7 @@ function listFixerManDetail(fixerman_id){
             }
             $("#fixerManCategories").html('');
             $("#fixerManDelegation").html('');
+            $("#fixerManReviews").html('');
             for (let index = 0; index < data["delegations"].length; index++) {
                 $("#fixerManDelegation").append('<li>'+data["delegations"][index]["title"]+'</li>');
             }
@@ -67,10 +68,9 @@ function listFixerManDetail(fixerman_id){
                 let problemSolve = star_function(Number(data["reviews"][index]["problemSolve"]));
                 let puntuality = star_function(Number(data["reviews"][index]["puntuality"]));
                 let comment = data["reviews"][index]['comment'] || " -";
-                let collapse = '<div class="collapse" id="collapseExample"><div class="card card-body"><div class="row"><b>Presentación:  </b> '+presentation+'</div><div class="row"><b>Puntualidad  :  </b> '+puntuality+'</div><div class="row"><b>Solución al problema:  </b> '+problemSolve+'</div><div class="row"><b>Comentario  :  </b> '+comment+'</div></div></div>';
+                let collapse = '<div class="collapse" id="collapseExample'+data["reviews"][index]['id']+'"><div class="card card-body"><div class="row"><b>Presentación:  </b> '+presentation+'</div><div class="row"><b>Puntualidad  :  </b> '+puntuality+'</div><div class="row"><b>Solución al problema:  </b> '+problemSolve+'</div><div class="row"><b>Comentario  :  </b> '+comment+'</div></div></div>';
                 let star_average = star_function(average);
-                console.log(star_average);
-                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">'+average+' '+star_average+'</a>'+collapse+'</div>');
+                $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample'+data["reviews"][index]['id']+'" role="button" aria-expanded="false" aria-controls="collapseExample'+data["reviews"][index]['id']+'">'+average+' '+star_average+'</a>'+collapse+'</div>');
             }
 
         },
