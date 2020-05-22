@@ -455,7 +455,7 @@ class FixerManController extends ApiController
         $orders = DB::table('orders as o')
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
-        ->leftJoin('users as u','u.id','so.user_id')
+        ->leftJoin('users as u','u.id','o.user_id')
         ->select('o.*','a.alias','a.street as address','a.reference','a.exterior','a.interior','a.municipio','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.id',$order_id)->where('so.state',1)->get();
         Log::notice($orders);
