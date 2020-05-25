@@ -22,10 +22,9 @@ class ConversationController extends ApiController
   public function indexRest($id){
     return DB::table('conversations as c')->join('users as u','c.contact_id','u.id')->join('users as us','c.user_id','us.id')->join('orders as o','c.order_id','o.id')
     ->select('c.id','c.contact_id','c.user_id','c.has_blocked','c.listen_notifications','c.last_readed','c.last_message','c.last_time','c.order_id','u.name','u.lastName','u.avatar','us.name as name_to','us.lastName as lastName_to','us.avatar as avatar_to','o.state',DB::raw('IF(c.user_id='.$id.',1,0) as written_by_me'))
-    ->where('c.user_id',$id)->orWhere('c.contact_id',$id)
     ->where(function ($query){
       $query->where('o.state','!=','CANCELLED')->where('o.state','!=','QUALIFIED')->where('o.state','!=','FIXERMAN_DONE');
-    })
+    })->where('c.user_id',$id)->orWhere('c.contact_id',$id)
     ->get();
   }
 
