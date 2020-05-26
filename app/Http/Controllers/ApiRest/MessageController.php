@@ -8,6 +8,7 @@ use App\Message;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use App\Jobs\NewMessageNotification;
+use Illuminate\Support\Facades\Log;
 
 
 class MessageController extends ApiController
