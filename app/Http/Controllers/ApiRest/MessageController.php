@@ -19,6 +19,7 @@ class MessageController extends ApiController
     }
 
     public function indexRest($userId,$contactId,$conversationId,$page){
+        Log::notice($page);
         if($page == 0)
         {
             $page = 1;
