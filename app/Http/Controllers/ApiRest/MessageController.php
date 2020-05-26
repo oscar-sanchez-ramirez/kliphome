@@ -22,7 +22,8 @@ class MessageController extends ApiController
         {
             $page = 1;
         }
-        $page = (5 * $page)-5;
+        // $page = (5 * $page)-5;
+        $page = (5 * $page);
 
 
         return DB::table('conversations as c')
