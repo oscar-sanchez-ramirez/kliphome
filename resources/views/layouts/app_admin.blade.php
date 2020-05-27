@@ -86,7 +86,11 @@
                         </li>
                         <li class="{{ active_menu('cupones')}} {{ active_menu('cupones/*')}}">
                             <a href="{{ url('') }}/cupones">
-                                <i class="fas fa-users"></i>Cupones</a>
+                                <i class="fas fa-ticket-alt"></i>Cupones</a>
+                        </li>
+                        <li class="{{ active_menu('pagos')}} {{ active_menu('pagos/*')}}">
+                            <a href="{{ url('') }}/pagos">
+                                <i class="fas fa-usd"></i>Pagos</a>
                         </li>
                     </ul>
                 </div>
@@ -140,6 +144,10 @@
                         <li class="{{ active_menu('cupones')}} {{ active_menu('cupones/*')}}">
                             <a href="{{ url('') }}/cupones">
                                 <i class="fas fa-ticket-alt"></i>Cupones</a>
+                        </li>
+                        <li class="{{ active_menu('pagos')}} {{ active_menu('pagos/*')}}">
+                            <a href="{{ url('') }}/pagos">
+                                <i class="fas fa-usd"></i>Pagos</a>
                         </li>
                     </ul>
                 </nav>
