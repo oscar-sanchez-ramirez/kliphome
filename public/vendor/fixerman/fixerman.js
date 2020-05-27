@@ -74,7 +74,13 @@ function listFixerManDetail(fixerman_id){
                 $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample'+data["reviews"][index]['id']+'" role="button" aria-expanded="false" aria-controls="collapseExample'+data["reviews"][index]['id']+'">'+average+' '+star_average+'</a>'+collapse+'</div>');
             }
             for (let index = 0; index < data["payments"].length; index++) {
-                $("#fixerManPayments").append(' <tr><th scope="row">'+data["payments"][index]["description"]+'</th><td>'+data["payments"][index]["price"]+'</td><td>'+data["payments"][index]["created_at"]+'</td></tr>');
+                if(data["payments"][index]["description"] == "PAGO POR SERVICIO"){
+                    collapsePayment = '<div class="collapse" id="collapsePayment'+data["payments"][index]['id']+'"><div class="card card-body"><div class="row"><b>Precio por servicio:  </b>'+data["payments"][index]['service_price']+'</div><div class="row"><b>Mano de Obra:  </b>'+data["payments"][index]['workforce']+'</div><div class="row" id="rowPercent'+data["payments"][index]['id']+'"><div class="col-md-4">Calcular %: </div><div class="col-md-4"><input type="number" id="percent'+data["payments"][index]['id']+'" class="form-control"></div><div class="col-md-4"><button class="btn btn-success" onclick="calculatePercent('+data["payments"][index]['id']+','+data["payments"][index]['workforce']+')">Calcular</button></div></div></div></div>';
+                    th = '<th scope="row"><a data-toggle="collapse" href="#collapsePayment'+data["payments"][index]['id']+'"  role="button" aria-expanded="false" aria-controls="collapsePayment'+data["payments"][index]['id']+'">'+data["payments"][index]["description"]+'</a>'+collapsePayment+'</th><td>'+data["payments"][index]["price"]+'</td><td>'+data["payments"][index]["created_at"]+'</td>';
+                }else{
+                    th = '<th scope="row">'+data["payments"][index]["description"]+'</th><td>'+data["payments"][index]["price"]+'</td><td>'+data["payments"][index]["created_at"]+'</td>';
+                }
+                $("#fixerManPayments").append('<tr>'+th+'</tr>');
 
             }
 
@@ -146,4 +152,11 @@ function star_function(val){
     if(val > 4.5){
         return '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';
     }
+}
+
+function calculatePercent(id,num){
+    percent = document.getElementById('percent'+id).value;
+    result = (num * percent) / 100;
+    $("#rowPercent"+id).after("<b>El monto es: </b>"+result);
+    console.log(result);
 }
