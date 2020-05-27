@@ -49,7 +49,17 @@
                     </div>
                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                         <h3>Pagos</h3>
-                        <p id="fixerManPayments"></p>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Concepto</th>
+                                <th scope="col">Monto</th>
+                                <th scope="col">Fecha</th>
+                              </tr>
+                            </thead>
+                            <tbody id="fixerManPayments">
+                            </tbody>
+                          </table>
                     </div>
                 </div>
 

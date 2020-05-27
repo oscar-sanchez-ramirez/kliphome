@@ -56,6 +56,7 @@ function listFixerManDetail(fixerman_id){
             $("#fixerManCategories").html('');
             $("#fixerManDelegation").html('');
             $("#fixerManReviews").html('');
+            $("#fixerManPayments").html('');
             for (let index = 0; index < data["delegations"].length; index++) {
                 $("#fixerManDelegation").append('<li>'+data["delegations"][index]["title"]+'</li>');
             }
@@ -63,7 +64,7 @@ function listFixerManDetail(fixerman_id){
                 $("#fixerManCategories").append('<li>'+data["categories"][index]['title']+'</li>');
             }
             for(let index = 0; index < data["reviews"].length; index++){
-                let average = (Number(data["reviews"][index]['presentation']) + Number(data["reviews"][index]['problemSolve']) + Number(data["reviews"][index]['puntuality'])) / 3;
+                let average = ((Number(data["reviews"][index]['presentation']) + Number(data["reviews"][index]['problemSolve']) + Number(data["reviews"][index]['puntuality'])) / 3).toFixed(1);
                 let presentation = star_function(Number(data["reviews"][index]["presentation"]));
                 let problemSolve = star_function(Number(data["reviews"][index]["problemSolve"]));
                 let puntuality = star_function(Number(data["reviews"][index]["puntuality"]));
@@ -71,6 +72,10 @@ function listFixerManDetail(fixerman_id){
                 let collapse = '<div class="collapse" id="collapseExample'+data["reviews"][index]['id']+'"><div class="card card-body"><div class="row"><b>Presentación:  </b> '+presentation+'</div><div class="row"><b>Puntualidad  :  </b> '+puntuality+'</div><div class="row"><b>Solución al problema:  </b> '+problemSolve+'</div><div class="row"><b>Comentario  :  </b> '+comment+'</div></div></div>';
                 let star_average = star_function(average);
                 $("#fixerManReviews").append('<div><a data-toggle="collapse" href="#collapseExample'+data["reviews"][index]['id']+'" role="button" aria-expanded="false" aria-controls="collapseExample'+data["reviews"][index]['id']+'">'+average+' '+star_average+'</a>'+collapse+'</div>');
+            }
+            for (let index = 0; index < data["payments"].length; index++) {
+                $("#fixerManPayments").append(' <tr><th scope="row">'+data["payments"][index]["description"]+'</th><td>'+data["payments"][index]["price"]+'</td><td>'+data["payments"][index]["created_at"]+'</td></tr>');
+
             }
 
         },
