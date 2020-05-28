@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive table-responsive-data2">
-                    <h5>Porcentaje general : 7%</h5>
+                    <h5>Porcentaje general : <a href="{{ url('') }}/pagos/porcentaje-general">{{ $general_percent->value }}%</a></h5>
                     @if(count($payments) == 0)
                         <div id="center">
                             <h4>No se regitraron órdenes en la aplicación</h4>
