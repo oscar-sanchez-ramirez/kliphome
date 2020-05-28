@@ -16,6 +16,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive table-responsive-data2">
+                    <h5>Porcentaje general : 7%</h5>
                     @if(count($payments) == 0)
                         <div id="center">
                             <h4>No se regitraron órdenes en la aplicación</h4>
@@ -35,15 +36,45 @@
                             <tbody>
                                 @foreach ($payments as $payment)
                                     <tr class="tr-shadow">
-
-                                        <td>{{ $payment->description }}</td>
+                                        <td>
+                                            @if($payment->description == "PAGO POR SERVICIO")
+                                            <a data-toggle="collapse" href="#collapsePayment{{ $payment->id }}" role="button" aria-expanded="false" aria-controls="collapsePayment{{ $payment->id }}">
+                                                {{ $payment->description }}
+                                            </a>
+                                            <div class="collapse" id="collapsePayment{{ $payment->id }}">
+                                                <div class="card card-body">
+                                                    <div class="card card-body">
+                                                        <div class="row">
+                                                            <b>Precio por servicio:  </b>{{ $payment->service_price }}
+                                                        </div>
+                                                        <div class="row">
+                                                            <b>Mano de Obra:  </b>{{ $payment->workforce }}
+                                                        </div>
+                                                        <div class="row" id="rowPercent{{ $payment->id }}">
+                                                            <div class="col-md-4">
+                                                                Calcular %:
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="number" id="percent{{ $payment->id }}" class="form-control">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <button class="btn btn-success" onclick="calculatePercent({{ $payment->id }},{{ $payment->workforce }}">Calcular</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                              </div>
+                                            @else
+                                            {{ $payment->description }}
+                                            @endif
+                                        </td>
                                         <td>{{ $payment->price }}</td>
                                         <td>{{ \Carbon\Carbon::parse($payment->created_at)->diffForHumans() }}</td>
                                         <td>
                                            @if($payment->state == 0)
                                                 <p id="danger">Cancelado</p>
                                            @else
-                                                <p id="success">Terminado</p>
+                                                <p id="success">Aceptado</p>
                                            @endif
                                         </td>
                                         <td>
