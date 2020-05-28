@@ -51,14 +51,11 @@
                                                             <b>Mano de Obra:  </b>{{ $payment->workforce }}
                                                         </div>
                                                         <div class="row" id="rowPercent{{ $payment->id }}">
-                                                            <div class="col-md-4">
-                                                                Calcular %:
+                                                            <div class="col-md-6">
+                                                                Porcentaje de {{ $payment->name }} {{ $payment->lastName }} : {{ $payment->percent }}%
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <input type="number" id="percent{{ $payment->id }}" class="form-control">
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <button class="btn btn-success" onclick="calculatePercent({{ $payment->id }},{{ $payment->workforce }}">Calcular</button>
+                                                            <div class="col-md-6">
+                                                                Ganancia: {{ ($payment->workforce * $payment->percent) / 100 }}
                                                             </div>
                                                         </div>
                                                     </div>

@@ -53,6 +53,7 @@ function listFixerManDetail(fixerman_id){
             if(data["ficha"]["kit_bienvenida"] == "S"){
                 document.getElementById("kit_bienvenida").checked = true;
             }
+            document.getElementById('percent').value = data["ficha"]["percent"];
             $("#fixerManCategories").html('');
             $("#fixerManDelegation").html('');
             $("#fixerManReviews").html('');
@@ -75,7 +76,7 @@ function listFixerManDetail(fixerman_id){
             }
             for (let index = 0; index < data["payments"].length; index++) {
                 if(data["payments"][index]["description"] == "PAGO POR SERVICIO"){
-                    collapsePayment = '<div class="collapse" id="collapsePayment'+data["payments"][index]['id']+'"><div class="card card-body"><div class="row"><b>Precio por servicio:  </b>'+data["payments"][index]['service_price']+'</div><div class="row"><b>Mano de Obra:  </b>'+data["payments"][index]['workforce']+'</div><div class="row" id="rowPercent'+data["payments"][index]['id']+'"><div class="col-md-4">Calcular %: </div><div class="col-md-4"><input type="number" id="percent'+data["payments"][index]['id']+'" class="form-control"></div><div class="col-md-4"><button class="btn btn-success" onclick="calculatePercent('+data["payments"][index]['id']+','+data["payments"][index]['workforce']+')">Calcular</button></div></div></div></div>';
+                    collapsePayment = '<div class="collapse" id="collapsePayment'+data["payments"][index]['id']+'"><div class="card card-body"><div class="row"><b>Precio por servicio:  </b>'+data["payments"][index]['service_price']+'</div><div class="row"><b>Mano de Obra:  </b>'+data["payments"][index]['workforce']+'</div><div class="row" ><div class="col-md-4">%: '+data['payments'][index]["percent"]+'<br>Ganó: '+((data['payments'][index]["workforce"]*data['payments'][index]["percent"])/100)+'</div></div></div></div>';
                     th = '<th scope="row"><a data-toggle="collapse" href="#collapsePayment'+data["payments"][index]['id']+'" role="button" aria-expanded="false" aria-controls="collapsePayment'+data["payments"][index]['id']+'">'+data["payments"][index]["description"]+'</a>'+collapsePayment+'</th><td>'+data["payments"][index]["price"]+'</td><td>'+data["payments"][index]["created_at"]+'</td>';
                 }else{
                     th = '<th scope="row">'+data["payments"][index]["description"]+'</th><td>'+data["payments"][index]["price"]+'</td><td>'+data["payments"][index]["created_at"]+'</td>';
@@ -100,12 +101,13 @@ function guardar_ficha(){
     let copia_dni ;if(document.getElementById("copia_dni").checked === true){copia_dni = "S";}else{copia_dni = "N";}
     let foto ;if(document.getElementById("foto").checked === true){foto = "S";}else{foto = "N";}
     let kit_bienvenida ;if(document.getElementById("kit_bienvenida").checked === true){kit_bienvenida = "S";}else{kit_bienvenida = "N";}
+    let percent = document.getElementById('percent').value;
 
     var url = url = window.location.origin+"/tecnicos/guardar_ficha";
     $.ajax({
         type: "POST",
         url: url,
-        data: { 'fixerman_id': id_fixerman,'_token': token,'acuerdo_laboral':acuerdo_laboral,'prueba_psicologica':prueba_psicologica,'comprobante_domicilio':comprobante_domicilio,'asistencia_entrevista':asistencia_entrevista,'copia_dni':copia_dni,'foto':foto,'kit_bienvenida':kit_bienvenida },
+        data: { 'fixerman_id': id_fixerman,'_token': token,'acuerdo_laboral':acuerdo_laboral,'prueba_psicologica':prueba_psicologica,'comprobante_domicilio':comprobante_domicilio,'asistencia_entrevista':asistencia_entrevista,'copia_dni':copia_dni,'foto':foto,'kit_bienvenida':kit_bienvenida,'percent':percent },
         success: function(data) {
             alert("Datos actulizados");
         },

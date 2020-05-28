@@ -36,8 +36,8 @@ class FixerManController extends Controller
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
         $reviews = DB::table('qualifies as q')->join('selected_orders as so','so.id','q.selected_order_id')->join('orders as o','o.id','so.order_id')->join('users as u','u.id','o.user_id')
         ->select('q.*','u.avatar','u.name','u.lastName')->where('q.user_id',$id)->orderBy('q.created_at','DESC')->get();
-        $payments = DB::table('selected_orders as so')->join('orders as o','o.id','so.order_id')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')
-        ->select('p.*','q.workforce','q.workforce','q.price as service_price')->where('so.user_id',$id)->where('so.state',1)->get();
+        $payments = DB::table('selected_orders as so')->join('fixerman_stats as ft','ft.user_id','so.user_id')->join('orders as o','o.id','so.order_id')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')
+        ->select('p.*','q.workforce','q.price as service_price','ft.percent')->where('so.user_id',$id)->where('so.state',1)->get();
         return response()->json([
             'delegations' => $delegation,
             'categories' => $categories,
@@ -54,7 +54,8 @@ class FixerManController extends Controller
             'asistencia_entrevista'=>$request->asistencia_entrevista,
             'copia_dni'=>$request->copia_dni,
             'foto'=>$request->foto,
-            'kit_bienvenida'=>$request->kit_bienvenida
+            'kit_bienvenida'=>$request->kit_bienvenida,
+            'percent' => $request->percent
         ]);
         return response()->json([
             'success' => true

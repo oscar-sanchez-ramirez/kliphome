@@ -34,6 +34,7 @@
                             <div class="form-check"><input type="checkbox" class="form-check-input" name="copia_dni" id="copia_dni"><label class="form-check-label" for="exampleCheck1">Copia de identificación oficial</label></div>
                             <div class="form-check"><input type="checkbox" class="form-check-input" name="foto" id="foto"><label class="form-check-label" for="exampleCheck1">Foto</label></div>
                             <div class="form-check"><input type="checkbox" class="form-check-input" name="kit_bienvenida" id="kit_bienvenida"><label class="form-check-label" for="exampleCheck1">Kit de bienvenida</label></div>
+                            <div style="max-width:30%;display:flex"><input type="text" class="form-control" name="percent" id="percent" style="position: flex">%</div><br>
                         </div>
                         <button class="btn btn-primary" onclick="guardar_ficha()">Guardar</button>
                     </div>
