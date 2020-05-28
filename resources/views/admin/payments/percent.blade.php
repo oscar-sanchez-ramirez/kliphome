@@ -6,15 +6,19 @@
                 <div class="card-header">Actulización de porcentaje general</div>
                 <div class="card-body">
 
-                    <form action="{{ url('') }}/categorias" method="POST">
+                    <form action="{{ url('') }}/pagos/actualizar-porcentaje" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="title" class="control-label mb-1">Porcentaje Actual</label>
-                            <input id="title" name="title" type="text" class="form-control" required value="{{ $general_percent->value }}">
+                            <input id="title" name="value" type="text" class="form-control" required value="{{ $general_percent->value }}">
                         </div>
                         <div class="form-group">
-                            <label for="title" class="control-label mb-1">Precio de Visita</label>
-                            <input id="visit_price" name="visit_price" type="number" class="form-control">
+                            <label for="title" class="control-label mb-1">Selecciona una opción</label>
+                            <select class="form-control" name="options" required>
+                                <option selected="selected"></option>
+                                <option value="1">Actualizar para todos</option>
+                                <option value="2">Actualizar en adelante</option>
+                            </select>
                         </div>
                         <div>
                         <button id="payment-button" type="submit" class="btn btn-lg btn-info">

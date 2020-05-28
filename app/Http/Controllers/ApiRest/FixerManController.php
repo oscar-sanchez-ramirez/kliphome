@@ -85,9 +85,10 @@ class FixerManController extends ApiController
                 $category->category_id = $categories[$i];
                 $category->save();
             }
-
+            $general_percent = DB::table('general_stats')->where('title',"percent")->first();
             $stat = new FixermanStat;
             $stat->user_id = $user["id"];
+            $stat->percent = $general_percent->value;
             $stat->save();
 
             $client = User::where('type',"ADMINISTRATOR")->first();

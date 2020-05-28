@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 
 class PaymentController extends Controller
 {
@@ -22,5 +23,27 @@ class PaymentController extends Controller
     public function percent(){
         $general_percent = DB::table('general_stats')->where('title',"percent")->first();
         return view('admin.payments.percent')->with('general_percent',$general_percent);
+    }
+
+    public function update_percent(Request $request){
+        switch ($request->options) {
+            case 1:
+                DB::table('general_stats')->where('title',"percent")->update([
+                    'value' => $request->value
+                ]);
+                DB::table('fixerman_stats')->where('id','>',0)->update([
+                    'percent' => $request->value
+                ]);
+                break;
+            case 2:
+                DB::table('general_stats')->where('title',"percent")->update([
+                    'value' => $request->value
+                ]);
+                break;
+            default:
+                # code...
+                break;
+        }
+        return Redirect::action('Admin\PaymentController@index');
     }
 }
