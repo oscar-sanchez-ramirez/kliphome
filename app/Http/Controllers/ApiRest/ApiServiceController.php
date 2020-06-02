@@ -37,7 +37,7 @@ class ApiServiceController extends ApiController
     }
     //Return info after login, conditional if user is client or fixerman
     public function userInfo($id){
-        $user = User::where('id',$id)->first();
+        $user = User::where('id',$id)->with('stats')->first();
         // DB::table('users as u')->leftJoin('fixerman_stats as fs','u.id','fs.user_id')->select('u.*','fs.percent')->first();
 
         if($user->type == "AppFixerMan"){

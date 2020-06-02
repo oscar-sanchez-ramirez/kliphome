@@ -107,4 +107,8 @@ class User extends Authenticatable
     public function categories(){
         return $this->hasMany(SelectedCategories::class, 'user_id')->orderBy('created_at', 'asc');
     }
+
+    public function stats(){
+        return $this->belongsTo(FixermanStat::class);
+    }
 }
