@@ -109,6 +109,6 @@ class User extends Authenticatable
     }
 
     public function stats(){
-        return $this->belongsTo(FixermanStat::class, 'id');
+        return $this->belongsTo(FixermanStat::class);
     }
 }
