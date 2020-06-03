@@ -131,7 +131,9 @@ class ApiServiceController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->join('selected_orders as so','o.id','so.order_id')
         ->leftJoin('quotations as q','q.order_id','o.id')
-        ->where('so.user_id',$user_id)->where('so.state',1)
+        ->where(function ($query){
+            $query->where('so.user_id',$user->id)->where('so.state',1)->where('o.state','!=','CANCELLED');
+        })
         ->select('o.*','a.municipio','a.alias','a.reference','a.interior','a.colonia','a.postal_code','a.exterior','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted','q.workforce')
         ->distinct('o.id')->take(5)->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
