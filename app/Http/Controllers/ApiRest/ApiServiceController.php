@@ -38,8 +38,6 @@ class ApiServiceController extends ApiController
     //Return info after login, conditional if user is client or fixerman
     public function userInfo($id){
         $user = User::where('id',$id)->with('stats')->first();
-        // DB::table('users as u')->leftJoin('fixerman_stats as fs','u.id','fs.user_id')->select('u.*','fs.percent')->first();
-
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
             $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$user->id)->get()->toArray();
@@ -69,8 +67,7 @@ class ApiServiceController extends ApiController
         }
     }
     //getting categories by fixerman preferences
-    public function categories($ids,$municipio,$user_id)
-    {
+    public function categories($ids,$municipio,$user_id){
         $selectedOrders = DB::table('selected_orders')->where('user_id',$user_id)->pluck('order_id');
         $final_orders = [];
         $orders = DB::table('orders as o')->join('users as u','u.id','o.user_id')->join('addresses as a','o.address','a.id')
@@ -95,7 +92,6 @@ class ApiServiceController extends ApiController
         }
         return $final_orders;
     }
-
     public function getAccepted(Request $request,$page){
         $user = $request->user();
         if($page == 0){
@@ -128,13 +124,13 @@ class ApiServiceController extends ApiController
     }
     public function ordersAccepted($user_id){
         $final_orders = [];
-
         $orders = DB::table('orders as o')
         ->join('users as u','u.id','o.user_id')
         ->join('addresses as a','o.address','a.id')
         ->join('selected_orders as so','o.id','so.order_id')
+        ->leftJoin('qualifies as q','q.order_id','o.id')
         ->where('so.user_id',$user_id)->where('so.state',1)
-        ->select('o.*','a.municipio','a.alias','a.reference','a.interior','a.colonia','a.postal_code','a.exterior','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted')
+        ->select('o.*','a.municipio','a.alias','a.reference','a.interior','a.colonia','a.postal_code','a.exterior','a.street as address','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted','q.workforce')
         ->distinct('o.id')->take(5)->orderBy('o.created_at',"DESC")->get();
         foreach ($orders as $key) {
             $category = $this->table($key->type_service,$key->selected_id);

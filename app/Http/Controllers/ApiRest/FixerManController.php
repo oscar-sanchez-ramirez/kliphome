@@ -457,7 +457,8 @@ class FixerManController extends ApiController
         ->join('addresses as a','o.address','a.id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
         ->leftJoin('users as u','u.id','o.user_id')
-        ->select('o.*','a.alias','a.street as address','a.reference','a.exterior','a.interior','a.municipio','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
+        ->leftJoin('qualifies as q','q.order_id','o.id')
+        ->select('o.*','a.alias','a.street as address','a.reference','a.exterior','a.interior','a.municipio','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted','q.workforce')
         ->where('o.id',$order_id)->where('so.state',1)->get();
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
