@@ -3,6 +3,17 @@
       <FullCalendar :plugins="calendarPlugins" :header ="{right: 'calcular prev today next'}" :selectable="true" :height="400" :buttonText="{today: 'Hoy',}"
             :editable="true" :events="ordenes" :config="config"    @eventClick="handleEventClick($event)"
             :customButtons="customButtons" />
+        <v-row>
+            <v-col cols="4">
+                <div class="cancelado"></div> <span>Cancelado</span>
+            </v-col>
+            <v-col cols="4">
+                <div class="proceso"></div> <span>En proceso</span>
+            </v-col>
+            <v-col cols="4">
+                <div class="calificado"></div> <span>Calificado</span>
+            </v-col>
+        </v-row>
       <div>
           <v-app>
             <v-dialog v-model="dialog"  max-width="390">
@@ -88,6 +99,22 @@
     }
     .v-application--wrap{
         min-height: 50px !important;
+    }
+    .cancelado {
+        margin-top: 2%;
+        width: 20px;
+        height: 20px;
+        background: red;
+    }.proceso{
+        margin-top: 2%;
+        width: 20px;
+        height: 20px;
+        background: blue;
+    }.calificado{
+        margin-top: 2%;
+        width: 20px;
+        height: 20px;
+        background: green;
     }
 </style>
 

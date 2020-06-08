@@ -211,7 +211,6 @@ class FixerManController extends Controller
             $visita = ($visita * $percent)/100;
         }
         return response()->json([
-            // 'orders' => $orders,
             'request' => $request->all(),
             'propinas' => $propinas,
             'visita' => $visita,
