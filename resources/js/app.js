@@ -18,6 +18,12 @@ Vue.component('contact-list-component', require('./components/ContactListCompone
 Vue.component('active-conversation-component', require('./components/ActiveConversationComponent.vue').default);
 Vue.component('messenger-component', require('./components/MessengerComponent.vue').default);
 Vue.component('status-component', require('./components/StatusComponent.vue').default);
+//Fixerman
+Vue.component('fixerman-component', require('./components/fixerman/FixermanComponent.vue').default);
+Vue.component('calendar-component', require('./components/fixerman/calendar.vue').default);
+Vue.component('stats-component', require('./components/fixerman/stats.vue').default);
+Vue.component('categories-component', require('./components/fixerman/categories.vue').default);
+Vue.component('reviews-component', require('./components/fixerman/reviews.vue').default);
 
 const app = new Vue({
     el: '#app',

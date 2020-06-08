@@ -29,7 +29,6 @@
 			},
       selectedConversation(){
         return this.$store.state.selectedConversation;
-
       },
       conversationsFiltered(){
         return this.$store.getters.conversationsFiltered;

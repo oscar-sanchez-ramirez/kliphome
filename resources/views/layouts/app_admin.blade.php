@@ -34,7 +34,7 @@
     <!-- Main CSS-->
     <link href="{{ url('') }}/css/theme.css" rel="stylesheet" media="all">
 
-    @if(Request::is('messenger'))
+    @if(Request::is('messenger') || Request::is('tecnicos/detalle'))
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @endif
 
@@ -401,7 +401,7 @@
     <!-- Main JS-->
     <script src="{{ url('') }}/js/main.js"></script>
 
-    @if(Request::is('messenger'))
+    @if(Request::is('messenger') || Request::is('tecnicos/detalle/*'))
         <script>
             var height = $('.page-wrapper:visible').height();
             var width = $('.page-wrapper:visible').width();
@@ -414,7 +414,12 @@
                 height: 96% !important;
             }
         </style>
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        @if( Request::is('tecnicos/detalle/*'))
+            <script src="{{ asset('js/app_fixerman.js') }}" defer></script>
+        @else
+            <script src="{{ asset('js/app.js') }}" defer></script>
+        @endif
+
     @endif
 
 </body>

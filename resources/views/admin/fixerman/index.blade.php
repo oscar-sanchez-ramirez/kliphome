@@ -75,9 +75,9 @@
                                                 {{-- <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                     <i class="zmdi zmdi-delete"></i>
                                                 </button> --}}
-                                                <button class="item" data-toggle="modal" data-target="#mediumModal" id="fixermanModal" data-id="{{ $user->id }}">
+                                                <a class="item" href="{{ url('') }}/tecnicos/detalle/{{ $user->id }}">
                                                     <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-eye"></i>
-                                                </button>
+                                                </a>
                                                 <button class="item" data-toggle="modal" data-target="#mediumImage" id="fixermanModalImage" data-id="{{ $user->avatar }}" data-user="{{ $user->id }}">
                                                     <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-image"></i>
                                                 </button>
