@@ -187,7 +187,7 @@ class FixerManController extends Controller
         ->whereDate('o.service_date','>=',$fecha_inicio)->whereDate('o.service_date','<=',$fecha_fin)->where('so.user_id',$request->id_fixerman)
         ->get();
         $ids = array_column($orders->toArray(), 'id');
-        $servicios = [];
+        $servicios = 0;
         $propinas = 0;
         $percent = 100;
         $visita = 0;
