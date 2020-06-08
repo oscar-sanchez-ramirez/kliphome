@@ -45,7 +45,7 @@
                     <b-card-body>
                         <v-menu ref="inicio" v-model="inicio" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
                             <template v-slot:activator="{ on }">
-                            <v-text-field v-model="date" label="Inicio" readonly v-on="on"></v-text-field>
+                            <v-text-field v-model="computedDateFormatted" label="Inicio" readonly v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="date" no-title scrollable>
                             <v-spacer></v-spacer>
@@ -55,7 +55,7 @@
                         </v-menu>
                         <v-menu ref="fin" v-model="fin" :close-on-content-click="false" :return-value.sync="date_fin" transition="scale-transition" offset-y min-width="290px">
                             <template v-slot:activator="{ on }">
-                            <v-text-field v-model="date_fin" label="Fin" readonly v-on="on"></v-text-field>
+                            <v-text-field v-model="computedDateEndFormatted" label="Fin" readonly v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="date_fin" no-title scrollable>
                             <v-spacer></v-spacer>
@@ -165,6 +165,7 @@ export default {
   },computed:{
       ordenes(){ return this.$store.state.orders;},
       computedDateFormatted () { return this.formatDate(this.date)},
+      computedDateEndFormatted () { return this.formatDate(this.date_fin)},
   },methods:{
       handleEventClick(e){
           e.jsEvent.stopPropagation();
@@ -213,9 +214,10 @@ export default {
         this.calculo = true;
       },
       formatDate (date) {
+          console.log(date);
         if (!date) return null
         const [year, month, day] = date.split('-')
-        return `${month}/${day}/${year}`
+        return `${day}-${month}-${year}`
       },
       calcular_monto(){
           this.loader = true;
