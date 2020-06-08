@@ -184,7 +184,7 @@ class FixerManController extends Controller
         $fecha_fin = Carbon::parse($request->fecha_fin)->format('Y-m-d H:i:i');
         $orders = DB::table('orders as o')
         ->join('selected_orders as so','o.id','so.order_id')->select('o.*')
-        ->whereDate('o.service_date','>=',$fecha_inicio)->whereDate('o.service_date','<=',$fecha_fin)->where('so.user_id',$request->id_fixerman)
+        ->whereDate('o.service_date','>=',$fecha_inicio)->whereDate('o.service_date','<=',$fecha_fin)->where('so.user_id',$request->id_fixerman)->where('so.state',1)
         ->get();
         $ids = array_column($orders->toArray(), 'id');
         $servicios = 0;
