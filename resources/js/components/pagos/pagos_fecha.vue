@@ -29,8 +29,9 @@
         </v-col>
       </v-row>
         <v-layout justify-center>
-            <v-btn color="warning" dark @click="calcular_monto()">Calcular</v-btn>
+            <v-btn color="warning" id="boton_calcular" dark @click="calcular_monto()">Calcular</v-btn>
         </v-layout>
+
         <v-dialog v-model="loader" hide-overlay persistent width="300">
             <v-card color="primary" dark>
                 <v-card-text>Calculando...<v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear></v-card-text>
@@ -68,6 +69,9 @@
     }
     .row{
         padding:4%;
+    }
+    #boton_calcular{
+        margin-bottom: 3%;
     }
 </style>
 <script>
