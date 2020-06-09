@@ -15,8 +15,20 @@
     <div class="section__content section__content--p30">
         <div class="row">
             <div class="col-md-12">
+                <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                        <div class="rs-select2--light rs-select2--md">
+
+                        </div>
+                    </div>
+                    <div class="table-data__tool-right">
+                        <a href="{{ url('') }}/pagos/pagos-fecha" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            Pagos por fecha</a>
+                    </div>
+                </div>
                 <div class="table-responsive table-responsive-data2">
                     <h5>Porcentaje general : <a href="{{ url('') }}/pagos/porcentaje-general">{{ $general_percent->value }}%</a></h5>
+
                     @if(count($payments) == 0)
                         <div id="center">
                             <h4>No se regitraron órdenes en la aplicación</h4>

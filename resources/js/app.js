@@ -1,5 +1,5 @@
 window.Vue = require('vue');
-require('./bootstrap');
+require('./bootstrap_fixerman');
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import Vuetify from 'vuetify'
