@@ -97,7 +97,7 @@
             return `${day}-${month}-${year}`
         },
         calcular_monto(){
-            console.log("1");
+            this.users = [];
             // this.loader = true;
             axios.get('/pagos/calcular',{params:{
                 fecha_inicio:this.date,
@@ -109,10 +109,6 @@
                         this.users.push(users[index]);
                     }
                 }
-                console.log(this.users);
-                // this.loader = false;
-                // let total = response.data.servicios + response.data.visita + response.data.propinas;
-                // $("#resultado").html('<b>Mano de obra: </b>$'+response.data.servicios+'<br><b>Visita: </b>$'+response.data.visita+'<br><b>Propinas: </b>$'+response.data.propinas+'<br><b>Total: </b>$'+total);
                 }).catch(error => {
                     console.log(error);
                 });
