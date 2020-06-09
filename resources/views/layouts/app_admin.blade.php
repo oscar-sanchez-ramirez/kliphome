@@ -9,6 +9,7 @@
     <meta name="author" content="789.mx">
     <meta name="keywords" content="Plomeria">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{url('')}}/img/favicon.ico">
 
     <!-- Title Page-->
     <title>KlipHome</title>
@@ -400,7 +401,9 @@
 
     <!-- Main JS-->
     <script src="{{ url('') }}/js/main.js"></script>
-
+    @if(Request::is('pagos/pagos-fecha'))
+        <script src="{{ asset('js/app_pagos.js') }}" defer></script>
+    @endif
     @if(Request::is('messenger') || Request::is('tecnicos/detalle/*'))
         <script>
             var height = $('.page-wrapper:visible').height();
