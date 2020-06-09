@@ -15,15 +15,15 @@
           </v-dialog>
         </v-col>
         <v-col cols="6">
-          <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
+          <v-dialog ref="dialog1" v-model="modal1" :return-value.sync="date_fin" persistent width="290px">
             <template v-slot:activator="{ on, attrs }">
               <v-text-field v-model="computedDateEndFormatted" label="Fecha Fin" readonly v-bind="attrs" v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="date" scrollable>
+            <v-date-picker v-model="date_fin" scrollable>
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+              <v-btn text color="primary" @click="$refs.dialog1.save(date_fin)">OK</v-btn>
             </v-date-picker>
           </v-dialog>
         </v-col>
@@ -79,9 +79,8 @@
     data: () => ({
       date: new Date().toISOString().substr(0, 10),
       date_fin: new Date().toISOString().substr(0, 10),
-      menu: false,
       modal: false,
-      menu2: false,
+      modal1: false,
       loader:false,
       users: [],
     }),computed:{
