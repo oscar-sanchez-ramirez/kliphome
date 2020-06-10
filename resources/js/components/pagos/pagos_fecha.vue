@@ -49,7 +49,7 @@
         </thead>
         <tbody>
             <tr v-for="item in users" :key="item.id">
-                <td scope="row"><a :href="url_detail(item.user_id)" target="_blank">{{ item.name }}</a></td>
+                <td scope="row"><a :href="url_detail(item.user_id)" target="_blank">{{ item.name }} {{ item.lastName }}</a></td>
                 <td>${{ item.propinas }}</td>
                 <td>${{ item.servicios }}</td>
                 <td>${{ item.visita }}</td>
