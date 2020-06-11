@@ -69,6 +69,15 @@ class NotifyNewOrder implements ShouldQueue
         Order::where('id',$this->id)->update([
             'state' => "FIXERMAN_NOTIFIED"
         ]);
+
+
+        $alert = array('alert' => "Una nueva orden fue creada");
+            $mail = "kliphome97@gmail.com";
+            Mail::send('emails.alert',$alert, function($msj) use ($mail){
+                $msj->subject('KlipHome: Nueva orden');
+                $msj->to($mail,"Detalle");
+            });
+
         $visita = Payment::where('order_id',$this->id)->where('description',"VISITA")->where('state',1)->first();
         if($visita){
             $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);

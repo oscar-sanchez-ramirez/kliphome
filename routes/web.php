@@ -53,3 +53,4 @@ Route::get('testOrder', 'ApiRest\OrderController@testOrder');
 Route::get('test','Admin\NotificationsProvider@test');
 
 Route::get('check','Admin\OrderController@check');
+Route::get('terminos-y-condiciones','WebController@terminos');
