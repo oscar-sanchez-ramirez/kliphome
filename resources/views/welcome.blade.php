@@ -45,11 +45,11 @@
             </div>
             <div class="col-md-4">
                 <img src="{{ url('') }}/img/item2.png" height="267px" width="130px"><br>
-                <button class="buttom_item" id="color2">Descarga la App</button>
+                <a href="https://apps.apple.com/us/app/kliphome/id1490914291?ls=1" target="blank" class="buttom_item" id="color2">Descarga la App</a>
             </div>
             <div class="col-md-4">
                 <img src="{{ url('') }}/img/item3.png" height="200px" width="200px"><br>
-                <button class="buttom_item" id="color3">¡A trabajar!</button>
+                <a href="https://apps.apple.com/us/app/kliphome-tecnicos/id1490914489?ls=1" class="buttom_item" id="color3">¡A trabajar!</a>
             </div>
           </div>
       </div>
