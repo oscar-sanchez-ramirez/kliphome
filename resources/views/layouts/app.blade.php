@@ -55,11 +55,11 @@
 
         @yield('content')
     <!-- Footer -->
-    <footer class="bg-black small text-center text-white-50">
+    {{-- <footer class="bg-black small text-center text-white-50">
         <div class="container">
         Copyright &copy; KlipHome 2020
         </div>
-    </footer>
+    </footer> --}}
 
 
     <!-- Bootstrap core JavaScript -->
