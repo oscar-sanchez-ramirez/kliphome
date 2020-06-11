@@ -1,5 +1,11 @@
 @extends('layouts.app')
-
+<style>
+    #mainNav .nav-link{
+        color:black !important;
+    }#mainNav{
+        background-color: transparent !important;
+    }
+</style>
 @section('content')
   <header class="masthead">
       <div style="position: relative; z-index: 2;">

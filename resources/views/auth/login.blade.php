@@ -5,11 +5,16 @@
     .card-body,.card{
         background-color:rgba(255, 255, 255, 0.5) !important
     }
+    #mainNav .nav-link{
+        color:black !important;
+    }#mainNav{
+        background-color: transparent !important;
+    }
 </style>
 <header class="masthead">
-    <div class="container d-flex h-100 align-items-center">
+    <div class="container d-flex h-100 align-items-center" style="z-index: 3;position: relative">
       <div class="mx-auto text-center">
-            <img src="{{ url('') }}/img/icon.png" alt="" height="150px" width="150px">
+            {{-- <img src="{{ url('') }}/img/icon.png" alt="" height="150px" width="150px"> --}}
             <br><br>
             <div class="card">
                 <div class="card-body">
