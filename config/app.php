@@ -165,7 +165,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Berkayk\OneSignal\OneSignalServiceProvider::class,
         NotificationChannels\OneSignal\OneSignalServiceProvider::class,
-
+        Sentry\Laravel\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -231,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'OneSignal' => Berkayk\OneSignal\OneSignalFacade::class,
+        'Sentry' => Sentry\Laravel\Facade::class,
     ],
 
 ];

@@ -54,3 +54,6 @@ Route::get('test','Admin\NotificationsProvider@test');
 
 Route::get('check','Admin\OrderController@check');
 Route::get('terminos-y-condiciones','WebController@terminos');
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});
