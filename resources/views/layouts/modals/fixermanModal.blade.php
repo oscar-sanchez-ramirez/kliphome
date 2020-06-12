@@ -87,7 +87,7 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-4">
-                            <img id="imageFixerman" src="" height="256px" width="256px" style="border-radius:100%">
+                            <img id="imageFixerman" src="" height="256px" width="256px" style="border-radius:100%;height: 256px;">
                             <input type="hidden" id="idFixerman" name="idFixerman" value="">
                             <input type="hidden" name="url" value="{{url('')}}">
                         </div>
