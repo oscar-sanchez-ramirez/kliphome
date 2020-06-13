@@ -100,6 +100,7 @@ class FixerManController extends ApiController
                 'user' => $user
             ]);
         } catch (\Throwable $th) {
+            Log::error($th);
             return response()->json([
                 'status' => false,
                 'fail' => "No se pudo registrar al trabajador, porfavor verifique sus datos"
@@ -134,6 +135,7 @@ class FixerManController extends ApiController
                 }
 
             } catch (\Throwable $th) {
+                Log::error($th);
                 return Response(json_encode(array('success' => 0,'message'=>'Error al guardar, intente de nuevo mas tarde')));
             }
         }else{
@@ -232,7 +234,7 @@ class FixerManController extends ApiController
             $price = floatval($request->price);
             if($price != 0){
                 try {
-                    Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
                     if(substr($request->stripeToken,0,3) == "cus"){
                         $pago = Stripe\Charge::create ([
                             "amount" => $price * 100,
@@ -257,6 +259,7 @@ class FixerManController extends ApiController
                     $payment->price = $price;
                     $payment->save();
                 } catch (\Throwable $th) {
+                    Log::error($th);
                     $payment = new Payment;
                     $payment->order_id = $request->order_id;
                     $payment->description = "PROPINA POR SERVICIO";
@@ -291,6 +294,7 @@ class FixerManController extends ApiController
                 'success' => true
             ]);
         } catch (\Throwable $th) {
+            Log::error($th);
             return response()->json([
                 'success' => false
             ]);

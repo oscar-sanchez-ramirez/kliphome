@@ -50,7 +50,7 @@ class OrderController extends ApiController
                 $price = 'quotation';
                 $price = floatval($request->price);
                 try {
-                    Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
                     if(substr($request->token,0,3) == "cus"){
                         $pago = Stripe\Charge::create ([
                             "amount" => $request->visit_price * 100,
@@ -96,6 +96,7 @@ class OrderController extends ApiController
                         'message' => "La orden de servicio se realizó con éxito"
                     ]);
                 } catch (\Throwable $th) {
+                    Log::error($th);
                     $payment = new Payment;
                     $payment->order_id = $order->id;
                     $payment->description = "VISITA";
@@ -109,6 +110,7 @@ class OrderController extends ApiController
             }
 
         } catch (\Throwable $th) {
+            Log::error($th);
             return response()->json([
                 'success' => false,
                 'message' => "La orden de servicio no se realizó"
@@ -140,7 +142,7 @@ class OrderController extends ApiController
         // try {
             $price = floatval($request->price);
             try {
-                Stripe\Stripe::setApiKey("sk_test_f2VYH7q0KzFbrTeZfSvSsE8R00VBDQGTPN");
+                Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
                 if(substr($request->stripeToken,0,3) == "cus"){
                     $pago = Stripe\Charge::create ([
                         "amount" => $price * 100,
@@ -164,6 +166,7 @@ class OrderController extends ApiController
                 $payment->price = $price;
                 $payment->save();
             } catch (\Throwable $th) {
+                Log::error($th);
                 $payment = new Payment;
                 $payment->order_id = $request->order_id;
                 $payment->description = "PAGO POR SERVICIO";
