@@ -25,8 +25,8 @@ class PaymentController extends Controller
         ->join('payments as p','p.order_id','o.id')
         ->leftJoin('quotations as q','o.id','q.order_id')
         ->leftJoin('selected_orders as so','o.id','so.order_id')
-        ->join('users as u','u.id','so.user_id')
-        ->join('fixerman_stats as ft','ft.user_id','u.id')
+        ->leftJoin('users as u','u.id','so.user_id')
+        ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
         ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')->orderBy('p.id',"DESC")->get();
         return view('admin.payments.index')->with('payments',$payments)->with('general_percent',$general_percent);
     }
