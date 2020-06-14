@@ -97,8 +97,9 @@ class OrderController extends ApiController
                     ]);
                 } catch (\Throwable $th) {
                     Log::error($th);
+                    $user = $request->user();
                     $payment = new Payment;
-                    $payment->order_id = $order->id;
+                    $payment->order_id = $user->id;
                     $payment->description = "VISITA";
                     $payment->state = false;
                     $payment->price = $request->visit_price;

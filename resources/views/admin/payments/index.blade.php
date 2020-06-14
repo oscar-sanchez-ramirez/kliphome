@@ -81,7 +81,7 @@
                                         <td>{{ \Carbon\Carbon::parse($payment->created_at)->diffForHumans() }}</td>
                                         <td>
                                            @if($payment->state == 0)
-                                                <p id="danger">Cancelado</p>
+                                                <p id="danger">Denegado</p>
                                            @else
                                                 <p id="success">Aceptado</p>
                                            @endif
@@ -89,7 +89,7 @@
                                         <td>
                                             <div class="table-data-feature">
                                                 @if($payment->state == 0)
-                                                    <span class="status--denied">Cancelado</span>
+                                                    <span class="status--denied">Denegado</span>
                                                 @else
                                                     <a class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $payment->order_id }}">
                                                         Revisar Orden
