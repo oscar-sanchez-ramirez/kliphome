@@ -66,16 +66,16 @@
                 <form class="au-form-icon" action="{{ url('') }}/ordenes/enviarCotizacion/{{ $orden->id }}" method="POST">
                     @csrf
                     <b>Solución al problema: </b>
-                    <textarea name="solution" class="au-input au-input--full my-editor" cols="10" rows="3" placeholder="Explica la solución al problema" required></textarea>
+                    <textarea name="solution" class="au-input au-input--full my-editor" cols="10" rows="3" placeholder="Explica la solución al problema"></textarea>
                     <b>Materiales necesarios: </b>
-                    <textarea name="materials" class="au-input au-input--full my-editor" cols="10" rows="3" placeholder="Explica los materiales necesarios" required></textarea>
+                    <textarea name="materials" class="au-input au-input--full my-editor" cols="10" rows="3" placeholder="Explica los materiales necesarios"></textarea>
                     <br><br>
                     <div class="row">
                         <div class="col-md-6">
-                            <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Precio por materiales" required>
+                            <input class="au-input au-input--full au-input--h65" type="number" name="price" placeholder="Precio por materiales">
                         </div>
                         <div class="col-md-6">
-                            <input class="au-input au-input--full au-input--h65" type="number" name="workforce" placeholder="Precio por mano de obra" required>
+                            <input class="au-input au-input--full au-input--h65" type="number" name="workforce" placeholder="Precio por mano de obra">
                         </div>
                     </div>
                     <br><br>
