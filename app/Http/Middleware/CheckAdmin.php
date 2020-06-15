@@ -16,13 +16,15 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->type == "ADMINISTRATOR")
-		{
-			return $next($request);
-		}
-		else
-		{
-			 return back();
-		}
+        if(!Auth::guest()){
+            if(Auth::user()->type == "ADMINISTRATOR"){
+                return $next($request);
+            }
+            else{
+                return back();
+            }
+        }else{
+            return back();
+        }
     }
 }
