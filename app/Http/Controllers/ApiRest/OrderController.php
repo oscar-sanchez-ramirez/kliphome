@@ -67,6 +67,8 @@ class OrderController extends ApiController
                         ]);
                     }
 
+                    Log::notice($pago);
+
 
                     $order = new Order;
                     $order->user_id = $request->user_id;
@@ -97,13 +99,13 @@ class OrderController extends ApiController
                     ]);
                 } catch (\Throwable $th) {
                     Log::error($th);
-                    $user = $request->user();
-                    $payment = new Payment;
-                    $payment->order_id = $user->id;
-                    $payment->description = "VISITA";
-                    $payment->state = false;
-                    $payment->price = $request->visit_price;
-                    $payment->save();
+                    // $user = $request->user();
+                    // $payment = new Payment;
+                    // $payment->order_id = $user->id;
+                    // $payment->description = "VISITA";
+                    // $payment->state = false;
+                    // $payment->price = $request->visit_price;
+                    // $payment->save();
                     return response()->json([
                         'success' => false
                     ]);
