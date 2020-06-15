@@ -18,9 +18,10 @@ class PaymentController extends ApiController
         $user = $request->user();
         Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
         try {
+            $random = str_random(5);
             $customer = Stripe\Customer::create ([
                 "source" => $request->stripeToken,
-                "description" => "Card of".$user->name.' '.$user->lastName
+                "description" => "Card of".$user->name.' '.$user->lastName.'-'.$random
             ]);
             return response()->json([
                 'success' => true,
