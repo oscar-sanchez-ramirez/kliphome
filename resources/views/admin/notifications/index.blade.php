@@ -69,20 +69,20 @@
                                         @if ($noti->type == "App\Notifications\Database\NewQuotation")
                                             <td><p>Una órden necesita una cotización</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
-                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["order_id"])) }}">Cotizar</a></td>
+                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["id"])) }}">Cotizar</a></td>
                                         @endif
-                                        @if($noti->type == "App\Notifications\Database\NewQuotation")
-                                            <td><p>Una órden necesita una cotización</p></td>
+                                        @if($noti->type == "App\Notifications\Database\NoFixermanForOrder")
+                                            <td><p>No hay técnicos para esta orden</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
-                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["order_id"])) }}">Cotizar</a></td>
+                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["id"])) }}">Ver Orden</a></td>
                                         @endif
                                         @if($noti->type == "App\Notifications\Database\QuotationCancelled")
                                             <td><p>El usuario no aceptó la tarifa</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
-                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["id"])) }}">Ver Órden</a></td>
+                                            <td><a href="{{ url('') }}/ordenes/detalle-orden/{{ str_replace('"','',json_encode($noti->data["id"])) }}">Ver Orden</a></td>
                                         @endif
                                         @if($noti->type == "App\Notifications\NewFixerMan")
-                                            <td><p>Un nuevo técnico se registró</p></td>
+                                            <td><p>Un nuevo técnico se registró - {{ str_replace('"','',json_encode($noti->data["name"])) }} {{ str_replace('"','',json_encode($noti->data["lastName"])) }}</p></td>
                                             <td>{{ $noti->created_at->diffForHumans() }}</td>
                                             <td><a href="{{ url('') }}/tecnicos">Ver</a></td>
                                         @endif
