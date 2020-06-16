@@ -92,3 +92,4 @@ Route::post('new_conversation','ApiRest\ConversationController@new_conversation'
 Route::post('markConversationAsRead','ApiRest\ConversationController@markConversationAsRead');
 
 Route::post('webhook_oxxo','ApiController@webhook_oxxo');
+Route::get('postal_code/{id}','ApiController@postal_code');

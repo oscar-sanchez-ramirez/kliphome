@@ -12,7 +12,11 @@ class ApiController extends Controller
     {
         // $this->middleware('auth:api');
     }
-    //
+
+    public function postal_code($id){
+        $json = json_decode(file_get_contents('http://sepomex.789.mx/'.$id), true);
+        return $json;
+    }
 
     public function webhook_oxxo(Request $request){
         Log::notice($request->all());
