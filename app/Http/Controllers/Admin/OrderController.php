@@ -35,9 +35,13 @@ class OrderController extends Controller
             DB::table('notifications')->where('id',$request->notification_id)->update(['read_at'=>Carbon::now()]);
         }
         $orden = Order::find($id);
-        $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
-        $payments = Payment::where('order_id',$id)->get();
-        return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman)->with('payments',$payments);
+        if($orden){
+            $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
+            $payments = Payment::where('order_id',$id)->get();
+            return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman)->with('payments',$payments);
+        }else{
+            return back();
+        }
     }
 
     public function aprobarSolicitudTecnico($fixerman_id,$order_id){

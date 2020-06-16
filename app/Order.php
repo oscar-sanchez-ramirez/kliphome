@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -13,7 +14,6 @@ class Order extends Model
         return Address::where('id',$id)->first(['alias','street','exterior','interior','municipio','postal_code','colonia','reference']);
     }
     public function orderCoupon($coupon_code){
-        // Log::notice($coupon);
         $coupon = User::where('code',$coupon_code)->first();
         if(!empty($coupon)){
             $coupon->discount = 5;
@@ -25,14 +25,21 @@ class Order extends Model
     }
     public function getService($type,$id){
         switch ($type) {
-            case 'SubService':
-                return SubService::where('id',$id)->first('title');
+            case 'Category':
+                $category = DB::table('categories')->select('title as category')->where('id',$id)->get();
+                return $category[0]->category;
+                break;
+            case 'SubCategory':
+                $category  = DB::table('sub_categories as su')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category')->where('su.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category;
                 break;
             case 'Service':
-                return Service::where('id',$id)->first('title');
+                $category = DB::table('services as se')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('se.title as service','ca.title as category','su.title as sub_category')->where('se.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->service;
                 break;
-            case 'Category':
-                return Category::where('id',$id)->first('title');
+            case 'SubService':
+                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category','subse.title as service','se.title as serviceTrait')->where('subse.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->serviceTrait.'/'.$category[0]->service;
                 break;
             default:
                 # code...
