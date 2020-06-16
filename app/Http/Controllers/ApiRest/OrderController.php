@@ -66,8 +66,6 @@ class OrderController extends ApiController
                             "description" => "Pago por visita"
                         ]);
                     }
-                    Log::notice($pago);
-                    Log::notice($pago->paid);
                     if($pago->paid == true){
                         $order = new Order;
                         $order->user_id = $request->user_id;

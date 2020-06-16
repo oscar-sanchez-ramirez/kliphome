@@ -45,10 +45,6 @@
 
                                                             @if($orden->price == "quotation" || $orden->price == "waitquotation")
                                                                 <br><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotationmodal">Cotizar</button>
-                                                                {{-- <form method="POST" action="{{ url('') }}/ordenes/notify/{{ $orden->id }}" style="display:inline-block" onsubmit="return confirm('Notificar al cliente sobre cotización')">
-                                                                    @csrf
-                                                                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-bell"></i></button>
-                                                                </form> --}}
                                                             @endif
                                                         @else
                                                             <h4>Esperando confirmación del cliente</h4>
