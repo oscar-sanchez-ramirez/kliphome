@@ -27,6 +27,8 @@ class CreateAdminCouponsTable extends Migration
 
             $table->string('discount');
 
+            $table->boolean('state')->default(true);
+
             $table->timestamps();
         });
     }

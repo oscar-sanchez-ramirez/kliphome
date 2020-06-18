@@ -404,7 +404,7 @@
     @if(Request::is('pagos/pagos-fecha'))
         <script src="{{ asset('js/app_pagos.js') }}" defer></script>
     @endif
-    @if(Request::is('messenger') || Request::is('tecnicos/detalle/*'))
+    @if(Request::is('messenger') || Request::is('tecnicos/detalle/*') || Request::is('cupones/*'))
         <script>
             var height = $('.page-wrapper:visible').height();
             var width = $('.page-wrapper:visible').width();
@@ -419,6 +419,8 @@
         </style>
         @if( Request::is('tecnicos/detalle/*'))
             <script src="{{ asset('js/app_fixerman.js') }}" defer></script>
+        @elseif(Request::is('cupones/*'))
+        <script src="{{ asset('js/app_coupons.js') }}" defer></script>
         @else
             <script src="{{ asset('js/app.js') }}" defer></script>
         @endif

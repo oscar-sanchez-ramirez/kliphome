@@ -82,6 +82,9 @@
                                                 </a>
                                             @else
                                                 <div class="table-data-feature">
+                                                    <a href="{{ url('') }}/cupones/editar/{{ $coupon->id }}" class="item">
+                                                        <i data-toggle="tooltip" data-placement="top" title="SubCategorias" class="zmdi zmdi-edit"></i>
+                                                    </a>
                                                     <form action="{{ url('') }}/cupones/eliminar/{{ $coupon->id }}" method="POST">
                                                         @csrf
                                                         <button class="item">
