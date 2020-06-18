@@ -46,7 +46,7 @@
                                     <th>Código</th>
                                     <th>Disponibilidad</th>
                                     <th>Descuento</th>
-                                    <th>Usuario</th>
+                                    <th>Cantidad de usos</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -61,38 +61,41 @@
                                         </td>
                                         <td>{{ $coupon->code }}</td>
                                         <td>
-                                            @if($coupon->is_charged == "N")
-                                                <span class="badge badge-success">Disponible</span>
+                                            @if($coupon->state == "1")
+                                                <span class="badge badge-success">Activo</span>
                                             @else
-                                            <span class="badge badge-danger">Usado</span>
+                                            <span class="badge badge-danger">Inactivo</span>
                                             @endif
                                         </td>
                                         <td>{{ $coupon->discount }}%</td>
                                         <td>
-                                            @if($coupon->is_charged == "N")
+                                            {{ $coupon->count($coupon->code) }}
+                                            {{-- @if($coupon->is_charged == "N")
                                                 -
                                             @else
                                                 {{ $coupon->getUser($coupon->user_id)["name"] }} {{ $coupon->getUser($coupon->user_id)["lastName"] }}
-                                            @endif
+                                            @endif --}}
                                         </td>
                                         <td>
-                                            @if($coupon->is_charged == "Y")
+                                            {{-- @if($coupon->is_charged == "Y")
                                                 <a class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $coupon->order_id }}">
                                                     Revisar Solicitud
                                                 </a>
-                                            @else
+                                            @else --}}
                                                 <div class="table-data-feature">
                                                     <a href="{{ url('') }}/cupones/editar/{{ $coupon->id }}" class="item">
                                                         <i data-toggle="tooltip" data-placement="top" title="SubCategorias" class="zmdi zmdi-edit"></i>
                                                     </a>
+                                                    @if($coupon->count($coupon->code) == 0)
                                                     <form action="{{ url('') }}/cupones/eliminar/{{ $coupon->id }}" method="POST">
                                                         @csrf
                                                         <button class="item">
                                                             <i data-toggle="tooltip" data-placement="top" title="SubCategorias" class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </form>
+                                                    @endif
                                                 </div>
-                                            @endif
+                                            {{-- @endif --}}
                                         </td>
                                     </tr>
                                     <tr class="spacer"></tr>
