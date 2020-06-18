@@ -294,7 +294,7 @@ class OrderController extends ApiController
         Log::notice($order_with_coupon);
         Log::notice("2");
         Log::notice($admin_coupon);
-        if(!empty($admin_coupon) && empty($order_with_coupon)){
+        if(!empty($admin_coupon) && ($order_with_coupon->isEmpty())){
             Log::notice("3");
             return response()->json([
                 'success' => true,
