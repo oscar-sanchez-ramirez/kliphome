@@ -292,8 +292,10 @@ class OrderController extends ApiController
         //Validando cupon de admin
         $order_with_coupon = Order::where('pre_coupon',$admin_coupon->code)->where('user_id',$user->id)->get();
         Log::notice($order_with_coupon);
+        Log::notice("2");
+        Log::notice($admin_coupon);
         if(!empty($admin_coupon) && empty($order_with_coupon)){
-            Log::notice("2");
+            Log::notice("3");
             return response()->json([
                 'success' => true,
                 'message' => "Cupón válido",
