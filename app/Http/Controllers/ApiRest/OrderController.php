@@ -127,6 +127,12 @@ class OrderController extends ApiController
         }
     }
 
+    public function suspendQuotation($id){
+        Quotation::where('id',$id)->update([
+            'state' => 2
+        ]);
+    }
+
     public function suspend(Request $request){
         Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
             'price' => "CANCELLED",

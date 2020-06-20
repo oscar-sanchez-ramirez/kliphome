@@ -24,6 +24,7 @@ Route::post('orders/create','ApiRest\OrderController@create');
 Route::post('orders/suspend','ApiRest\OrderController@suspend');
 Route::post('orders/approve','ApiRest\OrderController@approve');
 Route::post('orders/coupon','ApiRest\OrderController@coupon');
+Route::post('orders/suspendQuotation','ApiRest\OrderController@suspendQuotation');
 Route::get('check_active_coupon','ApiRest\OrderController@check_active_coupon');
 
 //Categories
