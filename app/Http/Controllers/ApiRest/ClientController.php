@@ -7,6 +7,7 @@ use App\User;
 use App\Order;
 use App\Address;
 use App\Coupon;
+use App\Quotation;
 use App\AdminCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -88,6 +89,12 @@ class ClientController extends ApiController
             $key->serviceTrait = $category[0]->service;
         }
         return Response(json_encode(array('orders' => $orders,"coupon"=>$check_coupon,"pre_coupon"=>$pre_coupon,"type_coupon"=>$type_coupon)));
+    }
+    public function quotationDetail($id){
+        $quotation = Quotation::where('id',$id)->first();
+        return response()->json([
+            'quotation' => $quotation
+        ]);
     }
     public function addAddress(Request $request){
         $add = new Address;
