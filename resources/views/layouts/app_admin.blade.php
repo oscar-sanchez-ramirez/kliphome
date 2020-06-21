@@ -35,7 +35,7 @@
     <!-- Main CSS-->
     <link href="{{ url('') }}/css/theme.css" rel="stylesheet" media="all">
 
-    @if(Request::is('messenger') || Request::is('tecnicos/detalle'))
+    @if(Request::is('messenger') || Request::is('tecnicos/detalle') || Request::is('ordenes/*'))
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @endif
 
@@ -404,7 +404,7 @@
     @if(Request::is('pagos/pagos-fecha'))
         <script src="{{ asset('js/app_pagos.js') }}" defer></script>
     @endif
-    @if(Request::is('messenger') || Request::is('tecnicos/detalle/*') || Request::is('cupones/*'))
+    @if(Request::is('messenger') || Request::is('tecnicos/detalle/*') || Request::is('cupones/*') || Request::is('ordenes/*'))
         <script>
             var height = $('.page-wrapper:visible').height();
             var width = $('.page-wrapper:visible').width();
@@ -420,7 +420,9 @@
         @if( Request::is('tecnicos/detalle/*'))
             <script src="{{ asset('js/app_fixerman.js') }}" defer></script>
         @elseif(Request::is('cupones/*'))
-        <script src="{{ asset('js/app_coupons.js') }}" defer></script>
+            <script src="{{ asset('js/app_coupons.js') }}" defer></script>
+        @elseif(Request::is('ordenes/*'))
+            <script src="{{ asset('js/app_orders.js') }}" defer></script>
         @else
             <script src="{{ asset('js/app.js') }}" defer></script>
         @endif

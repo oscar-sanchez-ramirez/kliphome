@@ -3,5 +3,6 @@
     "/css/app.css": "/css/app.css",
     "/js/app_coupons.js": "/js/app_coupons.js",
     "/js/app_fixerman.js": "/js/app_fixerman.js",
+    "/js/app_orders.js": "/js/app_orders.js",
     "/js/app_pagos.js": "/js/app_pagos.js"
 }

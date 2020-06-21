@@ -26,6 +26,7 @@
         "@fullcalendar/list": "^4.4.2",
         "@fullcalendar/timegrid": "^4.4.2",
         "@fullcalendar/vue": "^4.4.2",
+        "@tinymce/tinymce-vue": "^3.2.2",
         "bootstrap-vue": "^2.0.0-rc.11",
         "laravel-echo": "^1.6.1",
         "moment": "^2.24.0",

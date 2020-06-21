@@ -143,7 +143,7 @@ class FixerManController extends Controller
         Order::where('id',$id_orden)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);
-        return back()->with('success','Se asignó al técnico');
+        // return back()->with('success','Se asignó al técnico');
     }
     public function aprove(Request $request){
         User::where('id',$request->fixerman_id)->update([

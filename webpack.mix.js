@@ -15,3 +15,4 @@ mix.js('resources/js/app.js', 'public/js').sass('resources/sass/app.scss', 'publ
 mix.js('resources/js/app_fixerman.js', 'public/js');
 mix.js('resources/js/app_coupons.js', 'public/js');
 mix.js('resources/js/app_pagos.js', 'public/js');
+mix.js('resources/js/app_orders.js', 'public/js');

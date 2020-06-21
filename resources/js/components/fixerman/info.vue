@@ -1,5 +1,5 @@
 <template>
- <v-app>
+ <div>
     <v-alert type="success" v-if="success">
       Los datos fueron actualizados
     </v-alert>
@@ -38,7 +38,7 @@
             <v-btn class="text-center" color="primary" @click="guardar_datos">Actualizar</v-btn>
         </v-col>
     </b-row>
- </v-app>
+ </div>
 </template>
 <style lang='scss'>
     @import '~vuetify/dist/vuetify.min.css';

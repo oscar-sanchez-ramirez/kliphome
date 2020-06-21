@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use DB;
 use OneSignal;
 use App\User;
+use App\Address;
 use App\Order;
 use App\Payment;
 use App\Quotation;
@@ -44,6 +45,15 @@ class OrderController extends Controller
         }
     }
 
+    public function detalle_usuario($id,$address_id){
+        $user = User::where('id',$id)->first();
+        $address = Address::where('id',$address_id)->first();
+        return response()->json([
+            'user' => $user,
+            'address' => $address
+        ]);
+    }
+
     public function aprobarSolicitudTecnico($fixerman_id,$order_id){
         dispatch(new ApproveOrderFixerMan($fixerman_id,$order_id));
         return back();
@@ -58,12 +68,17 @@ class OrderController extends Controller
 
         $order = Order::where('id',$order_id)->first();
         $user = User::where('id',$order->user_id)->first();
+        $check_quotations = Quotation::where('order_id',$order_id)->count();
+        if($check_quotations == 0){
+            Order::where('id',$order_id)->update([ 'price' => "waitquotation"]);
+        }
         $quotation = new Quotation;
         $quotation->order_id = $order_id;
         $quotation->price = $request->price;
         $quotation->solution = $request->solution;
         $quotation->materials = $request->materials;
         $quotation->workforce = $request->workforce;
+        $quotation->state = 0;
         $quotation->save();
 
 
@@ -88,10 +103,11 @@ class OrderController extends Controller
             $buttons = null,
             $schedule = null
         );
-        Order::where('id',$order_id)->update([
-            'price' => "waitquotation"
+        // return back()->with('success',"Se envió la cotización");
+        return response()->json([
+            'success' => true,
+            'message' => "Se envió la cotización"
         ]);
-        return back()->with('success',"Se envió la cotización");
     }
 
     public function notify($order_id){
@@ -118,5 +134,49 @@ class OrderController extends Controller
         ->get();
 
         return $orders;
+    }
+
+    public function cupon(){
+        $coupon = User::where('code',$coupon_code)->first();
+        if(!empty($coupon)){
+            $coupon->discount = 5;
+            return response()->json([
+                'coupon' => $coupon
+            ]);
+        }else{
+            $admin_coupon = AdminCoupon::where('code',$coupon_code)->first();
+            return response()->json([
+                'coupon' => $admin_coupon
+            ]);
+        }
+    }
+    public function getService($type,$id){
+        switch ($type) {
+            case 'Category':
+                $category = DB::table('categories')->select('title as category')->where('id',$id)->get();
+                return $category[0]->category;
+                break;
+            case 'SubCategory':
+                $category  = DB::table('sub_categories as su')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category')->where('su.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category;
+                break;
+            case 'Service':
+                $category = DB::table('services as se')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('se.title as service','ca.title as category','su.title as sub_category')->where('se.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->service;
+                break;
+            case 'SubService':
+                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category','subse.title as service','se.title as serviceTrait')->where('subse.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->serviceTrait.'/'.$category[0]->service;
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+    public function cotizaciones($order_id){
+        $quotations = Quotation::where('order_id',$order_id)->get();
+        return response()->json([
+            'quotations' => $quotations
+        ]);
     }
 }

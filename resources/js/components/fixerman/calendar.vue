@@ -214,7 +214,6 @@ export default {
         this.calculo = true;
       },
       formatDate (date) {
-          console.log(date);
         if (!date) return null
         const [year, month, day] = date.split('-')
         return `${day}-${month}-${year}`

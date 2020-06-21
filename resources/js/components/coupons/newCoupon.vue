@@ -54,7 +54,6 @@ export default {
 
               axios.post('/cupones/save',formData).then(response => {
                 //   this.loader = false;
-                    console.log(response.data);
                     if(!response.data.success){
                         this.showError(response.data.message);
                     }else{
