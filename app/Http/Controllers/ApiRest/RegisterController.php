@@ -42,7 +42,7 @@ class RegisterController extends ApiController
             'colonia' => $request->colony,
             'municipio' => $request->municipio
         ]);
-        // dispatch(new UserConfirmation($user));
+        dispatch(new UserConfirmation($user));
         return response()->json([
             'message' => "Usuario creado correctamente",
             'user' => $user
