@@ -72,6 +72,7 @@
     }
 </style>
 <script>
+import moment from 'moment'
 export default {
     props:{
         orden:Object,
@@ -90,7 +91,7 @@ export default {
               return response.data.coupon.discount
             });
         },parseDate(date){
-            return moment(date).format('Do,MMM H:mm');
+            return moment(date).format('D,MMM H:mm');
         }
     }
 }
