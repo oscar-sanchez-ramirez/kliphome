@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\ApiRest;
 
-use App\Address;
-use App\ResetPassword;
-use App\Http\Controllers\ApiController;
-use Illuminate\Http\Request;
-use App\Http\Requests\ClientRequest;
-use App\User;
 use Mail;
-use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
+use App\User;
 use Validator;
+use App\Address;
+use Carbon\Carbon;
+use App\ResetPassword;
+use App\Jobs\Mail\UserConfirmation;
+use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\ClientRequest;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends ApiController
 {
@@ -41,6 +42,7 @@ class RegisterController extends ApiController
             'colonia' => $request->colony,
             'municipio' => $request->municipio
         ]);
+        dispatch(new UserConfirmation($user));
         return response()->json([
             'message' => "Usuario creado correctamente",
             'user' => $user
