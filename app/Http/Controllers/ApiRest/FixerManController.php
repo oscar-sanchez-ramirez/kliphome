@@ -19,6 +19,7 @@ use App\SelectedOrders;
 use App\SelectedDelegation;
 use App\SelectedCategories;
 use App\Notifications\NewFixerMan;
+use App\Jobs\Mail\UserConfirmation;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\NotifyAcceptOrder;
 use App\Notifications\Database\NewQuotation;
@@ -93,7 +94,7 @@ class FixerManController extends ApiController
 
             $client = User::where('type',"ADMINISTRATOR")->first();
             $client->notify(new NewFixerMan($user));
-
+            dispatch(new UserConfirmation($user));
             return response()->json([
                 'status' => true,
                 'message' => "Tu cuenta se creó exitosamente, evaluaremos tu perfil.",

@@ -38,6 +38,7 @@
                             <a class="nav-link js-scroll-trigger" href="{{ url('/admin') }}">Home</a>
                         </li>
                     @else
+                        @if(!Request::is('email-confirmation/*'))
                         <li class="nav-item">
                             <a class="nav-link js-scroll-trigger" href="{{ route('login') }}">Login</a>
                         </li>
@@ -45,6 +46,7 @@
                             <li class="nav-item">
                                 <a class="nav-link js-scroll-trigger" href="{{ route('register') }}">Register</a>
                             </li>
+                        @endif
                         @endif
                     @endauth
                 @endif

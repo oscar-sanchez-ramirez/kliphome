@@ -8,11 +8,11 @@ use Validator;
 use App\Address;
 use Carbon\Carbon;
 use App\ResetPassword;
-use App\Jobs\Mail\UserConfirmation;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\ClientRequest;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\Mail\UserConfirmation;
+use App\Http\Requests\ClientRequest;
+use App\Http\Controllers\ApiController;
 
 class RegisterController extends ApiController
 {

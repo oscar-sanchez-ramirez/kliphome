@@ -57,3 +57,6 @@ Route::get('terminos-y-condiciones','WebController@terminos');
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');
 });
+
+//Email confirmation
+Route::get('email-confirmation/{code}','WebController@email_verified');
