@@ -91,7 +91,8 @@ export default {
               return response.data.coupon.discount
             });
         },parseDate(date){
-            return moment(date).format('D,MMM H:mm');
+            //return moment(date).format('D,MMM H:mm');
+            return moment(String(date)).format('MM/DD/YYYY hh:mm')
         }
     }
 }
