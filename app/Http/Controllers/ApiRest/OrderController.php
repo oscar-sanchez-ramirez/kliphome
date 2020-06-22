@@ -24,8 +24,12 @@ class OrderController extends ApiController
     {
         $this->middleware('auth:api');
     }
+    public function create_test(Request $request){
+        Log::notice($request->all());
+    }
     public function create(Request $request){
         try {
+            if($request->service_image == ""){ $image = "https://kliphome.com/images/default.jpg";}else{$image = $request->service_image;}
             if($request->visit_price == "quotation"){
                 //No necesita pago de visita (Telefono, Computadora)
                 $order = new Order;
@@ -34,7 +38,7 @@ class OrderController extends ApiController
                 $order->type_service = $request->type_service;
                 $order->service_date = $request->service_date;
                 $order->service_description = $request->service_description;
-                $order->service_image = $request->service_image;
+                $order->service_image = $image;
                 $order->address = $request->address;
                 $order->price = 'quotation';
                 $order->visit_price = $request->visit_price;
@@ -73,7 +77,7 @@ class OrderController extends ApiController
                         $order->type_service = $request->type_service;
                         $order->service_date = $request->service_date;
                         $order->service_description = $request->service_description;
-                        $order->service_image = $request->service_image;
+                        $order->service_image = $image;
                         $order->address = $request->address;
                         $order->price = 'quotation';
                         $order->visit_price = $request->visit_price;

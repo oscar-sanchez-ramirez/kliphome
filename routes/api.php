@@ -21,6 +21,7 @@ Route::get('sub-categories/{category}','ApiRest\ApiServiceController@getSubCateg
 Route::get('services/{subCategory}','ApiRest\ApiServiceController@getServices');
 //Orders**
 Route::post('orders/create','ApiRest\OrderController@create');
+Route::post('orders/create_test','ApiRest\OrderController@create_test');
 Route::post('orders/suspend','ApiRest\OrderController@suspend');
 Route::post('orders/approve','ApiRest\OrderController@approve');
 Route::post('orders/coupon','ApiRest\OrderController@coupon');
