@@ -12,7 +12,7 @@
 
           <div class="row" style="text-align: center;padding-top:25%">
             <div class="col-md-4"></div>
-            <div class="col-md-4"><h2>¡ERROR!</h2><h2>No se encontró a usuario, intente con otro</h2><h2>Gracias por usar KlipHome</h2></div>
+            <div class="col-md-4"><h2>¡ERROR!</h2><h2>No se encontró a usuario o ya fue validado, intente con otro</h2><h2>Gracias por usar KlipHome</h2></div>
             <div class="col-md-4"></div>
 
           </div>
