@@ -92,7 +92,7 @@ export default {
             });
         },parseDate(date){
             //return moment(date).format('D,MMM H:mm');
-            return moment(String(date)).format('MM/DD/YYYY hh:mm')
+            return moment(String(date)).format('D,MMM H:mm')
         }
     }
 }
