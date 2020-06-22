@@ -92,8 +92,8 @@ class FixerManController extends ApiController
             $stat->percent = $general_percent->value;
             $stat->save();
 
-            // $client = User::where('type',"ADMINISTRATOR")->first();
-            // $client->notify(new NewFixerMan($user));
+            $client = User::where('type',"ADMINISTRATOR")->first();
+            $client->notify(new NewFixerMan($user));
             dispatch(new UserConfirmation($user));
             return response()->json([
                 'status' => true,
