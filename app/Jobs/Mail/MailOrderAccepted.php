@@ -41,6 +41,11 @@ class MailOrderAccepted implements ShouldQueue
         $monto = Payment::where('order_id',$this->order_id)->where('description',"PAGO POR SERVICIO")->where('state',1)->first();
         $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $cupon = Coupon::where('order_id',$order->id)->first();
+        if($visita){
+
+        }else{
+            $visita["price"] = 0;
+        }
         if($cupon){
             $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>$cupon->code);
         }else{
