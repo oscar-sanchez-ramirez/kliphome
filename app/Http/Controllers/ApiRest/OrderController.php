@@ -203,15 +203,21 @@ class OrderController extends ApiController
                     'success' => false
                 ]);
             }
-
+            $order = Order::where('id',$request->order_id)->first();
             $check_quotations = Quotation::where('order_id',$request->order_id)->count();
             if($check_quotations == 1){
                 Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                     'price' => $price
                 ]);
+                if($order->visit_price == "quotation"){
+                    Order::where('id',$request->order_id)->update([
+                        'visit_price' => 0
+                    ]);
+                }
             }
 
-            $order = Order::where('id',$request->order_id)->first();
+
+
             if($order->pre_coupon != ""){
                 if($request->type_coupon == "pre_coupon"){
                     $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
