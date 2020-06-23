@@ -20,7 +20,8 @@
                                 <p>Referencia: {{ address.reference }}</p>
                                 <div v-if="fixerman">
                                     <div v-show="orden.state != 'PENDING' && orden.state != 'FIXERMAN_NOTIFIED'">
-                                        <h4 v-show="orden.fixerman_arrive">Técnico aun no llego al punto</h4>
+                                        <h4 v-show="orden.fixerman_arrive == 'NO'">Técnico aún no llegó al punto</h4>
+                                        <h4 v-show="orden.fixerman_arrive == 'SI'">Técnico indicó llegada</h4>
                                     </div>
                                 </div>
                                 <div v-if="!fixerman">
