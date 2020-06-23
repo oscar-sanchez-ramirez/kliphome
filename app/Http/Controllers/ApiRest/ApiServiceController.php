@@ -7,6 +7,7 @@ namespace App\Http\Controllers\ApiRest;
 use DB;
 use App\User;
 use App\Address;
+use App\VersionApp;
 use App\Category;
 use App\SubCategory;
 use Illuminate\Http\Request;
@@ -46,23 +47,27 @@ class ApiServiceController extends ApiController
             $orders = $this->categories($categorias,$municipio,$user->id);
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             $accepted = $this->ordersAccepted($user->id);
+            $version_app = VersionApp::where('title','TECNICO')->first();
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
                 'categories' => $categories,
                 'orders' => $orders,
                 'accepted' => $accepted,
-                'notifications' => $notifications
+                'notifications' => $notifications,
+                'version_app' => $version_app
             ]);
         }elseif($user->type == "AppUser"){
             $categories = Category::all();
             $address = Address::where('user_id',$user->id)->get();
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
+            $version_app = VersionApp::where('title','CLIENTE')->first();
             return response()->json([
                 'user' => $user,
                 'address' => $address,
                 'categories' => $categories,
-                'notifications' => $notifications
+                'notifications' => $notifications,
+                'version_app' => $version_app
             ]);
         }
     }

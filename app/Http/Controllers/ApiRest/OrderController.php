@@ -197,6 +197,7 @@ class OrderController extends ApiController
                 $payment->description = "PAGO POR SERVICIO";
                 $payment->state = false;
                 $payment->price = $price;
+                // $payment->code_payment = $th;
                 $payment->save();
                 return response()->json([
                     'success' => false
