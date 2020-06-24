@@ -51,7 +51,9 @@ class ApiServiceController extends ApiController
             $version_app = VersionApp::where('title','TECNICO')->first();
             if($device == "Android"){
                 $newVersion = str_replace("30","3",str_replace(".","",$version_app->version));
+                Log::notice($newVersion);
                 $version_app->version = $newVersion;
+                Log::notice($version_app);
             }
             return response()->json([
                 'user' => $user,
@@ -69,7 +71,9 @@ class ApiServiceController extends ApiController
             $version_app = VersionApp::where('title','CLIENTE')->first();
             if($device == "Android"){
                 $newVersion = str_replace("30","3",str_replace(".","",$version_app->version));
+                Log::notice($newVersion);
                 $version_app->version = $newVersion;
+                Log::notice($version_app);
             }
             return response()->json([
                 'user' => $user,
