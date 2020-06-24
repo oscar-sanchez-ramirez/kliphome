@@ -49,6 +49,10 @@ class ApiServiceController extends ApiController
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             $accepted = $this->ordersAccepted($user->id);
             $version_app = VersionApp::where('title','TECNICO')->first();
+            if($device == "Android"){
+                $newVersion = str_replace(".","",$version_app->version);
+                $version_app->version = $newVersion;
+            }
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
@@ -63,6 +67,10 @@ class ApiServiceController extends ApiController
             $address = Address::where('user_id',$user->id)->get();
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             $version_app = VersionApp::where('title','CLIENTE')->first();
+            if($device == "Android"){
+                $newVersion = str_replace(".","",$version_app->version);
+                $version_app->version = $newVersion;
+            }
             return response()->json([
                 'user' => $user,
                 'address' => $address,
