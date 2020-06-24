@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use DB;
 use OneSignal;
 use App\User;
+use App\AdminCoupon;
 use App\Address;
 use App\Order;
 use App\Payment;
