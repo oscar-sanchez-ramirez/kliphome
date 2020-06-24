@@ -41,9 +41,16 @@ Route::post('newAddress','ApiRest\RegisterController@newAddress');
 Route::post('verifyemail','ApiRest\RegisterController@verifyemail');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
-    Log::notice($request->header('User-Agent'));
     $info = new ApiServiceController();
-    $final = $info->userInfo($user->id);
+
+    $needle = "Mac";
+    $haystack = $request->header('User-Agent');
+    if (strpos($haystack, $needle) !== false){
+        $needle = "iPhone";
+    } else{
+        $needle = "Android";
+    }
+    $final = $info->userInfo($user->id,$needle);
     return $final;
 });
 Route::get('getAccepted/{page}','ApiRest\ApiServiceController@getAccepted');

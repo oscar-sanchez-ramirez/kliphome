@@ -37,8 +37,8 @@ class ApiServiceController extends ApiController
         return Response(json_encode(array('categories' => $categories)));
     }
     //Return info after login, conditional if user is client or fixerman
-    public function userInfo($id){
-        // Log::notice($request->header('User-Agent'));
+    public function userInfo($id,$device){
+        Log::notice($device);
         $user = User::where('id',$id)->with('stats')->first();
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
