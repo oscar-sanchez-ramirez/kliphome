@@ -122,19 +122,20 @@ class FixerManController extends Controller
         $new_selected->order_id = $id_orden;
         $new_selected->state = 1;
         $new_selected->save();
-        $otherRequest = DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->get();
-        if(!empty($otherRequest)){
-            $order["mensajeClient"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
-            $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
-            foreach ($otherRequest as $key) {
-                $notFixerman = User::where('id',$key->user_id)->first();
-                $notFixerman->sendNotification($fixerman->email,'DisapproveOrderFixerMan');
-                $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
-            }
-            DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
-                'state' => 0
-            ]);
-        }
+
+        // $otherRequest = DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->get();
+        // if(!empty($otherRequest)){
+        //     $order["mensajeClient"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+        //     $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
+        //     foreach ($otherRequest as $key) {
+        //         $notFixerman = User::where('id',$key->user_id)->first();
+        //         $notFixerman->sendNotification($notFixerman->email,'DisapproveOrderFixerMan');
+        //         $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
+        //     }
+        //     DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
+        //         'state' => 0
+        //     ]);
+        // }
         //Notification for Fixerman
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "KlipHome ha  confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
