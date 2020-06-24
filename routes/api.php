@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiRest\ApiServiceController;
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,7 @@ Route::post('newAddress','ApiRest\RegisterController@newAddress');
 Route::post('verifyemail','ApiRest\RegisterController@verifyemail');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
+    Log::notice($request->header('User-Agent'));
     $info = new ApiServiceController();
     $final = $info->userInfo($user->id);
     return $final;
