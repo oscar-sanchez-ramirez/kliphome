@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiRest\ApiServiceController;
 /*
 |--------------------------------------------------------------------------

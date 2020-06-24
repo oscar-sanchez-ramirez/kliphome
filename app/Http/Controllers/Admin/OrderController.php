@@ -136,7 +136,7 @@ class OrderController extends Controller
         return $orders;
     }
 
-    public function cupon(){
+    public function cupon($coupon_code){
         $coupon = User::where('code',$coupon_code)->first();
         if(!empty($coupon)){
             $coupon->discount = 5;

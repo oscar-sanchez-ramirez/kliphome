@@ -38,7 +38,6 @@ class ApiServiceController extends ApiController
     }
     //Return info after login, conditional if user is client or fixerman
     public function userInfo($id,$device){
-        Log::notice($device);
         $user = User::where('id',$id)->with('stats')->first();
         if($user->type == "AppFixerMan"){
             $delegation = DB::table('selected_delegations as s')->where('s.user_id',$user->id)->get()->toArray();
@@ -51,9 +50,7 @@ class ApiServiceController extends ApiController
             $version_app = VersionApp::where('title','TECNICO')->first();
             if($device == "Android"){
                 $newVersion = str_replace("3","30",str_replace(".","",$version_app->version));
-                Log::notice($newVersion);
                 $version_app->version = $newVersion;
-                Log::notice($version_app);
             }
             return response()->json([
                 'user' => $user,
@@ -71,9 +68,7 @@ class ApiServiceController extends ApiController
             $version_app = VersionApp::where('title','CLIENTE')->first();
             if($device == "Android"){
                 $newVersion = str_replace("3","30",str_replace(".","",$version_app->version));
-                Log::notice($newVersion);
                 $version_app->version = $newVersion;
-                Log::notice($version_app);
             }
             return response()->json([
                 'user' => $user,
