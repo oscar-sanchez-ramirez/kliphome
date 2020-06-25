@@ -13,7 +13,7 @@
         </v-tab-item>
         <v-tab-item value="tab-2">
             <v-card flat tile>
-                <v-card-text><fixerman-component :fixerman="fixerman"></fixerman-component></v-card-text>
+                <v-card-text><fixerman-component :fixerman="fixerman" :orden="orden"></fixerman-component></v-card-text>
             </v-card>
         </v-tab-item>
         <v-tab-item value="tab-3">

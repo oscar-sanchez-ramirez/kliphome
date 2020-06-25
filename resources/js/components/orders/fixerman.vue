@@ -16,6 +16,9 @@
                     <i class="fa fa-envelope"></i> {{ fixerman.email }}<br>
                     <i class="fa fa-phone"></i> {{ fixerman.phone }}
                 </div>
+                <div class="aligncenter">
+                    <button type="button" class="btn btn-danger" @click="deleteFixerman()">Eliminar Técnico</button>
+                </div>
             </div>
         </div>
         <v-app>
@@ -41,21 +44,35 @@
 </template>
 <style lang='scss'>
     @import '~vuetify/dist/vuetify.min.css';
+
     #cardContent{
         overflow-y: scroll;
     }
     .v-application--wrap{
         min-height: 50px !important;
+    }.aligncenter{
+        padding-top:3%;
+        text-align: center;
     }
 </style>
 <script>
 export default {
+
     props:{
         fixerman:Object,
         orden:Object
     },methods:{
         getFixermanList(){
             this.$store.dispatch('getFixermanList');
+        },deleteFixerman(){
+            axios.post('/tecnicos/eliminarTecnico/'+this.fixerman.id+'/'+this.orden.id).then(response => {
+                    if(response.data.success == true){
+                        this.fixerman = null;
+                    }
+                    // dialog.close();
+                }).catch(error => {
+                    alert("No se ha podido eliminar al Técnico");
+                });
         }
     },computed:{
     }

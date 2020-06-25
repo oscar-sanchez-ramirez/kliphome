@@ -112,6 +112,12 @@ class FixerManController extends Controller
             'categories' => $categories
         ]);
     }
+    public function eliminarTecnico($id_tecnico,$id_orden){
+        SelectedOrders::where('order_id',$id_orden)->where('user_id',$id_tecnico)->delete();
+        return response()->json([
+            'success' => true
+        ]);
+    }
     public function asignarTecnico($id_tecnico,$id_orden){
         $order = Order::where('id',$id_orden)->first();
         $fixerman = User::where('id',$id_tecnico)->first();

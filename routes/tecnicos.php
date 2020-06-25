@@ -8,6 +8,7 @@ Route::post('guardar_datos/{id}','Admin\FixerManController@guardar_datos');
 Route::post('guardar_ficha','Admin\FixerManController@guardar_ficha');
 Route::get('listado','Admin\FixerManController@list');
 Route::post('asignarTecnico/{id_tecnico}/{id_order}','Admin\FixerManController@asignarTecnico');
+Route::post('eliminarTecnico/{id_tecnico}/{id_order}','Admin\FixerManController@eliminarTecnico');
 Route::get('aprove','Admin\FixerManController@aprove');
 Route::post('updateFixermanImage','Admin\FixerManController@updateFixermanImage');
 
