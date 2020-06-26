@@ -6,6 +6,8 @@
         <v-tab href="#tab-2">Técnico</v-tab>
         <v-tab href="#tab-3">Pagos</v-tab>
         <v-tab href="#tab-4">Cotizaciones</v-tab>
+        <v-tab href="#tab-5"><i class="fa fa-cog"></i></v-tab>
+
         <v-tab-item value="tab-1">
             <v-card flat tile>
                 <detail-component :orden="orden" :fixerman="fixerman"></detail-component>
@@ -24,6 +26,11 @@
         <v-tab-item value="tab-4">
             <v-card flat tile>
                 <v-card-text><quotations-component :orden="orden"></quotations-component></v-card-text>
+            </v-card>
+        </v-tab-item>
+        <v-tab-item value="tab-5">
+            <v-card flat tile>
+                <v-card-text><configuration-component :orden="orden"></configuration-component></v-card-text>
             </v-card>
         </v-tab-item>
       </v-tabs>

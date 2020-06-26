@@ -127,6 +127,12 @@ class OrderController extends Controller
         return back()->with('success',"Se notifico al cliente");
     }
 
+    public function cancelOrder($id){
+        Order::where('id',$id)->update([
+            'state' => 'CANCELLED'
+        ]);
+    }
+
     public function check(){
         $hoy = Carbon::now()->format('Y/m/d');
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')

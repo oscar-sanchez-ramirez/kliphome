@@ -17,6 +17,8 @@ Vue.component('detail-component', require('./components/orders/details.vue').def
 Vue.component('fixerman-component', require('./components/orders/fixerman.vue').default);
 Vue.component('payments-component', require('./components/orders/payments.vue').default);
 Vue.component('quotations-component', require('./components/orders/quotations.vue').default);
+Vue.component('configuration-component', require('./components/orders/configuration.vue').default);
+
 
 const app = new Vue({
     el: '#app',
