@@ -43,7 +43,6 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Propinas</th>
                 <th scope="col">Mano de obra</th>
-                <th scope="col">Visita</th>
                 <th scope="col">Total</th>
             </tr>
         </thead>
@@ -52,7 +51,6 @@
                 <td scope="row"><a :href="url_detail(item.user_id)" target="_blank">{{ item.name }} {{ item.lastName }}</a></td>
                 <td>${{ item.propinas }}</td>
                 <td>${{ item.servicios }}</td>
-                <td>${{ item.visita }}</td>
                 <td>${{ item.propinas + item.servicios }}</td>
             </tr>
         </tbody>
@@ -102,7 +100,6 @@
                 fecha_inicio:this.date,
                 fecha_fin:this.date_fin,
             }}).then(response => {
-                console.log(response);
                 let users = response.data.users;
                 for (let index = 0; index < users.length; index++) {
                     if(users[index] != ""){
