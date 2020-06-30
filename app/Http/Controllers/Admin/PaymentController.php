@@ -62,7 +62,6 @@ class PaymentController extends Controller
             array_push($users,$user);
         }
 
-        return $users;
 
         for ($j=0; $j < count($users); $j++) {
             if(count($users) == 1){
