@@ -53,7 +53,7 @@
                 <td>${{ item.propinas }}</td>
                 <td>${{ item.servicios }}</td>
                 <td>${{ item.visita }}</td>
-                <td>${{ item.visita + item.propinas + item.servicios }}</td>
+                <td>${{ item.propinas + item.servicios }}</td>
             </tr>
         </tbody>
     </table>
@@ -102,6 +102,7 @@
                 fecha_inicio:this.date,
                 fecha_fin:this.date_fin,
             }}).then(response => {
+                console.log(response);
                 let users = response.data.users;
                 for (let index = 0; index < users.length; index++) {
                     if(users[index] != ""){

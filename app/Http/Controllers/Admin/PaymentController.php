@@ -39,7 +39,7 @@ class PaymentController extends Controller
         ->join('users as u','so.user_id','u.id')
         ->whereDate('o.service_date','>=',$fecha_inicio)->whereDate('o.service_date','<=',$fecha_fin)
         ->where('so.state',1)
-        ->select('so.user_id as fixerman_id','o.id','u.name','u.lastName','u.id as user_id')->orderBy('u.id')
+        ->select('so.user_id as fixerman_id','o.id','u.name','u.lastName','u.id as user_id','o.service_date')->orderBy('u.id')
         ->get();
         $ids = array_column($orders->toArray(), 'id');
 
@@ -52,8 +52,8 @@ class PaymentController extends Controller
             $servicios = DB::table('orders as o')
                 ->join('payments as p','o.id','p.order_id')
                 ->join('quotations as q','q.order_id','o.id')
-                ->where('description','PAGO POR SERVICIO')->where('p.state',1)->where('o.id',$orders[$i]->id)->sum('q.workforce');
-                $servicios = ($servicios * $stat->percent)/100;
+                ->where('p.description','PAGO POR SERVICIO')->where('p.state',1)->where('o.id',$orders[$i]->id)->sum('q.workforce');
+            $servicios = ($servicios * $stat->percent)/100;
 
             $visita = Payment::where('description','VISITA')->where('state',1)->where('order_id',$orders[$i]->id)->sum('price');
             $visita = ($visita * $stat->percent)/100;
@@ -61,6 +61,8 @@ class PaymentController extends Controller
             $user = array("order_id"=>$orders[$i]->id,"user_id"=>$orders[$i]->user_id,"name"=>$orders[$i]->name,'lastName'=>$orders[$i]->lastName,'propinas'=>$propinas,'servicios'=>$servicios,'visita'=>$visita);
             array_push($users,$user);
         }
+
+        return $users;
 
         for ($j=0; $j < count($users); $j++) {
             if(count($users) == 1){
@@ -83,6 +85,7 @@ class PaymentController extends Controller
         return response()->json([
             // 'request' => $request->all(),
             'users' => $users,
+            'orders' => $orders
         ]);
     }
 
