@@ -78,6 +78,9 @@ class ApiServiceController extends ApiController
                 $newVersion = str_replace("3","30",str_replace(".","",$version_app->version));
                 $version_app->version = $newVersion;
             }
+
+            Log::notice($version_app);
+
             return response()->json([
                 'user' => $user,
                 'address' => $address,
