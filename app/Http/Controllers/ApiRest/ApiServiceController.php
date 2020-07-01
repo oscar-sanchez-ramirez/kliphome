@@ -53,8 +53,6 @@ class ApiServiceController extends ApiController
                 $version_app->version = $newVersion;
             }else{
                 $version_app = VersionApp::where('title','TECNICO')->where('state','IOS')->first();
-                $newVersion = str_replace("3","30",str_replace(".","",$version_app->version));
-                $version_app->version = $newVersion;
             }
             return response()->json([
                 'user' => $user,
@@ -75,8 +73,6 @@ class ApiServiceController extends ApiController
                 $version_app->version = $newVersion;
             }else{
                 $version_app = VersionApp::where('title','CLIENTE')->where('state','IOS')->first();
-                $newVersion = str_replace("3","30",str_replace(".","",$version_app->version));
-                $version_app->version = $newVersion;
             }
 
             Log::notice($version_app);
