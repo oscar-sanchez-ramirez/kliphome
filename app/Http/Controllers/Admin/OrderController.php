@@ -128,6 +128,16 @@ class OrderController extends Controller
         return back()->with('success',"Se notifico al cliente");
     }
 
+    public function cancelarCotizacion($id){
+        Quotation::where('id',$id)->update([
+            'state' => 2
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => "Se canceló la cotización"
+        ]);
+    }
+
     public function cancelOrder($id){
         Order::where('id',$id)->update([
             'state' => 'CANCELLED'

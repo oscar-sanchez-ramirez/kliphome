@@ -74,9 +74,6 @@ class ApiServiceController extends ApiController
             }else{
                 $version_app = VersionApp::where('title','CLIENTE')->where('state','IOS')->first();
             }
-
-            Log::notice($version_app);
-
             return response()->json([
                 'user' => $user,
                 'address' => $address,

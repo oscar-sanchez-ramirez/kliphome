@@ -10,3 +10,4 @@ Route::post('eliminarSolicitudTecnico/{fixerman_id}/{order_id}','Admin\OrderCont
 Route::post('enviarCotizacion/{order_id}','Admin\OrderController@enviarCotizacion');
 Route::post('notify/{order_id}','Admin\OrderController@notify');
 Route::post('cancelOrder/{order_id}','Admin\OrderController@cancelOrder');
+Route::post('cancelarCotizacion/{quotation_id}','Admin\OrderController@cancelarCotizacion');

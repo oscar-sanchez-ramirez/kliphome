@@ -174,7 +174,6 @@ export default{
                 formData.append('materials',this.quotation.materials);
                 formData.append('warranty_num',this.quotation.warranty_num);
                 formData.append('warranty_text',this.quotation.warranty_text);
-                console.log(this.quotation);
                 axios.post('/ordenes/enviarCotizacion/'+this.orden.id,formData).then(response => {
                     if(!response.data.success){
                         this.showError(response.data.message);
