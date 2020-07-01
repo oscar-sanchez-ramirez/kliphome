@@ -74,6 +74,17 @@
                                 <v-text-field label="Precio por mano de obra" v-model="quotation.workforce"></v-text-field>
                             </v-col>
                         </v-row>
+                        <v-switch v-model="garantia" label="Garantía"></v-switch><br>
+                        <div v-if="mostrar_garantia">
+                            <v-row>
+                                <v-col cols="6">
+                                    <v-text-field label="Cantidad" v-model="quotation.warranty_num" hide-details="auto"></v-text-field>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-select :items="periodos" label="Periodo" v-model="quotation.warranty_text"></v-select>
+                                </v-col>
+                            </v-row>
+                        </div>
                         <v-row align="center">
                            <v-btn x-large color="success" dark @click="enviar_cotizacion()">Enviar</v-btn>
                         </v-row>
@@ -108,8 +119,11 @@ export default{
   },
   data: () => ({
       headers: [{text: 'Nombres',value:'full_name'},{text: 'Telefono',value:'phone'},{text:'Categorias',value:'categories'},{text:'Asignar',value:'options'}],
-      quotation:{price:'',workforce:'',solution:'',materials:''},
+      quotation:{price:'',workforce:'',solution:'',materials:'',warranty_text:'',warranty_num:''},
       error: false,
+      garantia:false,
+      mostrar_garantia:false,
+      periodos: ['dias', 'semanas', 'meses'],
       message:'',
     }),computed:{
         modal_list_fixerman: {
@@ -158,7 +172,9 @@ export default{
                 formData.append('workforce',this.quotation.workforce);
                 formData.append('solution',this.quotation.solution);
                 formData.append('materials',this.quotation.materials);
-
+                formData.append('warranty_num',this.quotation.warranty_num);
+                formData.append('warranty_text',this.quotation.warranty_text);
+                console.log(this.quotation);
                 axios.post('/ordenes/enviarCotizacion/'+this.orden.id,formData).then(response => {
                     if(!response.data.success){
                         this.showError(response.data.message);
@@ -175,6 +191,13 @@ export default{
 
         },validate_quotation(){
             if(this.quotation.solution != "" && this.quotation.materials != "" && this.isNumeric(this.quotation.price) && this.isNumeric(this.quotation.workforce)){
+                if(this.mostrar_garantia == true){
+                    if(this.isNumeric(this.quotation.warranty_num) && this.quotation.warranty_text != ""){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
                 return true;
             }else{
                 return false;
@@ -188,6 +211,14 @@ export default{
             setTimeout(() => {
                 this.error = false;
             }, 3000);
+        }
+    },watch:{
+        garantia(val){
+            if(val == true){
+                this.mostrar_garantia = true;
+            }else{
+                this.mostrar_garantia = false;
+            }
         }
     }
 }

@@ -79,6 +79,8 @@ class OrderController extends Controller
         $quotation->solution = $request->solution;
         $quotation->materials = $request->materials;
         $quotation->workforce = $request->workforce;
+        $quotation->warranty_num = $request->warranty_num;
+        $quotation->warranty_text = $request->warranty_text;
         $quotation->state = 0;
         $quotation->save();
 
@@ -104,7 +106,6 @@ class OrderController extends Controller
             $buttons = null,
             $schedule = null
         );
-        // return back()->with('success',"Se envió la cotización");
         return response()->json([
             'success' => true,
             'message' => "Se envió la cotización"
