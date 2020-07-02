@@ -34,7 +34,7 @@ class HomeController extends Controller
         $clientes = User::where('type','AppUser')->where('state',1)->count();
         $tecnicos = User::where('type','AppFixerMan')->where('state',1)->count();
         $pagos = Payment::where('state',1)->sum('price');
-        $ordenes = Order::count();
+        $ordenes = Order::where('state','!=','CANCELLED')->count();
         return view('admin.admin',compact('clientes','tecnicos','pagos','ordenes'));
     }
 
