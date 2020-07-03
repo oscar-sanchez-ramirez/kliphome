@@ -32,9 +32,9 @@
                                 <tr>
 
                                     <th>Client</th>
-                                    <th>Descripción</th>
                                     <th>Fecha de Atención</th>
                                     <th>Fecha Registro</th>
+                                    <th>Cotización</th>
                                     <th>Estado</th>
                                     <th></th>
                                 </tr>
@@ -44,9 +44,9 @@
                                     <tr class="tr-shadow">
 
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
-                                        <td>{{ substr($orden->service_description,0,5) }}...</td>
                                         <td>{{ $orden->service_date }}</td>
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
+                                        <td>{{ $orden->quotation($orden->id) }}</td>
                                         <td>
                                            @if($orden->state == "CANCELLED")
                                                 <p id="danger">Cancelado</p>

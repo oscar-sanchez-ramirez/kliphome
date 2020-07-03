@@ -13,6 +13,21 @@ class Order extends Model
     public function clientAddress($id){
         return Address::where('id',$id)->first(['alias','street','exterior','interior','municipio','postal_code','colonia','reference']);
     }
+    public function quotation($id){
+        $quotation = Quotation::where('order_id',$id)->orderBy('id','DESC')->first();
+        if($quotation){
+            if($quotation->state == 0){
+                return "Cot. pendiente";
+            }else if($quotation->state == 1){
+                return "Cot. pagada";
+            }else if($quotation->state == 2){
+                return "Cot. cancelada";
+            }
+        }else{
+
+            return "Sin Cotización";
+        }
+    }
     public function orderCoupon($coupon_code){
         $coupon = User::where('code',$coupon_code)->first();
         if(!empty($coupon)){

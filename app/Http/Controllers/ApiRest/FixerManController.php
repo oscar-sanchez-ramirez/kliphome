@@ -487,6 +487,14 @@ class FixerManController extends ApiController
         ->leftJoin('users as u','u.id','so.user_id')
         ->select('o.*','a.alias','a.street as address','a.reference','a.exterior','a.interior','a.municipio','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
         ->where('o.id',$order_id)->where('so.state',1)->get();
+        if(count($orders) == 0){
+            $orders = DB::table('orders as o')
+            ->join('addresses as a','o.address','a.id')
+            ->leftJoin('selected_orders as so','o.id','so.order_id')
+            ->leftJoin('users as u','u.id','so.user_id')
+            ->select('o.*','a.alias','a.street as address','a.reference','a.exterior','a.interior','a.municipio','u.name','u.lastName','u.id as fixerman_id','u.avatar','so.created_at as orderAcepted','so.id as idOrderAccepted')
+            ->where('o.id',$order_id)->get();
+        }
         $fetch_categories = new ApiServiceController();
         foreach ($orders as $key) {
             $category = $fetch_categories->table($key->type_service, $key->selected_id);
