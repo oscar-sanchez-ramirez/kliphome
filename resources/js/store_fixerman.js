@@ -27,6 +27,7 @@ export default new Vuex.Store({
         axios.get('/tecnicos/ordenes_tecnico/'+tecnico.id).then(
             response=>{
               let orders = response.data;
+              console.log(orders);
               let events = [];
               for (let index = 0; index < orders.length; index++) {
                   let color;
@@ -48,6 +49,7 @@ export default new Vuex.Store({
                     }
 
                 }
+                console.log(events);
               context.commit('orderList',events);
             }
           );
