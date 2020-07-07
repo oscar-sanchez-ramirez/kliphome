@@ -6,6 +6,7 @@ use DB;
 use Stripe;
 use App\AdminCoupon;
 use App\Order;
+use App\OrderGallery;
 use App\User;
 use App\Coupon;
 use App\Quotation;
@@ -23,29 +24,6 @@ class OrderController extends ApiController
     public function __construct()
     {
         $this->middleware('auth:api');
-    }
-    public function create_test(Request $request){
-        Log::notice($request->all());
-        if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
-            if($request->visit_price == "quotation"){
-                //No necesita pago de visita (Telefono, Computadora)
-                $order = new Order;
-                $order->user_id = $request->user_id;
-                $order->selected_id = $request->selected_id;
-                $order->type_service = $request->type_service;
-                $order->service_date = $request->service_date;
-                $order->service_description = $request->service_description;
-                $order->service_image = $image;
-                $order->address = $request->address;
-                $order->price = 'quotation';
-                $order->visit_price = $request->visit_price;
-                $order->pre_coupon = $request->coupon;
-                $order->save();
-                return response()->json([
-                    'success' => true,
-                    'message' => "La orden de servicio se realizó con éxito"
-                ]);
-            }
     }
     public function create(Request $request){
         try {
@@ -68,7 +46,8 @@ class OrderController extends ApiController
                 dispatch(new NotifyNewOrder($order->id,$user->email));
                 return response()->json([
                     'success' => true,
-                    'message' => "La orden de servicio se realizó con éxito"
+                    'message' => "La orden de servicio se realizó con éxito",
+                    'order' => $order
                 ]);
             }else{
                 $price = 'quotation';
@@ -89,6 +68,7 @@ class OrderController extends ApiController
                         "description" => "Pago por visita"
                     ]);
                 }
+                Log::notice($request->all());
                 if($pago->paid == true){
                     $order = new Order;
                     $order->user_id = $request->user_id;
@@ -115,7 +95,8 @@ class OrderController extends ApiController
                     dispatch(new NotifyNewOrder($order->id,$user->email));
                     return response()->json([
                         'success' => true,
-                        'message' => "La orden de servicio se realizó con éxito"
+                        'message' => "La orden de servicio se realizó con éxito",
+                        'order' => $order
                     ]);
                 }else{
                     return response()->json([
@@ -131,6 +112,17 @@ class OrderController extends ApiController
                 'message' => "La orden de servicio no se realizó"
             ]);
         }
+    }
+
+    public function save_gallery(Request $request,$id){
+        Log::notice($request->all());
+        $image = new OrderGallery();
+        $image->order_id = $id;
+        $image->image = $request->image;
+        $image->save();
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     public function suspendQuotation($id){

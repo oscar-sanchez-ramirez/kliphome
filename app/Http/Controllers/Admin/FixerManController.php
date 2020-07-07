@@ -178,11 +178,12 @@ class FixerManController extends Controller
         $orders = DB::table('orders as o')
         ->join('users as u','u.id','o.user_id')
         ->join('selected_orders as so','o.id','so.order_id')
-        ->leftJoin('quotations as q','q.order_id','o.id')
         ->where('so.user_id',$user_id)->where('so.state',1)
-
-        ->select('o.*','o.service_date','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted','q.workforce')
-        ->distinct('o.id')->get();
+        ->select('o.*','u.name','u.lastName','u.avatar','so.id as idOrderAccepted','so.created_at as orderAcepted','q.workforce')
+        ->distinct(['o.id','q.order_id'])
+        // ->groupBy('q.order_id')
+        ->leftJoin('quotations as q','q.order_id','o.id')
+        ->get();
 
         return $orders;
     }

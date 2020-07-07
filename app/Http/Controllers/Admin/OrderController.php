@@ -5,18 +5,19 @@ namespace App\Http\Controllers\Admin;
 use DB;
 use OneSignal;
 use App\User;
-use App\AdminCoupon;
-use App\Address;
 use App\Order;
+use App\Address;
 use App\Payment;
 use App\Quotation;
 use Carbon\Carbon;
+use App\AdminCoupon;
 use App\SelectedOrders;
 use Illuminate\Http\Request;
 use App\Jobs\ApproveOrderFixerMan;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Jobs\DisapproveOrderFixerMan;
+use App\Notifications\Database\CancelOrder;
 use App\Notifications\Database\QuotationSended;
 
 class OrderController extends Controller
@@ -142,6 +143,10 @@ class OrderController extends Controller
         Order::where('id',$id)->update([
             'state' => 'CANCELLED'
         ]);
+        $order = Order::where('id',$id)->first();
+        $order["mensajeClient"] = "Tu orden de servicio ha sido cancelada";
+        $user = User::where('id',$order->user_id)->first();
+        $user->notify(new CancelOrder($order,$user->email));
     }
 
     public function check(){
@@ -153,7 +158,6 @@ class OrderController extends Controller
 
         return $orders;
     }
-
     public function cupon($coupon_code){
         $coupon = User::where('code',$coupon_code)->first();
         if(!empty($coupon)){

@@ -13,6 +13,10 @@ class Order extends Model
     public function clientAddress($id){
         return Address::where('id',$id)->first(['alias','street','exterior','interior','municipio','postal_code','colonia','reference']);
     }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function quotation($id){
         $quotation = Quotation::where('order_id',$id)->orderBy('id','DESC')->first();
         if($quotation){
@@ -24,7 +28,6 @@ class Order extends Model
                 return "Cot. cancelada";
             }
         }else{
-
             return "Sin Cotización";
         }
     }
