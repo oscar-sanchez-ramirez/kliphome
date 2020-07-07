@@ -49,7 +49,7 @@ class ApiServiceController extends ApiController
             $accepted = $this->ordersAccepted($user->id);
             if($device == "Android"){
                 $version_app = VersionApp::where('title','TECNICO')->where('state','Android')->first();
-                $newVersion = str_replace("3.0.","300",str_replace(".","",$version_app->version));
+                $newVersion = str_replace("3.0.","300",($version_app->version));
                 $version_app->version = $newVersion;
             }else{
                 $version_app = VersionApp::where('title','TECNICO')->where('state','IOS')->first();
@@ -72,7 +72,7 @@ class ApiServiceController extends ApiController
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             if($device == "Android"){
                 $version_app = VersionApp::where('title','CLIENTE')->where('state','Android')->first();
-                $newVersion = str_replace("3.0.","300",str_replace(".","",$version_app->version));
+                $newVersion = str_replace("3.0.","300",($version_app->version));
                 $version_app->version = $newVersion;
             }else{
                 $version_app = VersionApp::where('title','CLIENTE')->where('state','IOS')->first();
