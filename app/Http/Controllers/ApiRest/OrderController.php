@@ -11,6 +11,7 @@ use App\User;
 use App\Coupon;
 use App\Quotation;
 use App\Payment;
+use App\Cita;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
 use App\Jobs\Mail\MailOrderAccepted;
@@ -130,6 +131,17 @@ class OrderController extends ApiController
             'state' => 2
         ]);
         //pendiente notificacion a admin
+    }
+
+    public function newDate($id,$date){
+        $cita = new Cita;
+        $cita->order_id = $id;
+        $cita->date = $date;
+        $cita->save();
+        return response()->json([
+            'success' => true,
+            'message' => "Cita Guardada"
+        ]);
     }
 
     public function suspend(Request $request){
