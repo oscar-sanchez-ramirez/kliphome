@@ -136,7 +136,7 @@ class OrderController extends ApiController
     public function newDate(Request $request,$id){
         $cita = new Cita;
         $cita->order_id = $id;
-        $cita->date = $request->date;
+        $cita->service_date = $request->date;
         $cita->save();
         return response()->json([
             'success' => true,
