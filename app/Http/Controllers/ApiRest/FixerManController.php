@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Log;
 use DB;
 use Stripe;
 use OneSignal;
+use App\Cita;
 use App\User;
-use App\Address;
 use App\Order;
+use App\Address;
 use App\Qualify;
 use App\Payment;
+use App\Quotation;
 use Carbon\Carbon;
 use App\FixermanStat;
 use App\SelectedOrders;
@@ -508,6 +510,17 @@ class FixerManController extends ApiController
             $key->visit_price = $category[0]->visit_price;
         }
         return Response(json_encode(array('orders' => $orders)));
+    }
+
+    public function extra_info_for_order_detail($order_id){
+        $dates = Cita::where('order_id',$order_id)->get();
+        $quotations = Quotation::where('order_id',$order_id)->where(function ($query){
+            $query->where('state',0)->orWhere('state',1);
+        })->get();
+        return response()->json([
+            'dates' => $dates,
+            'quotations' => $quotations
+        ]);
     }
 
     private function fields($field){
