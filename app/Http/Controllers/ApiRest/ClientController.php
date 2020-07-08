@@ -92,6 +92,7 @@ class ClientController extends ApiController
     }
     public function quotationDetail($id){
         $quotation = Quotation::where('id',$id)->first();
+        Log::notice($quotation);
         return response()->json([
             'quotation' => $quotation
         ]);
