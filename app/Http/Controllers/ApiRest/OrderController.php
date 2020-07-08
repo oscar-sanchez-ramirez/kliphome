@@ -133,10 +133,10 @@ class OrderController extends ApiController
         //pendiente notificacion a admin
     }
 
-    public function newDate($id,$date){
+    public function newDate(Request $request,$id){
         $cita = new Cita;
         $cita->order_id = $id;
-        $cita->date = $date;
+        $cita->date = $request->date;
         $cita->save();
         return response()->json([
             'success' => true,
