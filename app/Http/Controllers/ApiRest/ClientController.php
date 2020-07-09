@@ -92,9 +92,10 @@ class ClientController extends ApiController
     }
     public function quotationDetail($id){
         $quotation = Quotation::where('id',$id)->first();
-        Log::notice($quotation);
+        $latest_quotations = Quotation::where('id',$quotation->order_id)->where('id',$quotation->id)->get();
         return response()->json([
-            'quotation' => $quotation
+            'quotation' => $quotation,
+            'latest_quotations' => $latest_quotations
         ]);
     }
     public function addAddress(Request $request){
