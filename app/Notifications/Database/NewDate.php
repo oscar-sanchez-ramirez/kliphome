@@ -2,25 +2,27 @@
 
 namespace App\Notifications\Database;
 
+use App\Order;
+use OneSignal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class FourHoursLeftNotification extends Notification
+class NewDate extends Notification
 {
     use Queueable;
     protected $order;
-    protected $email;
+    protected $client_email;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($order,$email)
+    public function __construct($order,$client_email)
     {
         $this->order = $order;
-        $this->email = $email;
+        $this->client_email = $client_email;
     }
 
     /**
@@ -56,6 +58,23 @@ class FourHoursLeftNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->order;
+        $type = "App\Notifications\Database\NewDate";
+        $content = $this->order;
+        $content["mensajeClient"] = "Tu técnico ha agendado una nueva visita";
+        OneSignal::sendNotificationUsingTags(
+            "Tu técnico ha agendado una nueva visita",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->client_email],
+            ),
+            $type,
+            $content,
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
+        return $content;
+        // return $this->order;
     }
+
 }

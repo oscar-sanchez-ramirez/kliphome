@@ -59,6 +59,7 @@ class ManualSelectedOrder extends Notification
     {
         $type = "App\Notifications\Database\ManualSelectedOrder";
         $content = $this->order;
+        $content["mensajeClient"] = "Un técnico fue asignado por nuestro equipo.";
         OneSignal::sendNotificationUsingTags(
             "Un técnico fue asignado por nuestro equipo.",
             array(

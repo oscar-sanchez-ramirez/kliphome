@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
 use App\Notifications\Database\QuotationCancelled;
 use App\Notifications\Database\OrderCancelled;
+use App\Notifications\Database\newDate;
 
 class OrderController extends ApiController
 {
@@ -138,6 +139,10 @@ class OrderController extends ApiController
         $cita->order_id = $id;
         $cita->service_date = $request->date;
         $cita->save();
+
+        $order = Order::where('id',$id)->first();
+        $user = User::where('id',$order->user_id)->first();
+        $user->notify(new newDate($order,$user->email));
         return response()->json([
             'success' => true,
             'message' => "Cita Guardada"
@@ -166,7 +171,13 @@ class OrderController extends ApiController
     public function approve(Request $request){
         // L
         // try {
+            $order = Order::where('id',$request->order_id)->first();
+            $quotation = Quotation::where('order_id',$request->id_quotation)->first();
+            $check_price = ($quotation->price + $quotation->workforce) - $order->visit_price;
             $price = floatval($request->price);
+            if($price != $check_price){
+                $price = floatval($check_price);
+            }
             try {
                 Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
                 if(substr($request->stripeToken,0,3) == "cus"){
@@ -207,7 +218,6 @@ class OrderController extends ApiController
                     'success' => false
                 ]);
             }
-            $order = Order::where('id',$request->order_id)->first();
             $check_quotations = Quotation::where('order_id',$request->order_id)->count();
             if($check_quotations == 1){
                 Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
