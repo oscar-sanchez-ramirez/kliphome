@@ -171,10 +171,14 @@ class OrderController extends ApiController
     public function approve(Request $request){
         // L
         // try {
+            Log::notice("NUEVO PAGO DE COTIZACION");
+            Log::notice($request->all());
             $order = Order::where('id',$request->order_id)->first();
             $quotation = Quotation::where('order_id',$request->id_quotation)->first();
             $check_price = ($quotation->price + $quotation->workforce) - $order->visit_price;
+            Log::notice($check_price);
             $price = floatval($request->price);
+            Log::notice($price);
             if($price != $check_price){
                 $price = floatval($check_price);
             }
