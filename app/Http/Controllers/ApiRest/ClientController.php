@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiRest;
 
 use DB;
 use App\User;
+use App\Cita;
 use App\Order;
 use App\Address;
 use App\Coupon;
@@ -126,6 +127,14 @@ class ClientController extends ApiController
         ]);
         $client->notify(new ConfirmArrive($request->order_id,$fixerman->name,$client->email));
 
+    }
+    public function confirmArriveDate(Request $request){
+        $fixerman = User::where('id',$request->user_id)->first();
+        $client = User::where('id',$request->to_id)->first();
+        Cita::where('id',$request->date_id)->update([
+            'state' => 1
+        ]);
+        // $client->notify(new ConfirmArrive($request->order_id,$fixerman->name,$client->email));
     }
     public function list_payments(Request $request){
         $user = $request->user();

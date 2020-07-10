@@ -85,6 +85,7 @@ Route::get('orderDetail/{order_id}','ApiRest\ClientController@orderDetail');
 Route::post('addAddress','ApiRest\ClientController@addAddress');
 Route::post('deleteAddress','ApiRest\ClientController@deleteAddress');
 Route::post('confirmArrive','ApiRest\ClientController@confirmArrive');
+Route::post('confirmArriveDate','ApiRest\ClientController@confirmArriveDate');
 Route::get('list_payments','ApiRest\ClientController@list_payments');
 Route::get('quotationDetail/{id}','ApiRest\ClientController@quotationDetail');
 
