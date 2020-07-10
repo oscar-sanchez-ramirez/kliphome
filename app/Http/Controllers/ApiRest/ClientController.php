@@ -132,7 +132,7 @@ class ClientController extends ApiController
         $fixerman = User::where('id',$request->user_id)->first();
         $client = User::where('id',$request->to_id)->first();
         Cita::where('id',$request->date_id)->update([
-            'state' => 1
+            'is_notified' => 1
         ]);
         // $client->notify(new ConfirmArrive($request->order_id,$fixerman->name,$client->email));
     }
