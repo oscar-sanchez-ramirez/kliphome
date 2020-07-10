@@ -199,7 +199,7 @@ class OrderController extends ApiController
                         "description" => "Payment of order ".$request->order_id
                     ]);
                 }
-                Log::pago($pago);
+                Log::notice($pago);
                 $payment = new Payment;
                 $payment->order_id = $request->order_id;
                 $payment->description = "PAGO POR SERVICIO";
