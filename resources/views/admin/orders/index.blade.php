@@ -32,7 +32,7 @@
                                 <tr>
 
                                     <th>Client</th>
-                                    <th>Fecha de Atención</th>
+                                    <th>Categoría</th>
                                     <th>Fecha Registro</th>
                                     <th>Cotización</th>
                                     <th>Estado</th>
@@ -44,7 +44,7 @@
                                     <tr class="tr-shadow">
 
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
-                                        <td>{{ $orden->service_date }}</td>
+                                        <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
                                         <td>{{ $orden->quotation($orden->id) }}</td>
                                         <td>
@@ -66,7 +66,7 @@
                                                     <span class="status--denied">Cancelado</span>
                                                 @else
                                                     <a class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
-                                                        Revisar Solicitud
+                                                        Revisar
                                                     </a>
                                                 @endif
                                             </div>
