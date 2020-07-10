@@ -9,6 +9,7 @@ use App\Order;
 use App\Address;
 use App\Payment;
 use App\Quotation;
+use App\FixermanStat;
 use Carbon\Carbon;
 use App\AdminCoupon;
 use App\SelectedOrders;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\Database\CancelOrder;
+use App\Notifications\Database\FinishedOrder;
 use App\Notifications\Database\QuotationSended;
 
 class OrderController extends Controller
@@ -147,6 +149,42 @@ class OrderController extends Controller
         $order["mensajeClient"] = "Tu orden de servicio ha sido cancelada";
         $user = User::where('id',$order->user_id)->first();
         $user->notify(new CancelOrder($order,$user->email));
+    }
+
+    public function markDone($id){
+        $order_id = $id;
+        //Get User and Order
+        $order = Order::where('id',$order_id)->first();
+        //Notify
+        $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio ha terminado, ¡Califícalo ahora! ";
+        $client = User::where('id',$order->user_id)->first();
+        $client->notify(new FinishedOrder($order));
+        //Onesignal Notification
+        $type = "App\Notifications\Database\FinishedOrder";
+        $content = $order;
+        OneSignal::sendNotificationUsingTags(
+            "KlipHome ha marcardo el servicio como terminado. ¡Valóralo ahora!",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
+            ),
+            $type,
+            $content,
+            $url = null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
+
+        //Update order
+        Order::where('id',$order_id)->update([
+            'finished_at' => Carbon::now(),
+            'state' => 'FIXERMAN_DONE'
+        ]);
+        $check_fixerman = DB::table('orders as o')->join('selected_orders as so','o.id','so.order_id')->join('users as u','u.id','so.user_id')->where('so.state',1)->get();
+        if($check_fixerman[0]->id != ""){
+            $fixerman = User::where('id',$check_fixerman[0]->id)->first();
+            FixermanStat::where('user_id',$check_fixerman[0]->id)->increment('completed');
+        }
     }
 
     public function check(){

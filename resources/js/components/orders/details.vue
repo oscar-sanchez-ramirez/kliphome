@@ -49,7 +49,7 @@
                                 <span class="badge badge-info" v-if="orden.state == 'FIXERMAN_NOTIFIED'">TÉCNICOS NOTIFICADOS</span>
                                 <span class="badge badge-info" v-if="orden.state == 'ACCEPTED' || orden.state == 'FIXERMAN_APPROVED'">TÉCNICO ACEPTÓ SOLICITUD</span>
                                 <span class="badge badge-danger" v-if="orden.state == 'CANCELLED'">CANCELADO</span>
-                                <span class="badge badge-success" v-if="orden.state == 'DONE'">TERMINADO</span>
+                                <span class="badge badge-success" v-if="orden.state == 'DONE' || orden.state == 'FIXERMAN_DONE'">TERMINADO</span>
                                 <span class="badge badge-success" v-if="orden.state == 'QUALIFIED'">CALIFICADO</span>
                         </h4>
                         <p class="card-text">
