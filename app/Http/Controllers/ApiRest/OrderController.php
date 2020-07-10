@@ -174,7 +174,7 @@ class OrderController extends ApiController
             Log::notice("NUEVO PAGO DE COTIZACION");
             Log::notice($request->all());
             $order = Order::where('id',$request->order_id)->first();
-            $quotation = Quotation::where('order_id',$request->id_quotation)->first();
+            $quotation = Quotation::where('id',$request->id_quotation)->first();
             $check_price = ($quotation->price + $quotation->workforce) - $order->visit_price;
             Log::notice($check_price);
             $price = floatval($request->price);
