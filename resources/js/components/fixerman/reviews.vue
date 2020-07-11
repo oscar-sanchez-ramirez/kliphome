@@ -17,6 +17,9 @@
                     <div class="row">
                         <b>Comentario  :  </b> {{ item.comment || "-" }}
                     </div>
+                    <div class="row">
+                        <b>Cliente  :  </b> {{ item.name }} {{ item.lastName }}
+                    </div>
                 </div>
             </div>
     </div>
