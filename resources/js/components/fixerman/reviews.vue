@@ -70,8 +70,6 @@ export default{
   },
   mounted(){
       axios.get('/tecnicos/reviews/'+this.fixerman.id).then(response => {
-            //   this.loader = false;
-              console.log(response.data);
               this.reviews = response.data.reviews;
             }).catch(error => {
             //   this.loader = false;
