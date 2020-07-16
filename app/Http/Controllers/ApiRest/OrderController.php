@@ -118,6 +118,13 @@ class OrderController extends ApiController
     public function save_extra_info_for_order(Request $request, $id){
         Log::notice($id);
         Log::notice($request->all());
+        for ($i=0; $i < count($request->extra_data); $i++) {
+            Log::notice($request->extra_data[$id]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "La orden de servicio se realizó"
+        ]);
     }
 
     public function save_gallery(Request $request,$id){
