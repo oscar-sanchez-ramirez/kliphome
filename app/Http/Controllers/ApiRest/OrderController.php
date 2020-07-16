@@ -117,8 +117,8 @@ class OrderController extends ApiController
     }
 
     public function save_extra_info_for_order(Request $request, $id){
-        Log::notice($id);
         $extra_info = new ExtraInfo;
+        $extra_info->order_id = $id;
         $extra_info->tipo_plaga = $request->tipo_plaga;
         $extra_info->pisos = $request->pisos;
         $extra_info->metros = $request->metros;

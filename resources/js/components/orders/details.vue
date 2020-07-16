@@ -42,7 +42,14 @@
             </div>
             <div class="col-md-8">
                 <div class="card">
-                    <img class="card-img-top" type="button" :src="orden.service_image" alt="Card image cap" >
+                    <img v-if="orden.gallery.length == 0" class="card-img-top" type="button" :src="orden.service_image" alt="Card image cap" >
+                    <div v-if="orden.gallery.length > 0">
+                        <v-carousel height="500" hide-delimiter-background show-arrows-on-hover>
+                            <v-carousel-item v-for="(slide, i) in orden.gallery" :key="i">
+                                <img :src="orden.gallery[i].image" alt="" class="img-responsive" width="100%" height="100%" @click="expand(orden.gallery[i].image)">
+                            </v-carousel-item>
+                        </v-carousel>
+                    </div>
                     <div class="card-body">
                         <h4 class="card-title mb-3">{{ parseDate(orden.service_date) }} / {{ service }} /
                                 <span class="badge badge-danger" v-if="orden.state == 'PENDING'">PENDIENTE DE COTIZACIÓN</span>
@@ -59,6 +66,14 @@
                 </div>
             </div>
         </div>
+        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+            <v-toolbar dark color="primary">
+            <v-btn icon dark @click="close_modal()">
+                Cerrar
+            </v-btn>
+            </v-toolbar>
+            <img :src="url" alt="" class="img-responsive" width="100%" height="100%">
+        </v-dialog>
     </v-app>
 </template>
 
@@ -80,12 +95,13 @@ export default {
         fixerman:Object,
         // service:Object
     },mounted(){
+        console.log(this.orden);
         this.$store.dispatch('user_detail',{user_id:this.orden.user_id,address:this.orden.address});
         this.$store.dispatch('getService',{type:this.orden.type_service,id:this.orden.selected_id});
     },computed:{
         user(){ return this.$store.state.user;},
         address(){ return this.$store.state.address;},
-        service(){return this.$store.state.service;}
+        service(){return this.$store.state.service;},
     },methods:{
         orderCoupon(coupon){
             axios.get('/ordenes/cupon/'+coupon).then(response => {
@@ -94,7 +110,19 @@ export default {
         },parseDate(date){
             //return moment(date).format('D,MMM H:mm');
             return moment(String(date)).format('D,MMM H:mm')
+        },expand(url){
+            $('.header-desktop').css('position','unset');
+            this.url = url;
+            this.dialog = true;
+        },close_modal(){
+            $('.header-desktop').css('position','fixed');
+            this.dialog = false;
         }
-    }
+    },data () {
+      return {
+        dialog: false,
+        url:''
+      }
+    },
 }
 </script>
