@@ -115,6 +115,11 @@ class OrderController extends ApiController
         }
     }
 
+    public function save_extra_info_for_order(Request $request, $id){
+        Log::notice($id);
+        Log::notice($request->all());
+    }
+
     public function save_gallery(Request $request,$id){
         Log::notice($request->all());
         $image = new OrderGallery();

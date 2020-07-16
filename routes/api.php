@@ -26,6 +26,7 @@ Route::post('orders/suspend','ApiRest\OrderController@suspend');
 Route::post('orders/approve','ApiRest\OrderController@approve');
 Route::post('orders/coupon','ApiRest\OrderController@coupon');
 Route::post('orders/newDate/{id}','ApiRest\OrderController@newDate');
+Route::post('orders/save_extra_info_for_order/{id}','ApiRest\OrderController@save_extra_info_for_order');
 Route::get('orders/extra_info_for_order_detail/{id}','ApiRest\FixerManController@extra_info_for_order_detail');
 Route::post('orders/save_gallery/{id}','ApiRest\OrderController@save_gallery');
 Route::post('orders/suspendQuotation/{id}','ApiRest\OrderController@suspendQuotation');
