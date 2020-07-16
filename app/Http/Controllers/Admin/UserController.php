@@ -12,7 +12,7 @@ class UserController extends Controller
         $this->middleware('auth');
     }
     public function index(){
-        $users = User::where('type','AppUser')->get();
+        $users = User::where('type','AppUser')->orderBy('id',"DESC")->get();
         return view('admin.users.index')->with('users',$users);
     }
 }
