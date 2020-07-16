@@ -32,8 +32,9 @@ class OrderController extends ApiController
             if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
             if($request->visit_price == "quotation"){
                 //No necesita pago de visita (Telefono, Computadora)
+                $user = $request->user();
                 $order = new Order;
-                $order->user_id = $request->user_id;
+                $order->user_id = $user->id;
                 $order->selected_id = $request->selected_id;
                 $order->type_service = $request->type_service;
                 $order->service_date = $request->service_date;
@@ -44,15 +45,13 @@ class OrderController extends ApiController
                 $order->visit_price = $request->visit_price;
                 $order->pre_coupon = $request->coupon;
                 $order->save();
-                $user = $request->user();
-                dispatch(new NotifyNewOrder($order->id,$user->email));
+                // dispatch(new NotifyNewOrder($order->id,$user->email));
                 return response()->json([
                     'success' => true,
                     'message' => "La orden de servicio se realizó con éxito",
                     'order' => $order
                 ]);
             }else{
-                $price = 'quotation';
                 $price = floatval($request->price);
                 Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
                 if(substr($request->token,0,3) == "cus"){
