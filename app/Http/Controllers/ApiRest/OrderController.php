@@ -117,7 +117,7 @@ class OrderController extends ApiController
 
     public function save_extra_info_for_order(Request $request, $id){
         Log::notice($id);
-        $data = json_decode($request->extra_data);
+        $data = json_encode($request->extra_data);
         Log::notice($data);
         try {
             for ($i=0; $i < count(json_decode($request->extra_data)); $i++) {
