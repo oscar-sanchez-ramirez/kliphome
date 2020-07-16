@@ -117,18 +117,8 @@ class OrderController extends ApiController
 
     public function save_extra_info_for_order(Request $request, $id){
         Log::notice($id);
-        $data = json_encode($request->extra_data);
+        $data = ($request->get('extra_data')['metros']);
         Log::notice($data);
-        try {
-            for ($i=0; $i < count(json_decode($request->extra_data)); $i++) {
-                Log::notice($request->extra_data[$id]);
-            }
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => "La orden de servicio se realizóxxxx"
-            ]);
-        }
 
         return response()->json([
             'success' => true,
