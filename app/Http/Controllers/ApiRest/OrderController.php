@@ -4,22 +4,23 @@ namespace App\Http\Controllers\ApiRest;
 
 use DB;
 use Stripe;
-use App\AdminCoupon;
-use App\Order;
-use App\OrderGallery;
-use App\User;
-use App\Coupon;
-use App\Quotation;
-use App\Payment;
 use App\Cita;
+use App\User;
+use App\Order;
+use App\Coupon;
+use App\Payment;
+use App\Quotation;
+use App\ExtraInfo;
+use App\AdminCoupon;
+use App\OrderGallery;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
-use App\Jobs\Mail\MailOrderAccepted;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\Mail\MailOrderAccepted;
 use App\Http\Controllers\ApiController;
-use App\Notifications\Database\QuotationCancelled;
-use App\Notifications\Database\OrderCancelled;
 use App\Notifications\Database\newDate;
+use App\Notifications\Database\OrderCancelled;
+use App\Notifications\Database\QuotationCancelled;
 
 class OrderController extends ApiController
 {
@@ -117,8 +118,13 @@ class OrderController extends ApiController
 
     public function save_extra_info_for_order(Request $request, $id){
         Log::notice($id);
-        $data = ($request->get('extra_data')['metros']);
-        Log::notice($data);
+        $extra_info = new ExtraInfo;
+        $extra_info->tipo_plaga = $request->tipo_plaga;
+        $extra_info->pisos = $request->pisos;
+        $extra_info->metros = $request->metros;
+        $extra_info->jardin = $request->jardin;
+        $extra_info->cuartos = $request->cuartos;
+        $extra_info->save();
 
         return response()->json([
             'success' => true,
