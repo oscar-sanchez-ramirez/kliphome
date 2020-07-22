@@ -113,4 +113,4 @@ Route::get('postal_code/{id}','ApiController@postal_code');
 
 
 //Login con redes
-Route::post('facebook','ApiRest\SocialController@facebook');
+Route::get('facebook','ApiRest\SocialController@facebook');
