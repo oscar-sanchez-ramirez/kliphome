@@ -191,13 +191,13 @@ class OrderController extends ApiController
             Log::notice($request->all());
             $order = Order::where('id',$request->order_id)->first();
             $quotation = Quotation::where('id',$request->id_quotation)->first();
-            $check_price = ($quotation->price + $quotation->workforce) - $order->visit_price;
-            Log::notice($check_price);
+            // $check_price = ($quotation->price + $quotation->workforce) - $order->visit_price;
+            // Log::notice($check_price);
             $price = floatval($request->price);
             Log::notice($price);
-            if($price != $check_price){
-                $price = floatval($check_price);
-            }
+            // if($price != $check_price){
+            //     $price = floatval($check_price);
+            // }
             try {
                 Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
                 if(substr($request->stripeToken,0,3) == "cus"){
