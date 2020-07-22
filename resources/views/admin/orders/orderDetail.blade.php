@@ -3,7 +3,7 @@
     <div class="main-content">
         <div class="section__content section__content--p30">
             <div class="card" id="cardContent">
-                <order-component :orden="{{ json_encode($orden) }}" :fixerman="{{ json_encode($fixerman) }}" :payments="{{ json_encode($payments) }}"></order-component>
+                <order-component :orden="{{ json_encode($orden) }}" :fixerman="{{ json_encode($fixerman) }}" :payments="{{ json_encode($payments) }}" :extra_info="{{ json_encode($extra_info) }}"></order-component>
             </div>
         </div>
     </div>

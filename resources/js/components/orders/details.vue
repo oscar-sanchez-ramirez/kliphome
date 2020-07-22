@@ -62,6 +62,13 @@
                         <p class="card-text">
                             {{ orden.service_description }}
                         </p>
+                        <div v-if="extra_info != null">
+                            <p><b>Tipo de plaga: </b>{{ extra_info.tipo_plaga }}</p>
+                            <p><b># Pisos: </b>{{ extra_info.pisos }}</p>
+                            <p><b># Metros cuadrados: </b>{{ extra_info.metros }}</p>
+                            <p><b># Cuartos: </b>{{ extra_info.cuartos }}</p>
+                            <p><b>Jardín: </b><span v-if="extra_info.jardin == 'false'">NO</span><span v-else>SI</span></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,8 +100,9 @@ export default {
     props:{
         orden:Object,
         fixerman:Object,
-        // service:Object
+        extra_info:Object
     },mounted(){
+        console.log(this.extra_info);
         this.$store.dispatch('user_detail',{user_id:this.orden.user_id,address:this.orden.address});
         this.$store.dispatch('getService',{type:this.orden.type_service,id:this.orden.selected_id});
     },computed:{

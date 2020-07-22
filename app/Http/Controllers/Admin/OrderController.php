@@ -8,6 +8,7 @@ use App\User;
 use App\Order;
 use App\Address;
 use App\Payment;
+use App\ExtraInfo;
 use App\Quotation;
 use App\FixermanStat;
 use Carbon\Carbon;
@@ -43,7 +44,8 @@ class OrderController extends Controller
         if($orden){
             $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
             $payments = Payment::where('order_id',$id)->get();
-            return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman)->with('payments',$payments);
+            $extra_info = ExtraInfo::where('order_id',$id)->first();
+            return view('admin.orders.orderDetail')->with('orden',$orden)->with('fixerman',$fixerman)->with('payments',$payments)->with('extra_info',$extra_info);
         }else{
             return back();
         }

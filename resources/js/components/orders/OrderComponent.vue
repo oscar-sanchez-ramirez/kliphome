@@ -10,7 +10,7 @@
 
         <v-tab-item value="tab-1">
             <v-card flat tile>
-                <detail-component :orden="orden" :fixerman="fixerman"></detail-component>
+                <detail-component :orden="orden" :fixerman="fixerman" :extra_info="extra_info"></detail-component>
             </v-card>
         </v-tab-item>
         <v-tab-item value="tab-2">
@@ -115,7 +115,8 @@ export default{
   props:{
     orden: Object,
     fixerman:Object,
-    payments:Array
+    payments:Array,
+    extra_info:Object
   },
   data: () => ({
       headers: [{text: 'Nombres',value:'full_name'},{text: 'Telefono',value:'phone'},{text:'Categorias',value:'categories'},{text:'Asignar',value:'options'}],
