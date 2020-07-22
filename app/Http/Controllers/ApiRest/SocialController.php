@@ -14,7 +14,7 @@ class SocialController extends ApiController
     }
     public function facebook(Request $request) {
         Log::notice($request->all());
-        $user = Socialite::driver('facebook')->userFromToken( $request->input('accessToken'));
+        $user = Socialite::driver('facebook')->userFromToken($request->accessToken);
         Log::notice($user);
         // abort_if($user == null || $user->id != $request->input('userID'),400,'Invalid credentials');
 
