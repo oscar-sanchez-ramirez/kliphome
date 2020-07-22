@@ -5,9 +5,9 @@ namespace App\Http\Controllers\ApiRest;
 use Socialite;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class SocialController extends Controller
+class SocialController extends ApiController
 {
     public function facebook(Request $request) {
         Log::notice($request->all());
