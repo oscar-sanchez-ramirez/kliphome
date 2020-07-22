@@ -48,5 +48,10 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
+    'facebook' => [
+        'client_id'     => '187557089277557',
+        'client_secret' => 'cc567646c2422d126f9fa58a499e1e79',
+        'redirect'      => 'https://kliphome.com/login/callback/facebook',
+    ],
 
 ];

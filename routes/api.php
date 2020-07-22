@@ -110,3 +110,7 @@ Route::post('markConversationAsRead','ApiRest\ConversationController@markConvers
 
 Route::post('webhook_oxxo','ApiController@webhook_oxxo');
 Route::get('postal_code/{id}','ApiController@postal_code');
+
+
+//Login con redes
+Route::get('facebook','ApiRest\SocialController@facebook');
