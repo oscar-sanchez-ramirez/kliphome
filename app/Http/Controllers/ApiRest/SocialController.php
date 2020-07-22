@@ -9,6 +9,9 @@ use App\Http\Controllers\ApiController;
 
 class SocialController extends ApiController
 {
+    public function __construct(){
+        $this->middleware('auth:api', ['only' => ['gmail']]);
+    }
     public function facebook(Request $request) {
         Log::notice($request->all());
         $user = Socialite::driver('facebook')->userFromToken( $request->input('accessToken'));
@@ -19,5 +22,8 @@ class SocialController extends ApiController
         // $user = ....
 
         // return $this->issueToken($user);
+    }
+    public function gmail(){
+
     }
 }
