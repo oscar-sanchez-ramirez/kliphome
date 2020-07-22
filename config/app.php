@@ -166,6 +166,7 @@ return [
         Berkayk\OneSignal\OneSignalServiceProvider::class,
         NotificationChannels\OneSignal\OneSignalServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -232,6 +233,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'OneSignal' => Berkayk\OneSignal\OneSignalFacade::class,
         'Sentry' => Sentry\Laravel\Facade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];
