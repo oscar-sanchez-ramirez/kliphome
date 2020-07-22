@@ -24,16 +24,14 @@ class SocialController extends ApiController
                     "message" => 'No se encontro al usuario, inténte con otra cuenta'
                 ]);
             }else{
-                $this->checkifexists($user);
+                $user = $this->checkifexists($user);
+                return response()->json([
+                    "success" => true,
+                    "user" => $user
+                ]);
             }
 
-            return response()->json([
-                "success" => true,
-                "token_type" => "Bearer",
-                'access_token' => $request->access_token,
-                'refresh_token' => $request->refreshToken,
-                'expired_at' => $request->expiresIn
-            ]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
@@ -53,6 +51,8 @@ class SocialController extends ApiController
                 'code' => $random
             ])->toArray();
             // dispatch(new UserConfirmation($user));
+        }else{
+            return $check_user;
         }
     }
     public function gmail(){
