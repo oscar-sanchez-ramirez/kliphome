@@ -30,18 +30,20 @@ class RegisterController extends ApiController
             'code' => $random
         ])->toArray();
 
-        Address::create([
-            'street' => $request->street,
-            'alias' => $request->alias,
-            'reference' => $request->reference,
-            'postal_code' => $request->postal_code,
-            'user_id' => $user["id"],
-            'delegation' => "-",
-            'exterior' => $request->exterior,
-            'interior' => $request->interior,
-            'colonia' => $request->colony,
-            'municipio' => $request->municipio
-        ]);
+        if($request->street != '' && $request->alias != '' && $request->reference != '' && $request->postal_code != '' && $request->municipio != ''){
+            Address::create([
+                'street' => $request->street,
+                'alias' => $request->alias,
+                'reference' => $request->reference,
+                'postal_code' => $request->postal_code,
+                'user_id' => $user["id"],
+                'delegation' => "-",
+                'exterior' => $request->exterior,
+                'interior' => $request->interior,
+                'colonia' => $request->colony,
+                'municipio' => $request->municipio
+            ]);
+        }
         dispatch(new UserConfirmation($user));
         return response()->json([
             'message' => "Usuario creado correctamente",
