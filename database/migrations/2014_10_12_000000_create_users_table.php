@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->default('assets/imgs/profile.png');
+            $table->string('provider')->default('KLIPHOME');
             $table->string('code')->nuallable();
             $table->rememberToken();
             $table->timestamps();

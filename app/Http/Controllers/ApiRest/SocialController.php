@@ -49,7 +49,7 @@ class SocialController extends ApiController
                     "message" => 'No se encontro al usuario, inténte con otra cuenta'
                 ]);
             }else{
-                $user = $this->checkifexists($user);
+                $user = $this->checkifexists($user,$request->provider);
                 return response()->json([
                     "success" => true,
                     "user" => $user
@@ -63,7 +63,7 @@ class SocialController extends ApiController
         }
     }
 
-    public function checkifexists($user){
+    public function checkifexists($user,$provider){
         $check_user = User::where('email',$user->email)->first();
         if(!$check_user){
             $random = strtoupper(substr(md5(mt_rand()), 0, 10));
@@ -71,8 +71,11 @@ class SocialController extends ApiController
                 'name' => $user->name,
                 'email' => $user->email,
                 'password' => bcrypt($random),
-                'code' => $random
+                'code' => $random,
+                'provider' => $provider
+
             ])->toArray();
+            return $user;
             // dispatch(new UserConfirmation($user));
         }else{
             return $check_user;
