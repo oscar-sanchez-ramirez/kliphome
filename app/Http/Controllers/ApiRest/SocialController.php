@@ -23,7 +23,7 @@ class SocialController extends ApiController
                     "message" => 'No se encontro al usuario, inténte con otra cuenta'
                 ]);
             }else{
-                $user = $this->checkifexists($user);
+                $user = $this->checkifexists($user,$request->provider);
                 return response()->json([
                     "success" => true,
                     "user" => $user
@@ -41,6 +41,7 @@ class SocialController extends ApiController
     }
 
     public function google(Request $request){
+        Log::notice($request->all());
         try {
             $user = Socialite::driver('google')->userFromToken($request->access_token);
             if($user == null){
