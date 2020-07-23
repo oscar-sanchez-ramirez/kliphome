@@ -14,7 +14,6 @@ class SocialController extends ApiController
         // $this->middleware('auth:api', ['only' => ['gmail','checkifexists']]);
     }
     public function facebook(Request $request) {
-        Log::notice($request->all());
         try {
             $user = Socialite::driver('facebook')->userFromToken($request->access_token);
 
@@ -40,6 +39,30 @@ class SocialController extends ApiController
         }
 
     }
+
+    public function google(Request $request){
+        try {
+            $user = Socialite::driver('google')->userFromToken($request->access_token);
+            if($user == null){
+                return response()->json([
+                    "success" => false,
+                    "message" => 'No se encontro al usuario, inténte con otra cuenta'
+                ]);
+            }else{
+                $user = $this->checkifexists($user);
+                return response()->json([
+                    "success" => true,
+                    "user" => $user
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "message" => 'Hubo un error inesperado, inténtelo más tarde'
+            ]);
+        }
+    }
+
     public function checkifexists($user){
         $check_user = User::where('email',$user->email)->first();
         if(!$check_user){
