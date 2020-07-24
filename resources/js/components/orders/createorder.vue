@@ -67,6 +67,9 @@
 <style scoped>
 .container{
     padding:10%
+}.v-menu__content{
+    top:260px !important;
+    left: 650px !important;
 }
 </style>
 <script>
