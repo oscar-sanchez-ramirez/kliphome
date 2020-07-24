@@ -18,6 +18,7 @@ Vue.component('fixerman-component', require('./components/orders/fixerman.vue').
 Vue.component('payments-component', require('./components/orders/payments.vue').default);
 Vue.component('quotations-component', require('./components/orders/quotations.vue').default);
 Vue.component('configuration-component', require('./components/orders/configuration.vue').default);
+Vue.component('create-order-component', require('./components/orders/createorder.vue').default);
 
 
 const app = new Vue({

@@ -11,13 +11,15 @@
                             <img class="rounded-circle mx-auto d-block" :src="user.avatar" alt="Card image cap">
                             <h5 class="text-sm-center mt-2 mb-1">{{ user.name }} {{ user.lastName }}</h5>
                             <div class="location text-sm-center">
-                                <i class="fa fa-map-marker"></i> {{ address.alias}}, {{ address.street }}
-                                 <p>Municipio: {{address.municipio }}</p>
-                                <p>Ext: {{ address.exterior }}</p>
-                                <p>Int: {{ address.interior }}</p>
-                                <p>Cód Postal: {{ address.postal_code }}</p>
-                                <p>Colonia: {{ address.colonia }}</p>
-                                <p>Referencia: {{ address.reference }}</p>
+                                <div v-if="address != null">
+                                    <i class="fa fa-map-marker"></i> {{ address.alias}}, {{ address.street }}
+                                     <p>Municipio: {{address.municipio }}</p>
+                                    <p>Ext: {{ address.exterior }}</p>
+                                    <p>Int: {{ address.interior }}</p>
+                                    <p>Cód Postal: {{ address.postal_code }}</p>
+                                    <p>Colonia: {{ address.colonia }}</p>
+                                    <p>Referencia: {{ address.reference }}</p>
+                                </div>
                                 <div v-if="fixerman">
                                     <div v-show="orden.state != 'PENDING' && orden.state != 'FIXERMAN_NOTIFIED'">
                                         <h4 v-show="orden.fixerman_arrive == 'NO'">Técnico aún no llegó al punto</h4>

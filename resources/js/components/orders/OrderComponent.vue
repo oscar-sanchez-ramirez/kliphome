@@ -20,7 +20,7 @@
         </v-tab-item>
         <v-tab-item value="tab-3">
             <v-card flat tile>
-                <v-card-text><payments-component :payments="payments"></payments-component></v-card-text>
+                <v-card-text><payments-component :payments="payments" :orden="orden"></payments-component></v-card-text>
             </v-card>
         </v-tab-item>
         <v-tab-item value="tab-4">
@@ -96,6 +96,36 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="modal_payment" scrollable max-width="760px">
+            <v-card>
+                <v-card-title>
+                <span class="headline">Nuevo Pago</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-alert dense border="left" type="error" v-model="error">{{ message }}</v-alert>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="6">
+                                <v-text-field label="Monto" v-model="payment.price"></v-text-field>
+                            </v-col>
+                            <v-col cols="6">
+                                <v-select v-model="payment.description"
+                                :items="conceptos"
+                                label="Concepto"
+                                ></v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row align="center">
+                           <v-btn x-large color="success" dark @click="guardar_pago()">Enviar</v-btn>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="cerrar_modal_payment()">Cancelar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
       </v-container>
   </v-app>
 
@@ -121,10 +151,12 @@ export default{
   data: () => ({
       headers: [{text: 'Nombres',value:'full_name'},{text: 'Telefono',value:'phone'},{text:'Categorias',value:'categories'},{text:'Asignar',value:'options'}],
       quotation:{price:'',workforce:'',solution:'',materials:'',warranty_text:'',warranty_num:''},
+      payment:{description:'',state:1,price:'',code_payment:'EFECTIVO'},
       error: false,
       garantia:false,
       mostrar_garantia:false,
       periodos: ['dias', 'semanas', 'meses'],
+      conceptos: ['VISITA','PAGO POR SERVICIO','PROPINA'],
       message:'',
     }),computed:{
         modal_list_fixerman: {
@@ -143,6 +175,15 @@ export default{
                this.$store.commit('set_modal_quotation',value);
             }
         },
+        modal_payment:{
+            get () {
+             return this.$store.state.modal_payment;
+            },
+            set (value) {
+                $('.header-desktop').css('position','fixed');
+               this.$store.commit('set_modal_payment',value);
+            }
+        },
         // modal_list_fixerman(){ return this.$store.state.modal_list_fixerman;},
         fixerman_list(){ return this.$store.state.fixerman_list;}
     },methods:{
@@ -151,6 +192,9 @@ export default{
         },cerrar_modal_quotation(){
             $('.header-desktop').css('position','fixed');
             this.$store.commit('set_modal_quotation',false);
+        },cerrar_modal_payment(){
+            $('.header-desktop').css('position','fixed');
+            this.$store.commit('set_modal_payment',false);
         },seleccionar(id){
             axios.post('/tecnicos/asignarTecnico/'+id+'/'+this.orden.id).then(response => {
                     window.location.href = window.location.origin+"/ordenes/detalle-orden/"+this.orden.id;
@@ -165,6 +209,22 @@ export default{
                     categories = categories+' '+category.title;
                 }
             return categories;
+        },guardar_pago(){
+                let formData = new FormData();
+                formData.append('description',this.payment.description);
+                formData.append('state',this.payment.state);
+                formData.append('price',this.payment.price);
+                formData.append('code_payment',this.payment.code_payment);
+                axios.post('/ordenes/nuevo-pago/'+this.orden.id,formData).then(response => {
+                    if(!response.data.success){
+                        this.showError("Hubo un error, intente más tarde");
+                    }else{
+                        this.$store.dispatch('payments',this.orden.id);
+                        this.cerrar_modal_payment();
+                    }
+                }).catch(error => {
+                  this.showError("Hubo un error inesperado, intente más tarde");
+                });
         },enviar_cotizacion(){
             let check = this.validate_quotation();
             if(check){

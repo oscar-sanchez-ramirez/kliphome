@@ -21,6 +21,14 @@
     <div class="section__content section__content--p30">
         <div class="row">
             <div class="col-md-12">
+                <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                    </div>
+                    <div class="table-data__tool-right">
+                        <a href="{{ url('') }}/ordenes/nueva-orden" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            Nueva Orden</a>
+                    </div>
+                </div>
                 <div class="table-responsive table-responsive-data2">
                     @if(count($ordenes) == 0)
                         <div id="center">

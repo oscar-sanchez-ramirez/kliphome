@@ -75,7 +75,6 @@ export default{
     orden: Object
   },
   mounted(){
-      console.log(this.orden);
       if(this.orden.state == 'PENDING' || this.orden.state == 'FIXERMAN_NOTIFIED' || this.orden.state == 'FIXERMAN_APPROVED' || this.orden.state == 'ACCEPTED'){
           this.check_done = false;
           this.done = false;

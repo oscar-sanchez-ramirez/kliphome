@@ -10,6 +10,7 @@ use App\Address;
 use App\Payment;
 use App\ExtraInfo;
 use App\Quotation;
+use App\Category;
 use App\FixermanStat;
 use Carbon\Carbon;
 use App\AdminCoupon;
@@ -239,6 +240,48 @@ class OrderController extends Controller
         $quotations = Quotation::where('order_id',$order_id)->get();
         return response()->json([
             'quotations' => $quotations
+        ]);
+    }
+    public function nueva_orden(){
+        $categories = Category::all();
+        return view('admin.orders.create')->with('categories',$categories);
+    }
+    public function store(Request $request){
+        try {
+            if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
+            $order = new Order;
+            $order->user_id = $request->user_id;
+            $order->selected_id = $request->selected_id;
+            $order->type_service = $request->type_service;
+            $order->service_date = $request->service_date;
+            $order->service_description = $request->service_description;
+            $order->service_image = $image;
+            $order->address = $request->address;
+            $order->price = 'quotation';
+            $order->visit_price = $request->visit_price;
+            $order->pre_coupon = $request->coupon;
+            $order->save();
+            return response()->json([
+                'success' => true,
+                'order' => $order
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false
+            ]);
+        }
+    }
+    public function nuevo_pago(Request $request,$id){
+        $payment = new Payment;
+        $payment->order_id = $id;
+        $payment->code_payment = $request->code_payment;
+        $payment->description = $request->description;
+        $payment->state = true;
+        $payment->price = $request->price;
+        $payment->save();
+        return response()->json([
+            'success' => true,
+            'payment' => $payment
         ]);
     }
 }

@@ -30,7 +30,7 @@ class RegisterController extends ApiController
             'code' => $random
         ])->toArray();
 
-        if($request->street != '' && $request->alias != '' && $request->reference != '' && $request->postal_code != '' && $request->municipio != ''){
+        if($request->street != '' && $request->alias != '' && $request->reference != '' && $request->postal_code != '' && $request->municipio != '' && $request->colony != ''){
             Address::create([
                 'street' => $request->street,
                 'alias' => $request->alias,

@@ -13,9 +13,11 @@ export default new Vuex.Store({
         service:'',
         modal_list_fixerman:false,
         modal_quotation:false,
+        modal_payment:false,
         fixerman_list:[],
         categories_list:[],
-        quotations:[]
+        quotations:[],
+        payments:[]
     },
     mutations: {
         // Chat
@@ -39,6 +41,10 @@ export default new Vuex.Store({
             state.quotations = val;
         },set_modal_quotation(state,val){
             state.modal_quotation = val;
+        },set_modal_payment(state,val){
+            state.modal_payment = val;
+        },setPayments(state,val){
+            state.payments = val;
         }
 
     },
@@ -97,6 +103,10 @@ export default new Vuex.Store({
     quotations(context,order_id){
         axios.get('/ordenes/cotizaciones/'+order_id).then(response=>{
             context.commit('setQuotations',response.data.quotations);
+        });
+    },payments(context,order_id){
+        axios.get('/pagos?order_id='+order_id).then(response=>{
+            context.commit('setPayments',response.data.payments);
         });
     }
     },

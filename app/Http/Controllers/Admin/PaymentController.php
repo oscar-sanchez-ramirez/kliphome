@@ -19,7 +19,13 @@ class PaymentController extends Controller
         return view('admin.payments.pagos_fecha');
     }
 
-    public function index(){
+    public function index(Request $request){
+        if(\request()->ajax()){
+            $payments = Payment::where('order_id',$request->order_id)->get();
+            return response()->json([
+                'payments' => $payments
+            ]);
+        }
         $general_percent = DB::table('general_stats')->where('title',"percent")->first();
         $payments = DB::table('orders as o')
         ->join('payments as p','p.order_id','o.id')
