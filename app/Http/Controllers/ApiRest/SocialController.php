@@ -17,7 +17,6 @@ class SocialController extends ApiController
         try {
             Log::notice($request->all());
             $user = Socialite::driver('facebook')->userFromToken($request->access_token);
-
             if($user == null){
                 return response()->json([
                     "success" => false,
@@ -25,6 +24,7 @@ class SocialController extends ApiController
                 ]);
             }else{
                 $user = $this->checkifexists($user,$request->provider);
+                Log::notice($user);
                 return response()->json([
                     "success" => true,
                     "user" => $user
