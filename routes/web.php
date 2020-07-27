@@ -60,3 +60,5 @@ Route::get('/debug-sentry', function () {
 
 //Email confirmation
 Route::get('email-confirmation/{code}','WebController@email_verified');
+
+Route::get('test','WebController@test');

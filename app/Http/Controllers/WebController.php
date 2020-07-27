@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Nexmo\Laravel\Facade\Nexmo;
 
 class WebController extends ControllerWeb
 {
@@ -20,5 +21,14 @@ class WebController extends ControllerWeb
         }else{
             return view('emailnotverified');
         }
+    }
+    public function test(){
+        $num = (string)("51997491844");
+        Nexmo::message()->send([
+            'to'   => $num,
+            'from' => 'KlipHome',
+            'text' => '227589 es tu número de verificación para KlipHome',
+            'type' => 'text'
+        ]);
     }
 }
