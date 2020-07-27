@@ -9,6 +9,7 @@ use App\Address;
 use Carbon\Carbon;
 use App\ResetPassword;
 use Illuminate\Http\Request;
+use Nexmo\Laravel\Facade\Nexmo;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\Mail\UserConfirmation;
 use App\Http\Requests\ClientRequest;
@@ -107,6 +108,23 @@ class RegisterController extends ApiController
         return response()->json([
             'message' => "Dirección actualizada"
         ]);
+    }
+
+    public function verifyphone(Request $request){
+        $number = random_int(1000, 9999);
+        $new_code = new ResetPassword;
+        $new_code->email = $request->phone;
+        $new_code->code = $number;
+        $new_code->save();
+
+        $num = (string)($request->phone);
+        Nexmo::message()->send([
+            'to'   => $num,
+            'from' => 'KlipHome',
+            'text' => $number.' es tu numero de verificacion para KlipHome',
+            'type' => 'text'
+        ]);
+
     }
 
     public function verifyemail(Request $request){

@@ -43,6 +43,8 @@ Route::post('updatePassword','ApiRest\RegisterController@updatePassword');
 Route::post('updateAddress','ApiRest\RegisterController@updateAddress');
 Route::post('newAddress','ApiRest\RegisterController@newAddress');
 Route::post('verifyemail','ApiRest\RegisterController@verifyemail');
+Route::post('verifyphone','ApiRest\RegisterController@verifyphone');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     $info = new ApiServiceController();
