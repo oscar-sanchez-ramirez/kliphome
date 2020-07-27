@@ -66,19 +66,21 @@ class SocialController extends ApiController
     public function checkifexists($user,$provider){
         $check_user = User::where('email',$user->email)->first();
         if(!$check_user){
-            $random = strtoupper(substr(md5(mt_rand()), 0, 10));
-            $user = User::create([
-                'name' => $user->name,
-                'email' => $user->email,
-                'password' => bcrypt($random),
-                'code' => $random,
-                'provider' => $provider
+            // $random = strtoupper(substr(md5(mt_rand()), 0, 10));
+            // $user = User::create([
+            //     'name' => $user->name,
+            //     'email' => $user->email,
+            //     'password' => bcrypt($random),
+            //     'code' => $random,
+            //     'provider' => $provider
 
-            ])->toArray();
-            return $user;
+            // ])->toArray();
+            // return $user;
+            return false;
             // dispatch(new UserConfirmation($user));
         }else{
-            return $check_user;
+            // return $check_user;
+            return true;
         }
     }
     public function gmail(){
