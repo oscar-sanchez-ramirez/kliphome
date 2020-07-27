@@ -126,7 +126,7 @@ class RegisterController extends ApiController
         ]);
         return response()->json([
             'success' => true,
-            'message' => "Código enviado a ".$num
+            'message' => "Código enviado a".$num
         ]);
     }
 
@@ -197,20 +197,20 @@ class RegisterController extends ApiController
                 'message' => "Código no encontrado"
             ]);
         }else{
-            $startTime = $validateCode->created_at;
-            $finishTime = Carbon::now();
-            $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
-            if($totalDuration > 10){
-                return response()->json([
-                    'success' => false,
-                    'message' => "Código ingresado expiró"
-                ]);
-            }else{
-                return response()->json([
-                    'success' => true,
-                    'message' => "Código válido"
-                ]);
-            }
+            // $startTime = $validateCode->created_at;
+            // $finishTime = Carbon::now();
+            // $totalDuration = ($finishTime->diffInSeconds($startTime))/60;
+            // if($totalDuration > 10){
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => "Código ingresado expiró"
+            //     ]);
+            // }else{
+            // }
+            return response()->json([
+                'success' => true,
+                'message' => "Código válido"
+            ]);
         }
     }
 }
