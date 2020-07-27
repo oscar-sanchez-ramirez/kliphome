@@ -167,6 +167,7 @@ return [
         NotificationChannels\OneSignal\OneSignalServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Nexmo\Laravel\NexmoServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -234,6 +235,7 @@ return [
         'OneSignal' => Berkayk\OneSignal\OneSignalFacade::class,
         'Sentry' => Sentry\Laravel\Facade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Nexmo' => Nexmo\Laravel\Facade\Nexmo::class,
     ],
 
 ];
