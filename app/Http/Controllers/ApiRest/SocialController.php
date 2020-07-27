@@ -24,7 +24,6 @@ class SocialController extends ApiController
                 ]);
             }else{
                 $user = $this->checkifexists($user,$request->provider);
-                Log::notice($user);
                 return response()->json([
                     "success" => true,
                     "user" => $user
@@ -80,8 +79,7 @@ class SocialController extends ApiController
             return false;
             // dispatch(new UserConfirmation($user));
         }else{
-            // return $check_user;
-            return true;
+            return $check_user;
         }
     }
     public function gmail(){
