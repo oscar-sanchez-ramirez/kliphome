@@ -124,7 +124,10 @@ class RegisterController extends ApiController
             'text' => $number.' es tu numero de verificacion para KlipHome',
             'type' => 'text'
         ]);
-
+        return response()->json([
+            'success' => true,
+            'message' => "Código enviado a ".$num
+        ]);
     }
 
     public function verifyemail(Request $request){
