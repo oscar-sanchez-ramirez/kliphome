@@ -41,6 +41,7 @@ class SocialController extends ApiController
     }
 
     public function google(Request $request){
+        Log::notice($request->all());
         try {
             $user = Socialite::driver('google')->userFromToken($request->access_token);
             if($user == null){
