@@ -41,8 +41,7 @@ class SocialController extends ApiController
     }
 
     public function google(Request $request){
-        Log::notice($request->all());
-        // try {
+        try {
             $user = Socialite::driver('google')->userFromToken($request->access_token);
 
             if($user == null){
@@ -57,12 +56,12 @@ class SocialController extends ApiController
                     "user" => $user
                 ]);
             }
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         "success" => false,
-        //         "message" => 'Hubo un error inesperado, inténtelo más tarde'
-        //     ]);
-        // }
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "message" => 'Hubo un error inesperado, inténtelo más tarde'
+            ]);
+        }
     }
 
     public function checkifexists($user,$provider,$register){
