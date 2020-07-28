@@ -51,7 +51,7 @@ class SocialController extends ApiController
                     "message" => 'No se encontro al usuario, inténte con otra cuenta'
                 ]);
             }else{
-                $user = $this->checkifexists($user,$request->provider,$register->register);
+                $user = $this->checkifexists($user,$request->provider,$request->register);
                 return response()->json([
                     "success" => true,
                     "user" => $user
