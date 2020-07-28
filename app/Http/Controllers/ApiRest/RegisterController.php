@@ -111,15 +111,14 @@ class RegisterController extends ApiController
     }
 
     public function verifyphone(Request $request){
-        $num = '51997491844';
+        $num = (string)($request->phone);
+
         $number = random_int(1000, 9999);
         $new_code = new ResetPassword;
         $new_code->email = $num;
         $new_code->code = $number;
         $new_code->save();
 
-        // $num = (string)($request->phone);
-        $num = '51997491844';
         Nexmo::message()->send([
             'to'   => $num,
             'from' => 'KlipHome',
@@ -191,8 +190,8 @@ class RegisterController extends ApiController
     }
 
     public function validateCode(Request $request){
-        $num = '51997491844';
-        $validateCode = ResetPassword::where('email',$num)->where('code',$request->code)->first();
+        // $num = '51997491844';
+        $validateCode = ResetPassword::where('email',$request->email)->where('code',$request->code)->first();
         if(empty($validateCode)){
             return response()->json([
                 'success' => false,
