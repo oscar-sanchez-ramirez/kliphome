@@ -41,6 +41,7 @@ class SocialController extends ApiController
     }
 
     public function google(Request $request){
+        Log::notice($requet->all());
         try {
             $user = Socialite::driver('google')->userFromToken($request->access_token);
 
@@ -51,6 +52,7 @@ class SocialController extends ApiController
                 ]);
             }else{
                 $user = $this->checkifexists($user,$request->provider,$request->register);
+                Log::notice($user);
                 return response()->json([
                     "success" => true,
                     "user" => $user
