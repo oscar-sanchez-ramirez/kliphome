@@ -133,26 +133,26 @@ class RegisterController extends ApiController
 
     public function verifyemail(Request $request){
         $v = Validator::make($request->all(), [
-            'email' => 'required|unique:users|email',
+            'email' => 'unique:users|email',
         ]);
         if ($v->fails()){
             return response()->json([
                 'success' => false,
-                'message' => "Email incorrecto"
+                'message' => "Email ya esta en uso"
             ]);
         }else{
-            $number = random_int(1000, 9999);
-            $new_code = new ResetPassword;
-            $new_code->email = $request->email;
-            $new_code->code = $number;
-            $new_code->save();
+            // $number = random_int(1000, 9999);
+            // $new_code = new ResetPassword;
+            // $new_code->email = $request->email;
+            // $new_code->code = $number;
+            // $new_code->save();
 
-            $usuario = array('code' =>  $number, 'email' => $request->email);
-            $mail = $request->email;
-            Mail::send('emails.confirmemail',$usuario, function($msj) use ($mail){
-                $msj->subject('KlipHome: Código para confirmar correo');
-                $msj->to($mail,"KlipHome: Código para confirmar correo");
-            });
+            // $usuario = array('code' =>  $number, 'email' => $request->email);
+            // $mail = $request->email;
+            // Mail::send('emails.confirmemail',$usuario, function($msj) use ($mail){
+            //     $msj->subject('KlipHome: Código para confirmar correo');
+            //     $msj->to($mail,"KlipHome: Código para confirmar correo");
+            // });
 
             return response()->json([
                 'success' => true,

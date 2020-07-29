@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiRest;
 
 use App\User;
 use Socialite;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
@@ -77,7 +78,8 @@ class SocialController extends ApiController
                     'password' => bcrypt($random),
                     'code' => $random,
                     'provider' => $provider,
-                    'state' => 1
+                    'state' => 1,
+                    'email_verified_at' => Carbon::now()
                 ])->toArray();
                 return $user;
             }else{
