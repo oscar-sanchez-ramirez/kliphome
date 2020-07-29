@@ -136,7 +136,7 @@ export default {
       formatDate (date) {
         if (!date) return null
         const [year, month, day] = date.split('-')
-        return `${day}-${month}-${year}`
+        return `${day}/${month}/${year}`
       },
       obtener_usuario(id,name){
           this.user_id = id;
