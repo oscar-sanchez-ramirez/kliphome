@@ -161,6 +161,16 @@ class RegisterController extends ApiController
         }
     }
 
+    public function check_social_account(){
+        return response()->json([
+            'success' => true,
+            'facebook_ios' => true,
+            'facebook_android' => true,
+            'google_ios' => true,
+            'google_android' => true,
+        ]);
+    }
+
     public function reset(Request $request){
         $user = User::where('email',$request->email)->first();
         if(empty($user)){
