@@ -53,25 +53,25 @@ class OrderController extends ApiController
                     'order' => $order
                 ]);
             }else{
-                $price = floatval($request->price);
-                Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
-                if(substr($request->token,0,3) == "cus"){
-                    $pago = Stripe\Charge::create ([
-                        "amount" => $request->visit_price * 100,
-                        "currency" => "MXN",
-                        "customer" => $request->token,
-                        "description" => "Pago por visita"
-                    ]);
-                }else{
-                    $pago = Stripe\Charge::create ([
-                        "amount" => $request->visit_price * 100,
-                        "currency" => "MXN",
-                        "source" => $request->token,
-                        "description" => "Pago por visita"
-                    ]);
-                }
+                // $price = floatval($request->price);
+                // Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                // if(substr($request->token,0,3) == "cus"){
+                //     $pago = Stripe\Charge::create ([
+                //         "amount" => $request->visit_price * 100,
+                //         "currency" => "MXN",
+                //         "customer" => $request->token,
+                //         "description" => "Pago por visita"
+                //     ]);
+                // }else{
+                //     $pago = Stripe\Charge::create ([
+                //         "amount" => $request->visit_price * 100,
+                //         "currency" => "MXN",
+                //         "source" => $request->token,
+                //         "description" => "Pago por visita"
+                //     ]);
+                // }
                 Log::notice($request->all());
-                if($pago->paid == true){
+                // if($pago->paid == true){
                     $order = new Order;
                     $order->user_id = $request->user_id;
                     $order->selected_id = $request->selected_id;
@@ -86,25 +86,25 @@ class OrderController extends ApiController
                     $order->save();
                     $order->order_id = $order->id;
 
-                    $payment = new Payment;
-                    $payment->order_id = $order->id;
-                    $payment->code_payment = $pago->id;
-                    $payment->description = "VISITA";
-                    $payment->state = true;
-                    $payment->price = $request->visit_price;
-                    $payment->save();
+                    // $payment = new Payment;
+                    // $payment->order_id = $order->id;
+                    // $payment->code_payment = $pago->id;
+                    // $payment->description = "VISITA";
+                    // $payment->state = true;
+                    // $payment->price = $request->visit_price;
+                    // $payment->save();
                     $user = $request->user();
-                    dispatch(new NotifyNewOrder($order->id,$user->email));
+                    // dispatch(new NotifyNewOrder($order->id,$user->email));
                     return response()->json([
                         'success' => true,
                         'message' => "La orden de servicio se realizó con éxito",
                         'order' => $order
                     ]);
-                }else{
-                    return response()->json([
-                        'success' => false
-                    ]);
-                }
+                // }else{
+                //     return response()->json([
+                //         'success' => false
+                //     ]);
+                // }
             }
 
         } catch (\Throwable $th) {
