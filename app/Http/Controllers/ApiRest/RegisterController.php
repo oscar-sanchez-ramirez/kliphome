@@ -167,7 +167,7 @@ class RegisterController extends ApiController
             'facebook_ios' => true,
             'facebook_android' => true,
             'google_ios' => true,
-            'google_android' => true,
+            'google_android' => false,
         ]);
     }
 
