@@ -398,7 +398,6 @@
     <script src="{{ url('') }}/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="{{ url('') }}/vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="{{ url('') }}/vendor/select2/select2.min.js"></script>
-
     <!-- Main JS-->
     <script src="{{ url('') }}/js/main.js"></script>
     @if(Request::is('pagos/pagos-fecha'))

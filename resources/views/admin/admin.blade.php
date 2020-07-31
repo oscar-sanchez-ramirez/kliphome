@@ -83,6 +83,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-12">
+                        <div class="au-card chart-percent-card">
+                            <div class="au-card-inner">
+                                <h3 class="title-2 tm-b-5">Total de pedidos por Categoría</h3>
+                                <div class="row no-gutters">
+
+                                        <div class="percent-chart">
+                                            <canvas id="myChart"></canvas>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -94,4 +107,41 @@
             </div>
         </div>
     </div>
+    @php
+        $titles = [];
+        $count_of_orders = [];
+        $colors = [];
+        for ($i=0; $i < count($categories); $i++) {
+            $titles[$i] = $categories[$i]["title"];
+            $random = rand(0, 255);
+            $colors[$i] = "rgba(".$random.",5,0, 0.3)";
+            if(isset($categories[$i]["count"])){
+                $count_of_orders[$i] = $categories[$i]["count"];
+            }else{
+                $count_of_orders[$i] = 0;
+            }
+        }
+    @endphp
+    <script>
+        window.onload = function() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @json($titles),
+                datasets: [{
+                    label: '# de ordenes',
+                    data: @json($count_of_orders),
+                    backgroundColor: @json($colors),
+                    borderWidth: 1
+                }]
+            }
+        });
+        };
+        </script>
+        <style>
+            #myChart{
+                width: 100% !important;
+            }
+        </style>
 @endsection
