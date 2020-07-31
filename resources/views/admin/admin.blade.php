@@ -88,10 +88,9 @@
                             <div class="au-card-inner">
                                 <h3 class="title-2 tm-b-5">Total de pedidos por Categoría</h3>
                                 <div class="row no-gutters">
-
-                                        <div class="percent-chart">
-                                            <canvas id="myChart"></canvas>
-                                        </div>
+                                    <div class="percent-chart">
+                                        <canvas id="myChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -139,9 +138,4 @@
         });
         };
         </script>
-        <style>
-            #myChart{
-                width: 100% !important;
-            }
-        </style>
 @endsection
