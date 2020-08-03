@@ -55,7 +55,8 @@ class FixerManController extends ApiController
                 'type' => 'AppFixerMan',
                 'state' => 0,
                 'password' => bcrypt($request->password),
-                'code' => $random
+                'code' => $random,
+                'email_verified_at' => Carbon::now()
             ])->toArray();
 
             // Address::create([

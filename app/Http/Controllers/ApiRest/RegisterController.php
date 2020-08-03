@@ -28,6 +28,7 @@ class RegisterController extends ApiController
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'email_verified_at' => Carbon::now(),
             'code' => $random
         ])->toArray();
 
