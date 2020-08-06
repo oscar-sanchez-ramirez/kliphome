@@ -28,8 +28,22 @@ class FixerManController extends Controller
         if($request->filled('notification_id')){
             DB::table('notifications')->where('type',"App\Notifications\NewFixerMan")->update(['read_at'=>Carbon::now()]);
         }
-        $users = User::where('type','AppFixerMan')->get();
-        return view('admin.fixerman.index')->with('users',$users);
+        $users = User::where('type','AppFixerMan')->paginate(10);
+        $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))->where('type','AppFixerMan')->groupBy('dates')->orderBy('dates','asc')->get());
+        return view('admin.fixerman.index',compact('users','monthlysales'));
+    }
+    private function cast_date($users){
+        $months = [];
+        for ($i=0; $i < count($users); $i++) {
+            $date = substr($users[$i]->dates,-16,7);
+            if(array_search($date,array_column($months,"x"))){
+                $index = array_search($date,array_column($months,"x"));
+                $months[$index]["y"] = $months[$index]["y"] + $users[$i]->total;
+            }else{
+                array_push($months,array("x" => $date,"y"=>$users[$i]->total));
+            }
+        }
+        return $months;
     }
     public function detail($id){
         $ficha = DB::table('fixerman_stats')->where('user_id',$id)->first();
@@ -128,20 +142,6 @@ class FixerManController extends Controller
         $new_selected->order_id = $id_orden;
         $new_selected->state = 1;
         $new_selected->save();
-
-        // $otherRequest = DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->get();
-        // if(!empty($otherRequest)){
-        //     $order["mensajeClient"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
-        //     $order["mensajeFixerMan"] = ucwords(strtolower($user_order->name))." ya asignó su trabajo con otro técnico";
-        //     foreach ($otherRequest as $key) {
-        //         $notFixerman = User::where('id',$key->user_id)->first();
-        //         $notFixerman->sendNotification($notFixerman->email,'DisapproveOrderFixerMan');
-        //         $notFixerman->notify(new DatabaseDisapproveOrderFixerMan($order));
-        //     }
-        //     DB::table('selected_orders')->where('user_id','!=',$fixerman->id)->where('order_id',$order->id)->update([
-        //         'state' => 0
-        //     ]);
-        // }
         //Notification for Fixerman
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "KlipHome ha  confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
@@ -150,7 +150,6 @@ class FixerManController extends Controller
         Order::where('id',$id_orden)->update([
             'state' => 'FIXERMAN_APPROVED'
         ]);
-        // return back()->with('success','Se asignó al técnico');
     }
     public function aprove(Request $request){
         User::where('id',$request->fixerman_id)->update([

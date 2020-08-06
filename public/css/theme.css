@@ -14645,7 +14645,7 @@ section {
 #center{
     text-align:center;
 }
-#myChart{
+#myChart,#myChart2{
     width: 100% !important;
     height:100% !important;
 }

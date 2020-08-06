@@ -5,30 +5,26 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- DATA TABLE -->
-                {{-- <div class="table-data__tool"> --}}
-                    {{-- <div class="table-data__tool-left">
-                        <div class="rs-select2--light rs-select2--md">
-                            <select class="js-select2" name="property">
-                                <option selected="selected">All</option>
-                                <option value="">Option 1</option>
-                                <option value="">Option 2</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
+                <div class="table-data__tool">
+                    <div class="table-data__tool-right">
+                        <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            <i class="zmdi zmdi-chart"></i></button>
+                    </div>
+                </div>
+                <div class="chart" style="display: none">
+                    <div class="col-lg-12">
+                        <div class="au-card chart-percent-card">
+                            <div class="au-card-inner">
+                                <h3 class="title-2 tm-b-5">Registro de usuarios por mes</h3>
+                                <div class="row no-gutters">
+                                    <div class="percent-chart">
+                                        <canvas id="myChart2"></canvas>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div> --}}
-                    {{-- <div class="table-data__tool-right">
-                        <a href="{{ url('') }}/categorias/create" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            <i class="zmdi zmdi-plus"></i>Categoría</a>
-                        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
-                            <select class="js-select2" name="type">
-                                <option selected="selected">Exportar</option>
-                                <option value="">Excel</option>
-                                <option value="">PDF</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                    </div> --}}
-                {{-- </div> --}}
+                    </div>
+                </div>
                 <div class="table-responsive table-responsive-data2">
                     @if(count($users) == 0)
                         <div id="center">
@@ -38,50 +34,31 @@
                         <table class="table table-data2">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <label class="au-checkbox">
-                                            <input type="checkbox">
-                                            <span class="au-checkmark"></span>
-                                        </label>
-                                    </th>
+                                    <th>#</th>
                                     <th>Nombres</th>
                                     <th>Email</th>
                                     <th>Telefono</th>
                                     <th>Fecha Registro</th>
-                                    {{-- <th></th> --}}
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $current = ($users->currentPage() *10) -9;
+                                    $i = $current;
+                                @endphp
                                 @foreach ($users as $user)
                                     <tr class="tr-shadow">
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
+                                        <td>{{$i++}}</td>
                                         <td>{{ $user->name }} {{ $user->lastName }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
                                         <td>{{ $user->created_at->diffForHumans() }}</td>
-                                        {{-- <td>
-                                            <div class="table-data-feature">
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                    <i class="zmdi zmdi-edit"></i>
-                                                </button>
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="zmdi zmdi-delete"></i>
-                                                </button>
-                                                <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubcategoryModal" data-title="{{ $user->title }}" data-id="{{ $user->id }}">
-                                                    <i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-collection-item-2"></i>
-                                                </button>
-                                            </div>
-                                        </td> --}}
                                     </tr>
                                     <tr class="spacer"></tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $users->links() }}
                     @endif
                 </div>
                 <!-- END DATA TABLE -->
@@ -89,5 +66,41 @@
         </div>
     </div>
 </div>
+@php
+    $titles = [];
+    $count_of_orders = [];
+    $colors = [];
+    $datasets = [];
+    for ($i=0; $i < count($monthlysales); $i++) {
+        $titles[$i] = $monthlysales[$i]["x"];
+        $random = rand(0, 255);
+        $colors[$i] = "rgba(".$random.",5,0, 0.3)";
+        $count_of_orders[$i] = $monthlysales[$i]["y"];
+    }
+@endphp
+<script>
+function show_chart(){
+    if ($('.table-responsive').is(":visible") === false) {
+        $(".table-responsive").show();
+        $(".chart").hide();
+    } else {
+        $(".table-responsive").hide();
+        $(".chart").show();
+    }
+    var ctx = document.getElementById('myChart2').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @json($titles),
+                datasets: [{
+                    label: '# de usuarios',
+                    data: @json($count_of_orders),
+                    backgroundColor: @json($colors),
+                    borderWidth: 1
+                }]
+            }
+        });
+}
+</script>
 @include('layouts.modals.subCategoryModal');
 @endsection

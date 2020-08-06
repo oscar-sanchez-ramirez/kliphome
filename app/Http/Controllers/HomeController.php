@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    private $array_dates;
     /**
      * Create a new controller instance.
      *
@@ -38,7 +39,8 @@ class HomeController extends Controller
         $pagos = Payment::where('state',1)->sum('price');
         $ordenes = Order::where('state','!=','CANCELLED')->count();
         $categories = $this->get_count_orders();
-        return view('admin.admin',compact('clientes','tecnicos','pagos','ordenes','categories'));
+        $array_dates = $this->array_dates;
+        return view('admin.admin',compact('clientes','tecnicos','pagos','ordenes','categories','array_dates'));
     }
 
     public function notificaciones(){
@@ -54,17 +56,80 @@ class HomeController extends Controller
         ]);
     }
     private function get_count_orders(){
-        $categories = Category::all();
+        $categories = (Category::all());
         $ordenes = Order::where('state','!=','CANCELLED')->get();
-        for ($i=0; $i < count($ordenes); $i++) {
-            $category = $this->getCategory($ordenes[$i]["type_service"],$ordenes[$i]["selected_id"]);
-            for ($j=0; $j < count($categories); $j++) {
-                if($categories[$j]->title == $category){
-                    $categories[$j]["count"]  += 1;
+        for ($i=0; $i < count($categories); $i++) {
+            $this->array_dates[$i]["label"] = $categories[$i]["title"];
+            $this->array_dates[$i]["showLine"] = true;
+            $this->array_dates[$i]["fill"] = false;
+            $random = rand(0, 255);
+            $this->array_dates[$i]["borderColor"] = "rgba(".$random.",5,0, 0.3)";
+            for ($j=0; $j <count($ordenes) ; $j++) {
+                $category = $this->getCategory($ordenes[$j]["type_service"],$ordenes[$j]["selected_id"]);
+                $date = $this->position($ordenes[$j]["service_date"]);
+                if($categories[$i]->title == $category){
+                    if(!isset($this->array_dates[$i]["data"])){
+                        $this->array_dates[$i]["data"] = [];
+                        array_push($this->array_dates[$i]["data"],array("x" => $date,"y"=>1));
+                    }else{
+                        if(array_search($date,array_column($this->array_dates[$i]["data"],"x"))){
+                            $index = array_search($date,array_column($this->array_dates[$i]["data"],"x"));
+                            $this->array_dates[$i]["data"][$index]["y"] += 1;
+                        }else{
+                            array_push($this->array_dates[$i]["data"],array("x" => $date,"y"=>1));
+                        }
+                    }
+                    $categories[$i]["count"]  += 1;
                 }
             }
         }
         return $categories;
+    }
+    private function position($date){
+        // $date = substr($date,-11,2);
+        return $date = substr($date,-16,10);
+        switch ($date) {
+            case '01':
+                return "Ene";
+                break;
+                case '02':
+                    return "Feb";
+                    break;
+                    case '03':
+                        return "Mar";
+                        break;
+                        case '04':
+                            return "Abr";
+                            break;
+                            case '05':
+                                return "May";
+                                break;
+                                case '06':
+                                    return "Jun";
+                                    break;
+                                    case '07':
+                                        return "Jul";
+                                        break;
+                                        case '08':
+                                            return "Ago";
+                                            break;
+                                            case '09':
+                                                return "Set";
+                                                break;
+                                                case '10':
+                                                    return "Oct";
+                                                    break;
+                                                    case '11':
+                                                        return "Nov";
+                                                        break;
+                                                        case '12':
+                                                            return "Dic";
+                                                            break;
+
+            default:
+                return "Ene";
+                break;
+        }
     }
     private function getCategory($type,$id){
         switch ($type) {
@@ -85,7 +150,7 @@ class HomeController extends Controller
                 return $category[0]->category;
                 break;
             default:
-                # code...
+                return "Ene";
                 break;
         }
     }

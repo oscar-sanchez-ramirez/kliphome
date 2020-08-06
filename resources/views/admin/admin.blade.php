@@ -95,6 +95,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-12">
+                        <div class="au-card chart-percent-card">
+                            <div class="au-card-inner">
+                                <h3 class="title-2 tm-b-5">Total de pedidos por Categoría</h3>
+                                <div class="row no-gutters">
+                                    <div class="percent-chart">
+                                        <canvas id="myChart2"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -110,6 +122,7 @@
         $titles = [];
         $count_of_orders = [];
         $colors = [];
+        $datasets = [];
         for ($i=0; $i < count($categories); $i++) {
             $titles[$i] = $categories[$i]["title"];
             $random = rand(0, 255);
@@ -122,9 +135,47 @@
         }
     @endphp
     <script>
+
         window.onload = function() {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
+        var dates = @json($array_dates);
+        for (let index = 0; index < dates.length; index++) {
+            if(dates[index]["data"] != null){
+                dates[index]["data"].sort(function(a,b){
+                    return a.x > b.x;
+                })
+            }
+        }
+        var ctx2       = document.getElementById("myChart2").getContext("2d");
+        var myChart = new Chart(ctx2, {
+            type: 'line',
+            data: { datasets:dates },
+            options: {
+                tooltips: { mode: 'index',intersect: false },
+                hover: { mode: 'nearest', intersect: true },
+                scales: {
+                    xAxes: [ {
+                        display: true,
+                        type: 'time',
+                        time: {
+                        parser: 'YYYY/MM/DD',
+                        unit: 'day',
+                        unitStepSize: 10,
+                        displayFormats: {
+                            'day': 'YYYY/MM/DD'
+                        }
+                        }
+                    }
+                    ],
+                yAxes: [{
+                    ticks: {
+                    beginAtZero:true
+                    }
+                }]
+                },
+            }
+        });
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: @json($titles),
