@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="row no-gutters">
                                     <div class="percent-chart">
-                                        <canvas id="myChart2"></canvas>
+                                        <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
                                     </div>
                                 </div>
                             </div>
