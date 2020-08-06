@@ -165,9 +165,9 @@ class RegisterController extends ApiController
     public function check_social_account(){
         return response()->json([
             'success' => true,
-            'facebook_ios' => false,
+            'facebook_ios' => true,
             'facebook_android' => true,
-            'google_ios' => false,
+            'google_ios' => true,
             'google_android' => false,
         ]);
     }
