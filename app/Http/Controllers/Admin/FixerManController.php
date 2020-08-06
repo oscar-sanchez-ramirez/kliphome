@@ -28,6 +28,14 @@ class FixerManController extends Controller
         if($request->filled('notification_id')){
             DB::table('notifications')->where('type',"App\Notifications\NewFixerMan")->update(['read_at'=>Carbon::now()]);
         }
+        if(\request()->ajax()){
+            if($request->filled('chart_query')){
+                $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
+                ->whereMonth('created_at', '>=', intval(substr($request->start,-2,2)))->whereMonth('created_at', '<=', intval(substr($request->end,-2,2)))->whereYear('created_at','>=',intval(substr($request->start,-7,4)))->whereYear('created_at','<=',intval(substr($request->end,-7,4)))
+                ->where('type','AppFixerMan')->groupBy('dates')->orderBy('dates','asc')->get());
+                return $monthlysales;
+            }
+        }
         $users = User::where('type','AppFixerMan')->orderBy('id','desc')->paginate(10);
         $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))->where('type','AppFixerMan')->groupBy('dates')->orderBy('dates','asc')->get());
         return view('admin.fixerman.index',compact('users','monthlysales'));
@@ -35,7 +43,7 @@ class FixerManController extends Controller
     private function cast_date($users){
         $months = [];
         for ($i=0; $i < count($users); $i++) {
-            $date = substr($users[$i]->dates,-16,7);
+            $date = substr($users[$i]->dates,-16,10);
             if(array_search($date,array_column($months,"x"))){
                 $index = array_search($date,array_column($months,"x"));
                 $months[$index]["y"] = $months[$index]["y"] + $users[$i]->total;

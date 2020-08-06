@@ -15,6 +15,26 @@
                         <div class="au-card chart-percent-card">
                             <div class="au-card-inner">
                                 <h3 class="title-2 tm-b-5">Registro de Técnicos por mes</h3>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <input id="start" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
+                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <input id="end" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
+                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
+                                            <i class="fa fa-dot-circle-o"></i> Filtrar
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="row no-gutters">
                                     <div class="percent-chart">
                                         <canvas id="myChart2"></canvas>
@@ -95,6 +115,53 @@
     }
 @endphp
 <script>
+function filter(){
+    var url = window.location.origin+"/tecnicos";
+    var start = $('#start').val();
+    var end = $('#end').val();
+    let val = validate(start,end);
+    if(val){
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: { 'start': start,'end': end, 'chart_query':"chart_query" },
+            success: function(data) {
+                var titles = [];
+                var count_of_orders = [];
+                var colors = [];
+                for (let index = 0; index < data.length; index++) {
+                    titles[index] = data[index]["x"];
+                    count_of_orders[index] = data[index]["y"];
+                    random = Math.floor(Math.random() * (255 - 0 + 1)) + 0;
+                    colors[index] = "rgba("+random+",5,0, 0.3)";
+                }
+                $(".percent-chart").html('');
+                $(".percent-chart").html('<canvas id="myChart2"></canvas>');
+                open_chart(titles,count_of_orders,colors);
+            },
+            error: function(data) {
+                alert("Fecha incorrecta, verifique sus datos");
+            }
+        });
+    }else{
+        alert("Fecha incorrecta, verifique sus datos");
+    }
+}
+function open_chart(titles,count_of_orders,colors){
+    var ctx = document.getElementById('myChart2').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: titles,
+                datasets: [{
+                    label: '# de tecnicos',
+                    data: count_of_orders,
+                    backgroundColor: colors,
+                    borderWidth: 1
+                }]
+            }
+        });
+}
 function show_chart(){
     if ($('.table-responsive').is(":visible") === false) {
         $(".table-responsive").show();
@@ -103,19 +170,12 @@ function show_chart(){
         $(".table-responsive").hide();
         $(".chart").show();
     }
-    var ctx = document.getElementById('myChart2').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: @json($titles),
-                datasets: [{
-                    label: '# de técnicos',
-                    data: @json($count_of_orders),
-                    backgroundColor: @json($colors),
-                    borderWidth: 1
-                }]
-            }
-        });
+    open_chart(@json($titles),@json($count_of_orders),@json($colors))
+}
+function validate(start,end){
+    if(start.length < 7 || end.length < 7){
+        return false
+    }return true;
 }
 </script>
 @include('layouts.modals.fixermanModal');
