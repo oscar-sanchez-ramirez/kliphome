@@ -89,7 +89,7 @@
                                 <h3 class="title-2 tm-b-5">Total de pedidos por Categoría</h3>
                                 <div class="row no-gutters">
                                     <div class="percent-chart">
-                                        <canvas id="myChart"></canvas>
+                                        <canvas id="myChart" height="100%" width="100%"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -175,6 +175,8 @@
             }
         });
         var ctx = document.getElementById('myChart').getContext('2d');
+        // ctx.height = 200;
+        // document. getElementById('myChart').style.height="500px";
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
