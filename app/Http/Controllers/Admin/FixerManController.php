@@ -28,7 +28,7 @@ class FixerManController extends Controller
         if($request->filled('notification_id')){
             DB::table('notifications')->where('type',"App\Notifications\NewFixerMan")->update(['read_at'=>Carbon::now()]);
         }
-        $users = User::where('type','AppFixerMan')->paginate(10);
+        $users = User::where('type','AppFixerMan')->orderBy('id','desc')->paginate(10);
         $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))->where('type','AppFixerMan')->groupBy('dates')->orderBy('dates','asc')->get());
         return view('admin.fixerman.index',compact('users','monthlysales'));
     }
