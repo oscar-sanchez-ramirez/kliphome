@@ -151,6 +151,8 @@
         function resizeCanvas() {
             htmlCanvas.width = window.innerWidth;
             htmlCanvas.height = window.innerHeight;
+            myChart2.width = window.innerWidth;
+            myChart2.height = window.innerHeight;
         }
         window.onload = function() {
         var dates = @json($array_dates);
