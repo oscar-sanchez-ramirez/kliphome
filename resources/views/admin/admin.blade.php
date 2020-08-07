@@ -135,17 +135,14 @@
         }
     @endphp
     <script>
-
-
        initialize();
-
        function initialize() {
             htmlCanvas = document.getElementById('myChart'),
             myChart2 = document.getElementById('myChart2'),
             context = htmlCanvas.getContext('2d');
             context2 = myChart2.getContext('2d');
-           window.addEventListener('resize', resizeCanvas, false);
-           resizeCanvas();
+            window.addEventListener('resize', resizeCanvas, false);
+            resizeCanvas();
         }
 
 
@@ -164,6 +161,7 @@
                 })
             }
         }
+        console.log(dates);
         var ctx2       = document.getElementById("myChart2").getContext("2d");
         var myChart = new Chart(ctx2, {
             type: 'line',

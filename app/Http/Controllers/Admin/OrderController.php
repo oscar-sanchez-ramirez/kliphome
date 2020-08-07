@@ -144,6 +144,26 @@ class OrderController extends Controller
         ]);
     }
 
+    public function confimarCotizacion(Request $request,$id){
+        Quotation::where('id',$id)->update([
+            'state' => 1
+        ]);
+        $verificar_pagos = Payment::where('order_id',$request->order_id)->get();
+        if($verificar_pagos->isEmpty()){
+            $payment = new Payment;
+            $payment->order_id = $request->order_id;
+            $payment->code_payment = "EFECTIVO";
+            $payment->description = "PAGO POR SERVICIO";
+            $payment->state = true;
+            $payment->price = intval($request->price) + intval($request->workforce);
+            $payment->save();
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Se validó la cotización"
+        ]);
+    }
+
     public function cancelOrder($id){
         Order::where('id',$id)->update([
             'state' => 'CANCELLED'
