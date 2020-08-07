@@ -148,6 +148,10 @@ function filter(){
     }
 }
 function open_chart(titles,count_of_orders,colors){
+    myChart2 = document.getElementById('myChart2'),
+    context2 = myChart2.getContext('2d');
+    window.addEventListener('resize', resizeCanvas, false);
+    resizeCanvas();
     var ctx = document.getElementById('myChart2').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
@@ -161,6 +165,10 @@ function open_chart(titles,count_of_orders,colors){
                 }]
             }
         });
+}
+function resizeCanvas() {
+    myChart2.width = window.innerWidth;
+    myChart2.height = window.innerHeight;
 }
 function show_chart(){
     if ($('.table-responsive').is(":visible") === false) {

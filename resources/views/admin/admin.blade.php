@@ -135,14 +135,15 @@
         }
     @endphp
     <script>
-        htmlCanvas = document.getElementById('myChart'),
-        myChart2 = document.getElementById('myChart2'),
-        context = htmlCanvas.getContext('2d');
-        context2 = myChart2.getContext('2d');
+
 
        initialize();
 
        function initialize() {
+            htmlCanvas = document.getElementById('myChart'),
+            myChart2 = document.getElementById('myChart2'),
+            context = htmlCanvas.getContext('2d');
+            context2 = myChart2.getContext('2d');
            window.addEventListener('resize', resizeCanvas, false);
            resizeCanvas();
         }
@@ -193,8 +194,6 @@
             }
         });
         var ctx = document.getElementById('myChart').getContext('2d');
-        // ctx.height = 200;
-        // document. getElementById('myChart').style.height="500px";
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
