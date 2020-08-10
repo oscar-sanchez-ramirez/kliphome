@@ -141,21 +141,9 @@
         </div>
     </div>
 </div>
-{{-- @php
-    $titles = [];
-    $count_of_orders = [];
-    $colors = [];
-    $datasets = [];
-    for ($i=0; $i < count($monthlysales); $i++) {
-        $titles[$i] = $monthlysales[$i]["x"];
-        $random = rand(0, 255);
-        $colors[$i] = "rgba(".$random.",5,0, 0.3)";
-        $count_of_orders[$i] = $monthlysales[$i]["y"];
-    }
-@endphp --}}
 <script>
 function filter(){
-    var url = window.location.origin+"/clientes";
+    var url = window.location.origin+"/pagos";
     var start = $('#start').val();
     var end = $('#end').val();
     let val = validate(start,end);
@@ -165,18 +153,9 @@ function filter(){
             url: url,
             data: { 'start': start,'end': end, 'chart_query':"chart_query" },
             success: function(data) {
-                var titles = [];
-                var count_of_orders = [];
-                var colors = [];
-                for (let index = 0; index < data.length; index++) {
-                    titles[index] = data[index]["x"];
-                    count_of_orders[index] = data[index]["y"];
-                    random = Math.floor(Math.random() * (255 - 0 + 1)) + 0;
-                    colors[index] = "rgba("+random+",5,0, 0.3)";
-                }
                 $(".percent-chart").html('');
                 $(".percent-chart").html('<canvas id="myChart2"></canvas>');
-                open_chart(titles,count_of_orders,colors);
+                open_chart(data);
             },
             error: function(data) {
                 alert("Fecha incorrecta, verifique sus datos");
@@ -194,15 +173,15 @@ function show_chart(){
         $(".table-responsive").hide();
         $(".chart").show();
     }
-    open_chart()
+    var dates = @json($stats);
+    open_chart(dates)
 }
-function open_chart(titles,count_of_orders,colors){
+function open_chart(dates){
     myChart2 = document.getElementById('myChart2'),
     context2 = myChart2.getContext('2d');
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();
-    var dates = @json($stats);
-    console.log(dates);
+
     for (let index = 0; index < dates.length; index++) {
             if(dates[index]["data"] != null){
                 dates[index]["data"].sort(function(a,b){

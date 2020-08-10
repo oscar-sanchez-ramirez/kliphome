@@ -161,7 +161,6 @@
                 })
             }
         }
-        console.log(dates);
         var ctx2       = document.getElementById("myChart2").getContext("2d");
         var myChart = new Chart(ctx2, {
             type: 'line',

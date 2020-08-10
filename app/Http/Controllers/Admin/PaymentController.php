@@ -21,27 +21,28 @@ class PaymentController extends Controller
 
     public function index(Request $request){
         if(\request()->ajax()){
-            $payments = Payment::where('order_id',$request->order_id)->get();
-            return response()->json([
-                'payments' => $payments
-            ]);
+            if($request->filled('chart_query')){
+                $payments = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
+                ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')
+                ->whereMonth('p.created_at', '>=', intval(substr($request->start,-2,2)))->whereMonth('p.created_at', '<=', intval(substr($request->end,-2,2)))->whereYear('p.created_at','>=',intval(substr($request->start,-7,4)))->whereYear('p.created_at','<=',intval(substr($request->end,-7,4)))
+                ->orderBy('p.id',"DESC")->distinct('p.id')->get();
+                $stats = $this->stats($payments);
+                return $stats;
+            }else{
+                $payments = Payment::where('order_id',$request->order_id)->get();
+                return response()->json([
+                    'payments' => $payments
+                ]);
+            }
         }
         $general_percent = DB::table('general_stats')->where('title',"percent")->first();
-        $payments = DB::table('orders as o')
-        ->join('payments as p','p.order_id','o.id')
-        ->leftJoin('quotations as q','o.id','q.order_id')
-        ->leftJoin('selected_orders as so','o.id','so.order_id')
-        ->leftJoin('users as u','u.id','so.user_id')
-        ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
-        ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+        $payments = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')->orderBy('p.id',"DESC")->distinct('p.id')->get();
         $stats = $this->stats($payments);
         return view('admin.payments.index',compact('payments','general_percent','stats'));
     }
 
     private function stats($payments){
-        // $array = [];
         $visita = ['label'=>"Visita + Mano de Obra",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
-        // $mano_de_obra = ['label'=>"Mano de Obra",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(255,255,0, 0.9)','data'=>[]];
         $servicio = ['label'=>"Costo por Servicio",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
         for ($i=0; $i < count($payments); $i++) {
             if($payments[$i]->state == 1){
@@ -69,7 +70,6 @@ class PaymentController extends Controller
                             array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
                         }
                     }
-
                     //Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
                     if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
                         $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
@@ -77,24 +77,9 @@ class PaymentController extends Controller
                     }else{
                         array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
                     }
-
-
-
-                    // if(!isset($mano_de_obra["data"])){
-                    //     array_push($mano_de_obra["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
-                    // }else{
-                    //     if(array_search($date,array_column($mano_de_obra["data"],"x"))){
-                    //         $index = array_search($date,array_column($mano_de_obra["data"],"x"));
-                    //         $mano_de_obra["data"][$index]["y"] = intval($mano_de_obra["data"][$index]["y"]) + intval($payments[$i]->price);
-                    //     }else{
-                    //         array_push($mano_de_obra["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
-                    //     }
-                    // }
                 }
             }
-            // $array[$i] = $payments[$i];
         }
-        // return $array;
         return array($visita,$servicio);
     }
 
