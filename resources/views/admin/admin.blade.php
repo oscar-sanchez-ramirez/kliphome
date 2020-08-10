@@ -107,6 +107,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-12">
+                        <div class="au-card chart-percent-card">
+                            <div class="au-card-inner">
+                                <h3 class="title-2 tm-b-5">Total de pagos</h3>
+                                <div class="row no-gutters">
+                                    <div class="percent-chart">
+                                        <canvas id="myChart3"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -139,8 +151,10 @@
        function initialize() {
             htmlCanvas = document.getElementById('myChart'),
             myChart2 = document.getElementById('myChart2'),
+            myChart3 = document.getElementById('myChart3'),
             context = htmlCanvas.getContext('2d');
             context2 = myChart2.getContext('2d');
+            context3 = myChart3.getContext('2d');
             window.addEventListener('resize', resizeCanvas, false);
             resizeCanvas();
         }
@@ -151,58 +165,82 @@
             htmlCanvas.height = window.innerHeight;
             myChart2.width = window.innerWidth;
             myChart2.height = window.innerHeight;
+            myChart3.width = window.innerWidth;
+            myChart3.height = window.innerHeight;
         }
         window.onload = function() {
-        var dates = @json($array_dates);
-        for (let index = 0; index < dates.length; index++) {
-            if(dates[index]["data"] != null){
-                dates[index]["data"].sort(function(a,b){
-                    return a.x > b.x;
-                })
+            var dates = @json($array_dates);
+            for (let index = 0; index < dates.length; index++) {
+                if(dates[index]["data"] != null){
+                    dates[index]["data"].sort(function(a,b){
+                        return a.x > b.x;
+                    })
+                }
             }
-        }
-        var ctx2       = document.getElementById("myChart2").getContext("2d");
-        var myChart = new Chart(ctx2, {
-            type: 'line',
-            data: { datasets:dates },
-            options: {
-                tooltips: { mode: 'index',intersect: false },
-                hover: { mode: 'nearest', intersect: true },
-                scales: {
-                    xAxes: [ {
-                        display: true,
-                        type: 'time',
-                        time: {
-                        parser: 'YYYY/MM/DD',
-                        unit: 'day',
-                        unitStepSize: 10,
-                        displayFormats: {
-                            'day': 'YYYY/MM/DD'
+            var ctx2       = document.getElementById("myChart2").getContext("2d");
+            var myChart = new Chart(ctx2, {
+                type: 'line',
+                data: { datasets:dates },
+                options: {
+                    tooltips: { mode: 'index',intersect: false },
+                    hover: { mode: 'nearest', intersect: true },
+                    scales: {
+                        xAxes: [ {
+                            display: true,
+                            type: 'time',
+                            time: {
+                            parser: 'YYYY/MM/DD',
+                            unit: 'day',
+                            unitStepSize: 10,
+                            displayFormats: {
+                                'day': 'YYYY/MM/DD'
+                            }
+                            }
                         }
+                        ],
+                    yAxes: [{
+                        ticks: {
+                        beginAtZero:true
                         }
-                    }
-                    ],
-                yAxes: [{
-                    ticks: {
-                    beginAtZero:true
-                    }
-                }]
+                    }]
+                    },
+                }
+            });
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: @json($titles),
+                    datasets: [{
+                        label: '# de ordenes',
+                        data: @json($count_of_orders),
+                        backgroundColor: @json($colors),
+                        borderWidth: 1
+                    }]
+                }
+            });
+            // pie chart
+            var ctx = document.getElementById('myChart3').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                label: '# de ordenes',
+                data:{
+                    datasets: [{
+                        data: @json($sum_payments),backgroundColor:[
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)'
+                    ]
+                    }],
+
+                    // These labels appear in the legend and in the tooltips when hovering different arcs
+                    labels: [
+                        'Visita',
+                        'Materiales',
+                        'Mano de obra'
+                    ]
                 },
-            }
-        });
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: @json($titles),
-                datasets: [{
-                    label: '# de ordenes',
-                    data: @json($count_of_orders),
-                    backgroundColor: @json($colors),
-                    borderWidth: 1
-                }]
-            }
-        });
+            });
         };
         </script>
 @endsection
