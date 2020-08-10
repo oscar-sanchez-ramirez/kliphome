@@ -34,7 +34,72 @@ class PaymentController extends Controller
         ->leftJoin('users as u','u.id','so.user_id')
         ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
         ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-        return view('admin.payments.index')->with('payments',$payments)->with('general_percent',$general_percent);
+        $stats = $this->stats($payments);
+        return view('admin.payments.index',compact('payments','general_percent','stats'));
+    }
+
+    private function stats($payments){
+        // $array = [];
+        $visita = ['label'=>"Visita + Mano de Obra",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
+        // $mano_de_obra = ['label'=>"Mano de Obra",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(255,255,0, 0.9)','data'=>[]];
+        $servicio = ['label'=>"Costo por Servicio",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
+        for ($i=0; $i < count($payments); $i++) {
+            if($payments[$i]->state == 1){
+                $date = $this->position($payments[$i]->created_at);
+                if($payments[$i]->description == "VISITA"){
+
+                    if(!isset($visita["data"])){
+                        array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->price,'order_id'=>$payments[$i]->order_id));
+                    }else{
+                        if(array_search($date,array_column($visita["data"],"x"))){
+                            $index = array_search($date,array_column($visita["data"],"x"));
+                            $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->price);
+                        }else{
+                            array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->price,'order_id'=>$payments[$i]->order_id));
+                        }
+                    }
+                }else if($payments[$i]->description == "PAGO POR SERVICIO"){
+                    if(!isset($servicio["data"])){
+                        array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                    }else{
+                        if(array_search($date,array_column($servicio["data"],"x"))){
+                            $index = array_search($date,array_column($servicio["data"],"x"));
+                            $servicio["data"][$index]["y"] = intval($servicio["data"][$index]["y"]) + intval($payments[$i]->price);
+                        }else{
+                            array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                        }
+                    }
+
+                    //Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
+                    if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
+                        $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
+                        $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->workforce);
+                    }else{
+                        array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                    }
+
+
+
+                    // if(!isset($mano_de_obra["data"])){
+                    //     array_push($mano_de_obra["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                    // }else{
+                    //     if(array_search($date,array_column($mano_de_obra["data"],"x"))){
+                    //         $index = array_search($date,array_column($mano_de_obra["data"],"x"));
+                    //         $mano_de_obra["data"][$index]["y"] = intval($mano_de_obra["data"][$index]["y"]) + intval($payments[$i]->price);
+                    //     }else{
+                    //         array_push($mano_de_obra["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                    //     }
+                    // }
+                }
+            }
+            // $array[$i] = $payments[$i];
+        }
+        // return $array;
+        return array($visita,$servicio);
+    }
+
+    private function position($date){
+        return $date = substr($date,-19,10);
     }
 
     public function calcular(Request $request){

@@ -16,14 +16,45 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-data__tool">
-                    <div class="table-data__tool-left">
-                        <div class="rs-select2--light rs-select2--md">
-
-                        </div>
-                    </div>
+                    <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green">
+                        <i class="zmdi zmdi-chart"></i></button>
                     <div class="table-data__tool-right">
-                        <a href="{{ url('') }}/pagos/pagos-fecha" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                        <a href="{{ url('') }}/pagos/pagos-fecha" class="au-btn au-btn-icon au-btn--green">
                             Pagos por fecha</a>
+                    </div>
+                </div>
+                <div class="chart" style="display: none">
+                    <div class="col-lg-12">
+                        <div class="au-card chart-percent-card">
+                            <div class="au-card-inner">
+                                <h3 class="title-2 tm-b-5">Registro de usuarios por mes</h3>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <input id="start" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
+                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <input id="end" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
+                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
+                                            <i class="fa fa-dot-circle-o"></i> Filtrar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="percent-chart">
+                                        <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
@@ -110,5 +141,114 @@
         </div>
     </div>
 </div>
+{{-- @php
+    $titles = [];
+    $count_of_orders = [];
+    $colors = [];
+    $datasets = [];
+    for ($i=0; $i < count($monthlysales); $i++) {
+        $titles[$i] = $monthlysales[$i]["x"];
+        $random = rand(0, 255);
+        $colors[$i] = "rgba(".$random.",5,0, 0.3)";
+        $count_of_orders[$i] = $monthlysales[$i]["y"];
+    }
+@endphp --}}
+<script>
+function filter(){
+    var url = window.location.origin+"/clientes";
+    var start = $('#start').val();
+    var end = $('#end').val();
+    let val = validate(start,end);
+    if(val){
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: { 'start': start,'end': end, 'chart_query':"chart_query" },
+            success: function(data) {
+                var titles = [];
+                var count_of_orders = [];
+                var colors = [];
+                for (let index = 0; index < data.length; index++) {
+                    titles[index] = data[index]["x"];
+                    count_of_orders[index] = data[index]["y"];
+                    random = Math.floor(Math.random() * (255 - 0 + 1)) + 0;
+                    colors[index] = "rgba("+random+",5,0, 0.3)";
+                }
+                $(".percent-chart").html('');
+                $(".percent-chart").html('<canvas id="myChart2"></canvas>');
+                open_chart(titles,count_of_orders,colors);
+            },
+            error: function(data) {
+                alert("Fecha incorrecta, verifique sus datos");
+            }
+        });
+    }else{
+        alert("Fecha incorrecta, verifique sus datos");
+    }
+}
+function show_chart(){
+    if ($('.table-responsive').is(":visible") === false) {
+        $(".table-responsive").show();
+        $(".chart").hide();
+    } else {
+        $(".table-responsive").hide();
+        $(".chart").show();
+    }
+    open_chart()
+}
+function open_chart(titles,count_of_orders,colors){
+    myChart2 = document.getElementById('myChart2'),
+    context2 = myChart2.getContext('2d');
+    window.addEventListener('resize', resizeCanvas, false);
+    resizeCanvas();
+    var dates = @json($stats);
+    console.log(dates);
+    for (let index = 0; index < dates.length; index++) {
+            if(dates[index]["data"] != null){
+                dates[index]["data"].sort(function(a,b){
+                    return a.x > b.x;
+                })
+            }
+        }
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var myChart = new Chart(ctx, {
+            type: 'line',
+            data: { datasets:dates },
+            options: {
+                tooltips: { mode: 'index',intersect: false },
+                hover: { mode: 'nearest', intersect: true },
+                scales: {
+                    xAxes: [ {
+                        display: true,
+                        type: 'time',
+                        time: {
+                        parser: 'YYYY/MM/DD',
+                        unit: 'day',
+                        unitStepSize: 10,
+                        displayFormats: {
+                            'day': 'YYYY/MM/DD'
+                        }
+                        }
+                    }
+                    ],
+                yAxes: [{
+                    ticks: {
+                    beginAtZero:true
+                    }
+                }]
+                },
+            }
+        });
+}
+function resizeCanvas() {
+    myChart2.width = window.innerWidth;
+    myChart2.height = window.innerHeight;
+}
+function validate(start,end){
+    if(start.length < 7 || end.length < 7){
+        return false
+    }return true;
+}
+</script>
 @include('layouts.modals.subCategoryModal');
 @endsection
