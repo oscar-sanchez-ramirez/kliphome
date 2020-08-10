@@ -61,13 +61,17 @@ class PaymentController extends Controller
                     }
                 }else if($payments[$i]->description == "PAGO POR SERVICIO"){
                     if(!isset($servicio["data"])){
-                        array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                        if($payments[$i]->service_price != "0"){
+                            array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                        }
                     }else{
                         if(array_search($date,array_column($servicio["data"],"x"))){
                             $index = array_search($date,array_column($servicio["data"],"x"));
                             $servicio["data"][$index]["y"] = intval($servicio["data"][$index]["y"]) + intval($payments[$i]->price);
                         }else{
-                            array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                            if($payments[$i]->service_price != "0"){
+                                array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                            }
                         }
                     }
                     //Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
@@ -75,7 +79,9 @@ class PaymentController extends Controller
                         $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
                         $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->workforce);
                     }else{
-                        array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                        if($payments[$i]->workforce != "0"){
+                            array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                        }
                     }
                 }
             }
