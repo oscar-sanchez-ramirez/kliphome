@@ -91,10 +91,11 @@ class SocialController extends ApiController
 
     }
     public function conekta(){
+        // tok_2oCiWWZRn2bqL7iex
         $order = \Conekta\Order::create([
           'currency' => 'MXN',
           'customer_info' => [
-            'customer_id' => 'tok_2oCiWWZRn2bqL7iex'
+            'customer_id' => 'tok_test_visa_4242'
           ],
           'line_items' => [
             [
