@@ -92,7 +92,7 @@
         </form>
 
     <script>
-        Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
+        Conekta.setPublicKey("key_MvrJiyzi84Axatiaxdr4PAQ");
 
         var conektaSuccessResponseHandler= function(token){
             console.log(token);

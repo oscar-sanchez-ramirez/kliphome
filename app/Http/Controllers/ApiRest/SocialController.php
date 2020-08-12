@@ -13,7 +13,7 @@ class SocialController extends ApiController
 {
     public function __construct(){
         // $this->middleware('auth:api', ['only' => ['gmail','checkifexists']]);
-        \Conekta\Conekta::setApiKey("key_MvrJiyzi84Axatiaxdr4PAQ");
+        \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
         \Conekta\Conekta::setLocale('es');
     }
     public function facebook(Request $request) {
@@ -91,28 +91,34 @@ class SocialController extends ApiController
 
     }
     public function conekta(){
-        // tok_2oCiWWZRn2bqL7iex
-        $order = \Conekta\Order::create([
-          'currency' => 'MXN',
-          'customer_info' => [
-            'customer_id' => 'tok_test_visa_4242'
-          ],
-          'line_items' => [
-            [
-              'name' => 'Box of Cohiba S1s',
-              'unit_price' => 35,
-              'quantity' => 1
-            ]
-          ],
-          'charges' => [
-            [
-              'payment_method' => [
-                'type' => 'default'
-              ]
-            ]
-          ]
-        ]);
-        return $order;
-        // return view('payment.conekta');
+        //
+        // $customer = \Conekta\Customer::create(
+        //     [
+        //       'name'  => "Mario Perez",
+        //       'email' => "usuario@example.com",
+        //       'phone' => "+5215555555555",
+        //       'payment_sources' => [
+        //         [
+        //           'token_id' => "tok_test_visa_4242",
+        //           'type' => "card"
+        //         ]
+        //       ],
+        //       'shipping_contacts' => [
+        //         [
+        //           'phone' => "+5215555555555",
+        //           'receiver' => "Marvin Fuller",
+        //           'address' => [
+        //             'street1' => "Nuevo Leon 4",
+        //             'street2' => "fake street",
+        //             'country' => "MX",
+        //             'postal_code' => "06100"
+        //           ]
+        //         ]
+        //       ]
+        //     ]
+        //   );
+
+        // return $customer;
+        return view('payment.conekta');
       }
 }
