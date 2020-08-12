@@ -95,7 +95,7 @@
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
 
         var conektaSuccessResponseHandler= function(token){
-
+            console.log(token);
             $("#conektaTokenId").val(token.id);
 
             jsPay();
@@ -122,16 +122,16 @@
         function jsPay(){
             let params=$("#card-form").serialize();
             let url="pay.php";
+            console.log(params);
+            // $.post(url,params,function(data){
+            //     if(data=="1"){
+            //         alert("Se realizo el pago :D");
+            //         jsClean();
+            //     }else{
+            //         alert(data)
+            //     }
 
-            $.post(url,params,function(data){
-                if(data=="1"){
-                    alert("Se realizo el pago :D");
-                    jsClean();
-                }else{
-                    alert(data)
-                }
-
-            })
+            // });
 
         }
 
