@@ -91,27 +91,27 @@ class SocialController extends ApiController
 
     }
     public function conekta(){
-        // $order = \Conekta\Order::create([
-        //   'currency' => 'MXN',
-        //   'customer_info' => [
-        //     'customer_id' => 'tok_2oCf7hpXpq3vbUFzL'
-        //   ],
-        //   'line_items' => [
-        //     [
-        //       'name' => 'Box of Cohiba S1s',
-        //       'unit_price' => 35,
-        //       'quantity' => 1
-        //     ]
-        //   ],
-        //   'charges' => [
-        //     [
-        //       'payment_method' => [
-        //         'type' => 'default'
-        //       ]
-        //     ]
-        //   ]
-        // ]);
-        // return $order;
-        return view('payment.conekta');
+        $order = \Conekta\Order::create([
+          'currency' => 'MXN',
+          'customer_info' => [
+            'customer_id' => 'tok_2oCiWWZRn2bqL7iex'
+          ],
+          'line_items' => [
+            [
+              'name' => 'Box of Cohiba S1s',
+              'unit_price' => 35,
+              'quantity' => 1
+            ]
+          ],
+          'charges' => [
+            [
+              'payment_method' => [
+                'type' => 'default'
+              ]
+            ]
+          ]
+        ]);
+        return $order;
+        // return view('payment.conekta');
       }
 }
