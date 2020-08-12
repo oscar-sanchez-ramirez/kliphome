@@ -13,7 +13,7 @@ class SocialController extends ApiController
 {
     public function __construct(){
         // $this->middleware('auth:api', ['only' => ['gmail','checkifexists']]);
-        \Conekta\Conekta::setApiKey("key_eYvWV7gSDkNYXsmr");
+        \Conekta\Conekta::setApiKey("key_MvrJiyzi84Axatiaxdr4PAQ");
         \Conekta\Conekta::setLocale('es');
     }
     public function facebook(Request $request) {
