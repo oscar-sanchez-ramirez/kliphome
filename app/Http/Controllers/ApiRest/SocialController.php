@@ -92,33 +92,33 @@ class SocialController extends ApiController
     }
     public function conekta(){
         //
-        // $customer = \Conekta\Customer::create(
-        //     [
-        //       'name'  => "Mario Perez",
-        //       'email' => "usuario@example.com",
-        //       'phone' => "+5215555555555",
-        //       'payment_sources' => [
-        //         [
-        //           'token_id' => "tok_test_visa_4242",
-        //           'type' => "card"
-        //         ]
-        //       ],
-        //       'shipping_contacts' => [
-        //         [
-        //           'phone' => "+5215555555555",
-        //           'receiver' => "Marvin Fuller",
-        //           'address' => [
-        //             'street1' => "Nuevo Leon 4",
-        //             'street2' => "fake street",
-        //             'country' => "MX",
-        //             'postal_code' => "06100"
-        //           ]
-        //         ]
-        //       ]
-        //     ]
-        //   );
+        $customer = \Conekta\Customer::create(
+            [
+              'name'  => "Mario Perez",
+              'email' => "usuario@example.com",
+              'phone' => "+5215555555555",
+              'payment_sources' => [
+                [
+                  'token_id' => "tok_2oCiyRFUVUUNdQMS3",
+                  'type' => "card"
+                ]
+              ],
+              'shipping_contacts' => [
+                [
+                  'phone' => "+5215555555555",
+                  'receiver' => "Marvin Fuller",
+                  'address' => [
+                    'street1' => "Nuevo Leon 4",
+                    'street2' => "fake street",
+                    'country' => "MX",
+                    'postal_code' => "06100"
+                  ]
+                ]
+              ]
+            ]
+          );
 
-        // return $customer;
-        return view('payment.conekta');
+        return $customer;
+        // return view('payment.conekta');
       }
 }
