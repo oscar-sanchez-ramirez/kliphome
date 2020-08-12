@@ -13,6 +13,8 @@ class SocialController extends ApiController
 {
     public function __construct(){
         // $this->middleware('auth:api', ['only' => ['gmail','checkifexists']]);
+        \Conekta\Conekta::setApiKey("key_eYvWV7gSDkNYXsmr");
+        \Conekta\Conekta::setLocale('es');
     }
     public function facebook(Request $request) {
         try {
@@ -39,7 +41,6 @@ class SocialController extends ApiController
     }
 
     public function google(Request $request){
-        Log::notice($request->all());
         try {
             $user = Socialite::driver('google')->userFromToken($request->access_token);
             if($user == null){
@@ -49,7 +50,6 @@ class SocialController extends ApiController
                 ]);
             }else{
                 $user = $this->checkifexists($user,$request->provider,$request->register,$request->phone);
-                Log::notice($user);
                 return response()->json([
                     "success" => true,
                     "user" => $user
@@ -90,4 +90,28 @@ class SocialController extends ApiController
     public function gmail(){
 
     }
+    public function conekta(){
+        // $order = \Conekta\Order::create([
+        //   'currency' => 'MXN',
+        //   'customer_info' => [
+        //     'customer_id' => 'tok_2oCf7hpXpq3vbUFzL'
+        //   ],
+        //   'line_items' => [
+        //     [
+        //       'name' => 'Box of Cohiba S1s',
+        //       'unit_price' => 35,
+        //       'quantity' => 1
+        //     ]
+        //   ],
+        //   'charges' => [
+        //     [
+        //       'payment_method' => [
+        //         'type' => 'default'
+        //       ]
+        //     ]
+        //   ]
+        // ]);
+        // return $order;
+        return view('payment.conekta');
+      }
 }
