@@ -36,7 +36,7 @@ class OrderController extends ApiController
             $tipo_de_pago = ConfigSystem::payment;
             if($tipo_de_pago["conekta"] == true){
                 \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
-                try{
+                // try{
                     $price = floatval($request->visit_price);
                     $order = \Conekta\Order::create(
                       [
@@ -67,13 +67,13 @@ class OrderController extends ApiController
                       ]
                     );
                     return $order;
-                  } catch (\Conekta\ProcessingError $error){
-                    return $error->getMessage();
-                  } catch (\Conekta\ParameterValidationError $error){
-                    return $error->getMessage();
-                  } catch (\Conekta\Handler $error){
-                    return $error->getMessage();
-                  }
+                //   } catch (\Conekta\ProcessingError $error){
+                //     return $error->getMessage();
+                //   } catch (\Conekta\ParameterValidationError $error){
+                //     return $error->getMessage();
+                //   } catch (\Conekta\Handler $error){
+                //     return $error->getMessage();
+                //   }
                 ;
             }
         }else{
