@@ -96,7 +96,7 @@ class SocialController extends ApiController
             [
               'name'  => $user->name,
               'email' => $user->email,
-              'phone' => $user->email,
+              'phone' => $user->phone,
               'payment_sources' => [
                 [
                   'token_id' => $request->token,
