@@ -16,7 +16,7 @@ class ConfigSystem extends Model
     ];
 
     const payment = [
-        'stripe' => true,
-        'conekta' => false
+        'stripe' => false,
+        'conekta' => true
     ];
 }
