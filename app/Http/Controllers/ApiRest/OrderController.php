@@ -38,35 +38,42 @@ class OrderController extends ApiController
                 \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
                 // try{
                     $price = floatval($request->visit_price);
-                    $order = \Conekta\Order::create(
-                      [
-                        "line_items" => [
-                          [
-                            "name" => "PAGO POR VISITA",
-                            "unit_price" => $price * 100,
-                            "quantity" => 1
-                          ]
-                        ],
-                        "currency" => "MXN",
-                        "customer_info" => [
-                          "name" => $user->name.' '.$user->lastName,
-                          "email" => $user->email,
-                          "phone" => $user->phone
-                        ],
-                        "charges" => [
-                          [
-                            "payment_method" => [
-                              //"monthly_installments" => 0, optional
-                              "type" => "card",
-                              "token_id" => $request->token
-                            ] //payment_method - use customer's default - a card
-                              //to charge a card, different from the default,
-                              //you can indicate the card's source_id as shown in the Retry Card Section
-                          ]
-                        ]
-                      ]
-                    );
-                    return $order;
+                    if(substr($request->token,0,3) == "tok"){
+                        $order = \Conekta\Order::create(
+                            [
+                              "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                              "currency" => "MXN",
+                              "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                              "charges" => [
+                                [
+                                  "payment_method" => [
+                                    //"monthly_installments" => 0, optional
+                                    "type" => "card",
+                                    "token_id" => $request->token
+                                  ]
+                                ]
+                              ]
+                            ]
+                          );
+                        return $order;
+                    }else if(substr($request->token,0,3) == "cus"){
+                        $order = \Conekta\Order::create([
+                            'currency' => 'MXN',
+                            'customer_info' => [
+                              'customer_id' => $request->token,
+                            ],
+                            "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                            'charges' => [
+                              [
+                                'payment_method' => [
+                                  'type' => 'default'
+                                ]
+                              ]
+                            ]
+                          ]);
+                          return $order;
+                    }
+
                 //   } catch (\Conekta\ProcessingError $error){
                 //     return $error->getMessage();
                 //   } catch (\Conekta\ParameterValidationError $error){
