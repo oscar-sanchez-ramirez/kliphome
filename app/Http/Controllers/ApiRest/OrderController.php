@@ -34,7 +34,7 @@ class OrderController extends ApiController
         $user = $request->user();
         if($user->email == "germanruelas17@gmail.com"){
             $tipo_de_pago = ConfigSystem::payment;
-            if($tipo_de_pago->conekta == true){
+            if($tipo_de_pago["conekta"] == true){
                 \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
                 $charge = \Conekta\Order::createCharge(
                     [
