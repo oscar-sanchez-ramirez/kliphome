@@ -36,15 +36,45 @@ class OrderController extends ApiController
             $tipo_de_pago = ConfigSystem::payment;
             if($tipo_de_pago["conekta"] == true){
                 \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
-                $charge = \Conekta\Order::createCharge(
-                    [
-                      "payment_method" => [
-                        "type" => "card",
-                        "payment_source_id" => $request->token
+                try{
+                    $price = floatval($request->price);
+                    $order = \Conekta\Order::create(
+                      [
+                        "line_items" => [
+                          [
+                            "name" => "PAGO POR VISITA",
+                            "unit_price" => $price * 100,
+                            "quantity" => 1
+                          ]
+                        ],
+                        "currency" => "MXN",
+                        "customer_info" => [
+                          "name" => $user->name.' '.$user->lastName,
+                          "email" => $user->email,
+                          "phone" => $user->phone
+                        ],
+                        "charges" => [
+                          [
+                            "payment_method" => [
+                              //"monthly_installments" => 0, optional
+                              "type" => "card",
+                              "token_id" => $request->token
+                            ] //payment_method - use customer's default - a card
+                              //to charge a card, different from the default,
+                              //you can indicate the card's source_id as shown in the Retry Card Section
+                          ]
+                        ]
                       ]
-                    ]
-                   );
-                return $charge;
+                    );
+                    return $order;
+                  } catch (\Conekta\ProcessingError $error){
+                    return $error->getMessage();
+                  } catch (\Conekta\ParameterValidationError $error){
+                    return $error->getMessage();
+                  } catch (\Conekta\Handler $error){
+                    return $error->getMessage();
+                  }
+                ;
             }
         }else{
             try {
