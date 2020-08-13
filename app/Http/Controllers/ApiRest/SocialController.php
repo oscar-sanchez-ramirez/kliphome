@@ -12,7 +12,7 @@ use App\Http\Controllers\ApiController;
 class SocialController extends ApiController
 {
     public function __construct(){
-        // $this->middleware('auth:api', ['only' => ['gmail','checkifexists']]);
+        $this->middleware('auth:api', ['only' => ['conekta']]);
         \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
         \Conekta\Conekta::setLocale('es');
     }
@@ -90,30 +90,61 @@ class SocialController extends ApiController
     public function gmail(){
 
     }
-    public function conekta(){
-        //
-        $customer = \Conekta\Order::create([
-            'currency' => 'MXN',
-            'customer_info' => [
-              'customer_id' => 'cus_2oCiz55vyWSUozDdF'
-            ],
-            'line_items' => [
-              [
-                'name' => 'Box of Cohiba S1s',
-                'unit_price' => 35000,
-                'quantity' => 1
-              ]
-            ],
-            'charges' => [
-              [
-                'payment_method' => [
-                  'type' => 'default'
+    public function conekta(Request $request){
+        $user = $request->user();
+        $customer = \Conekta\Customer::create(
+            [
+              'name'  => $user->name,
+              'email' => $user->email,
+              'phone' => $user->email,
+              'payment_sources' => [
+                [
+                  'token_id' => $request->token,
+                  'type' => "card"
+                ]
+              ],
+              'shipping_contacts' => [
+                [
+                  'phone' => "+5215555555555",
+                  'receiver' => "Marvin Fuller",
+                  'address' => [
+                    'street1' => "Nuevo Leon 4",
+                    'street2' => "fake street",
+                    'country' => "MX",
+                    'postal_code' => "06100"
+                  ]
                 ]
               ]
             ]
-          ]);
+          );
+          return response()->json([
+            "success" => true,
+            "usuario" => $customer
+            ]);
 
-        return $customer;
-        // return view('payment.conekta');
+
+        // return $customer;
+
+        // $customer = \Conekta\Order::create([
+        //     'currency' => 'MXN',
+        //     'customer_info' => [
+        //       'customer_id' => 'cus_2oCiz55vyWSUozDdF'
+        //     ],
+        //     'line_items' => [
+        //       [
+        //         'name' => 'Box of Cohiba S1s',
+        //         'unit_price' => 35000,
+        //         'quantity' => 1
+        //       ]
+        //     ],
+        //     'charges' => [
+        //       [
+        //         'payment_method' => [
+        //           'type' => 'default'
+        //         ]
+        //       ]
+        //     ]
+        //   ]);
+        return view('payment.conekta');
       }
 }

@@ -120,4 +120,4 @@ Route::post('facebook','ApiRest\SocialController@facebook');
 Route::post('google','ApiRest\SocialController@google');
 
 //Conekta Payment
-Route::get('conekta','ApiRest\SocialController@conekta');
+Route::post('conekta','ApiRest\SocialController@conekta');
