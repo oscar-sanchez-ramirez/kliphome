@@ -37,7 +37,7 @@ class OrderController extends ApiController
             if($tipo_de_pago["conekta"] == true){
                 \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
                 try{
-                    $price = floatval($request->price);
+                    $price = floatval($request->visit_price);
                     $order = \Conekta\Order::create(
                       [
                         "line_items" => [
