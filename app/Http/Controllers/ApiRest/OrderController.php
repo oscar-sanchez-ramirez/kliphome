@@ -13,6 +13,7 @@ use App\Quotation;
 use App\ExtraInfo;
 use App\AdminCoupon;
 use App\OrderGallery;
+use App\ConfigSystem;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
 use Illuminate\Support\Facades\Log;
@@ -29,50 +30,28 @@ class OrderController extends ApiController
         $this->middleware('auth:api');
     }
     public function create(Request $request){
+        Log::notice($request->all());
         $user = $request->user();
-        try {
-            if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
-            if($request->visit_price == "quotation"){
-                //No necesita pago de visita (Telefono, Computadora)
+        if($user->email == "germanruelas17@gmail.com"){
+            $tipo_de_pago = ConfigSystem::payment;
+            if($tipo_de_pago->conekta == true){
+                \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
+                $charge = \Conekta\Order::createCharge(
+                    [
+                      "payment_method" => [
+                        "type" => "card",
+                        "payment_source_id" => $request->token
+                      ]
+                    ]
+                   );
+                return $charge;
+            }
+        }else{
+            try {
+                if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
+                if($request->visit_price == "quotation"){
+                    //No necesita pago de visita (Telefono, Computadora)
 
-                $order = new Order;
-                $order->user_id = $user->id;
-                $order->selected_id = $request->selected_id;
-                $order->type_service = $request->type_service;
-                $order->service_date = $request->service_date;
-                $order->service_description = $request->service_description;
-                $order->service_image = $image;
-                $order->address = $request->address;
-                $order->price = 'quotation';
-                $order->visit_price = $request->visit_price;
-                $order->pre_coupon = $request->coupon;
-                $order->save();
-                dispatch(new NotifyNewOrder($order->id,$user->email));
-                return response()->json([
-                    'success' => true,
-                    'message' => "La orden de servicio se realizó con éxito",
-                    'order' => $order
-                ]);
-            }else{
-                $price = floatval($request->price);
-                Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
-                if(substr($request->token,0,3) == "cus"){
-                    $pago = Stripe\Charge::create ([
-                        "amount" => $request->visit_price * 100,
-                        "currency" => "MXN",
-                        "customer" => $request->token,
-                        "description" => "Pago por visita"
-                    ]);
-                }else{
-                    $pago = Stripe\Charge::create ([
-                        "amount" => $request->visit_price * 100,
-                        "currency" => "MXN",
-                        "source" => $request->token,
-                        "description" => "Pago por visita"
-                    ]);
-                }
-                Log::notice($request->all());
-                if($pago->paid == true){
                     $order = new Order;
                     $order->user_id = $user->id;
                     $order->selected_id = $request->selected_id;
@@ -85,16 +64,6 @@ class OrderController extends ApiController
                     $order->visit_price = $request->visit_price;
                     $order->pre_coupon = $request->coupon;
                     $order->save();
-                    $order->order_id = $order->id;
-
-                    $payment = new Payment;
-                    $payment->order_id = $order->id;
-                    $payment->code_payment = $pago->id;
-                    $payment->description = "VISITA";
-                    $payment->state = true;
-                    $payment->price = $request->visit_price;
-                    $payment->save();
-                    // $user = $request->user();
                     dispatch(new NotifyNewOrder($order->id,$user->email));
                     return response()->json([
                         'success' => true,
@@ -102,18 +71,67 @@ class OrderController extends ApiController
                         'order' => $order
                     ]);
                 }else{
-                    return response()->json([
-                        'success' => false
-                    ]);
-                }
-            }
+                    $price = floatval($request->price);
+                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                    if(substr($request->token,0,3) == "cus"){
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $request->visit_price * 100,
+                            "currency" => "MXN",
+                            "customer" => $request->token,
+                            "description" => "Pago por visita"
+                        ]);
+                    }else{
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $request->visit_price * 100,
+                            "currency" => "MXN",
+                            "source" => $request->token,
+                            "description" => "Pago por visita"
+                        ]);
+                    }
+                    Log::notice($request->all());
+                    if($pago->paid == true){
+                        $order = new Order;
+                        $order->user_id = $user->id;
+                        $order->selected_id = $request->selected_id;
+                        $order->type_service = $request->type_service;
+                        $order->service_date = $request->service_date;
+                        $order->service_description = $request->service_description;
+                        $order->service_image = $image;
+                        $order->address = $request->address;
+                        $order->price = 'quotation';
+                        $order->visit_price = $request->visit_price;
+                        $order->pre_coupon = $request->coupon;
+                        $order->save();
+                        $order->order_id = $order->id;
 
-        } catch (\Throwable $th) {
-            Log::error($th);
-            return response()->json([
-                'success' => false,
-                'message' => "La orden de servicio no se realizó"
-            ]);
+                        $payment = new Payment;
+                        $payment->order_id = $order->id;
+                        $payment->code_payment = $pago->id;
+                        $payment->description = "VISITA";
+                        $payment->state = true;
+                        $payment->price = $request->visit_price;
+                        $payment->save();
+                        // $user = $request->user();
+                        dispatch(new NotifyNewOrder($order->id,$user->email));
+                        return response()->json([
+                            'success' => true,
+                            'message' => "La orden de servicio se realizó con éxito",
+                            'order' => $order
+                        ]);
+                    }else{
+                        return response()->json([
+                            'success' => false
+                        ]);
+                    }
+                }
+
+            } catch (\Throwable $th) {
+                Log::error($th);
+                return response()->json([
+                    'success' => false,
+                    'message' => "La orden de servicio no se realizó"
+                ]);
+            }
         }
     }
 
