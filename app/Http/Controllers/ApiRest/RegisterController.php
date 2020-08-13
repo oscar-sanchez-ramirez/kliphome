@@ -7,6 +7,7 @@ use App\User;
 use Validator;
 use App\Address;
 use Carbon\Carbon;
+use App\ConfigSystem;
 use App\ResetPassword;
 use Illuminate\Http\Request;
 use Nexmo\Laravel\Facade\Nexmo;
@@ -163,13 +164,7 @@ class RegisterController extends ApiController
     }
 
     public function check_social_account(){
-        return response()->json([
-            'success' => true,
-            'facebook_ios' => true,
-            'facebook_android' => true,
-            'google_ios' => true,
-            'google_android' => false,
-        ]);
+        return $permisos = ConfigSystem::socialmedia;
     }
 
     public function reset(Request $request){
