@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\ApiRest;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class ConfigSystemController extends Controller
+class ConfigSystemController extends ApiController
 {
     //
     public function revisar_pago(){
