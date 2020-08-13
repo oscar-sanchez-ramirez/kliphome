@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use App\ConfigSystem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
