@@ -17,6 +17,7 @@ use App\Payment;
 use App\Quotation;
 use Carbon\Carbon;
 use App\FixermanStat;
+use App\ConfigSystem;
 use App\SelectedOrders;
 use App\SelectedDelegation;
 use App\SelectedCategories;
@@ -232,76 +233,230 @@ class FixerManController extends ApiController
     }
 
     public function qualifyService(Request $request){
-        Log::notice($request->all());
-        try {
-            $user = User::where('id',$request->fixerman_id)->first();
-            $price = floatval($request->price);
-            if($price != 0){
-                try {
-                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
-                    if(substr($request->stripeToken,0,3) == "cus"){
-                        $pago = Stripe\Charge::create ([
-                            "amount" => $price * 100,
-                            "currency" => "MXN",
-                            "customer" => $request->stripeToken,
-                            "description" => "Payment of order ".$request->order_id
-                        ]);
-                    }else{
-                        $pago = Stripe\Charge::create ([
-                            "amount" => $price * 100,
-                            "currency" => "MXN",
-                            "source" => $request->stripeToken,
-                            "description" => "Payment of order ".$request->order_id
-                        ]);
-                    }
+        $user = $request->user();
 
-                    $payment = new Payment;
-                    $payment->order_id = $request->order_id;
-                    $payment->description = "PROPINA POR SERVICIO";
-                    $payment->state = true;
-                    $payment->code_payment = $pago->id;
-                    $payment->price = $price;
-                    $payment->save();
+        if($user->email == "germanruelas17@gmail.com"){
+            $tipo_de_pago = ConfigSystem::payment;
+            if($tipo_de_pago["conekta"] == true){
+                Log::notice($request->all());
+                try {
+                    $user = User::where('id',$request->fixerman_id)->first();
+                    $price = floatval($request->price);
+                    if($price != 0){
+                        try {
+                            \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
+                            if(substr($request->stripeToken,0,3) == "tok"){
+                                $pago = \Conekta\Order::create(
+                                    [
+                                      "line_items" => [["name" => "PROPINA POR SERVICIO","unit_price" => $price * 100,"quantity" => 1]],
+                                      "currency" => "MXN",
+                                      "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                                      "charges" => [["payment_method" => ["type" => "card","token_id" => $request->stripeToken]]
+                                      ]
+                                    ]
+                                  );
+                            }else if(substr($request->stripeToken,0,3) == "cus"){
+                                $pago = \Conekta\Order::create([
+                                    'currency' => 'MXN',
+                                    'customer_info' => ['customer_id' => $request->stripeToken,],
+                                    "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                                    'charges' => [['payment_method' => ['type' => 'default']]]
+                                  ]);
+                            }
+
+                            $payment = new Payment;
+                            $payment->order_id = $request->order_id;
+                            $payment->description = "PROPINA POR SERVICIO";
+                            $payment->state = true;
+                            $payment->code_payment = $pago->id;
+                            $payment->price = $price;
+                            $payment->save();
+                        } catch (\Throwable $th) {
+                            Log::error($th);
+                            $payment = new Payment;
+                            $payment->order_id = $request->order_id;
+                            $payment->description = "PROPINA POR SERVICIO";
+                            $payment->state = false;
+                            $payment->price = $price;
+                            $payment->save();
+                        }
+                    }
+                    $qualify = new Qualify;
+                    $qualify->user_id = $request->fixerman_id;
+                    $qualify->selected_order_id = $request->idOrderAccepted;
+                    $qualify->presentation = $request->presentation;
+                    $qualify->puntuality = $request->puntuality;
+                    $qualify->problemSolve = $request->problemSolve;
+                    $qualify->comment = $request->comment;
+                    $qualify->tip = $request->price;
+                    $qualify->save();
+                    //Update order
+                    DB::table('selected_orders as so')
+                    ->join('orders as o', 'so.order_id','o.id')
+                    ->where('so.id',$request->idOrderAccepted)
+                    ->update([ 'o.state' => "QUALIFIED" ]);
+                    //Database notification
+                    $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
+                    $user->notify(new ServiceQualified($qualify));
+                    //OneSignal notification
+                    $notification = $user->notifications()->first();
+                    $user->notification_id = $notification->id;
+                    $user->sendNotification($user->email,'ServiceQualified',$qualify);
+
+                    return response()->json([
+                        'success' => true
+                    ]);
                 } catch (\Throwable $th) {
                     Log::error($th);
-                    $payment = new Payment;
-                    $payment->order_id = $request->order_id;
-                    $payment->description = "PROPINA POR SERVICIO";
-                    $payment->state = false;
-                    $payment->price = $price;
-                    $payment->save();
+                    return response()->json([
+                        'success' => false
+                    ]);
+                }
+            }else{
+                Log::notice($request->all());
+                try {
+                    $user = User::where('id',$request->fixerman_id)->first();
+                    $price = floatval($request->price);
+                    if($price != 0){
+                        try {
+                            Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                            if(substr($request->stripeToken,0,3) == "cus"){
+                                $pago = Stripe\Charge::create ([
+                                    "amount" => $price * 100,
+                                    "currency" => "MXN",
+                                    "customer" => $request->stripeToken,
+                                    "description" => "Payment of order ".$request->order_id
+                                ]);
+                            }else{
+                                $pago = Stripe\Charge::create ([
+                                    "amount" => $price * 100,
+                                    "currency" => "MXN",
+                                    "source" => $request->stripeToken,
+                                    "description" => "Payment of order ".$request->order_id
+                                ]);
+                            }
+
+                            $payment = new Payment;
+                            $payment->order_id = $request->order_id;
+                            $payment->description = "PROPINA POR SERVICIO";
+                            $payment->state = true;
+                            $payment->code_payment = $pago->id;
+                            $payment->price = $price;
+                            $payment->save();
+                        } catch (\Throwable $th) {
+                            Log::error($th);
+                            $payment = new Payment;
+                            $payment->order_id = $request->order_id;
+                            $payment->description = "PROPINA POR SERVICIO";
+                            $payment->state = false;
+                            $payment->price = $price;
+                            $payment->save();
+                        }
+                    }
+                    $qualify = new Qualify;
+                    $qualify->user_id = $request->fixerman_id;
+                    $qualify->selected_order_id = $request->idOrderAccepted;
+                    $qualify->presentation = $request->presentation;
+                    $qualify->puntuality = $request->puntuality;
+                    $qualify->problemSolve = $request->problemSolve;
+                    $qualify->comment = $request->comment;
+                    $qualify->tip = $request->price;
+                    $qualify->save();
+                    //Update order
+                    DB::table('selected_orders as so')
+                    ->join('orders as o', 'so.order_id','o.id')
+                    ->where('so.id',$request->idOrderAccepted)
+                    ->update([ 'o.state' => "QUALIFIED" ]);
+                    //Database notification
+                    $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
+                    $user->notify(new ServiceQualified($qualify));
+                    //OneSignal notification
+                    $notification = $user->notifications()->first();
+                    $user->notification_id = $notification->id;
+                    $user->sendNotification($user->email,'ServiceQualified',$qualify);
+
+                    return response()->json([
+                        'success' => true
+                    ]);
+                } catch (\Throwable $th) {
+                    Log::error($th);
+                    return response()->json([
+                        'success' => false
+                    ]);
                 }
             }
-            $qualify = new Qualify;
-            $qualify->user_id = $request->fixerman_id;
-            $qualify->selected_order_id = $request->idOrderAccepted;
-            $qualify->presentation = $request->presentation;
-            $qualify->puntuality = $request->puntuality;
-            $qualify->problemSolve = $request->problemSolve;
-            $qualify->comment = $request->comment;
-            $qualify->tip = $request->price;
-            $qualify->save();
-            //Update order
-            DB::table('selected_orders as so')
-            ->join('orders as o', 'so.order_id','o.id')
-            ->where('so.id',$request->idOrderAccepted)
-            ->update([ 'o.state' => "QUALIFIED" ]);
-            //Database notification
-            $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
-            $user->notify(new ServiceQualified($qualify));
-            //OneSignal notification
-            $notification = $user->notifications()->first();
-            $user->notification_id = $notification->id;
-            $user->sendNotification($user->email,'ServiceQualified',$qualify);
+        }else{
+            Log::notice($request->all());
+            try {
+                $user = User::where('id',$request->fixerman_id)->first();
+                $price = floatval($request->price);
+                if($price != 0){
+                    try {
+                        Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                        if(substr($request->stripeToken,0,3) == "cus"){
+                            $pago = Stripe\Charge::create ([
+                                "amount" => $price * 100,
+                                "currency" => "MXN",
+                                "customer" => $request->stripeToken,
+                                "description" => "Payment of order ".$request->order_id
+                            ]);
+                        }else{
+                            $pago = Stripe\Charge::create ([
+                                "amount" => $price * 100,
+                                "currency" => "MXN",
+                                "source" => $request->stripeToken,
+                                "description" => "Payment of order ".$request->order_id
+                            ]);
+                        }
 
-            return response()->json([
-                'success' => true
-            ]);
-        } catch (\Throwable $th) {
-            Log::error($th);
-            return response()->json([
-                'success' => false
-            ]);
+                        $payment = new Payment;
+                        $payment->order_id = $request->order_id;
+                        $payment->description = "PROPINA POR SERVICIO";
+                        $payment->state = true;
+                        $payment->code_payment = $pago->id;
+                        $payment->price = $price;
+                        $payment->save();
+                    } catch (\Throwable $th) {
+                        Log::error($th);
+                        $payment = new Payment;
+                        $payment->order_id = $request->order_id;
+                        $payment->description = "PROPINA POR SERVICIO";
+                        $payment->state = false;
+                        $payment->price = $price;
+                        $payment->save();
+                    }
+                }
+                $qualify = new Qualify;
+                $qualify->user_id = $request->fixerman_id;
+                $qualify->selected_order_id = $request->idOrderAccepted;
+                $qualify->presentation = $request->presentation;
+                $qualify->puntuality = $request->puntuality;
+                $qualify->problemSolve = $request->problemSolve;
+                $qualify->comment = $request->comment;
+                $qualify->tip = $request->price;
+                $qualify->save();
+                //Update order
+                DB::table('selected_orders as so')
+                ->join('orders as o', 'so.order_id','o.id')
+                ->where('so.id',$request->idOrderAccepted)
+                ->update([ 'o.state' => "QUALIFIED" ]);
+                //Database notification
+                $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
+                $user->notify(new ServiceQualified($qualify));
+                //OneSignal notification
+                $notification = $user->notifications()->first();
+                $user->notification_id = $notification->id;
+                $user->sendNotification($user->email,'ServiceQualified',$qualify);
+
+                return response()->json([
+                    'success' => true
+                ]);
+            } catch (\Throwable $th) {
+                Log::error($th);
+                return response()->json([
+                    'success' => false
+                ]);
+            }
         }
     }
 

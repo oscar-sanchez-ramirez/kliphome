@@ -72,7 +72,7 @@ class OrderController extends ApiController
                         }else if(substr($request->token,0,3) == "cus"){
                             $pago = \Conekta\Order::create([
                                 'currency' => 'MXN',
-                                'customer_info' => ['customer_id' => $request->token,],
+                                'customer_info' => ['customer_id' => $request->token],
                                 "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
                                 'charges' => [['payment_method' => ['type' => 'default']]]
                               ]);
@@ -350,123 +350,352 @@ class OrderController extends ApiController
     }
 
     public function approve(Request $request){
-        // L
-        // try {
-            Log::notice("NUEVO PAGO DE COTIZACION");
-            Log::notice($request->all());
-            $order = Order::where('id',$request->order_id)->first();
-            $quotation = Quotation::where('id',$request->id_quotation)->first();
-            // $check_price = ($quotation->price + $quotation->workforce) - $order->visit_price;
-            // Log::notice($check_price);
-            $price = floatval($request->price);
-            Log::notice($price);
-            // if($price != $check_price){
-            //     $price = floatval($check_price);
-            // }
-            try {
-                Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
-                if(substr($request->stripeToken,0,3) == "cus"){
-                    $pago = Stripe\Charge::create ([
-                        "amount" => $price * 100,
-                        "currency" => "MXN",
-                        "customer" => $request->stripeToken,
-                        "description" => "Payment of order ".$request->order_id
-                    ]);
-                }else{
-                    $pago = Stripe\Charge::create ([
-                        "amount" => $price * 100,
-                        "currency" => "MXN",
-                        "source" => $request->stripeToken,
-                        "description" => "Payment of order ".$request->order_id
-                    ]);
-                }
-                Log::notice($pago);
-                $payment = new Payment;
-                $payment->order_id = $request->order_id;
-                $payment->description = "PAGO POR SERVICIO";
-                $payment->code_payment = $pago->id;
-                $payment->state = true;
-                $payment->price = $price;
-                $payment->save();
-                Quotation::where('id',$request->id_quotation)->update([
-                    'state' => 1
-                ]);
-            } catch (\Throwable $th) {
-                Log::error($th);
-                $payment = new Payment;
-                $payment->order_id = $request->order_id;
-                $payment->description = "PAGO POR SERVICIO";
-                $payment->state = false;
-                $payment->price = $price;
-                // $payment->code_payment = $th;
-                $payment->save();
-                return response()->json([
-                    'success' => false
-                ]);
-            }
-            $check_quotations = Quotation::where('order_id',$request->order_id)->count();
-            if($check_quotations == 1){
-                Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
-                    'price' => $price
-                ]);
-                if($order->visit_price == "quotation"){
-                    Order::where('id',$request->order_id)->update([
-                        'visit_price' => 0
-                    ]);
-                }
-            }
+        $user = $request->user();
+        if($user->email == "germanruelas17@gmail.com"){
+            $tipo_de_pago = ConfigSystem::payment;
+            if($tipo_de_pago["conekta"] == true){
+                \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
+                Log::notice("NUEVO PAGO DE COTIZACION");
+                Log::notice($request->all());
+                $order = Order::where('id',$request->order_id)->first();
+                $quotation = Quotation::where('id',$request->id_quotation)->first();
+                $price = floatval($request->price);
+                Log::notice($price);
 
+                try{
+                    $price = floatval($request->price);
+                    if(substr($request->token,0,3) == "tok"){
+                        $pago = \Conekta\Order::create(
+                            [
+                                "line_items" => [["name" => "PAGO POR SERVICIO","unit_price" => $price * 100,"quantity" => 1]],
+                                "currency" => "MXN",
+                                "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                                "charges" => [["payment_method" => ["type" => "card","token_id" => $request->stripeToken]]
+                                ]
+                            ]
+                            );
+                    }else if(substr($request->token,0,3) == "cus"){
+                        $pago = \Conekta\Order::create([
+                            'currency' => 'MXN',
+                            'customer_info' => ['customer_id' => $request->stripeToken,],
+                            "line_items" => [["name" => "PAGO POR SERVICIO","unit_price" => $price * 100,"quantity" => 1]],
+                            'charges' => [['payment_method' => ['type' => 'default']]]
+                            ]);
+                    }
 
+                    if($pago->payment_status == "paid"){
+                        $payment = new Payment;
+                        $payment->order_id = $request->order_id;
+                        $payment->description = "PAGO POR SERVICIO";
+                        $payment->code_payment = $pago->id;
+                        $payment->state = true;
+                        $payment->price = $price;
+                        $payment->save();
+                        Quotation::where('id',$request->id_quotation)->update([
+                            'state' => 1
+                        ]);
 
-            if($order->pre_coupon != ""){
-                if($request->type_coupon == "pre_coupon"){
-                    $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
-                    if($admin_coupon){
-                        AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
-                            'user_id' => $request->user_id,
-                            'is_charged' => "Y",
-                            'order_id' => $request->order_id
+                        $check_quotations = Quotation::where('order_id',$request->order_id)->count();
+                        if($check_quotations == 1){
+                            Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+                                'price' => $price
+                            ]);
+                            if($order->visit_price == "quotation"){
+                                Order::where('id',$request->order_id)->update([
+                                    'visit_price' => 0
+                                ]);
+                            }
+                        }
+
+                        if($order->pre_coupon != ""){
+                            if($request->type_coupon == "pre_coupon"){
+                                $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                                if($admin_coupon){
+                                    AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
+                                        'user_id' => $request->user_id,
+                                        'is_charged' => "Y",
+                                        'order_id' => $request->order_id
+                                    ]);
+                                }else{
+                                    $new_used_coupon = Coupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                                    if(empty($new_used_coupon)){
+                                        $coupon = new Coupon;
+                                        $coupon->code = $order->pre_coupon;
+                                        $coupon->user_id = $request->user_id;
+                                        $coupon->order_id = $request->order_id;
+                                        $coupon->save();
+                                    }else{
+                                        Coupon::where('code',$request->coupon)->where('is_charged',"N")->update([
+                                            'is_charged' => "Y",
+                                            'order_id_charged' => $request->order_id
+                                        ]);
+                                    }
+                                }
+
+                            }elseif($request->type_coupon == "Coupon"){
+                                Coupon::where('code',$order->coupon)->update([
+                                    'is_charged' => "Y",
+                                    'order_id_charged' => $request->order_id
+                                ]);
+                            }else{
+                                if($request->coupon != ""){
+                                    $coupon = new Coupon;
+                                    $coupon->code = $order->pre_coupon;
+                                    $coupon->user_id = $request->user_id;
+                                    $coupon->order_id = $request->order_id;
+                                    $coupon->save();
+                                }
+                            }
+                        }
+                        dispatch(new MailOrderAccepted($request->order_id));
+                        return response()->json([
+                            'success' => true
+                        ]);
+
+                        return response()->json([
+                            'success' => true,
+                            'message' => "La orden de servicio se realizó con éxito",
+                            'order' => $order
                         ]);
                     }else{
-                        $new_used_coupon = Coupon::where('code',$request->coupon)->where('is_charged','N')->first();
-                        if(empty($new_used_coupon)){
+                        return response()->json([
+                            'success' => false
+                        ]);
+                    }
+                } catch (\Conekta\ProcessingError $error){
+                    Log::error($error);
+                    return response()->json([
+                        'success' => false,
+                        'message' => "La orden de servicio no se realizó"
+                    ]);
+                } catch (\Conekta\ParameterValidationError $error){
+                    Log::error($error);
+                    return response()->json([
+                        'success' => false,
+                        'message' => "La orden de servicio no se realizó"
+                    ]);
+                } catch (\Conekta\Handler $error){
+                    Log::error($error);
+                    return response()->json([
+                        'success' => false,
+                        'message' => "La orden de servicio no se realizó"
+                    ]);
+                }
+            }else{
+                Log::notice("NUEVO PAGO DE COTIZACION");
+                Log::notice($request->all());
+                $order = Order::where('id',$request->order_id)->first();
+                $quotation = Quotation::where('id',$request->id_quotation)->first();
+                $price = floatval($request->price);
+                Log::notice($price);
+                try {
+                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                    if(substr($request->stripeToken,0,3) == "cus"){
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $price * 100,
+                            "currency" => "MXN",
+                            "customer" => $request->stripeToken,
+                            "description" => "Payment of order ".$request->order_id
+                        ]);
+                    }else{
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $price * 100,
+                            "currency" => "MXN",
+                            "source" => $request->stripeToken,
+                            "description" => "Payment of order ".$request->order_id
+                        ]);
+                    }
+                    Log::notice($pago);
+                    $payment = new Payment;
+                    $payment->order_id = $request->order_id;
+                    $payment->description = "PAGO POR SERVICIO";
+                    $payment->code_payment = $pago->id;
+                    $payment->state = true;
+                    $payment->price = $price;
+                    $payment->save();
+                    Quotation::where('id',$request->id_quotation)->update([
+                        'state' => 1
+                    ]);
+                } catch (\Throwable $th) {
+                    Log::error($th);
+                    $payment = new Payment;
+                    $payment->order_id = $request->order_id;
+                    $payment->description = "PAGO POR SERVICIO";
+                    $payment->state = false;
+                    $payment->price = $price;
+                    $payment->save();
+                    return response()->json([
+                        'success' => false
+                    ]);
+                }
+                $check_quotations = Quotation::where('order_id',$request->order_id)->count();
+                if($check_quotations == 1){
+                    Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+                        'price' => $price
+                    ]);
+                    if($order->visit_price == "quotation"){
+                        Order::where('id',$request->order_id)->update([
+                            'visit_price' => 0
+                        ]);
+                    }
+                }
+
+                if($order->pre_coupon != ""){
+                    if($request->type_coupon == "pre_coupon"){
+                        $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                        if($admin_coupon){
+                            AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
+                                'user_id' => $request->user_id,
+                                'is_charged' => "Y",
+                                'order_id' => $request->order_id
+                            ]);
+                        }else{
+                            $new_used_coupon = Coupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                            if(empty($new_used_coupon)){
+                                $coupon = new Coupon;
+                                $coupon->code = $order->pre_coupon;
+                                $coupon->user_id = $request->user_id;
+                                $coupon->order_id = $request->order_id;
+                                $coupon->save();
+                            }else{
+                                Coupon::where('code',$request->coupon)->where('is_charged',"N")->update([
+                                    'is_charged' => "Y",
+                                    'order_id_charged' => $request->order_id
+                                ]);
+                            }
+                        }
+
+                    }elseif($request->type_coupon == "Coupon"){
+                        Coupon::where('code',$order->coupon)->update([
+                            'is_charged' => "Y",
+                            'order_id_charged' => $request->order_id
+                        ]);
+                    }else{
+                        if($request->coupon != ""){
                             $coupon = new Coupon;
                             $coupon->code = $order->pre_coupon;
                             $coupon->user_id = $request->user_id;
                             $coupon->order_id = $request->order_id;
                             $coupon->save();
-                        }else{
-                            Coupon::where('code',$request->coupon)->where('is_charged',"N")->update([
-                                'is_charged' => "Y",
-                                'order_id_charged' => $request->order_id
-                            ]);
                         }
                     }
+                }
+                dispatch(new MailOrderAccepted($request->order_id));
+                return response()->json([
+                    'success' => true
+                ]);
+            }
 
-                }elseif($request->type_coupon == "Coupon"){
-                    Coupon::where('code',$order->coupon)->update([
-                        'is_charged' => "Y",
-                        'order_id_charged' => $request->order_id
+        }else{
+            // try {
+                Log::notice("NUEVO PAGO DE COTIZACION");
+                Log::notice($request->all());
+                $order = Order::where('id',$request->order_id)->first();
+                $quotation = Quotation::where('id',$request->id_quotation)->first();
+                $price = floatval($request->price);
+                Log::notice($price);
+                try {
+                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                    if(substr($request->stripeToken,0,3) == "cus"){
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $price * 100,
+                            "currency" => "MXN",
+                            "customer" => $request->stripeToken,
+                            "description" => "Payment of order ".$request->order_id
+                        ]);
+                    }else{
+                        $pago = Stripe\Charge::create ([
+                            "amount" => $price * 100,
+                            "currency" => "MXN",
+                            "source" => $request->stripeToken,
+                            "description" => "Payment of order ".$request->order_id
+                        ]);
+                    }
+                    Log::notice($pago);
+                    $payment = new Payment;
+                    $payment->order_id = $request->order_id;
+                    $payment->description = "PAGO POR SERVICIO";
+                    $payment->code_payment = $pago->id;
+                    $payment->state = true;
+                    $payment->price = $price;
+                    $payment->save();
+                    Quotation::where('id',$request->id_quotation)->update([
+                        'state' => 1
                     ]);
-                }else{
-                    if($request->coupon != ""){
-                        $coupon = new Coupon;
-                        $coupon->code = $order->pre_coupon;
-                        $coupon->user_id = $request->user_id;
-                        $coupon->order_id = $request->order_id;
-                        $coupon->save();
+                } catch (\Throwable $th) {
+                    Log::error($th);
+                    $payment = new Payment;
+                    $payment->order_id = $request->order_id;
+                    $payment->description = "PAGO POR SERVICIO";
+                    $payment->state = false;
+                    $payment->price = $price;
+                    $payment->save();
+                    return response()->json([
+                        'success' => false
+                    ]);
+                }
+                $check_quotations = Quotation::where('order_id',$request->order_id)->count();
+                if($check_quotations == 1){
+                    Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+                        'price' => $price
+                    ]);
+                    if($order->visit_price == "quotation"){
+                        Order::where('id',$request->order_id)->update([
+                            'visit_price' => 0
+                        ]);
                     }
                 }
-            }
-            dispatch(new MailOrderAccepted($request->order_id));
-            return response()->json([
-                'success' => true
-            ]);
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'success' => false
-        //     ]);
-        // }
+
+                if($order->pre_coupon != ""){
+                    if($request->type_coupon == "pre_coupon"){
+                        $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                        if($admin_coupon){
+                            AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
+                                'user_id' => $request->user_id,
+                                'is_charged' => "Y",
+                                'order_id' => $request->order_id
+                            ]);
+                        }else{
+                            $new_used_coupon = Coupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                            if(empty($new_used_coupon)){
+                                $coupon = new Coupon;
+                                $coupon->code = $order->pre_coupon;
+                                $coupon->user_id = $request->user_id;
+                                $coupon->order_id = $request->order_id;
+                                $coupon->save();
+                            }else{
+                                Coupon::where('code',$request->coupon)->where('is_charged',"N")->update([
+                                    'is_charged' => "Y",
+                                    'order_id_charged' => $request->order_id
+                                ]);
+                            }
+                        }
+
+                    }elseif($request->type_coupon == "Coupon"){
+                        Coupon::where('code',$order->coupon)->update([
+                            'is_charged' => "Y",
+                            'order_id_charged' => $request->order_id
+                        ]);
+                    }else{
+                        if($request->coupon != ""){
+                            $coupon = new Coupon;
+                            $coupon->code = $order->pre_coupon;
+                            $coupon->user_id = $request->user_id;
+                            $coupon->order_id = $request->order_id;
+                            $coupon->save();
+                        }
+                    }
+                }
+                dispatch(new MailOrderAccepted($request->order_id));
+                return response()->json([
+                    'success' => true
+                ]);
+            // } catch (\Throwable $th) {
+            //     return response()->json([
+            //         'success' => false
+            //     ]);
+            // }
+        }
     }
 
     public function check_active_coupon(Request $request){
