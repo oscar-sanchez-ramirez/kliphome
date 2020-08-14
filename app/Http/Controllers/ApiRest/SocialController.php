@@ -92,27 +92,16 @@ class SocialController extends ApiController
     }
     public function conekta(Request $request){
         $user = $request->user();
+        Log::notice($request->all());
         $customer = \Conekta\Customer::create(
             [
               'name'  => $user->name,
               'email' => $user->email,
-              'phone' => "5519093444",
+              'phone' => $user->phone,
               'payment_sources' => [
                 [
                   'token_id' => $request->token,
                   'type' => "card"
-                ]
-              ],
-              'shipping_contacts' => [
-                [
-                  'phone' => "+5215555555555",
-                  'receiver' => "Marvin Fuller",
-                  'address' => [
-                    'street1' => "Nuevo Leon 4",
-                    'street2' => "fake street",
-                    'country' => "MX",
-                    'postal_code' => "06100"
-                  ]
                 ]
               ]
             ]
@@ -145,6 +134,6 @@ class SocialController extends ApiController
         //       ]
         //     ]
         //   ]);
-        return view('payment.conekta');
+        // return view('payment.conekta');
       }
 }
