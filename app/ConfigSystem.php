@@ -19,4 +19,6 @@ class ConfigSystem extends Model
         'stripe' => false,
         'conekta' => true
     ];
+
+    const conekta_key = "key_LiS5ishyiSuzq8sEhz5ahg";
 }

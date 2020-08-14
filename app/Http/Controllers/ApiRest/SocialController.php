@@ -13,7 +13,7 @@ class SocialController extends ApiController
 {
     public function __construct(){
         $this->middleware('auth:api', ['only' => ['conekta']]);
-        \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
+        \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
         \Conekta\Conekta::setLocale('es');
     }
     public function facebook(Request $request) {
@@ -95,7 +95,7 @@ class SocialController extends ApiController
         Log::notice($request->all());
         $customer = \Conekta\Customer::create(
             [
-              'name'  => $user->name,
+              'name'  => $user->name.' '.$user->lastName,
               'email' => $user->email,
               'phone' => $user->phone,
               'payment_sources' => [

@@ -57,7 +57,7 @@ class OrderController extends ApiController
             }else{
                 $tipo_de_pago = ConfigSystem::payment;
                 if($tipo_de_pago["conekta"] == true){
-                    \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
+                    \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
                     try{
                         $price = floatval($request->visit_price);
                         if(substr($request->token,0,3) == "tok"){
@@ -355,7 +355,8 @@ class OrderController extends ApiController
         if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             $tipo_de_pago = ConfigSystem::payment;
             if($tipo_de_pago["conekta"] == true){
-                \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
+
+                \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
                 Log::notice("NUEVO PAGO DE COTIZACION");
                 Log::notice($request->all());
                 $order = Order::where('id',$request->order_id)->first();
