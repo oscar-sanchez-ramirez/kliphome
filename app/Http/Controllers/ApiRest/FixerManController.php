@@ -235,7 +235,7 @@ class FixerManController extends ApiController
     public function qualifyService(Request $request){
         $user = $request->user();
 
-        if($user->email == "germanruelas17@gmail.com"){
+        if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             $tipo_de_pago = ConfigSystem::payment;
             if($tipo_de_pago["conekta"] == true){
                 Log::notice($request->all());

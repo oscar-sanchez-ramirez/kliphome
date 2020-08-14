@@ -32,7 +32,7 @@ class OrderController extends ApiController
     public function create(Request $request){
         Log::notice($request->all());
         $user = $request->user();
-        if($user->email == "germanruelas17@gmail.com"){
+        if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             if($request->visit_price == "quotation"){
                 //No necesita pago de visita (Telefono, Computadora)
                 $order = new Order;
@@ -351,7 +351,7 @@ class OrderController extends ApiController
 
     public function approve(Request $request){
         $user = $request->user();
-        if($user->email == "germanruelas17@gmail.com"){
+        if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             $tipo_de_pago = ConfigSystem::payment;
             if($tipo_de_pago["conekta"] == true){
                 \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
