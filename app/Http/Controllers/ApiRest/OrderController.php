@@ -34,6 +34,7 @@ class OrderController extends ApiController
         $user = $request->user();
         if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             if($request->visit_price == "quotation"){
+                if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
                 //No necesita pago de visita (Telefono, Computadora)
                 $order = new Order;
                 $order->user_id = $user->id;
