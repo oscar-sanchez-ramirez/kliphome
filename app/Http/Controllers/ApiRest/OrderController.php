@@ -364,7 +364,7 @@ class OrderController extends ApiController
 
                 try{
                     $price = floatval($request->price);
-                    if(substr($request->token,0,3) == "tok"){
+                    if(substr($request->stripeToken,0,3) == "tok"){
                         $pago = \Conekta\Order::create(
                             [
                                 "line_items" => [["name" => "PAGO POR SERVICIO","unit_price" => $price * 100,"quantity" => 1]],
@@ -374,7 +374,7 @@ class OrderController extends ApiController
                                 ]
                             ]
                             );
-                    }else if(substr($request->token,0,3) == "cus"){
+                    }else if(substr($request->stripeToken,0,3) == "cus"){
                         $pago = \Conekta\Order::create([
                             'currency' => 'MXN',
                             'customer_info' => ['customer_id' => $request->stripeToken,],
