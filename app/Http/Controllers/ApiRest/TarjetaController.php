@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\ApiRest;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class TarjetaController extends Controller
+class TarjetaController extends ApiController
 {
     protected $user_id;
     /**
