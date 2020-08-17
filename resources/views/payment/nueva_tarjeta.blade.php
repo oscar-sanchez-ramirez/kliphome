@@ -100,7 +100,7 @@
         var conektaSuccessResponseHandler= function(token){
             console.log(token);
             $("#conektaTokenId").val(token.id);
-            //jsSave(token.id);
+            jsSave(token.id);
         };
 
         var conektaErrorResponseHandler =function(response){
