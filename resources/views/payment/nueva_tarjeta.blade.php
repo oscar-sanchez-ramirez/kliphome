@@ -118,7 +118,7 @@
 
         })
 
-        function jsPay(token_id){
+        function jsSave(token_id){
             let params=$("#card-form").serialize();
             console.log(params);
             var token = $('meta[name="csrf-token"]').attr('content');
