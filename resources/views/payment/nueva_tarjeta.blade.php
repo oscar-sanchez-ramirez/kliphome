@@ -28,7 +28,7 @@
         }
     </style>
     <body>
-        {{-- <div id="form_view">
+        <div id="form_view">
             <form id="card-form">
 
                 <input type="hidden" name="conektaTokenId" id="conektaTokenId" value="">
@@ -89,18 +89,18 @@
 
 
             </form>
-        </div> --}}
-        <div id="success_view">
-            <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
-            <h3 class="center">Hemos recibido tu pago</h3>
         </div>
+        {{-- <div id="success_view">
+            <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
+            <h3 class="center">Tu tarjeta fue guardada</h3>
+        </div> --}}
     <script>
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
 
         var conektaSuccessResponseHandler= function(token){
             console.log(token);
             $("#conektaTokenId").val(token.id);
-            //jsPay(token.id);
+            //jsSave(token.id);
         };
 
         var conektaErrorResponseHandler =function(response){
@@ -110,7 +110,6 @@
         }
 
         $(document).ready(function(){
-
             $("#card-form").submit(function(e){
                 e.preventDefault();
                 var $form=$("#card-form");
@@ -123,19 +122,18 @@
             let params=$("#card-form").serialize();
             console.log(params);
             var token = $('meta[name="csrf-token"]').attr('content');
-            var url = "";
-            // $.ajax({
-            //     type: "POST",
-            //     url: url,
-            //     data: { 'token_id': token_id,'_token': token, 'subcategory_title':subcategory_title },
-            //     success: function(data) {
-            //         //Listing all sub categories into modal when record has been saved
-            //         listSubCategories(category_id);
-            //     },
-            //     error: function(data) {
-            //         alert("Error al guardar registro, Porfavor intente de nuevo");
-            //     }
-            // });
+            var url = "{{ url('') }}/api/conekta";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { 'token_id': token_id,'_token': token },
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(data) {
+                    alert("Error al guardar registro, Porfavor intente de nuevo");
+                }
+            });
             // $.post(url,params,function(data){
             //     if(data=="1"){
             //         alert("Se realizo el pago :D");

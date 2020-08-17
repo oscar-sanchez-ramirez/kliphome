@@ -121,6 +121,9 @@ Route::post('google','ApiRest\SocialController@google');
 
 //Conekta Payment
 Route::get('conekta','ApiRest\SocialController@conekta');
+// Route::get('nueva_tarjeta_conekta','ApiRest\SocialController@nueva_tarjeta_conekta');
+Route::resource('conekta', 'ApiRest\TarjetaController');
+
 
 //Configuraciones del sistema
 Route::post('revisar_pago','ApiRest\ConfigSystemController@revisar_pago');
