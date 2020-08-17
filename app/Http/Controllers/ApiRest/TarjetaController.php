@@ -39,7 +39,7 @@ class TarjetaController extends ApiController
     {
         return response()->json([
             'success' => true,
-            'user' => $request->session()->all()
+            'user' => $request->user_id
         ]);
     }
 
