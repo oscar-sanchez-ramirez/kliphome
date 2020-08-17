@@ -15,7 +15,8 @@ class TarjetaController extends ApiController
      */
     public function index(Request $request)
     {
-        \Session::put("user_id",$request->user_id);
+        // \Session::put("user_id",$request->user_id);
+        $request->session()->put('user_id', $request->user_id);
         return view('payment.nueva_tarjeta');
     }
 
@@ -39,7 +40,7 @@ class TarjetaController extends ApiController
     {
         return response()->json([
             'success' => true,
-            'user' => \Session()->get('user_id')
+            'user' => $request->session()->all()
         ]);
     }
 
