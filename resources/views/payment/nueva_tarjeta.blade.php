@@ -69,7 +69,7 @@
                                         </label>
                                         <div>
                                             <input style="width:50px; display:inline-block" value="" data-conekta="card[exp_month]" class="form-control"  type="text" maxlength="2" >
-                                            <input style="width:50px; display:inline-block" value=" " data-conekta="card[exp_year]" class="form-control"  type="text" maxlength="2" >
+                                            <input style="width:50px; display:inline-block" value="" data-conekta="card[exp_year]" class="form-control"  type="text" maxlength="2" >
 
                                         </div>
                                 </div>
