@@ -13,7 +13,7 @@ use App\Http\Controllers\ApiController;
 class SocialController extends ApiController
 {
     public function __construct(){
-        $this->middleware('auth:api', ['only' => ['conekta']]);
+        $this->middleware('auth:api', ['only' => ['']]);
         \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
         \Conekta\Conekta::setLocale('es');
     }
@@ -92,6 +92,8 @@ class SocialController extends ApiController
 
     }
     public function conekta(Request $request){
+        return view('payment.conekta');
+
         $user = $request->user();
         Log::notice($request->all());
         $customer = \Conekta\Customer::create(
@@ -135,6 +137,5 @@ class SocialController extends ApiController
         //       ]
         //     ]
         //   ]);
-        // return view('payment.conekta');
       }
 }
