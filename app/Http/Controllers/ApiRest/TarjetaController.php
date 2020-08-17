@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use App\User;
+use App\ConfigSystem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
 class TarjetaController extends ApiController
 {
+    public function __construct(){
+        \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
+        \Conekta\Conekta::setLocale('es');
+    }
+
     protected $user_id;
     /**
      * Display a listing of the resource.
@@ -37,9 +44,23 @@ class TarjetaController extends ApiController
      */
     public function store(Request $request)
     {
+        $user = User::where('id',$request->user_id)->first();
+        $customer = \Conekta\Customer::create(
+            [
+              'name'  => $user->name.' '.$user->lastName,
+              'email' => $user->email,
+              'phone' => $user->phone,
+              'payment_sources' => [
+                [
+                  'token_id' => $request->token,
+                  'type' => "card"
+                ]
+              ]
+            ]
+          );
         return response()->json([
             'success' => true,
-            'user' => $request->user_id
+            'customer' => $customer
         ]);
     }
 

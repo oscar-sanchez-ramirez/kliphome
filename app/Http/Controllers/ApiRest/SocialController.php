@@ -109,10 +109,10 @@ class SocialController extends ApiController
               ]
             ]
           );
-          return response()->json([
+        return response()->json([
             "success" => true,
             "usuario" => $customer
-            ]);
+        ]);
 
 
         // return $customer;

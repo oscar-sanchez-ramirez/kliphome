@@ -121,12 +121,12 @@
         function jsSave(token_id){
             let params=$("#card-form").serialize();
             console.log(params);
-            var token = $('meta[name="csrf-token"]').attr('content');
+            //var token = $('meta[name="csrf-token"]').attr('content');
             var url = "{{ url('') }}/api/conekta";
             $.ajax({
                 type: "POST",
                 url: url,
-                data: { 'token_id': token_id,'_token': token,'user_id':{{ $user_id }} },
+                data: { 'token': token_id,'user_id':{{ $user_id }} },
                 success: function(data) {
                     console.log(data);
                 },
