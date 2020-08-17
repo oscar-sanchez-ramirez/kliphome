@@ -37,7 +37,10 @@ class TarjetaController extends ApiController
      */
     public function store(Request $request)
     {
-        return $this->user_id;
+        return response()->json([
+            'success' => true,
+            'user' => $this->user_id
+        ]);
     }
 
     /**
