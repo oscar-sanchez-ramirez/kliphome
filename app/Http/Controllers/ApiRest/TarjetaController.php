@@ -15,6 +15,7 @@ class TarjetaController extends ApiController
      */
     public function index(Request $request)
     {
+        return $request->all();
         \Session::put("user_id",$request->user_id);
         return view('payment.nueva_tarjeta');
     }
