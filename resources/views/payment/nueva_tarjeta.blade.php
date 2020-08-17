@@ -126,7 +126,7 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: { 'token_id': token_id,'_token': token },
+                data: { 'token_id': token_id,'_token': token,'user_id':{{ $user_id }} },
                 success: function(data) {
                     console.log(data);
                 },
