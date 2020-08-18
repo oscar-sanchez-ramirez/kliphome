@@ -35,7 +35,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row display-tr">
-                            <h3>Nueva pago de ${{ $monto }} </h3>
+                            <h3>Nuevo pago de ${{ $monto }} </h3>
 
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                         <div class="row">
                                 <div class="col-md-12" style="text-align:center;">
                                    <button class="btn btn-success btn-lg">
-                                       <i class="fa fa-check-square"></i> GUARDAR
+                                       <i class="fa fa-check-square"></i> Pagar
                                    </button>
                                 </div>
 
@@ -119,7 +119,7 @@
         function jsSave(token_id){
             let params=$("#card-form").serialize();
             console.log(params);
-            var url = "{{ url('') }}/api/conekta";
+            var url = "{{ url('') }}/api/conekta_nuevo_pago";
             $.ajax({
                 type: "POST",
                 url: url,
