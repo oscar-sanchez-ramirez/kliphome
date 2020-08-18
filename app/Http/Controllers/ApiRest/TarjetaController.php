@@ -62,8 +62,8 @@ class TarjetaController extends ApiController
           );
 
 
-          $customer["payment_sources"][0]["user_id"] = $user->id;
-          Log::notice($customer["payment_sources"][0]);
+          Log::notice($customer["payment_sources"][0]["bin"]);
+          $customer["payment_sources"][0]["bin"] = $user->id;
           $this->saveCustomer($customer["payment_sources"][0]);
         return response()->json([
             'success' => true,
@@ -118,7 +118,7 @@ class TarjetaController extends ApiController
 
     private function saveCustomer($customer){
         $cus = new UserCard;
-        $cus->user_id = $customer->user_id;
+        $cus->user_id = $customer->bin;
         $cus->brand = $customer->brand;
         $cus->exp_month = $customer->exp_month;
         $cus->exp_year = $customer->exp_year;
