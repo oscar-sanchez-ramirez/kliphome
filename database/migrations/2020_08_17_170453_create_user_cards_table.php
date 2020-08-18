@@ -22,7 +22,7 @@ class CreateUserCardsTable extends Migration
             $table->string('exp_year');
             $table->string('last4');
             $table->string('name');
-            $table->string('parent_id');
+            $table->string('idToken');
             $table->timestamps();
         });
     }

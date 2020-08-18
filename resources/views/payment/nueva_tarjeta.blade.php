@@ -11,7 +11,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="{{url('')}}/vendor/bootstrap/js/bootstrap.js"></script>
         <link href="{{url('')}}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <style>
         #card-form{
@@ -30,9 +29,6 @@
     <body>
         <div id="form_view">
             <form id="card-form">
-
-                <input type="hidden" name="conektaTokenId" id="conektaTokenId" value="">
-
                 <div class="card">
                     <div class="card-header">
                         <div class="row display-tr">
@@ -90,16 +86,15 @@
 
             </form>
         </div>
-        {{-- <div id="success_view">
+        <div id="success_view">
             <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
             <h3 class="center">Tu tarjeta fue guardada</h3>
-        </div> --}}
+        </div>
     <script>
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
 
         var conektaSuccessResponseHandler= function(token){
             console.log(token);
-            $("#conektaTokenId").val(token.id);
             jsSave(token.id);
         };
 
@@ -121,7 +116,6 @@
         function jsSave(token_id){
             let params=$("#card-form").serialize();
             console.log(params);
-            //var token = $('meta[name="csrf-token"]').attr('content');
             var url = "{{ url('') }}/api/conekta";
             $.ajax({
                 type: "POST",
@@ -129,26 +123,24 @@
                 data: { 'token': token_id,'user_id':{{ $user_id }} },
                 success: function(data) {
                     console.log(data);
+                    if(data.success){
+                        jsClean();
+                        $("#success_view").show();
+                        $("#form_view").hide();
+                        console.log("1");
+                    }else{
+                        console.log("2");
+                        alert("Error al guardar tarjeta, Porfavor intente de nuevo");
+                    }
                 },
                 error: function(data) {
-                    alert("Error al guardar registro, Porfavor intente de nuevo");
+                    alert("Error al guardar tarjeta, Porfavor intente de nuevo");
                 }
             });
-            // $.post(url,params,function(data){
-            //     if(data=="1"){
-            //         alert("Se realizo el pago :D");
-            //         jsClean();
-            //     }else{
-            //         alert(data)
-            //     }
-
-            // });
-
         }
 
         function jsClean(){
             $(".form-control").prop("value","");
-            $("#conektaTokenId").prop("value","");
         }
     </script>
 

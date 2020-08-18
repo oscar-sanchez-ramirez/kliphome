@@ -47,27 +47,32 @@ class TarjetaController extends ApiController
      */
     public function store(Request $request)
     {
-        $user = User::where('id',$request->user_id)->first();
-        $customer = \Conekta\Customer::create(
-            [
-              'name'  => $user->name.' '.$user->lastName,
-              'email' => $user->email,
-              'phone' => $user->phone,
-              'payment_sources' => [
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            $customer = \Conekta\Customer::create(
                 [
-                  'token_id' => $request->token,
-                  'type' => "card"
+                  'name'  => $user->name.' '.$user->lastName,
+                  'email' => $user->email,
+                  'phone' => $user->phone,
+                  'payment_sources' => [
+                    [
+                      'token_id' => $request->token,
+                      'type' => "card"
+                    ]
+                  ]
                 ]
-              ]
-            ]
-          );
-
-
-          $this->saveCustomer($customer["payment_sources"][0],$user->id);
-        return response()->json([
-            'success' => true,
-            'customer' => $customer
-        ]);
+              );
+            $this->saveCustomer($customer["payment_sources"][0],$user->id);
+            return response()->json([
+                'success' => true,
+                'customer' => $customer
+            ]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json([
+                'success' => false
+            ]);
+        }
     }
 
     /**
@@ -123,7 +128,7 @@ class TarjetaController extends ApiController
         $cus->exp_year = $customer->exp_year;
         $cus->last4 = $customer->last4;
         $cus->name = $customer->name;
-        $cus->parent_id = $customer->parent_id;
+        $cus->idToken = $customer->parent_id;
         $cus->save();
     }
 
