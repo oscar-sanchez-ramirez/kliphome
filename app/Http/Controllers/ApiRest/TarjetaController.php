@@ -119,8 +119,7 @@ class TarjetaController extends ApiController
     {
         $customer = \Conekta\Customer::find($id);
         Log::notice($customer);
-        $paymentSource = $customer->payment_sources[0];
-        $paymentSource->delete();
+        $customer->delete();
         UserCard::where('idToken',$id)->delete();
 
     }
