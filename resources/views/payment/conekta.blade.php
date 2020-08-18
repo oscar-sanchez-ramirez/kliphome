@@ -123,9 +123,9 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: { 'token': token_id,'user_id':{{ $user_id }},'type':{{ $type }} },
+                data: { 'token': token_id,'user_id':{{ $user_id }},'type':"{{ $type }}" },
                 success: function(data) {
-                    console.log(data);
+                    alert(data);
                     if(data.success){
                         jsClean();
                         $("#success_view").show();
