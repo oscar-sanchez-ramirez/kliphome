@@ -17,6 +17,9 @@
             max-width:500px;
             margin:auto;
         }
+        #success_view{
+            display: none;
+        }
         #success_view img{
             margin-top: 10%;
             display: block;
@@ -32,7 +35,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row display-tr">
-                            <h3>Pago de </h3>
+                            <h3>Nueva Tarjeta KlipHome </h3>
 
                         </div>
                     </div>
@@ -74,7 +77,7 @@
                         <div class="row">
                                 <div class="col-md-12" style="text-align:center;">
                                    <button class="btn btn-success btn-lg">
-                                       <i class="fa fa-check-square"></i> PAGAR
+                                       <i class="fa fa-check-square"></i> GUARDAR
                                    </button>
                                 </div>
 
