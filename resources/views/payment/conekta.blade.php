@@ -123,7 +123,7 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: { 'token': token_id,'user_id':{{ $user_id }},'type':"{{ $type }}" },
+                data: { 'token': token_id,'user_id':{{ $user_id }},'type':"{{ $type }}",'monto':{{ $monto }} },
                 success: function(data) {
                     alert(data);
                     if(data.success){
