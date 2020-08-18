@@ -20,6 +20,7 @@ class CreateTempPaymentsTable extends Migration
             $table->text('description');
             $table->boolean('state');
             $table->string('price');
+            $table->string('code_payment');
             $table->timestamps();
         });
     }
