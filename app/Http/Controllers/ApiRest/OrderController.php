@@ -94,15 +94,16 @@ class OrderController extends ApiController
                             $order->save();
                             $order->order_id = $order->id;
 
+                            $temp = TempPayment::where('user_id',$user->id)->where('price',$request->visit_price)->first();
                             $payment = new Payment;
                             $payment->order_id = $order->id;
-                            $payment->code_payment = $pago->id;
+                            $payment->code_payment = $temp->code_payment;
                             $payment->description = "VISITA";
                             $payment->state = true;
                             $payment->price = $request->visit_price;
                             $payment->save();
 
-                            // TempPayment::where('user_id',$user->id)->where('price',$request->visit_price)->delete();
+                            $temp->delete();
                             // dispatch(new NotifyNewOrder($order->id,$user->email));
                             return response()->json([
                                 'success' => true,
