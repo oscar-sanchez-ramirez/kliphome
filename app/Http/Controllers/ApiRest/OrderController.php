@@ -57,29 +57,29 @@ class OrderController extends ApiController
             }else{
                 $tipo_de_pago = ConfigSystem::payment;
                 if($tipo_de_pago["conekta"] == true){
-                    \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
-                    try{
+                    // \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
+                    // try{
                         $price = floatval($request->visit_price);
-                        if(substr($request->token,0,3) == "tok"){
-                            $pago = \Conekta\Order::create(
-                                [
-                                  "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-                                  "currency" => "MXN",
-                                  "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
-                                  "charges" => [["payment_method" => ["type" => "card","token_id" => $request->token]]
-                                  ]
-                                ]
-                              );
-                        }else if(substr($request->token,0,3) == "cus"){
-                            $pago = \Conekta\Order::create([
-                                'currency' => 'MXN',
-                                'customer_info' => ['customer_id' => $request->token],
-                                "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-                                'charges' => [['payment_method' => ['type' => 'default']]]
-                              ]);
-                        }
+                        // if(substr($request->token,0,3) == "tok"){
+                        //     $pago = \Conekta\Order::create(
+                        //         [
+                        //           "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                        //           "currency" => "MXN",
+                        //           "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                        //           "charges" => [["payment_method" => ["type" => "card","token_id" => $request->token]]
+                        //           ]
+                        //         ]
+                        //       );
+                        // }else if(substr($request->token,0,3) == "cus"){
+                        //     $pago = \Conekta\Order::create([
+                        //         'currency' => 'MXN',
+                        //         'customer_info' => ['customer_id' => $request->token],
+                        //         "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                        //         'charges' => [['payment_method' => ['type' => 'default']]]
+                        //       ]);
+                        // }
                         if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
-                        if($pago->payment_status == "paid"){
+                        // if($pago->payment_status == "paid"){
                             $order = new Order;
                             $order->user_id = $user->id;
                             $order->selected_id = $request->selected_id;
@@ -101,36 +101,38 @@ class OrderController extends ApiController
                             $payment->state = true;
                             $payment->price = $request->visit_price;
                             $payment->save();
+
+                            // TempPayment::where('user_id',$user->id)->where('price',$request->visit_price)->delete();
                             // dispatch(new NotifyNewOrder($order->id,$user->email));
                             return response()->json([
                                 'success' => true,
                                 'message' => "La orden de servicio se realizó con éxito",
                                 'order' => $order
                             ]);
-                        }else{
-                            return response()->json([
-                                'success' => false
-                            ]);
-                        }
-                    } catch (\Conekta\ProcessingError $error){
-                        Log::error($error);
-                        return response()->json([
-                            'success' => false,
-                            'message' => "La orden de servicio no se realizó"
-                        ]);
-                    } catch (\Conekta\ParameterValidationError $error){
-                        Log::error($error);
-                        return response()->json([
-                            'success' => false,
-                            'message' => "La orden de servicio no se realizó"
-                        ]);
-                    } catch (\Conekta\Handler $error){
-                        Log::error($error);
-                        return response()->json([
-                            'success' => false,
-                            'message' => "La orden de servicio no se realizó"
-                        ]);
-                    }
+                        // }else{
+                        //     return response()->json([
+                        //         'success' => false
+                        //     ]);
+                        // }
+                    // } catch (\Conekta\ProcessingError $error){
+                    //     Log::error($error);
+                    //     return response()->json([
+                    //         'success' => false,
+                    //         'message' => "La orden de servicio no se realizó"
+                    //     ]);
+                    // } catch (\Conekta\ParameterValidationError $error){
+                    //     Log::error($error);
+                    //     return response()->json([
+                    //         'success' => false,
+                    //         'message' => "La orden de servicio no se realizó"
+                    //     ]);
+                    // } catch (\Conekta\Handler $error){
+                    //     Log::error($error);
+                    //     return response()->json([
+                    //         'success' => false,
+                    //         'message' => "La orden de servicio no se realizó"
+                    //     ]);
+                    // }
                 }else{
                     try {
                         if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}

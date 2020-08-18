@@ -4,19 +4,21 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
-        <title>Pago en línea</title>
+        <title>Pago en línea KlipHome</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="{{url('')}}/vendor/bootstrap/js/bootstrap.js"></script>
         <link href="{{url('')}}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <style>
         #card-form{
             max-width:500px;
             margin:auto;
+        }
+        #success_view{
+            display: none;
         }
         #success_view img{
             margin-top: 10%;
@@ -28,15 +30,12 @@
         }
     </style>
     <body>
-        {{-- <div id="form_view">
+        <div id="form_view">
             <form id="card-form">
-
-                <input type="hidden" name="conektaTokenId" id="conektaTokenId" value="">
-
                 <div class="card">
                     <div class="card-header">
                         <div class="row display-tr">
-                            <h3>Pago de </h3>
+                            <h3>Nueva pago de ${{ $monto }} </h3>
 
                         </div>
                     </div>
@@ -46,7 +45,7 @@
                                 <label>
                                     Nombre en Tarjeta
                                 </label>
-                                <input value="e.g. John Doe" data-conekta="card[name]" class="form-control" name="name" id="name"  type="text" >
+                                <input value="" data-conekta="card[name]" class="form-control" name="name" id="name"  type="text" >
                             </div>
                             <div class="col-md-6">
                                     <label>
@@ -69,7 +68,7 @@
                                         </label>
                                         <div>
                                             <input style="width:50px; display:inline-block" value="" data-conekta="card[exp_month]" class="form-control"  type="text" maxlength="2" >
-                                            <input style="width:50px; display:inline-block" value=" " data-conekta="card[exp_year]" class="form-control"  type="text" maxlength="2" >
+                                            <input style="width:50px; display:inline-block" value="" data-conekta="card[exp_year]" class="form-control"  type="text" maxlength="2" >
 
                                         </div>
                                 </div>
@@ -78,7 +77,7 @@
                         <div class="row">
                                 <div class="col-md-12" style="text-align:center;">
                                    <button class="btn btn-success btn-lg">
-                                       <i class="fa fa-check-square"></i> PAGAR
+                                       <i class="fa fa-check-square"></i> GUARDAR
                                    </button>
                                 </div>
 
@@ -89,18 +88,17 @@
 
 
             </form>
-        </div> --}}
+        </div>
         <div id="success_view">
             <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
-            <h3 class="center">Hemos recibido tu pago</h3>
+            <h3 class="center">Tu tarjeta fue guardada</h3>
         </div>
     <script>
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
 
         var conektaSuccessResponseHandler= function(token){
             console.log(token);
-            $("#conektaTokenId").val(token.id);
-            //jsPay(token.id);
+            jsSave(token.id);
         };
 
         var conektaErrorResponseHandler =function(response){
@@ -110,7 +108,6 @@
         }
 
         $(document).ready(function(){
-
             $("#card-form").submit(function(e){
                 e.preventDefault();
                 var $form=$("#card-form");
@@ -119,38 +116,34 @@
 
         })
 
-        function jsPay(token_id){
+        function jsSave(token_id){
             let params=$("#card-form").serialize();
             console.log(params);
-            var token = $('meta[name="csrf-token"]').attr('content');
-            var url = "";
-            // $.ajax({
-            //     type: "POST",
-            //     url: url,
-            //     data: { 'token_id': token_id,'_token': token, 'subcategory_title':subcategory_title },
-            //     success: function(data) {
-            //         //Listing all sub categories into modal when record has been saved
-            //         listSubCategories(category_id);
-            //     },
-            //     error: function(data) {
-            //         alert("Error al guardar registro, Porfavor intente de nuevo");
-            //     }
-            // });
-            // $.post(url,params,function(data){
-            //     if(data=="1"){
-            //         alert("Se realizo el pago :D");
-            //         jsClean();
-            //     }else{
-            //         alert(data)
-            //     }
-
-            // });
-
+            var url = "{{ url('') }}/api/conekta";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { 'token': token_id,'user_id':{{ $user_id }} },
+                success: function(data) {
+                    console.log(data);
+                    if(data.success){
+                        jsClean();
+                        $("#success_view").show();
+                        $("#form_view").hide();
+                        console.log("1");
+                    }else{
+                        console.log("2");
+                        alert("Error al guardar tarjeta, Porfavor intente de nuevo");
+                    }
+                },
+                error: function(data) {
+                    alert("Error al guardar tarjeta, Porfavor intente de nuevo");
+                }
+            });
         }
 
         function jsClean(){
             $(".form-control").prop("value","");
-            $("#conektaTokenId").prop("value","");
         }
     </script>
 

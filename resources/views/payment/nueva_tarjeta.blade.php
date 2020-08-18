@@ -4,7 +4,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
-        <title>Pago en línea</title>
+        <title>Pago en línea KlipHome</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
@@ -91,7 +91,7 @@
         </div>
         <div id="success_view">
             <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
-            <h3 class="center">Tu tarjeta fue guardada</h3>
+            <h3 class="center">Tu pago se realizó</h3>
         </div>
     <script>
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
@@ -119,11 +119,11 @@
         function jsSave(token_id){
             let params=$("#card-form").serialize();
             console.log(params);
-            var url = "{{ url('') }}/api/conekta";
+            var url = "{{ url('') }}/api/conekta_nuevo_pago";
             $.ajax({
                 type: "POST",
                 url: url,
-                data: { 'token': token_id,'user_id':{{ $user_id }} },
+                data: { 'token': token_id,'user_id':{{ $user_id }},'monto':{{ $monto }} },
                 success: function(data) {
                     console.log(data);
                     if(data.success){
