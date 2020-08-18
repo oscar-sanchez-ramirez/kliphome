@@ -31,7 +31,6 @@ class OrderController extends ApiController
         $this->middleware('auth:api');
     }
     public function create(Request $request){
-        Log::notice($request->all());
         $user = $request->user();
         if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             if($request->visit_price == "quotation"){
@@ -58,83 +57,75 @@ class OrderController extends ApiController
             }else{
                 $tipo_de_pago = ConfigSystem::payment;
                 if($tipo_de_pago["conekta"] == true){
-                    // \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
-                    // try{
+                    \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
+                    try{
                         $price = floatval($request->visit_price);
-                        // if(substr($request->token,0,3) == "tok"){
-                        //     $pago = \Conekta\Order::create(
-                        //         [
-                        //           "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-                        //           "currency" => "MXN",
-                        //           "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
-                        //           "charges" => [["payment_method" => ["type" => "card","token_id" => $request->token]]
-                        //           ]
-                        //         ]
-                        //       );
-                        // }else if(substr($request->token,0,3) == "cus"){
-                        //     $pago = \Conekta\Order::create([
-                        //         'currency' => 'MXN',
-                        //         'customer_info' => ['customer_id' => $request->token],
-                        //         "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-                        //         'charges' => [['payment_method' => ['type' => 'default']]]
-                        //       ]);
-                        // }
                         if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
-                        // if($pago->payment_status == "paid"){
-                            $order = new Order;
-                            $order->user_id = $user->id;
-                            $order->selected_id = $request->selected_id;
-                            $order->type_service = $request->type_service;
-                            $order->service_date = $request->service_date;
-                            $order->service_description = $request->service_description;
-                            $order->service_image = $image;
-                            $order->address = $request->address;
-                            $order->price = 'quotation';
-                            $order->visit_price = $request->visit_price;
-                            $order->pre_coupon = $request->coupon;
-                            $order->save();
-                            $order->order_id = $order->id;
-
+                        if(substr($request->token,0,3) == "tok"){
+                            $pago = \Conekta\Order::create(
+                            [
+                                "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                                "currency" => "MXN",
+                                "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                                "charges" => [["payment_method" => ["type" => "card","token_id" => $request->token]]
+                                ]
+                            ]
+                            );
+                            if($pago->payment_status == "paid"){
+                                $order = $this->guardar_orden($request,$user->id,$image);
+                                $this->guardar_pago($order->id,$pago->id,$request->visit_price,"VISITA");
+                            }else{
+                                return response()->json([
+                                    'success' => false
+                                ]);
+                            }
+                        }else if(substr($request->token,0,3) == "cus"){
+                            $pago = \Conekta\Order::create([
+                                "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                                'currency' => 'MXN',
+                                'customer_info' => ['customer_id' => $request->token],
+                                'charges' => [['payment_method' => ['type' => 'default']]]
+                              ]);
+                              if($pago->payment_status == "paid"){
+                                    $order = $this->guardar_orden($request,$user->id,$image);
+                                    $this->guardar_pago($order->id,$pago->id,$request->visit_price,"VISITA");
+                                }else{
+                                    return response()->json([
+                                        'success' => false
+                                    ]);
+                                }
+                        }else if($request->token == "temp"){
                             $temp = TempPayment::where('user_id',$user->id)->where('price',$request->visit_price)->first();
-                            $payment = new Payment;
-                            $payment->order_id = $order->id;
-                            $payment->code_payment = $temp->code_payment;
-                            $payment->description = "VISITA";
-                            $payment->state = true;
-                            $payment->price = $request->visit_price;
-                            $payment->save();
-
+                            $order = $this->guardar_orden($request,$user->id,$image);
+                            $this->guardar_pago($order->id,$temp->code_payment,$request->visit_price,"VISITA");
                             $temp->delete();
-                            // dispatch(new NotifyNewOrder($order->id,$user->email));
-                            return response()->json([
-                                'success' => true,
-                                'message' => "La orden de servicio se realizó con éxito",
-                                'order' => $order
-                            ]);
-                        // }else{
-                        //     return response()->json([
-                        //         'success' => false
-                        //     ]);
-                        // }
-                    // } catch (\Conekta\ProcessingError $error){
-                    //     Log::error($error);
-                    //     return response()->json([
-                    //         'success' => false,
-                    //         'message' => "La orden de servicio no se realizó"
-                    //     ]);
-                    // } catch (\Conekta\ParameterValidationError $error){
-                    //     Log::error($error);
-                    //     return response()->json([
-                    //         'success' => false,
-                    //         'message' => "La orden de servicio no se realizó"
-                    //     ]);
-                    // } catch (\Conekta\Handler $error){
-                    //     Log::error($error);
-                    //     return response()->json([
-                    //         'success' => false,
-                    //         'message' => "La orden de servicio no se realizó"
-                    //     ]);
-                    // }
+                        }
+                        // dispatch(new NotifyNewOrder($order->id,$user->email));
+                        return response()->json([
+                            'success' => true,
+                            'message' => "La orden de servicio se realizó con éxito",
+                            'order' => $order
+                        ]);
+
+                    } catch (\Conekta\ProcessingError $error){
+                        Log::error($error);
+                        return response()->json([
+                            'success' => false,
+                            'message' => "La orden de servicio no se realizó"
+                        ]);
+                    } catch (\Conekta\ParameterValidationError $error){
+                        Log::error($error);
+                        return response()->json([
+                            'success' => false,
+                            'message' => "La orden de servicio no se realizó"
+                        ]);
+                    } catch (\Conekta\Handler $error){
+                        Log::error($error);
+                        return response()->json([
+                            'success' => false,
+                            'message' => "La orden de servicio no se realizó"
+                        ]);
+                    }
                 }else{
                     try {
                         if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
@@ -755,5 +746,30 @@ class OrderController extends ApiController
                 'message' => "No se encontraron datos"
             ]);
         }
+    }
+
+    private function guardar_orden($orden,$user_id,$image){
+        $order = new Order;
+        $order->user_id = $user_id;
+        $order->selected_id = $orden->selected_id;
+        $order->type_service = $orden->type_service;
+        $order->service_date = $orden->service_date;
+        $order->service_description = $orden->service_description;
+        $order->service_image = $image;
+        $order->address = $orden->address;
+        $order->price = 'quotation';
+        $order->visit_price = $orden->visit_price;
+        $order->pre_coupon = $orden->coupon;
+        $order->save();
+        return $order;
+    }
+    private function guardar_pago($order_id,$code_payment,$visit_price,$descripcion){
+        $payment = new Payment;
+        $payment->order_id = $order_id;
+        $payment->code_payment = $code_payment;
+        $payment->description = $descripcion;
+        $payment->state = true;
+        $payment->price = $visit_price;
+        $payment->save();
     }
 }
