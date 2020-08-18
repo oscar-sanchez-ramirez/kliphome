@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ApiRest;
 
 use App\User;
+use App\UserCard;
 use App\ConfigSystem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
@@ -58,6 +59,8 @@ class TarjetaController extends ApiController
               ]
             ]
           );
+          $customer["user_id"] = $user->id;
+          $this->saveCustomer($customer);
         return response()->json([
             'success' => true,
             'customer' => $customer
@@ -107,5 +110,17 @@ class TarjetaController extends ApiController
     public function destroy($id)
     {
         //
+    }
+
+    private function saveCustomer($customer){
+        $cus = new Customer;
+        $cus->user_id = $customer->user_id;
+        $cus->brand = $customer->brand;
+        $cus->exp_month = $customer->exp_month;
+        $cus->exp_year = $customer->exp_year;
+        $cus->last4 = $customer->last4;
+        $cus->name = $customer->name;
+        $cus->parent_id = $customer->parent_id;
+        $cus->save();
     }
 }
