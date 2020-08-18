@@ -61,7 +61,7 @@ class TarjetaController extends ApiController
             ]
           );
 
-          Log::notice($customer["payment_sources"]["id"]);
+          Log::notice($customer["payment_sources"][0]);
 
         //   $customer["usuario"]["payment_sources"]["data"][0]["user_id"] = $user->id;
         //   $this->saveCustomer($customer["usuario"]["payment_sources"]["data"][0]);
