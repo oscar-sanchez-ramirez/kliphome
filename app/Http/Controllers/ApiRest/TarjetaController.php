@@ -14,6 +14,7 @@ class TarjetaController extends ApiController
     public function __construct(){
         \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
         \Conekta\Conekta::setLocale('es');
+        $this->middleware('auth:api',['only'=>['listar_cards_conekta']]);
     }
 
     protected $user_id;
@@ -124,5 +125,14 @@ class TarjetaController extends ApiController
         $cus->name = $customer->name;
         $cus->parent_id = $customer->parent_id;
         $cus->save();
+    }
+
+    public function listar_cards_conekta(Request $request){
+        $user = $request->user();
+        $cards = UserCard::where('user_id',$user->id)->get();
+        return response()->json([
+            'success' => true,
+            'cards' => $cards
+        ]);
     }
 }
