@@ -177,7 +177,8 @@ class PaymentController extends ApiController
         // if($pago->payment_status == "paid"){
             $payment = new TempPayment;
             $payment->user_id = $request->user_id;
-            $payment->code_payment = $pago->id;
+            // $payment->code_payment = $pago->id;
+            $payment->code_payment = "abc";
             $payment->description = $request->type;
             $payment->state = true;
             $payment->price = $price;
