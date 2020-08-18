@@ -6,6 +6,7 @@ use App\User;
 use App\UserCard;
 use App\ConfigSystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
 
 class TarjetaController extends ApiController
@@ -59,8 +60,11 @@ class TarjetaController extends ApiController
               ]
             ]
           );
-          $customer["usuario"]["payment_sources"]["data"][0]["user_id"] = $user->id;
-          $this->saveCustomer($customer["usuario"]["payment_sources"]["data"][0]);
+
+          Log::notice($customer);
+
+        //   $customer["usuario"]["payment_sources"]["data"][0]["user_id"] = $user->id;
+        //   $this->saveCustomer($customer["usuario"]["payment_sources"]["data"][0]);
         return response()->json([
             'success' => true,
             'customer' => $customer
