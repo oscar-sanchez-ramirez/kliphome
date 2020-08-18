@@ -117,7 +117,9 @@ class TarjetaController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        UserCard::where('idToken',$id)->delete();
+        $customer = \Conekta\Customer::find($id);
+        $customer->delete();
     }
 
     private function saveCustomer($customer,$user_id){
