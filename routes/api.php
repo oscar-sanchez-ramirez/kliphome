@@ -124,6 +124,7 @@ Route::get('conekta','ApiRest\SocialController@conekta');
 // Route::get('nueva_tarjeta_conekta','ApiRest\SocialController@nueva_tarjeta_conekta');
 Route::resource('conekta', 'ApiRest\TarjetaController');
 Route::get('listar_cards_conekta','ApiRest\TarjetaController@listar_cards_conekta');
+Route::get('conekta_pago','ApiRest\TarjetaController@conekta_pago');
 
 
 //Configuraciones del sistema

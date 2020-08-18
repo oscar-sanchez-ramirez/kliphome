@@ -135,6 +135,10 @@ class TarjetaController extends ApiController
         $cus->save();
     }
 
+    public function conekta_pago(Request $request){
+        return $request->all();
+    }
+
     public function listar_cards_conekta(Request $request){
         $user = $request->user();
         $cards = UserCard::where('user_id',$user->id)->get();
