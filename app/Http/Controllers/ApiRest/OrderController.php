@@ -11,6 +11,7 @@ use App\Coupon;
 use App\Payment;
 use App\Quotation;
 use App\ExtraInfo;
+use App\TempPayment;
 use App\AdminCoupon;
 use App\OrderGallery;
 use App\ConfigSystem;
