@@ -59,8 +59,8 @@ class TarjetaController extends ApiController
               ]
             ]
           );
-          $customer["user_id"] = $user->id;
-          $this->saveCustomer($customer);
+          $customer["usuario"]["payment_sources"]["data"][0]["user_id"] = $user->id;
+          $this->saveCustomer($customer["usuario"]["payment_sources"]["data"][0]);
         return response()->json([
             'success' => true,
             'customer' => $customer
