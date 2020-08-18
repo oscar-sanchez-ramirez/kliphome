@@ -113,7 +113,7 @@ class TarjetaController extends ApiController
     }
 
     private function saveCustomer($customer){
-        $cus = new Customer;
+        $cus = new UserCard;
         $cus->user_id = $customer->user_id;
         $cus->brand = $customer->brand;
         $cus->exp_month = $customer->exp_month;
