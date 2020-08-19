@@ -16,6 +16,7 @@ use App\Qualify;
 use App\Payment;
 use App\Quotation;
 use Carbon\Carbon;
+use App\TempPayment;
 use App\FixermanStat;
 use App\ConfigSystem;
 use App\SelectedOrders;
@@ -244,6 +245,7 @@ class FixerManController extends ApiController
                     $price = floatval($request->price);
                     if($price != 0){
                         try {
+
                             \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
                             if(substr($request->stripeToken,0,3) == "tok"){
                                 $pago = \Conekta\Order::create(
@@ -255,30 +257,28 @@ class FixerManController extends ApiController
                                       ]
                                     ]
                                   );
+                                  $this->guardar_pago($request->order_id,$pago->id,$price,"PROPINA POR SERVICIO");
                             }else if(substr($request->stripeToken,0,3) == "cus"){
                                 $pago = \Conekta\Order::create([
                                     'currency' => 'MXN',
                                     'customer_info' => ['customer_id' => $request->stripeToken,],
-                                    "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                                    "line_items" => [["name" => "PROPINA POR SERVICIO","unit_price" => $price * 100,"quantity" => 1]],
                                     'charges' => [['payment_method' => ['type' => 'default']]]
                                   ]);
+                                  $this->guardar_pago($request->order_id,$pago->id,$price,"PROPINA POR SERVICIO");
+                            }else if($request->stripeToken == "temp"){
+                                $temp = TempPayment::where('user_id',$user->id)->where('price',$price)->first();
+                                $this->guardar_pago($request->order_id,$temp->code_payment,$price,"PROPINA POR SERVICIO");
+                                $temp->delete();
                             }
-
-                            $payment = new Payment;
-                            $payment->order_id = $request->order_id;
-                            $payment->description = "PROPINA POR SERVICIO";
-                            $payment->state = true;
-                            $payment->code_payment = $pago->id;
-                            $payment->price = $price;
-                            $payment->save();
                         } catch (\Throwable $th) {
                             Log::error($th);
-                            $payment = new Payment;
-                            $payment->order_id = $request->order_id;
-                            $payment->description = "PROPINA POR SERVICIO";
-                            $payment->state = false;
-                            $payment->price = $price;
-                            $payment->save();
+                            // $payment = new Payment;
+                            // $payment->order_id = $request->order_id;
+                            // $payment->description = "PROPINA POR SERVICIO";
+                            // $payment->state = false;
+                            // $payment->price = $price;
+                            // $payment->save();
                         }
                     }
                     $qualify = new Qualify;
@@ -709,6 +709,15 @@ class FixerManController extends ApiController
                 # code...
                 break;
         }
+    }
+    private function guardar_pago($order_id,$code_payment,$visit_price,$descripcion){
+        $payment = new Payment;
+        $payment->order_id = $order_id;
+        $payment->code_payment = $code_payment;
+        $payment->description = $descripcion;
+        $payment->state = true;
+        $payment->price = $visit_price;
+        $payment->save();
     }
 
 }

@@ -394,7 +394,6 @@ class OrderController extends ApiController
                         }
                     }else if($request->stripeToken == "temp"){
                         $temp = TempPayment::where('user_id',$user->id)->where('price',$price)->first();
-                        Log::notice($temp);
                         $this->guardar_pago($request->order_id,$temp->code_payment,$price,"PAGO POR SERVICIO");
                         $this->validar_cupon($request,$order,$price);
                         $temp->delete();
