@@ -119,11 +119,11 @@
         function jsSave(token_id){
             let params=$("#card-form").serialize();
             console.log(params);
-            var url = "{{ url('') }}/api/conekta_nuevo_pago";
+            var url = "{{ url('') }}/api/conekta";
             $.ajax({
                 type: "POST",
                 url: url,
-                data: { 'token': token_id,'user_id':{{ $user_id }},'monto':{{ $monto }} },
+                data: { 'token': token_id,'user_id':{{ $user_id }} },
                 success: function(data) {
                     console.log(data);
                     if(data.success){
