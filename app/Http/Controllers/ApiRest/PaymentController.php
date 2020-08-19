@@ -187,7 +187,7 @@ class PaymentController extends ApiController
             $payment->state = true;
             $payment->price = $price;
             $payment->save();
-            if($request->guardar_tarjeta == true){
+            if($request->guardar_tarjeta == 'true'){
                 $this->guardar_tarjeta($request);
             }
             // dispatch(new NotifyNewOrder($order->id,$user->email));
@@ -220,6 +220,7 @@ class PaymentController extends ApiController
 
     private function guardar_tarjeta($request){
         try {
+            Log::notice("entrando a guardar tarjeta");
             $user = User::where('id',$request->user_id)->first();
             $customer = \Conekta\Customer::create(
                 [
@@ -236,18 +237,13 @@ class PaymentController extends ApiController
               );
             $this->guardar_usuario($customer["payment_sources"][0],$user->id);
 
-            return response()->json([
-                'success' => true,
-                'customer' => $customer
-            ]);
+
         } catch (\Throwable $th) {
             Log::error($th);
-            return response()->json([
-                'success' => false
-            ]);
         }
     }
     private function guardar_usuario($customer,$user_id){
+        Log::notice("entrando a guardar usuario");
         $cus = new UserCard;
         $cus->user_id = $user_id;
         $cus->brand = $customer->brand;
