@@ -222,6 +222,7 @@ class PaymentController extends ApiController
         try {
             Log::notice("entrando a guardar tarjeta");
             $user = User::where('id',$request->user_id)->first();
+            Log::notice($user);
             $customer = \Conekta\Customer::create(
                 [
                   'name'  => $user->name.' '.$user->lastName,
@@ -235,6 +236,7 @@ class PaymentController extends ApiController
                   ]
                 ]
               );
+              Log::notice($customer);
             $this->guardar_usuario($customer["payment_sources"][0],$user->id);
 
 
