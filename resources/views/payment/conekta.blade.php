@@ -125,7 +125,6 @@
                 url: url,
                 data: { 'token': token_id,'user_id':{{ $user_id }},'type':"{{ $type }}",'monto':{{ $monto }} },
                 success: function(data) {
-                    alert(data);
                     if(data.success){
                         jsClean();
                         $("#success_view").show();

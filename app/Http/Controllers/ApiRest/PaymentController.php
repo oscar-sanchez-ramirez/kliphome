@@ -14,7 +14,7 @@ use App\Http\Controllers\ApiController;
 class PaymentController extends ApiController
 {
     public function __construct(){
-        $this->middleware('auth:api',['only'=>['revisar_pago_temp']]);
+        $this->middleware('auth:api',['only'=>['revisar_pago_temp','saveCustomer']]);
         \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
         \Conekta\Conekta::setLocale('es');
     }

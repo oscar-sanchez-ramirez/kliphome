@@ -104,7 +104,6 @@
         var conektaErrorResponseHandler =function(response){
             var $form=$("#card-form");
             console.log(response);
-            alert(response.message_to_purchaser);
         }
 
         $(document).ready(function(){
