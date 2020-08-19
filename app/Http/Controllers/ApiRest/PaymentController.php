@@ -156,29 +156,29 @@ class PaymentController extends ApiController
     }
     public function conekta_nuevo_pago(Request $request){
         $price = floatval($request->monto);
-        // if(substr($request->token,0,3) == "tok"){
-        //     $pago = \Conekta\Order::create(
-        //         [
-        //             "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-        //             "currency" => "MXN",
-        //             "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
-        //             "charges" => [["payment_method" => ["type" => "card","token_id" => $request->token]]
-        //             ]
-        //         ]
-        //         );
-        // }else if(substr($request->token,0,3) == "cus"){
-        //     $pago = \Conekta\Order::create([
-        //         'currency' => 'MXN',
-        //         'customer_info' => ['customer_id' => $request->token],
-        //         "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-        //         'charges' => [['payment_method' => ['type' => 'default']]]
-        //     ]);
-        // }
-        // if($pago->payment_status == "paid"){
+        if(substr($request->token,0,3) == "tok"){
+            $pago = \Conekta\Order::create(
+                [
+                    "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                    "currency" => "MXN",
+                    "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                    "charges" => [["payment_method" => ["type" => "card","token_id" => $request->token]]
+                    ]
+                ]
+                );
+        }else if(substr($request->token,0,3) == "cus"){
+            $pago = \Conekta\Order::create([
+                'currency' => 'MXN',
+                'customer_info' => ['customer_id' => $request->token],
+                "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
+                'charges' => [['payment_method' => ['type' => 'default']]]
+            ]);
+        }
+        if($pago->payment_status == "paid"){
             $payment = new TempPayment;
             $payment->user_id = $request->user_id;
-            // $payment->code_payment = $pago->id;
-            $payment->code_payment = "abc";
+            $payment->code_payment = $pago->id;
+            // $payment->code_payment = "abc";
             $payment->description = $request->type;
             $payment->state = true;
             $payment->price = $price;
@@ -188,11 +188,11 @@ class PaymentController extends ApiController
                 'success' => true,
                 'message' => "Pago exitoso",
             ]);
-        // }else{
-        //     return response()->json([
-        //         'success' => false
-        //     ]);
-        // }
+        }else{
+            return response()->json([
+                'success' => false
+            ]);
+        }
 
     }
     public function revisar_pago_temp(Request $request){
