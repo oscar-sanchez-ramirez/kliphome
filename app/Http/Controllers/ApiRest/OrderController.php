@@ -392,9 +392,9 @@ class OrderController extends ApiController
                                 'success' => false
                             ]);
                         }
-                    }else if($request->token == "temp"){
+                    }else if($request->stripeToken == "temp"){
                         $temp = TempPayment::where('user_id',$user->id)->where('price',$price)->first();
-                        $order = $this->guardar_orden($request,$user->id,$image);
+                        Log::notice($temp);
                         $this->guardar_pago($request->order_id,$temp->code_payment,$price,"PAGO POR SERVICIO");
                         $this->validar_cupon($request,$order,$price);
                         $temp->delete();
@@ -724,6 +724,7 @@ class OrderController extends ApiController
         ]);
 
         $check_quotations = Quotation::where('order_id',$request->order_id)->count();
+        Log::notice($check_quotations);
         if($check_quotations == 1){
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $price
