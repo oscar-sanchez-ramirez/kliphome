@@ -241,7 +241,6 @@ class FixerManController extends ApiController
             if($tipo_de_pago["conekta"] == true){
                 Log::notice($request->all());
                 try {
-                    $user = User::where('id',$request->fixerman_id)->first();
                     $price = floatval($request->price);
                     if($price != 0){
                         try {
@@ -297,6 +296,7 @@ class FixerManController extends ApiController
                     ->update([ 'o.state' => "QUALIFIED" ]);
                     //Database notification
                     $qualify["mensajeFixerMan"] = "¡Gracias por usar KlipHome! Tu servicio fue calificado, ¡Échale un vistazo! ";
+                    $user = User::where('id',$request->fixerman_id)->first();
                     $user->notify(new ServiceQualified($qualify));
                     //OneSignal notification
                     $notification = $user->notifications()->first();
