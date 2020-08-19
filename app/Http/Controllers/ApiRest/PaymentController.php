@@ -155,6 +155,7 @@ class PaymentController extends ApiController
         return view('payment.conekta',compact('user_id','monto','type'));
     }
     public function conekta_nuevo_pago(Request $request){
+        $user = User::where('id',$request->user_id)->first();
         $price = floatval($request->monto);
         if(substr($request->token,0,3) == "tok"){
             $pago = \Conekta\Order::create(
