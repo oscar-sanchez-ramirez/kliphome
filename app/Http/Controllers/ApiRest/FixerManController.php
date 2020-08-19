@@ -245,7 +245,7 @@ class FixerManController extends ApiController
                     if($price != 0){
                         try {
 
-                            \Conekta\Conekta::setApiKey("key_UgnZqZxkdu5HBTHehznnbw");
+                            \Conekta\Conekta::setApiKey(ConfigSystem::conekta_key);
                             if(substr($request->stripeToken,0,3) == "tok"){
                                 $pago = \Conekta\Order::create(
                                     [

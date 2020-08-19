@@ -20,5 +20,7 @@ class ConfigSystem extends Model
         'conekta' => true
     ];
 
-    const conekta_key = "key_LiS5ishyiSuzq8sEhz5ahg";
+    // const conekta_key = "key_LiS5ishyiSuzq8sEhz5ahg";
+    const conekta_key = "key_UgnZqZxkdu5HBTHehznnbw";
+
 }
