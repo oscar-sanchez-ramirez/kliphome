@@ -91,7 +91,7 @@
         </div>
         <div id="success_view">
             <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
-            <h3 class="center">Tu tarjeta fue guardada</h3>
+            <h3 class="center">Tu pago se relizó</h3>
         </div>
     <script>
         Conekta.setPublicKey("key_MvrJiyzi84Axatiaxdr4PAQ");
