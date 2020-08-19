@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\ApiRest;
 
-use App\User;
 use Stripe;
+use App\User;
+use App\UserCard;
 use App\TempPayment;
 use App\ConfigSystem;
 use Illuminate\Http\Request;
@@ -185,6 +186,9 @@ class PaymentController extends ApiController
             $payment->state = true;
             $payment->price = $price;
             $payment->save();
+            if($request->guardar_tarjeta == true){
+                $this->guardar_tarjeta($request);
+            }
             // dispatch(new NotifyNewOrder($order->id,$user->email));
             return response()->json([
                 'success' => true,
@@ -211,6 +215,47 @@ class PaymentController extends ApiController
                 'message' => "Pago no encontrado",
             ]);
         }
+    }
+
+    private function guardar_tarjeta($request){
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            $customer = \Conekta\Customer::create(
+                [
+                  'name'  => $user->name.' '.$user->lastName,
+                  'email' => $user->email,
+                  'phone' => $user->phone,
+                  'payment_sources' => [
+                    [
+                      'token_id' => $request->token,
+                      'type' => "card"
+                    ]
+                  ]
+                ]
+              );
+            $this->guardar_usuario($customer["payment_sources"][0],$user->id);
+
+            return response()->json([
+                'success' => true,
+                'customer' => $customer
+            ]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json([
+                'success' => false
+            ]);
+        }
+    }
+    private function guardar_usuario($customer,$user_id){
+        $cus = new UserCard;
+        $cus->user_id = $user_id;
+        $cus->brand = $customer->brand;
+        $cus->exp_month = $customer->exp_month;
+        $cus->exp_year = $customer->exp_year;
+        $cus->last4 = $customer->last4;
+        $cus->name = $customer->name;
+        $cus->idToken = $customer->parent_id;
+        $cus->save();
     }
 
 }

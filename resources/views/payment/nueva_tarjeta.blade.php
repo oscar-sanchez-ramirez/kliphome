@@ -45,7 +45,7 @@
                                 <label>
                                     Nombre en Tarjeta
                                 </label>
-                                <input value="e.g. John Doe" data-conekta="card[name]" class="form-control" name="name" id="name"  type="text" >
+                                <input value="" data-conekta="card[name]" class="form-control" name="name" id="name"  type="text" >
                             </div>
                             <div class="col-md-6">
                                     <label>
@@ -91,7 +91,7 @@
         </div>
         <div id="success_view">
             <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
-            <h3 class="center">Tu pago se realizó</h3>
+            {{-- <h3 class="center">Tu pago se realizó</h3> --}}
         </div>
     <script>
         Conekta.setPublicKey("key_MvrJiyzi84Axatiaxdr4PAQ");
@@ -129,9 +129,7 @@
                         jsClean();
                         $("#success_view").show();
                         $("#form_view").hide();
-                        console.log("1");
                     }else{
-                        console.log("2");
                         alert("Error al guardar tarjeta, Porfavor intente de nuevo");
                     }
                 },

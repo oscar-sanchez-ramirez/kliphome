@@ -74,6 +74,8 @@
                                 </div>
                         </div>
                         <br>
+                        <label><input type="checkbox" id="guardar_tarjeta" value="false"> Guardar Tarjeta</label><br>
+                        <br>
                         <div class="row">
                                 <div class="col-md-12" style="text-align:center;">
                                    <button class="btn btn-success btn-lg">
@@ -118,12 +120,13 @@
 
         function jsSave(token_id){
             let params=$("#card-form").serialize();
-            console.log(params);
+            let guardar_tarjeta = $('#guardar_tarjeta').is(":checked");
+            console.log(guardar_tarjeta);
             var url = "{{ url('') }}/api/conekta_nuevo_pago";
             $.ajax({
                 type: "POST",
                 url: url,
-                data: { 'token': token_id,'user_id':{{ $user_id }},'type':"{{ $type }}",'monto':{{ $monto }} },
+                data: { 'token': token_id,'user_id':{{ $user_id }},'type':"{{ $type }}",'monto':{{ $monto }},'guardar_tarjeta':guardar_tarjeta },
                 success: function(data) {
                     if(data.success){
                         jsClean();
