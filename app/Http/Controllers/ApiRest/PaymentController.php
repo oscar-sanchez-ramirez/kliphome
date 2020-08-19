@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use App\User;
 use Stripe;
 use App\TempPayment;
 use App\ConfigSystem;
