@@ -177,13 +177,13 @@ class PaymentController extends ApiController
                   );
                   Log::notice($customer);
                 $cus = $this->guardar_usuario($customer["payment_sources"][0],$user->id);
-                $this->pago($request,$cus->idToken);
+                $this->pago($request,$cus->idToken,$user);
 
             } catch (\Throwable $th) {
                 Log::error($th);
             }
         }else{
-            $this->pago($request,$request->token);
+            $this->pago($request,$request->token,$user);
         }
 
 
@@ -204,7 +204,7 @@ class PaymentController extends ApiController
         }
     }
 
-    private function pago($request,$token){
+    private function pago($request,$token,$user){
         $price = floatval($request->monto);
         if(substr($token,0,3) == "tok"){
             $pago = \Conekta\Order::create(
