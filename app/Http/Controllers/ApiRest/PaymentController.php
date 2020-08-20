@@ -188,7 +188,7 @@ class PaymentController extends ApiController
             $payment->price = $price;
             $payment->save();
             if($request->guardar_tarjeta == 'true'){
-                try {
+                // try {
                     Log::notice("entrando a guardar tarjeta");
                     $user = User::where('id',$request->user_id)->first();
                     Log::notice($user);
@@ -209,9 +209,9 @@ class PaymentController extends ApiController
                     $this->guardar_usuario($customer["payment_sources"][0],$user->id);
 
 
-                } catch (\Throwable $th) {
-                    Log::error($th);
-                }
+                // } catch (\Throwable $th) {
+                //     Log::error($th);
+                // }
             }
             // dispatch(new NotifyNewOrder($order->id,$user->email));
             return response()->json([
