@@ -121,7 +121,6 @@
         function jsSave(token_id){
             let params=$("#card-form").serialize();
             let guardar_tarjeta = $('#guardar_tarjeta').is(":checked");
-            console.log(guardar_tarjeta);
             var url = "{{ url('') }}/api/conekta_nuevo_pago";
             $.ajax({
                 type: "POST",
@@ -132,14 +131,12 @@
                         jsClean();
                         $("#success_view").show();
                         $("#form_view").hide();
-                        console.log("1");
                     }else{
-                        console.log("2");
-                        alert("Error al guardar tarjeta, Porfavor intente de nuevo");
+                        alert("Error al realizar pago, Porfavor intente de nuevo");
                     }
                 },
                 error: function(data) {
-                    alert("Error al guardar tarjeta, Porfavor intente de nuevo");
+                    alert("Error al realizar pago, Porfavor intente de nuevo");
                 }
             });
         }

@@ -157,38 +157,45 @@ class PaymentController extends ApiController
         return view('payment.conekta',compact('user_id','monto','type'));
     }
     public function conekta_nuevo_pago(Request $request){
-        Log::notice($request->all());
-        $user = User::where('id',$request->user_id)->first();
-        if($request->guardar_tarjeta == 'true'){
-            try {
-                Log::notice("entrando a guardar tarjeta");
-                $customer = \Conekta\Customer::create(
-                    [
-                      'name'  => $user->name.' '.$user->lastName,
-                      'email' => $user->email,
-                      'phone' => $user->phone,
-                      'payment_sources' => [
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            if($request->guardar_tarjeta == 'true'){
+                try {
+                    $customer = \Conekta\Customer::create(
                         [
-                          'token_id' => $request->token,
-                          'type' => "card"
+                          'name'  => $user->name.' '.$user->lastName,
+                          'email' => $user->email,
+                          'phone' => $user->phone,
+                          'payment_sources' => [
+                            [
+                              'token_id' => $request->token,
+                              'type' => "card"
+                            ]
+                          ]
                         ]
-                      ]
-                    ]
-                  );
-                  Log::notice($customer);
-                $cus = $this->guardar_usuario($customer["payment_sources"][0],$user->id);
-                $this->pago($request,$cus->idToken,$user);
+                      );
+                    $cus = $this->guardar_usuario($customer["payment_sources"][0],$user->id);
+                    $this->pago($request,$cus->idToken,$user);
 
-            } catch (\Throwable $th) {
-                Log::error($th);
+                } catch (\Throwable $th) {
+                    Log::error($th);
+                    return response()->json([
+                        'success' => false
+                    ]);
+                }
+            }else{
+                $this->pago($request,$request->token,$user);
             }
-        }else{
-            $this->pago($request,$request->token,$user);
+            return response()->json([
+                'success' => true,
+                'message' => "Pago exitoso",
+            ]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json([
+                'success' => false
+            ]);
         }
-        return response()->json([
-            'success' => true,
-            'message' => "Pago exitoso",
-        ]);
 
     }
     public function revisar_pago_temp(Request $request){
@@ -251,9 +258,7 @@ class PaymentController extends ApiController
 
     private function guardar_tarjeta($request){
         try {
-            Log::notice("entrando a guardar tarjeta");
             $user = User::where('id',$request->user_id)->first();
-            Log::notice($user);
             $customer = \Conekta\Customer::create(
                 [
                   'name'  => $user->name.' '.$user->lastName,
@@ -267,7 +272,6 @@ class PaymentController extends ApiController
                   ]
                 ]
               );
-              Log::notice($customer);
             $this->guardar_usuario($customer["payment_sources"][0],$user->id);
 
 
@@ -276,7 +280,6 @@ class PaymentController extends ApiController
         }
     }
     private function guardar_usuario($customer,$user_id){
-        Log::notice("entrando a guardar usuario");
         $cus = new UserCard;
         $cus->user_id = $user_id;
         $cus->brand = $customer->brand;
