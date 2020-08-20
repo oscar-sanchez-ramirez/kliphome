@@ -160,7 +160,7 @@ class PaymentController extends ApiController
         Log::notice($request->all());
         $user = User::where('id',$request->user_id)->first();
         if($request->guardar_tarjeta == 'true'){
-            // try {
+            try {
                 Log::notice("entrando a guardar tarjeta");
                 $customer = \Conekta\Customer::create(
                     [
@@ -176,28 +176,50 @@ class PaymentController extends ApiController
                     ]
                   );
                   Log::notice($customer);
-                $this->guardar_usuario($customer["payment_sources"][0],$user->id);
+                $cus = $this->guardar_usuario($customer["payment_sources"][0],$user->id);
+                $this->pago($request,$token);
 
-
-            // } catch (\Throwable $th) {
-            //     Log::error($th);
-            // }
+            } catch (\Throwable $th) {
+                Log::error($th);
+            }
+        }else{
+            $this->pago($request,$request->token);
         }
+
+
+    }
+    public function revisar_pago_temp(Request $request){
+        $user = $request->user();
+        $temp = TempPayment::where('user_id',$user->id)->first();
+        if($temp){
+            return response()->json([
+                'success' => true,
+                'message' => "Pago encontrado",
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => "Pago no encontrado",
+            ]);
+        }
+    }
+
+    private function pago($request,$token){
         $price = floatval($request->monto);
-        if(substr($request->token,0,3) == "tok"){
+        if(substr($token,0,3) == "tok"){
             $pago = \Conekta\Order::create(
                 [
                     "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
                     "currency" => "MXN",
                     "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
-                    "charges" => [["payment_method" => ["type" => "card","token_id" => $request->token]]
+                    "charges" => [["payment_method" => ["type" => "card","token_id" => $token]]
                     ]
                 ]
                 );
-        }else if(substr($request->token,0,3) == "cus"){
+        }else if(substr($token,0,3) == "cus"){
             $pago = \Conekta\Order::create([
                 'currency' => 'MXN',
-                'customer_info' => ['customer_id' => $request->token],
+                'customer_info' => ['customer_id' => $token],
                 "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
                 'charges' => [['payment_method' => ['type' => 'default']]]
             ]);
@@ -220,22 +242,6 @@ class PaymentController extends ApiController
         }else{
             return response()->json([
                 'success' => false
-            ]);
-        }
-
-    }
-    public function revisar_pago_temp(Request $request){
-        $user = $request->user();
-        $temp = TempPayment::where('user_id',$user->id)->first();
-        if($temp){
-            return response()->json([
-                'success' => true,
-                'message' => "Pago encontrado",
-            ]);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => "Pago no encontrado",
             ]);
         }
     }
@@ -277,6 +283,7 @@ class PaymentController extends ApiController
         $cus->name = $customer->name;
         $cus->idToken = $customer->parent_id;
         $cus->save();
+        return $cus;
     }
 
 }
