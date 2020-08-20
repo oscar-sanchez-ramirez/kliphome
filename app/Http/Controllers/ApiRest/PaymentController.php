@@ -159,6 +159,30 @@ class PaymentController extends ApiController
     public function conekta_nuevo_pago(Request $request){
         Log::notice($request->all());
         $user = User::where('id',$request->user_id)->first();
+        if($request->guardar_tarjeta == 'true'){
+            // try {
+                Log::notice("entrando a guardar tarjeta");
+                $customer = \Conekta\Customer::create(
+                    [
+                      'name'  => $user->name.' '.$user->lastName,
+                      'email' => $user->email,
+                      'phone' => $user->phone,
+                      'payment_sources' => [
+                        [
+                          'token_id' => $request->token,
+                          'type' => "card"
+                        ]
+                      ]
+                    ]
+                  );
+                  Log::notice($customer);
+                $this->guardar_usuario($customer["payment_sources"][0],$user->id);
+
+
+            // } catch (\Throwable $th) {
+            //     Log::error($th);
+            // }
+        }
         $price = floatval($request->monto);
         if(substr($request->token,0,3) == "tok"){
             $pago = \Conekta\Order::create(
@@ -187,32 +211,7 @@ class PaymentController extends ApiController
             $payment->state = true;
             $payment->price = $price;
             $payment->save();
-            if($request->guardar_tarjeta == 'true'){
-                // try {
-                    Log::notice("entrando a guardar tarjeta");
-                    $user = User::where('id',$request->user_id)->first();
-                    Log::notice($user);
-                    $customer = \Conekta\Customer::create(
-                        [
-                          'name'  => $user->name.' '.$user->lastName,
-                          'email' => $user->email,
-                          'phone' => $user->phone,
-                          'payment_sources' => [
-                            [
-                              'token_id' => $request->token,
-                              'type' => "card"
-                            ]
-                          ]
-                        ]
-                      );
-                      Log::notice($customer);
-                    $this->guardar_usuario($customer["payment_sources"][0],$user->id);
 
-
-                // } catch (\Throwable $th) {
-                //     Log::error($th);
-                // }
-            }
             // dispatch(new NotifyNewOrder($order->id,$user->email));
             return response()->json([
                 'success' => true,
