@@ -345,12 +345,16 @@ class FixerManController extends ApiController
                             $payment->save();
                         } catch (\Throwable $th) {
                             Log::error($th);
-                            $payment = new Payment;
-                            $payment->order_id = $request->order_id;
-                            $payment->description = "PROPINA POR SERVICIO";
-                            $payment->state = false;
-                            $payment->price = $price;
-                            $payment->save();
+                            return response()->json([
+                                'success' => false,
+                                'message' => "No se pudo realizar la calificación por un error en tu tarjeta"
+                            ]);
+                            // $payment = new Payment;
+                            // $payment->order_id = $request->order_id;
+                            // $payment->description = "PROPINA POR SERVICIO";
+                            // $payment->state = false;
+                            // $payment->price = $price;
+                            // $payment->save();
                         }
                     }
                     $qualify = new Qualify;
@@ -418,12 +422,17 @@ class FixerManController extends ApiController
                         $payment->save();
                     } catch (\Throwable $th) {
                         Log::error($th);
-                        $payment = new Payment;
-                        $payment->order_id = $request->order_id;
-                        $payment->description = "PROPINA POR SERVICIO";
-                        $payment->state = false;
-                        $payment->price = $price;
-                        $payment->save();
+                        return response()->json([
+                            'success' => false,
+                            'message' => "No se pudo realizar la calificación por un error en tu tarjeta"
+                        ]);
+                        // $payment = new Payment;
+                        // $payment->order_id = $request->order_id;
+                        // $payment->description = "PROPINA POR SERVICIO";
+                        // $payment->state = false;
+                        // $payment->price = $price;
+                        // $payment->save();
+
                     }
                 }
                 $qualify = new Qualify;
