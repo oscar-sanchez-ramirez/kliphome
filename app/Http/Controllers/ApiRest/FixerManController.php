@@ -272,6 +272,9 @@ class FixerManController extends ApiController
                             }
                         } catch (\Throwable $th) {
                             Log::error($th);
+                            return response()->json([
+                                'success' => false
+                            ]);
                             // $payment = new Payment;
                             // $payment->order_id = $request->order_id;
                             // $payment->description = "PROPINA POR SERVICIO";
