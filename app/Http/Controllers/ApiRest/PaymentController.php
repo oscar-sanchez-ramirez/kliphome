@@ -185,7 +185,10 @@ class PaymentController extends ApiController
         }else{
             $this->pago($request,$request->token,$user);
         }
-
+        return response()->json([
+            'success' => true,
+            'message' => "Pago exitoso",
+        ]);
 
     }
     public function revisar_pago_temp(Request $request){
