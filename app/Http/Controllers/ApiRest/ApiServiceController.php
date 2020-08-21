@@ -72,13 +72,13 @@ class ApiServiceController extends ApiController
             $notifications  = DB::table('notifications')->where('notifiable_id',$user->id)->where('read_at',null)->count();
             if($device == "Android"){
                 $version_app = VersionApp::where('title','CLIENTE')->where('state','Android')->first();
-                $newVersion = str_replace("4.0.","400",($version_app->version));
+                $newVersion = str_replace("4.0.","4000",($version_app->version));
+
                 $version_app->version = $newVersion;
             }else{
                 $version_app = VersionApp::where('title','CLIENTE')->where('state','IOS')->first();
             }
             Log::notice("CLIENTE");
-            Log::notice($user->email);
             Log::notice($version_app);
 
             return response()->json([
