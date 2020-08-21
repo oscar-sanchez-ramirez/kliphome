@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiRest\ApiServiceController;
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +51,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     $needle = "Mac";
     $haystack = $request->header('User-Agent');
-    Log::notice($haystack);
     if (strpos($haystack, $needle) !== false){
         $needle = "iPhone";
     } else{
