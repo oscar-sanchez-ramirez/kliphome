@@ -50,7 +50,7 @@ Route::post('nueva-conversacion/{id}/{nombres}/{id_anuncio}','Chat\ConversationC
 Route::get('notificaciones','HomeController@notificaciones');
 Route::post('markasread','HomeController@markasread');
 Route::get('testOrder', 'ApiRest\OrderController@testOrder');
-// Route::get('test','Admin\NotificationsProvider@test');
+Route::get('test','WebController@test@test');
 
 Route::get('check','Admin\OrderController@check');
 Route::get('terminos-y-condiciones','WebController@terminos');
