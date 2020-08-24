@@ -120,6 +120,8 @@ class RegisterController extends ApiController
         }
 
         $check = ResetPassword::where('email',$num)->count();
+        Log::notice("CHECK");
+        Log::notice($check);
         if($check <= 3){
             $number = random_int(1000, 9999);
             $new_code = new ResetPassword;
