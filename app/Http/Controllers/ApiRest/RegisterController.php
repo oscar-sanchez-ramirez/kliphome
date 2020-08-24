@@ -114,10 +114,10 @@ class RegisterController extends ApiController
 
     public function verifyphone(Request $request){
         $num = (string)($request->phone);
-        $sub = substr($num,0,1);
-        if($sub != "+"){
-            $num = '+'.$num;
-        }
+        // $sub = substr($num,0,1);
+        // if($sub != "+"){
+        //     $num = '+'.$num;
+        // }
 
         $check = ResetPassword::where('email',$num)->count();
         Log::notice("CHECK");
