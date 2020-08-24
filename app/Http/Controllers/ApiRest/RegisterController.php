@@ -118,22 +118,30 @@ class RegisterController extends ApiController
         if($sub != "+"){
             $num = '+'.$num;
         }
-        $number = random_int(1000, 9999);
-        $new_code = new ResetPassword;
-        $new_code->email = $num;
-        $new_code->code = $number;
-        $new_code->save();
 
-        Nexmo::message()->send([
-            'to'   => $num,
-            'from' => 'KlipHome',
-            'text' => $number.' es tu numero de verificacion para KlipHome',
-            'type' => 'text'
-        ]);
-        return response()->json([
-            'success' => true,
-            'message' => "Código enviado a".$num." es ".$number
-        ]);
+        $check = ResetPassword::where('email',$num)->count();
+        if($check <= 3){
+            $number = random_int(1000, 9999);
+            $new_code = new ResetPassword;
+            $new_code->email = $num;
+            $new_code->code = $number;
+            $new_code->save();
+
+            Nexmo::message()->send([
+                'to'   => $num,
+                'from' => 'KlipHome',
+                'text' => $number.' es tu numero de verificacion para KlipHome',
+                'type' => 'text'
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => "Código enviado a".$num." es ".$number
+            ]);
+        }else{
+            return response()->json([
+                'success' => false
+            ]);
+        }
     }
 
     public function verifyemail(Request $request){
