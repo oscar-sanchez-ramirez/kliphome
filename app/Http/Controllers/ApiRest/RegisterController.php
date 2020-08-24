@@ -114,7 +114,10 @@ class RegisterController extends ApiController
 
     public function verifyphone(Request $request){
         $num = (string)($request->phone);
-
+        $sub = substr($num,0,1);
+        if($sub != "+"){
+            $num = '+'.$num;
+        }
         $number = random_int(1000, 9999);
         $new_code = new ResetPassword;
         $new_code->email = $num;
