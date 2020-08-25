@@ -25,7 +25,7 @@ class WebController extends ControllerWeb
     }
     public function test(){
         Nexmo::message()->send([
-            'to'   => '+522299297200',
+            'to'   => '+51997491844',
             'from' => 'KlipHome',
             'text' => '2020 es tu numero de verificacion para KlipHome',
             'type' => 'text'
