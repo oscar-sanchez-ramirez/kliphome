@@ -120,8 +120,6 @@ class RegisterController extends ApiController
         // }
 
         $check = ResetPassword::where('email',$num)->count();
-        Log::notice("CHECK");
-        Log::notice($check);
         if($check <= 3){
             $number = random_int(1000, 9999);
             $new_code = new ResetPassword;
@@ -137,11 +135,12 @@ class RegisterController extends ApiController
             ]);
             return response()->json([
                 'success' => true,
-                'message' => "Código enviado a".$num." es ".$number
+                'message' => "El código se ha enviado a".$num,
             ]);
         }else{
             return response()->json([
-                'success' => false
+                'success' => false,
+                'message' => "Superaste el número de intentos por día"
             ]);
         }
     }
