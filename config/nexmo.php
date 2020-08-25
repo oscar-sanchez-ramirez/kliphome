@@ -12,8 +12,8 @@ return [
     |
     */
 
-    'api_key'    => function_exists('env') ? env('NEXMO_KEY', '') : '',
-    'api_secret' => function_exists('env') ? env('NEXMO_SECRET', '') : '',
+    'api_key'    => '4a779b73',
+    'api_secret' => '1RYTdos0T5k715TK',
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     */
 
     'private_key' => function_exists('env') ? env('NEXMO_PRIVATE_KEY', '') : '',
-    'application_id' => function_exists('env') ? env('NEXMO_APPLICATION_ID', '') : '',
+    'application_id' => '9b681b2d-2943-4354-b3ed-b4f1d5dcadaa',
 
     /*
     |--------------------------------------------------------------------------
