@@ -33,7 +33,7 @@ Route::prefix('ordenes')->group(base_path('routes/ordenes.php'));
 Route::prefix('tecnicos')->group(base_path('routes/tecnicos.php'));
 Route::prefix('cupones')->group(base_path('routes/cupones.php'));
 Route::prefix('pagos')->group(base_path('routes/pagos.php'));
-
+Route::prefix('notificaciones-push')->group(base_path('routes/notificaciones-push.php'));
 // AJAX REQUEST
 Route::get('getSubcategory/{category_id}','SubCategoryController@getSubcategory');
 Route::get('getSubservice/{service_id}','SubServiceController@getSubservice');

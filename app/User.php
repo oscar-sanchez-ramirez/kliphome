@@ -17,6 +17,7 @@ use App\Notifications\FixerMan\NotifyNewOrder;
 use App\Notifications\FixerMan\ServiceQualified;
 use App\Notifications\FixerMan\NewMessageNotification;
 use App\Notifications\FixerMan\OrderCancelled;
+use App\Notifications\FixerMan\NotificationPush;
 
 class User extends Authenticatable
 {
@@ -91,6 +92,9 @@ class User extends Authenticatable
                 break;
             case 'OrderCancelled':
                 $this->notify(new OrderCancelled($data));
+                break;
+            case 'NotificationPush':
+                $this->notify(new NotificationPush($data));
                 break;
             default:
                 # code...

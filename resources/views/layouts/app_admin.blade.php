@@ -93,6 +93,10 @@
                             <a href="{{ url('') }}/pagos">
                                 <i class="fas fa-usd"></i>Pagos</a>
                         </li>
+                        <li class="{{ active_menu('notificaciones-push')}} {{ active_menu('notificaciones-push/*')}}">
+                            <a href="{{ url('') }}/notificaciones-push">
+                                <i class="fa fa-bell"></i>Notificaciones Push</a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -149,6 +153,10 @@
                         <li class="{{ active_menu('pagos')}} {{ active_menu('pagos/*')}}">
                             <a href="{{ url('') }}/pagos">
                                 <i class="fas fa-usd"></i>Pagos</a>
+                        </li>
+                        <li class="{{ active_menu('notificaciones-push')}} {{ active_menu('notificaciones-push/*')}}">
+                            <a href="{{ url('') }}/notificaciones-push">
+                                <i class="fa fa-bell"></i>Notificaciones Push</a>
                         </li>
                     </ul>
                 </nav>
