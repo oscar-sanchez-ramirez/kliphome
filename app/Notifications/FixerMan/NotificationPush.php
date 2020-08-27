@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications\Fixerman;
+namespace App\Notifications\FixerMan;
 
 use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\OneSignalMessage;
@@ -19,8 +19,8 @@ class NotificationPush extends Notification
      */
     public function __construct($tecnico)
     {
+        //
         $this->tecnico = $tecnico;
-        Log::notice($this->tecnico);
     }
 
     /**
@@ -54,11 +54,11 @@ class NotificationPush extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toOneSignal($notifiable)
     {
-        Log::notice($this->tecnico);
+        Log::notice($this->tecnico->mensajeFixerMan);
         return OneSignalMessage::create()
-            ->subject($this->tecnico->mensajeFixerMan)
-            ->body("")->setData("type",'App\\Notifications\\Database\\NotificationPush')->setData('data',$this->tecnico);
+        ->subject($this->tecnico->mensajeFixerMan)
+        ->body("Gracias por usar KlipHome")->setData("type",'App\\Notifications\\Database\\ApproveFixerMan')->setData('data',$this->tecnico);
     }
 }

@@ -52,7 +52,7 @@ class NoticationPush implements ShouldQueue
             foreach ($tecnicos as $key => $tecnico) {
                 $tecnico["mensajeFixerMan"] = $this->mensaje;
                 $tecnico->sendNotification($tecnico->email,'NotificationPush',$tecnico);
-                $cliente->notify(new NotificationNoticationPush($tecnico,$this->mensaje));
+                $tecnico->notify(new NotificationNoticationPush($tecnico,$this->mensaje));
             }
 
         }
