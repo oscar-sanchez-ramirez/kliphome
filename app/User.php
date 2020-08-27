@@ -6,7 +6,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Support\Facades\Log;
 use DB;
 use App\Notifications\FixerMan\OneDayLeftNotification;
 use App\Notifications\FixerMan\FourHoursLeftNotification;

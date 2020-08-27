@@ -6,7 +6,6 @@ use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\OneSignalMessage;
 use NotificationChannels\OneSignal\OneSignalWebButton;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
 
 class NotificationPush extends Notification
 {
@@ -56,7 +55,6 @@ class NotificationPush extends Notification
      */
     public function toOneSignal($notifiable)
     {
-        Log::notice($this->tecnico->mensajeFixerMan);
         return OneSignalMessage::create()
         ->subject($this->tecnico->mensajeFixerMan)
         ->body("Gracias por usar KlipHome")->setData("type",'App\\Notifications\\Database\\ApproveFixerMan')->setData('data',$this->tecnico);

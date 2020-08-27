@@ -45,7 +45,6 @@ class NotificationsPush extends Controller
         $nueva->message = $request->title;
         $nueva->audience = $request->clientes.' '.$request->tecnicos;
         $nueva->save();
-        Log::notice($request->all());
         dispatch(new JobNoticationPush($request->clientes,$request->tecnicos,$request->title));
         return Redirect::action('Admin\NotificationsPush@index');
     }
