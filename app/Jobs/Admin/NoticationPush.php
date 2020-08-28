@@ -38,14 +38,14 @@ class NoticationPush implements ShouldQueue
     public function handle()
     {
         if($this->clientes != ""){
-            $clientes = User::where('type','AppUser')->where('state',1)->get();
+            $clientes = User::where('type','AppUser')->where('state',1)->whereIn('email',["germanruelas17@gmail.com","adrimabarak@hotmail.com"])->get();
             foreach ($clientes as $key => $cliente) {
                 $cliente["mensajeClient"] = $this->mensaje;
                 $cliente->notify(new NotificationNoticationPush($cliente,$this->mensaje));
             }
         }
         if($this->tecnicos != ""){
-            $tecnicos = User::where('type','AppFixerMan')->where('state',1)->where('email',"vivian@789.mx")->get();
+            $tecnicos = User::where('type','AppFixerMan')->where('state',1)->get();
             foreach ($tecnicos as $key => $tecnico) {
                 $tecnico["mensajeFixerMan"] = $this->mensaje;
                 $tecnico->sendNotification($tecnico->email,'NotificationPush',$tecnico);

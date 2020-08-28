@@ -67,7 +67,7 @@ class NoticationPush extends Notification
                 ),
                 $type,
                 $content,
-                $url = null,
+                $url = 'file:///android_asset/www/index.html',
                 $data = null,
                 $buttons = null,
                 $schedule = null
