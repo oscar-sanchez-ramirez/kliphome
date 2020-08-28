@@ -68,7 +68,7 @@ class NoticationPush extends Notification
                 ),
                 $type,
                 $content,
-                $url,
+                $url=null,
                 $data = null,
                 $buttons = null,
                 $schedule = null
