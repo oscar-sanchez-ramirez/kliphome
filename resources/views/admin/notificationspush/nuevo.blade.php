@@ -3,7 +3,7 @@
     <div class="main-content">
         <div class="section__content section__content--p30">
             <div class="card">
-                <div class="card-header">Creación de nueva Categoría</div>
+                <div class="card-header">Crear Notificación</div>
                 <div class="card-body">
 
                     <form action="{{ url('') }}/notificaciones-push" method="POST">
@@ -30,7 +30,7 @@
                         </div>
                         <div>
                             <button id="payment-button" type="submit" class="btn btn-lg btn-info">
-                                <span id="payment-button-amount">Guardar Servicio</span>
+                                <span id="payment-button-amount">Enviar Notificación</span>
                             </button>
                         </div>
                     </form>
