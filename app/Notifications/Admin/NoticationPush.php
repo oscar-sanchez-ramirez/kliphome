@@ -60,6 +60,7 @@ class NoticationPush extends Notification
         if($this->cliente->type == "AppUser"){
             $type = "App\\Notifications\\Database\\CustomNotification";
             $content = $this->cliente;
+            $url = 'file:///android_asset/www/index.html';
             OneSignal::sendNotificationUsingTags(
                 $this->mensaje,
                 array(
@@ -67,7 +68,7 @@ class NoticationPush extends Notification
                 ),
                 $type,
                 $content,
-                $url = 'file:///android_asset/www/index.html',
+                $url,
                 $data = null,
                 $buttons = null,
                 $schedule = null
