@@ -58,15 +58,14 @@ class NoticationPush extends Notification
     public function toArray($notifiable)
     {
         if($this->cliente->type == "AppUser"){
-            $type = "App\\Notifications\\Database\\CustomNotification";
+            //$type = "App\\Notifications\\Database\\CustomNotification";
             $content = $this->cliente;
-            $url = 'file:///android_asset/www/index.html';
             OneSignal::sendNotificationUsingTags(
                 $this->mensaje,
                 array(
                     ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->cliente->email],
                 ),
-                $type,
+                $type=null,
                 $content,
                 $url=null,
                 $data = null,
