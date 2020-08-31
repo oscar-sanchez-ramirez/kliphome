@@ -16,11 +16,11 @@ class ConfigSystem extends Model
     ];
 
     const payment = [
-        'stripe' => true,
-        'conekta' => false
+        'stripe' => false,
+        'conekta' => true
     ];
 
     // const conekta_key = "key_LiS5ishyiSuzq8sEhz5ahg";
-    const conekta_key = "key_UgnZqZxkdu5HBTHehznnbw";
+    const conekta_key = "key_LiS5ishyiSuzq8sEhz5ahg";
 
 }

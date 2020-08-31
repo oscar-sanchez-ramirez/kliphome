@@ -91,11 +91,9 @@
         </div>
         <div id="success_view">
             <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
-            {{-- <h3 class="center">Tu pago se realizó</h3> --}}
         </div>
     <script>
-        Conekta.setPublicKey("key_MvrJiyzi84Axatiaxdr4PAQ");
-        //key_bMzSndbgbJXebqbJW9vrrRA
+        Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
         var conektaSuccessResponseHandler= function(token){
             console.log(token);
             jsSave(token.id);

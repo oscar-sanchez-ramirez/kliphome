@@ -32,7 +32,7 @@ class OrderController extends ApiController
     }
     public function create(Request $request){
         $user = $request->user();
-        if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
+        // if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             if($request->visit_price == "quotation"){
                 if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
                 //No necesita pago de visita (Telefono, Computadora)
@@ -100,7 +100,7 @@ class OrderController extends ApiController
                             $this->guardar_pago($order->id,$temp->code_payment,$request->visit_price,"VISITA");
                             $temp->delete();
                         }
-                        // dispatch(new NotifyNewOrder($order->id,$user->email));
+                        dispatch(new NotifyNewOrder($order->id,$user->email));
                         return response()->json([
                             'success' => true,
                             'message' => "La orden de servicio se realizó con éxito",
@@ -189,93 +189,94 @@ class OrderController extends ApiController
                     }
                 }
             }
-        }else{
-            try {
-                if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
-                if($request->visit_price == "quotation"){
-                    //No necesita pago de visita (Telefono, Computadora)
+        // }
+        // else{
+        //     try {
+        //         if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
+        //         if($request->visit_price == "quotation"){
+        //             //No necesita pago de visita (Telefono, Computadora)
 
-                    $order = new Order;
-                    $order->user_id = $user->id;
-                    $order->selected_id = $request->selected_id;
-                    $order->type_service = $request->type_service;
-                    $order->service_date = $request->service_date;
-                    $order->service_description = $request->service_description;
-                    $order->service_image = $image;
-                    $order->address = $request->address;
-                    $order->price = 'quotation';
-                    $order->visit_price = $request->visit_price;
-                    $order->pre_coupon = $request->coupon;
-                    $order->save();
-                    dispatch(new NotifyNewOrder($order->id,$user->email));
-                    return response()->json([
-                        'success' => true,
-                        'message' => "La orden de servicio se realizó con éxito",
-                        'order' => $order
-                    ]);
-                }else{
-                    $price = floatval($request->price);
-                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
-                    if(substr($request->token,0,3) == "cus"){
-                        $pago = Stripe\Charge::create ([
-                            "amount" => $request->visit_price * 100,
-                            "currency" => "MXN",
-                            "customer" => $request->token,
-                            "description" => "Pago por visita"
-                        ]);
-                    }else{
-                        $pago = Stripe\Charge::create ([
-                            "amount" => $request->visit_price * 100,
-                            "currency" => "MXN",
-                            "source" => $request->token,
-                            "description" => "Pago por visita"
-                        ]);
-                    }
-                    Log::notice($request->all());
-                    if($pago->paid == true){
-                        $order = new Order;
-                        $order->user_id = $user->id;
-                        $order->selected_id = $request->selected_id;
-                        $order->type_service = $request->type_service;
-                        $order->service_date = $request->service_date;
-                        $order->service_description = $request->service_description;
-                        $order->service_image = $image;
-                        $order->address = $request->address;
-                        $order->price = 'quotation';
-                        $order->visit_price = $request->visit_price;
-                        $order->pre_coupon = $request->coupon;
-                        $order->save();
-                        $order->order_id = $order->id;
+        //             $order = new Order;
+        //             $order->user_id = $user->id;
+        //             $order->selected_id = $request->selected_id;
+        //             $order->type_service = $request->type_service;
+        //             $order->service_date = $request->service_date;
+        //             $order->service_description = $request->service_description;
+        //             $order->service_image = $image;
+        //             $order->address = $request->address;
+        //             $order->price = 'quotation';
+        //             $order->visit_price = $request->visit_price;
+        //             $order->pre_coupon = $request->coupon;
+        //             $order->save();
+        //             dispatch(new NotifyNewOrder($order->id,$user->email));
+        //             return response()->json([
+        //                 'success' => true,
+        //                 'message' => "La orden de servicio se realizó con éxito",
+        //                 'order' => $order
+        //             ]);
+        //         }else{
+        //             $price = floatval($request->price);
+        //             Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+        //             if(substr($request->token,0,3) == "cus"){
+        //                 $pago = Stripe\Charge::create ([
+        //                     "amount" => $request->visit_price * 100,
+        //                     "currency" => "MXN",
+        //                     "customer" => $request->token,
+        //                     "description" => "Pago por visita"
+        //                 ]);
+        //             }else{
+        //                 $pago = Stripe\Charge::create ([
+        //                     "amount" => $request->visit_price * 100,
+        //                     "currency" => "MXN",
+        //                     "source" => $request->token,
+        //                     "description" => "Pago por visita"
+        //                 ]);
+        //             }
+        //             Log::notice($request->all());
+        //             if($pago->paid == true){
+        //                 $order = new Order;
+        //                 $order->user_id = $user->id;
+        //                 $order->selected_id = $request->selected_id;
+        //                 $order->type_service = $request->type_service;
+        //                 $order->service_date = $request->service_date;
+        //                 $order->service_description = $request->service_description;
+        //                 $order->service_image = $image;
+        //                 $order->address = $request->address;
+        //                 $order->price = 'quotation';
+        //                 $order->visit_price = $request->visit_price;
+        //                 $order->pre_coupon = $request->coupon;
+        //                 $order->save();
+        //                 $order->order_id = $order->id;
 
-                        $payment = new Payment;
-                        $payment->order_id = $order->id;
-                        $payment->code_payment = $pago->id;
-                        $payment->description = "VISITA";
-                        $payment->state = true;
-                        $payment->price = $request->visit_price;
-                        $payment->save();
-                        // $user = $request->user();
-                        dispatch(new NotifyNewOrder($order->id,$user->email));
-                        return response()->json([
-                            'success' => true,
-                            'message' => "La orden de servicio se realizó con éxito",
-                            'order' => $order
-                        ]);
-                    }else{
-                        return response()->json([
-                            'success' => false
-                        ]);
-                    }
-                }
+        //                 $payment = new Payment;
+        //                 $payment->order_id = $order->id;
+        //                 $payment->code_payment = $pago->id;
+        //                 $payment->description = "VISITA";
+        //                 $payment->state = true;
+        //                 $payment->price = $request->visit_price;
+        //                 $payment->save();
+        //                 // $user = $request->user();
+        //                 dispatch(new NotifyNewOrder($order->id,$user->email));
+        //                 return response()->json([
+        //                     'success' => true,
+        //                     'message' => "La orden de servicio se realizó con éxito",
+        //                     'order' => $order
+        //                 ]);
+        //             }else{
+        //                 return response()->json([
+        //                     'success' => false
+        //                 ]);
+        //             }
+        //         }
 
-            } catch (\Throwable $th) {
-                Log::error($th);
-                return response()->json([
-                    'success' => false,
-                    'message' => "La orden de servicio no se realizó"
-                ]);
-            }
-        }
+        //     } catch (\Throwable $th) {
+        //         Log::error($th);
+        //         return response()->json([
+        //             'success' => false,
+        //             'message' => "La orden de servicio no se realizó"
+        //         ]);
+        //     }
+        // }
     }
 
     public function save_extra_info_for_order(Request $request, $id){
@@ -347,7 +348,7 @@ class OrderController extends ApiController
 
     public function approve(Request $request){
         $user = $request->user();
-        if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
+        // if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             $tipo_de_pago = ConfigSystem::payment;
             if($tipo_de_pago["conekta"] == true){
 
@@ -398,7 +399,7 @@ class OrderController extends ApiController
                         $this->validar_cupon($request,$order,$price);
                         $temp->delete();
                     }
-
+                    dispatch(new MailOrderAccepted($request->order_id));
                     return response()->json([
                         'success' => true,
                         'message' => "La orden de servicio se aprovó",
@@ -528,116 +529,116 @@ class OrderController extends ApiController
                 ]);
             }
 
-        }else{
+        // }else{
             // try {
-                Log::notice("NUEVO PAGO DE COTIZACION");
-                Log::notice($request->all());
-                $order = Order::where('id',$request->order_id)->first();
-                $quotation = Quotation::where('id',$request->id_quotation)->first();
-                $price = floatval($request->price);
-                Log::notice($price);
-                try {
-                    Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
-                    if(substr($request->stripeToken,0,3) == "cus"){
-                        $pago = Stripe\Charge::create ([
-                            "amount" => $price * 100,
-                            "currency" => "MXN",
-                            "customer" => $request->stripeToken,
-                            "description" => "Payment of order ".$request->order_id
-                        ]);
-                    }else{
-                        $pago = Stripe\Charge::create ([
-                            "amount" => $price * 100,
-                            "currency" => "MXN",
-                            "source" => $request->stripeToken,
-                            "description" => "Payment of order ".$request->order_id
-                        ]);
-                    }
-                    Log::notice($pago);
-                    $payment = new Payment;
-                    $payment->order_id = $request->order_id;
-                    $payment->description = "PAGO POR SERVICIO";
-                    $payment->code_payment = $pago->id;
-                    $payment->state = true;
-                    $payment->price = $price;
-                    $payment->save();
-                    Quotation::where('id',$request->id_quotation)->update([
-                        'state' => 1
-                    ]);
-                } catch (\Throwable $th) {
-                    Log::error($th);
-                    $payment = new Payment;
-                    $payment->order_id = $request->order_id;
-                    $payment->description = "PAGO POR SERVICIO";
-                    $payment->state = false;
-                    $payment->price = $price;
-                    $payment->save();
-                    return response()->json([
-                        'success' => false
-                    ]);
-                }
-                $check_quotations = Quotation::where('order_id',$request->order_id)->count();
-                if($check_quotations == 1){
-                    Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
-                        'price' => $price
-                    ]);
-                    if($order->visit_price == "quotation"){
-                        Order::where('id',$request->order_id)->update([
-                            'visit_price' => 0
-                        ]);
-                    }
-                }
+                // Log::notice("NUEVO PAGO DE COTIZACION");
+                // Log::notice($request->all());
+                // $order = Order::where('id',$request->order_id)->first();
+                // $quotation = Quotation::where('id',$request->id_quotation)->first();
+                // $price = floatval($request->price);
+                // Log::notice($price);
+                // try {
+                //     Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                //     if(substr($request->stripeToken,0,3) == "cus"){
+                //         $pago = Stripe\Charge::create ([
+                //             "amount" => $price * 100,
+                //             "currency" => "MXN",
+                //             "customer" => $request->stripeToken,
+                //             "description" => "Payment of order ".$request->order_id
+                //         ]);
+                //     }else{
+                //         $pago = Stripe\Charge::create ([
+                //             "amount" => $price * 100,
+                //             "currency" => "MXN",
+                //             "source" => $request->stripeToken,
+                //             "description" => "Payment of order ".$request->order_id
+                //         ]);
+                //     }
+                //     Log::notice($pago);
+                //     $payment = new Payment;
+                //     $payment->order_id = $request->order_id;
+                //     $payment->description = "PAGO POR SERVICIO";
+                //     $payment->code_payment = $pago->id;
+                //     $payment->state = true;
+                //     $payment->price = $price;
+                //     $payment->save();
+                //     Quotation::where('id',$request->id_quotation)->update([
+                //         'state' => 1
+                //     ]);
+                // } catch (\Throwable $th) {
+                //     Log::error($th);
+                //     $payment = new Payment;
+                //     $payment->order_id = $request->order_id;
+                //     $payment->description = "PAGO POR SERVICIO";
+                //     $payment->state = false;
+                //     $payment->price = $price;
+                //     $payment->save();
+                //     return response()->json([
+                //         'success' => false
+                //     ]);
+                // }
+                // $check_quotations = Quotation::where('order_id',$request->order_id)->count();
+                // if($check_quotations == 1){
+                //     Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
+                //         'price' => $price
+                //     ]);
+                //     if($order->visit_price == "quotation"){
+                //         Order::where('id',$request->order_id)->update([
+                //             'visit_price' => 0
+                //         ]);
+                //     }
+                // }
 
-                if($order->pre_coupon != ""){
-                    if($request->type_coupon == "pre_coupon"){
-                        $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
-                        if($admin_coupon){
-                            AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
-                                'user_id' => $request->user_id,
-                                'is_charged' => "Y",
-                                'order_id' => $request->order_id
-                            ]);
-                        }else{
-                            $new_used_coupon = Coupon::where('code',$request->coupon)->where('is_charged','N')->first();
-                            if(empty($new_used_coupon)){
-                                $coupon = new Coupon;
-                                $coupon->code = $order->pre_coupon;
-                                $coupon->user_id = $request->user_id;
-                                $coupon->order_id = $request->order_id;
-                                $coupon->save();
-                            }else{
-                                Coupon::where('code',$request->coupon)->where('is_charged',"N")->update([
-                                    'is_charged' => "Y",
-                                    'order_id_charged' => $request->order_id
-                                ]);
-                            }
-                        }
+                // if($order->pre_coupon != ""){
+                //     if($request->type_coupon == "pre_coupon"){
+                //         $admin_coupon = AdminCoupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                //         if($admin_coupon){
+                //             AdminCoupon::where('code',$order->pre_coupon)->where('is_charged','N')->update([
+                //                 'user_id' => $request->user_id,
+                //                 'is_charged' => "Y",
+                //                 'order_id' => $request->order_id
+                //             ]);
+                //         }else{
+                //             $new_used_coupon = Coupon::where('code',$request->coupon)->where('is_charged','N')->first();
+                //             if(empty($new_used_coupon)){
+                //                 $coupon = new Coupon;
+                //                 $coupon->code = $order->pre_coupon;
+                //                 $coupon->user_id = $request->user_id;
+                //                 $coupon->order_id = $request->order_id;
+                //                 $coupon->save();
+                //             }else{
+                //                 Coupon::where('code',$request->coupon)->where('is_charged',"N")->update([
+                //                     'is_charged' => "Y",
+                //                     'order_id_charged' => $request->order_id
+                //                 ]);
+                //             }
+                //         }
 
-                    }elseif($request->type_coupon == "Coupon"){
-                        Coupon::where('code',$order->coupon)->update([
-                            'is_charged' => "Y",
-                            'order_id_charged' => $request->order_id
-                        ]);
-                    }else{
-                        if($request->coupon != ""){
-                            $coupon = new Coupon;
-                            $coupon->code = $order->pre_coupon;
-                            $coupon->user_id = $request->user_id;
-                            $coupon->order_id = $request->order_id;
-                            $coupon->save();
-                        }
-                    }
-                }
-                dispatch(new MailOrderAccepted($request->order_id));
-                return response()->json([
-                    'success' => true
-                ]);
+                //     }elseif($request->type_coupon == "Coupon"){
+                //         Coupon::where('code',$order->coupon)->update([
+                //             'is_charged' => "Y",
+                //             'order_id_charged' => $request->order_id
+                //         ]);
+                //     }else{
+                //         if($request->coupon != ""){
+                //             $coupon = new Coupon;
+                //             $coupon->code = $order->pre_coupon;
+                //             $coupon->user_id = $request->user_id;
+                //             $coupon->order_id = $request->order_id;
+                //             $coupon->save();
+                //         }
+                //     }
+                // }
+                // dispatch(new MailOrderAccepted($request->order_id));
+                // return response()->json([
+                //     'success' => true
+                // ]);
             // } catch (\Throwable $th) {
             //     return response()->json([
             //         'success' => false
             //     ]);
             // }
-        }
+        // }
     }
 
     public function check_active_coupon(Request $request){
@@ -723,7 +724,6 @@ class OrderController extends ApiController
         ]);
 
         $check_quotations = Quotation::where('order_id',$request->order_id)->count();
-        Log::notice($check_quotations);
         if($check_quotations == 1){
             Order::where('id',$request->order_id)->where('user_id',$request->user_id)->update([
                 'price' => $price
@@ -775,6 +775,6 @@ class OrderController extends ApiController
                 }
             }
         }
-        dispatch(new MailOrderAccepted($request->order_id));
+        // dispatch(new MailOrderAccepted($request->order_id));
     }
 }
