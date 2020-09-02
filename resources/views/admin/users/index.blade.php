@@ -1,5 +1,19 @@
 @extends('layouts.app_admin')
 @section('content')
+@php
+    $titles = [];
+    $count_of_orders = [];
+    $colors = [];
+    $datasets = [];
+    $total_usuarios = 0;
+    for ($i=0; $i < count($monthlysales); $i++) {
+        $titles[$i] = $monthlysales[$i]["x"];
+        $random = rand(0, 255);
+        $colors[$i] = "rgba(".$random.",5,0, 0.3)";
+        $count_of_orders[$i] = $monthlysales[$i]["y"];
+        $total_usuarios = $total_usuarios + $monthlysales[$i]["y"];
+    }
+@endphp
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="row">
@@ -37,10 +51,12 @@
                                     </div>
                                 </div>
                                 <div class="row no-gutters">
+                                    <div class="total"></div>
                                     <div class="percent-chart">
+                                        <h3>Total:{{ $total_usuarios }}</h3>
                                         <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
                                     </div>
-                                    <h3 class="title-2 tm-b-5">Registro de usuarios por mes</h3>
+                                    {{-- <h3 class="title-2 tm-b-5">Registro de usuarios por mes</h3>
                                         <table id="dtBasicExample"  cellspacing="0" width="100%" class="table table-top-countries">
                                             <tbody>
                                                 @for($i=0; $i < count($monthlysales); $i++)
@@ -51,7 +67,7 @@
                                                 @endfor
 
                                             </tbody>
-                                        </table>
+                                        </table> --}}
                                 </div>
                             </div>
                         </div>
@@ -98,24 +114,8 @@
         </div>
     </div>
 </div>
-@php
-    $titles = [];
-    $count_of_orders = [];
-    $colors = [];
-    $datasets = [];
-    for ($i=0; $i < count($monthlysales); $i++) {
-        $titles[$i] = $monthlysales[$i]["x"];
-        $random = rand(0, 255);
-        $colors[$i] = "rgba(".$random.",5,0, 0.3)";
-        $count_of_orders[$i] = $monthlysales[$i]["y"];
-    }
-@endphp
 
 <script>
-$(document).ready(function () {
-    $('#dtBasicExample').DataTable();
-    $('.dataTables_length').addClass('bs-select');
-});
 function filter(){
     var url = window.location.origin+"/clientes";
     var start = $('#start').val();
@@ -130,12 +130,15 @@ function filter(){
                 var titles = [];
                 var count_of_orders = [];
                 var colors = [];
+                var total = 0;
                 for (let index = 0; index < data.length; index++) {
                     titles[index] = data[index]["x"];
                     count_of_orders[index] = data[index]["y"];
+                    total = total + data[index]["y"];
                     random = Math.floor(Math.random() * (255 - 0 + 1)) + 0;
                     colors[index] = "rgba("+random+",5,0, 0.3)";
                 }
+                $(".total").html('<h3>Total:'+total+'</h3>');
                 $(".percent-chart").html('');
                 $(".percent-chart").html('<canvas id="myChart2"></canvas>');
                 open_chart(titles,count_of_orders,colors);

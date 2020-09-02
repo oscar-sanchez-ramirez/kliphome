@@ -99,13 +99,11 @@
     <script>
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
         var conektaSuccessResponseHandler= function(token){
-            console.log(token);
             jsSave(token.id);
         };
 
         var conektaErrorResponseHandler =function(response){
             var $form=$("#card-form");
-            console.log(response);
             alert(response.message_to_purchaser);
         }
 
