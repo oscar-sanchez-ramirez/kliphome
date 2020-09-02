@@ -40,6 +40,18 @@
                                     <div class="percent-chart">
                                         <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
                                     </div>
+                                    <h3 class="title-2 tm-b-5">Registro de usuarios por mes</h3>
+                                        <table id="dtBasicExample"  cellspacing="0" width="100%" class="table table-top-countries">
+                                            <tbody>
+                                                @for($i=0; $i < count($monthlysales); $i++)
+                                                    <tr>
+                                                        <td>{{ $monthlysales[$i]["x"] }}</td>
+                                                        <td class="text-right">{{ $monthlysales[$i]["y"] }}</td>
+                                                    </tr>
+                                                @endfor
+
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +110,12 @@
         $count_of_orders[$i] = $monthlysales[$i]["y"];
     }
 @endphp
+
 <script>
+$(document).ready(function () {
+    $('#dtBasicExample').DataTable();
+    $('.dataTables_length').addClass('bs-select');
+});
 function filter(){
     var url = window.location.origin+"/clientes";
     var start = $('#start').val();
@@ -142,6 +159,7 @@ function show_chart(){
     open_chart(@json($titles),@json($count_of_orders),@json($colors))
 }
 function open_chart(titles,count_of_orders,colors){
+    console.log(count_of_orders);
     myChart2 = document.getElementById('myChart2'),
     context2 = myChart2.getContext('2d');
     window.addEventListener('resize', resizeCanvas, false);
