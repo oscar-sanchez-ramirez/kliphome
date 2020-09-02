@@ -93,7 +93,8 @@
         </div>
         <div id="success_view">
             <img src="{{ url('') }}/images/tick.png" height="128px" width="128px" alt="">
-            <h3 class="center">Tu pago se relizó</h3>
+            <h3 class="center">Tu pago se realizó</h3>
+            <h5>Cierra este modulo para poder validar tu orden</h5>
         </div>
     <script>
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
