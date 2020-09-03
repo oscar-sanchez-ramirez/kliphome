@@ -358,7 +358,6 @@ class OrderController extends ApiController
                 $order = Order::where('id',$request->order_id)->first();
                 $quotation = Quotation::where('id',$request->id_quotation)->first();
                 $price = floatval($request->price);
-                Log::notice($price);
                 try{
                     $price = floatval($request->price);
                     if(substr($request->stripeToken,0,3) == "tok"){

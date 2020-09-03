@@ -54,7 +54,6 @@ class ApiServiceController extends ApiController
             }else{
                 $version_app = VersionApp::where('title','TECNICO')->where('state','IOS')->first();
             }
-            Log::notice($user->email);
             return response()->json([
                 'user' => $user,
                 'delegations' => $delegation,
@@ -75,7 +74,6 @@ class ApiServiceController extends ApiController
             }else{
                 $version_app = VersionApp::where('title','CLIENTE')->where('state','IOS')->first();
             }
-            Log::notice($user->email);
             return response()->json([
                 'user' => $user,
                 'address' => $address,
