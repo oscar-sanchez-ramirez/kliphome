@@ -161,6 +161,7 @@ class PaymentController extends ApiController
             $user = User::where('id',$request->user_id)->first();
             if($request->guardar_tarjeta == 'true'){
                 try {
+                    set_time_limit(1);
                     $customer = \Conekta\Customer::create(
                         [
                           'name'  => $user->name.' '.$user->lastName,
@@ -216,6 +217,13 @@ class PaymentController extends ApiController
 
     private function pago($request,$token,$user){
         $price = floatval($request->monto);
+        $revisar_pagos_previos = TempPayment::where('user_id',$request->user_id)->where('price',$price)->first();
+        if($revisar_pagos_previos){
+            return response()->json([
+                'success' => true,
+                'message' => "Pago exitoso",
+            ]);
+        }
         if(substr($token,0,3) == "tok"){
             $pago = \Conekta\Order::create(
                 [
@@ -235,6 +243,8 @@ class PaymentController extends ApiController
             ]);
         }
         if($pago->payment_status == "paid"){
+
+
             $payment = new TempPayment;
             $payment->user_id = $request->user_id;
             $payment->code_payment = $pago->id;

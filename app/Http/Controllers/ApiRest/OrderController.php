@@ -429,7 +429,6 @@ class OrderController extends ApiController
                 $order = Order::where('id',$request->order_id)->first();
                 $quotation = Quotation::where('id',$request->id_quotation)->first();
                 $price = floatval($request->price);
-                Log::notice($price);
                 try {
                     Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
                     if(substr($request->stripeToken,0,3) == "cus"){

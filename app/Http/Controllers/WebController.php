@@ -24,12 +24,14 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        Nexmo::message()->send([
-            'to'   => '+51997491844',
-            'from' => 'KlipHome',
-            'text' => '2020 es tu numero de verificacion para KlipHome',
-            'type' => 'text'
-        ]);
-        return "si";
+        set_time_limit(5);
+        return 2;
+        // Nexmo::message()->send([
+        //     'to'   => '+51997491844',
+        //     'from' => 'KlipHome',
+        //     'text' => '2020 es tu numero de verificacion para KlipHome',
+        //     'type' => 'text'
+        // ]);
+        // return "si";
     }
 }
