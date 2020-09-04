@@ -14,6 +14,9 @@
         $total_usuarios = $total_usuarios + $monthlysales[$i]["y"];
     }
 @endphp
+<link href="{{ url('') }}/vendor/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+{{-- <link href="{{ url('') }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"> --}}
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="row">
@@ -34,20 +37,35 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <input id="start" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
-                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                            <label for="dtp_input2" class="col-md-2 control-label">Inicio</label>
+                                            <div class="input-group date form_date" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="start" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <input id="end" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
-                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                            <label for="dtp_input2" class="col-md-2 control-label">Fin</label>
+                                            <div class="input-group date form_date2" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="end" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
-                                            <i class="fa fa-dot-circle-o"></i> Filtrar
-                                        </button>
+                                        <div class="form-group">
+                                            <label for="dtp_input2" class="col-md-2 control-label"></label>
+
+                                            <div class="input-group">
+                                                <br>
+                                                <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
+                                                    <i class="fa fa-dot-circle-o"></i> Filtrar
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row no-gutters">
@@ -56,18 +74,6 @@
                                         <h3>Total:{{ $total_usuarios }}</h3>
                                         <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
                                     </div>
-                                    {{-- <h3 class="title-2 tm-b-5">Registro de usuarios por mes</h3>
-                                        <table id="dtBasicExample"  cellspacing="0" width="100%" class="table table-top-countries">
-                                            <tbody>
-                                                @for($i=0; $i < count($monthlysales); $i++)
-                                                    <tr>
-                                                        <td>{{ $monthlysales[$i]["x"] }}</td>
-                                                        <td class="text-right">{{ $monthlysales[$i]["y"] }}</td>
-                                                    </tr>
-                                                @endfor
-
-                                            </tbody>
-                                        </table> --}}
                                 </div>
                             </div>
                         </div>
@@ -120,6 +126,8 @@ function filter(){
     var url = window.location.origin+"/clientes";
     var start = $('#start').val();
     var end = $('#end').val();
+    console.log(start);
+    console.log(end);
     let val = validate(start,end);
     if(val){
         $.ajax({
@@ -127,6 +135,7 @@ function filter(){
             url: url,
             data: { 'start': start,'end': end, 'chart_query':"chart_query" },
             success: function(data) {
+                console.log(data);
                 var titles = [];
                 var count_of_orders = [];
                 var colors = [];
@@ -191,6 +200,37 @@ function validate(start,end){
         return false
     }return true;
 }
+
+
 </script>
 @include('layouts.modals.subCategoryModal');
+<script type="text/javascript" src="{{ url('') }}/vendor/jquery/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+<script>
+    $( document ).ready(function() {
+        $.noConflict();
+        $('.form_date').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        $('.form_date2').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+    });
+</script>
 @endsection

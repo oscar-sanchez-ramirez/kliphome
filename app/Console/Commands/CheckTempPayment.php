@@ -40,8 +40,9 @@ class CheckTempPayment extends Command
     public function handle()
     {
         $pagos = TempPayment::all();
-        if($pagos){
-            $usuarios = ["germanruelas17@gmail.com","adrimabarak@hotmail.com"];
+        if(count($pagos) > 0){
+            // ,"adrimabarak@hotmail.com"
+            $usuarios = ["germanruelas17@gmail.com"];
             for ($i=0; $i < count($usuarios); $i++) {
                 # code...
                 $html = array('alert'=>'Hay pagos temporales sin asignar a una orden');
