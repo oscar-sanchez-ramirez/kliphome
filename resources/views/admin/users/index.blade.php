@@ -15,8 +15,6 @@
     }
 @endphp
 <link href="{{ url('') }}/vendor/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-
-{{-- <link href="{{ url('') }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"> --}}
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="row">
@@ -126,8 +124,6 @@ function filter(){
     var url = window.location.origin+"/clientes";
     var start = $('#start').val();
     var end = $('#end').val();
-    console.log(start);
-    console.log(end);
     let val = validate(start,end);
     if(val){
         $.ajax({
@@ -135,7 +131,6 @@ function filter(){
             url: url,
             data: { 'start': start,'end': end, 'chart_query':"chart_query" },
             success: function(data) {
-                console.log(data);
                 var titles = [];
                 var count_of_orders = [];
                 var colors = [];

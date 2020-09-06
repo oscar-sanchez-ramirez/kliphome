@@ -24,7 +24,8 @@ class PaymentController extends Controller
             if($request->filled('chart_query')){
                 $payments = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
                 ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')
-                ->whereMonth('p.created_at', '>=', intval(substr($request->start,-2,2)))->whereMonth('p.created_at', '<=', intval(substr($request->end,-2,2)))->whereYear('p.created_at','>=',intval(substr($request->start,-7,4)))->whereYear('p.created_at','<=',intval(substr($request->end,-7,4)))
+                ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
+                // ->whereMonth('p.created_at', '>=', intval(substr($request->start,-2,2)))->whereMonth('p.created_at', '<=', intval(substr($request->end,-2,2)))->whereYear('p.created_at','>=',intval(substr($request->start,-7,4)))->whereYear('p.created_at','<=',intval(substr($request->end,-7,4)))
                 ->orderBy('p.id',"DESC")->distinct('p.id')->get();
                 $stats = $this->stats($payments);
                 return $stats;
@@ -42,8 +43,8 @@ class PaymentController extends Controller
     }
 
     private function stats($payments){
-        $visita = ['label'=>"Visita + Mano de Obra",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
-        $servicio = ['label'=>"Costo por Servicio",'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
+        $visita = ['label'=>"Visita + Mano de Obra",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
+        $servicio = ['label'=>"Costo por Servicio",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
         for ($i=0; $i < count($payments); $i++) {
             if($payments[$i]->state == 1){
                 $date = $this->position($payments[$i]->created_at);
@@ -54,9 +55,13 @@ class PaymentController extends Controller
                     }else{
                         if(array_search($date,array_column($visita["data"],"x"))){
                             $index = array_search($date,array_column($visita["data"],"x"));
-                            $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->price);
+                            if(intval($visita["data"][$index]["y"]) != null){
+                                $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->price);
+                            }
                         }else{
-                            array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->price,'order_id'=>$payments[$i]->order_id));
+                            if($payments[$i]->price != null && $payments[$i]->price != "0"){
+                                array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->price,'order_id'=>$payments[$i]->order_id));
+                            }
                         }
                     }
                 }else if($payments[$i]->description == "PAGO POR SERVICIO"){
@@ -69,7 +74,7 @@ class PaymentController extends Controller
                             $index = array_search($date,array_column($servicio["data"],"x"));
                             $servicio["data"][$index]["y"] = intval($servicio["data"][$index]["y"]) + intval($payments[$i]->price);
                         }else{
-                            if($payments[$i]->service_price != "0"){
+                            if($payments[$i]->service_price != "0" && $payments[$i]->service_price != null){
                                 array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
                             }
                         }
@@ -77,14 +82,21 @@ class PaymentController extends Controller
                     //Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
                     if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
                         $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
+
                         $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->workforce);
                     }else{
-                        if($payments[$i]->workforce != "0"){
+                        if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
                             array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
                         }
                     }
                 }
             }
+        }
+        for ($i=0; $i < count($visita["data"]); $i++) {
+            $visita["total"] += intval($visita["data"][$i]["y"]);
+        }
+        for ($i=0; $i < count($servicio["data"]); $i++) {
+            $servicio["total"] += intval($servicio["data"][$i]["y"]);
         }
         return array($visita,$servicio);
     }

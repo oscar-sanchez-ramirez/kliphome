@@ -1,5 +1,20 @@
 @extends('layouts.app_admin')
 @section('content')
+@php
+    $titles = [];
+    $count_of_orders = [];
+    $colors = [];
+    $datasets = [];
+    $total_usuarios = 0;
+    for ($i=0; $i < count($monthlysales); $i++) {
+        $titles[$i] = $monthlysales[$i]["x"];
+        $random = rand(0, 255);
+        $colors[$i] = "rgba(".$random.",5,0, 0.3)";
+        $count_of_orders[$i] = $monthlysales[$i]["y"];
+        $total_usuarios = $total_usuarios + $monthlysales[$i]["y"];
+    }
+@endphp
+<link href="{{ url('') }}/vendor/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="row">
@@ -19,27 +34,45 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <input id="start" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
-                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                            <label for="dtp_input2" class="col-md-2 control-label">Inicio</label>
+                                            <div class="input-group date form_date" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="start" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <input id="end" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
-                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                            <label for="dtp_input2" class="col-md-2 control-label">Fin</label>
+                                            <div class="input-group date form_date2" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="end" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
-                                            <i class="fa fa-dot-circle-o"></i> Filtrar
-                                        </button>
+                                        <div class="form-group">
+                                            <label for="dtp_input2" class="col-md-2 control-label"></label>
+
+                                            <div class="input-group">
+                                                <br>
+                                                <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
+                                                    <i class="fa fa-dot-circle-o"></i> Filtrar
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row no-gutters">
+                                    <div class="total"></div>
                                     <div class="percent-chart">
-                                        <canvas id="myChart2"></canvas>
+                                        <h3>Total:{{ $total_usuarios }}</h3>
+                                        <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -102,23 +135,13 @@
         </div>
     </div>
 </div>
-@php
-    $titles = [];
-    $count_of_orders = [];
-    $colors = [];
-    $datasets = [];
-    for ($i=0; $i < count($monthlysales); $i++) {
-        $titles[$i] = $monthlysales[$i]["x"];
-        $random = rand(0, 255);
-        $colors[$i] = "rgba(".$random.",5,0, 0.3)";
-        $count_of_orders[$i] = $monthlysales[$i]["y"];
-    }
-@endphp
+
 <script>
 function filter(){
     var url = window.location.origin+"/tecnicos";
     var start = $('#start').val();
     var end = $('#end').val();
+    var total = 0;
     let val = validate(start,end);
     if(val){
         $.ajax({
@@ -132,9 +155,11 @@ function filter(){
                 for (let index = 0; index < data.length; index++) {
                     titles[index] = data[index]["x"];
                     count_of_orders[index] = data[index]["y"];
+                    total = total + data[index]["y"];
                     random = Math.floor(Math.random() * (255 - 0 + 1)) + 0;
                     colors[index] = "rgba("+random+",5,0, 0.3)";
                 }
+                $(".total").html('<h3>Total:'+total+'</h3>');
                 $(".percent-chart").html('');
                 $(".percent-chart").html('<canvas id="myChart2"></canvas>');
                 open_chart(titles,count_of_orders,colors);
@@ -187,4 +212,33 @@ function validate(start,end){
 }
 </script>
 @include('layouts.modals.fixermanModal');
+<script type="text/javascript" src="{{ url('') }}/vendor/jquery/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+<script>
+    $( document ).ready(function() {
+        $.noConflict();
+        $('.form_date').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        $('.form_date2').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+    });
+</script>
 @endsection

@@ -1,5 +1,6 @@
 @extends('layouts.app_admin')
 @section('content')
+<link href="{{ url('') }}/vendor/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 <style>
     .au-btn--small{
         padding: 0 2px !important;
@@ -32,23 +33,38 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <input id="start" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
-                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                            <label for="dtp_input2" class="col-md-2 control-label">Inicio</label>
+                                            <div class="input-group date form_date" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="start" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <input id="end" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" placeholder="YYYY / MM">
-                                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                            <label for="dtp_input2" class="col-md-2 control-label">Fin</label>
+                                            <div class="input-group date form_date2" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="end" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
-                                            <i class="fa fa-dot-circle-o"></i> Filtrar
-                                        </button>
+                                        <div class="form-group">
+                                            <label for="dtp_input2" class="col-md-2 control-label"></label>
+                                            <div class="input-group">
+                                                <br>
+                                                <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
+                                                    <i class="fa fa-dot-circle-o"></i> Filtrar
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row no-gutters">
+                                    <div class="total"></div>
                                     <div class="percent-chart">
                                         <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
                                     </div>
@@ -158,7 +174,7 @@ function filter(){
                 open_chart(data);
             },
             error: function(data) {
-                alert("Fecha incorrecta, verifique sus datos");
+                alert("Fecha incorrecta, verifique sus datos1");
             }
         });
     }else{
@@ -183,12 +199,13 @@ function open_chart(dates){
     resizeCanvas();
 
     for (let index = 0; index < dates.length; index++) {
-            if(dates[index]["data"] != null){
-                dates[index]["data"].sort(function(a,b){
-                    return a.x > b.x;
-                })
-            }
+        if(dates[index]["data"] != null){
+            dates[index]["data"].sort(function(a,b){
+                return a.x > b.x;
+            })
         }
+    }
+    $(".total").html('<h3>Total Visita + Mano de Obra:$'+dates[0]["total"]+'</h3><h3>Total Pago por Servicio: $'+dates[1]["total"]+'</h3>');
     var ctx = document.getElementById('myChart2').getContext('2d');
     var myChart = new Chart(ctx, {
             type: 'line',
@@ -224,10 +241,39 @@ function resizeCanvas() {
     myChart2.height = window.innerHeight;
 }
 function validate(start,end){
-    if(start.length < 7 || end.length < 7){
+    if(start.length < 10 || end.length < 10){
         return false
     }return true;
 }
 </script>
 @include('layouts.modals.subCategoryModal');
+<script type="text/javascript" src="{{ url('') }}/vendor/jquery/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+<script>
+    $( document ).ready(function() {
+        $.noConflict();
+        $('.form_date').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        $('.form_date2').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+    });
+</script>
 @endsection
