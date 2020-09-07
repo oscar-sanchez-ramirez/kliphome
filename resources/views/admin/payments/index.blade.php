@@ -205,7 +205,7 @@ function open_chart(dates){
             })
         }
     }
-    $(".total").html('<h3>Total Visita + Mano de Obra:$'+dates[0]["total"]+'</h3><h3>Total Pago por Servicio: $'+dates[1]["total"]+'</h3>');
+    $(".total").html('<h3>Total Visita + Mano de Obra:$'+dates[0]["total"]+'</h3><h3>Total Pago por Material: $'+dates[1]["total"]+'</h3>');
     var ctx = document.getElementById('myChart2').getContext('2d');
     var myChart = new Chart(ctx, {
             type: 'line',
