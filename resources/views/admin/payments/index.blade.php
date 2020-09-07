@@ -28,7 +28,7 @@
                     <div class="col-lg-12">
                         <div class="au-card chart-percent-card">
                             <div class="au-card-inner">
-                                <h3 class="title-2 tm-b-5">Registro de usuarios por mes</h3>
+                                <h3 class="title-2 tm-b-5">Registro de pagos por fecha</h3>
                                 <br>
                                 <div class="row">
                                     <div class="col-lg-4">
