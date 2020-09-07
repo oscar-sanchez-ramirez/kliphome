@@ -104,7 +104,7 @@
                                                 <div class="card card-body">
                                                     <div class="card card-body">
                                                         <div class="row">
-                                                            <b>Precio por servicio:  </b>{{ $payment->service_price }}
+                                                            <b>Precio por material:  </b>{{ $payment->service_price }}
                                                         </div>
                                                         <div class="row">
                                                             <b>Mano de Obra:  </b>{{ $payment->workforce }}

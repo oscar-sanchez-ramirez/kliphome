@@ -44,7 +44,7 @@ class PaymentController extends Controller
 
     private function stats($payments){
         $visita = ['label'=>"Visita + Mano de Obra",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
-        $servicio = ['label'=>"Costo por Servicio",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
+        $servicio = ['label'=>"Costo por Material",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
         for ($i=0; $i < count($payments); $i++) {
             if($payments[$i]->state == 1){
                 $date = $this->position($payments[$i]->created_at);
