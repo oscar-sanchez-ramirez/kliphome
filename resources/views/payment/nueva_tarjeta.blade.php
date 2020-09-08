@@ -76,7 +76,7 @@
                         <br>
                         <div class="row">
                                 <div class="col-md-12" style="text-align:center;">
-                                   <button class="btn btn-success btn-lg">
+                                   <button class="btn btn-success btn-lg" id="btnSubmit">
                                        <i class="fa fa-check-square"></i> GUARDAR
                                    </button>
                                 </div>
@@ -114,6 +114,7 @@
         })
 
         function jsSave(token_id){
+            $("#btnSubmit").attr("disabled", true);
             let params=$("#card-form").serialize();
             console.log(params);
             var url = "{{ url('') }}/api/conekta";
@@ -132,6 +133,7 @@
                     }
                 },
                 error: function(data) {
+                    $("#btnSubmit").attr("disabled", false);
                     alert("Error al guardar tarjeta, Porfavor intente de nuevo");
                 }
             });
