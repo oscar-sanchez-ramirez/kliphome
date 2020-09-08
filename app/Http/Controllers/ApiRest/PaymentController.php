@@ -163,9 +163,8 @@ class PaymentController extends ApiController
             $user = User::where('id',$request->user_id)->first();
             if($request->guardar_tarjeta == 'true'){
                 try {
-                    Log::notice("NUEVO PAGO DE ".$request->type);
-                Log::notice($request->all());
-                    set_time_limit(1);
+                    Log::notice("1:NUEVO PAGO DE ".$request->type);
+                    Log::notice($request->all());
                     $customer = \Conekta\Customer::create(
                         [
                           'name'  => $user->name.' '.$user->lastName,
@@ -189,6 +188,8 @@ class PaymentController extends ApiController
                     ]);
                 }
             }else{
+                Log::notice("2:NUEVO PAGO DE ".$request->type);
+                Log::notice($request->all());
                 $this->pago($request,$request->token,$user);
             }
             return response()->json([
@@ -221,52 +222,50 @@ class PaymentController extends ApiController
 
     private function pago($request,$token,$user){
         $price = floatval($request->monto);
+        sleep(2);
         $revisar_pagos_previos = TempPayment::where('user_id',$request->user_id)->where('price',$price)->first();
         if($revisar_pagos_previos){
             return response()->json([
                 'success' => true,
                 'message' => "Pago exitoso",
             ]);
-        }
-        if(substr($token,0,3) == "tok"){
-            $pago = \Conekta\Order::create(
-                [
-                    "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-                    "currency" => "MXN",
-                    "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
-                    "charges" => [["payment_method" => ["type" => "card","token_id" => $token]]
-                    ]
-                ]
-                );
-        }else if(substr($token,0,3) == "cus"){
-            $pago = \Conekta\Order::create([
-                'currency' => 'MXN',
-                'customer_info' => ['customer_id' => $token],
-                "line_items" => [["name" => "PAGO POR VISITA","unit_price" => $price * 100,"quantity" => 1]],
-                'charges' => [['payment_method' => ['type' => 'default']]]
-            ]);
-        }
-        if($pago->payment_status == "paid"){
-
-
-            $payment = new TempPayment;
-            $payment->user_id = $request->user_id;
-            $payment->code_payment = $pago->id;
-            // $payment->code_payment = "abc";
-            $payment->description = $request->type;
-            $payment->state = true;
-            $payment->price = $price;
-            $payment->save();
-
-            // dispatch(new NotifyNewOrder($order->id,$user->email));
-            return response()->json([
-                'success' => true,
-                'message' => "Pago exitoso",
-            ]);
         }else{
-            return response()->json([
-                'success' => false
-            ]);
+            if(substr($token,0,3) == "tok"){
+                $pago = \Conekta\Order::create(
+                    [
+                        "line_items" => [["name" => "PAGO POR ".$request->type,"unit_price" => $price * 100,"quantity" => 1]],
+                        "currency" => "MXN",
+                        "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                        "charges" => [["payment_method" => ["type" => "card","token_id" => $token]]
+                        ]
+                    ]
+                    );
+            }else if(substr($token,0,3) == "cus"){
+                $pago = \Conekta\Order::create([
+                    'currency' => 'MXN',
+                    'customer_info' => ['customer_id' => $token],
+                    "line_items" => [["name" => "PAGO POR ".$request->type,"unit_price" => $price * 100,"quantity" => 1]],
+                    'charges' => [['payment_method' => ['type' => 'default']]]
+                ]);
+            }
+            if($pago->payment_status == "paid"){
+                $payment = new TempPayment;
+                $payment->user_id = $request->user_id;
+                $payment->code_payment = $pago->id;
+                $payment->description = $request->type;
+                $payment->state = true;
+                $payment->price = $price;
+                $payment->save();
+                // dispatch(new NotifyNewOrder($order->id,$user->email));
+                return response()->json([
+                    'success' => true,
+                    'message' => "Pago exitoso",
+                ]);
+            }else{
+                return response()->json([
+                    'success' => false
+                ]);
+            }
         }
     }
 

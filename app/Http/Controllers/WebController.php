@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Nexmo;
 use App\User;
 use Carbon\Carbon;
+use App\TempPayment;
 use Illuminate\Http\Request;
 
 class WebController extends ControllerWeb
@@ -24,8 +25,16 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        set_time_limit(5);
-        return 2;
+        // sleep(1);
+        $revisar_pagos_previos = TempPayment::where('user_id',733)->where('price',"50")->first();
+        if($revisar_pagos_previos){
+            return response()->json([
+                'success' => true,
+                'message' => "Pago exitoso",
+            ]);
+        }else{
+            return 2;
+        }
         // Nexmo::message()->send([
         //     'to'   => '+51997491844',
         //     'from' => 'KlipHome',
