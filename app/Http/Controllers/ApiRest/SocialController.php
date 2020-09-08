@@ -95,7 +95,6 @@ class SocialController extends ApiController
         return view('payment.conekta');
 
         $user = $request->user();
-        Log::notice($request->all());
         $customer = \Conekta\Customer::create(
             [
               'name'  => $user->name.' '.$user->lastName,

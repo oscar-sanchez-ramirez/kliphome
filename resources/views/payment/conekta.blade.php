@@ -78,7 +78,7 @@
                         <br>
                         <div class="row">
                                 <div class="col-md-12" style="text-align:center;">
-                                   <button class="btn btn-success btn-lg">
+                                   <button class="btn btn-success btn-lg" id="btnSubmit">
                                        <i class="fa fa-check-square"></i> Pagar
                                    </button>
                                 </div>
@@ -87,8 +87,6 @@
 
                     </div>
                 </div>
-
-
             </form>
         </div>
         <div id="success_view">
@@ -117,6 +115,7 @@
         })
 
         function jsSave(token_id){
+            $("#btnSubmit").attr("disabled", true);
             let params=$("#card-form").serialize();
             let guardar_tarjeta = $('#guardar_tarjeta').is(":checked");
             var url = "{{ url('') }}/api/conekta_nuevo_pago";
@@ -131,9 +130,11 @@
                         $("#form_view").hide();
                     }else{
                         alert("Error al realizar pago, Porfavor intente de nuevo");
+                        $("#btnSubmit").attr("disabled", false);
                     }
                 },
                 error: function(data) {
+                    $("#btnSubmit").attr("disabled", false);
                     alert("Error al realizar pago, Porfavor intente de nuevo");
                 }
             });
