@@ -23,10 +23,64 @@
             <div class="col-md-12">
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
+                        <div class="table-data__tool">
+                                <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green">
+                                    <i class="zmdi zmdi-chart"></i></button>
+                        </div>
                     </div>
                     <div class="table-data__tool-right">
-                        <a href="{{ url('') }}/ordenes/nueva-orden" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                        <a href="{{ url('') }}/ordenes/nueva-orden" class="au-btn au-btn-icon au-btn--green">
                             Nueva Orden</a>
+                    </div>
+                </div>
+                <div class="chart" style="display: none">
+                    <div class="col-lg-12">
+                        <div class="au-card chart-percent-card">
+                            <div class="au-card-inner">
+                                <h3 class="title-2 tm-b-5">Registro de órdenes por fecha</h3>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="dtp_input2" class="col-md-2 control-label">Inicio</label>
+                                            <div class="input-group date form_date" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="start" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="dtp_input2" class="col-md-2 control-label">Fin</label>
+                                            <div class="input-group date form_date2" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control cc-exp" size="16" id="end" type="text" >
+                                                <span class="input-group-addon" ><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="dtp_input2" value="" /><br/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="dtp_input2" class="col-md-2 control-label"></label>
+
+                                            <div class="input-group">
+                                                <br>
+                                                <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
+                                                    <i class="fa fa-dot-circle-o"></i> Filtrar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="total"></div>
+                                    <div class="percent-chart">
+                                        <canvas id="myChart2" style="height: 100%; width:100%"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
@@ -73,7 +127,7 @@
                                                 @if($orden->state == "CANCELLED")
                                                     <span class="status--denied">Cancelado</span>
                                                 @else
-                                                    <a class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
+                                                    <a class="au-btn au-btn--green" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
                                                         Revisar
                                                     </a>
                                                 @endif
@@ -92,5 +146,38 @@
         </div>
     </div>
 </div>
+<script>
+    function show_chart(){
+        if ($('.table-responsive').is(":visible") === false) {
+            $(".table-responsive").show();
+            $(".chart").hide();
+        } else {
+            $(".table-responsive").hide();
+            $(".chart").show();
+        }
+        {{--  //open_chart(@json($titles),@json($count_of_orders),@json($colors))  --}}
+    }
+    function open_chart(titles,count_of_orders,colors){
+        console.log(count_of_orders);
+        myChart2 = document.getElementById('myChart2'),
+        context2 = myChart2.getContext('2d');
+        window.addEventListener('resize', resizeCanvas, false);
+        resizeCanvas();
+
+        var ctx = document.getElementById('myChart2').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: titles,
+                    datasets: [{
+                        label: '# de órdenes',
+                        data: count_of_orders,
+                        backgroundColor: colors,
+                        borderWidth: 1
+                    }]
+                }
+            });
+    }
+</script>
 @include('layouts.modals.subCategoryModal');
 @endsection

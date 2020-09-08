@@ -19,20 +19,20 @@ class MessageController extends ApiController
     }
 
     public function indexRest($userId,$contactId,$conversationId,$page){
-        Log::notice($page);
+        // Log::notice($page);
         if($page == 0)
         {
             $page = 1;
         }
         $page = (5 * $page)-5;
-        Log::notice($page);
+        // Log::notice($page);
 
 
         $messages = DB::table('conversations as c')
         ->join('messages as m','c.id','m.conversation_id')
         ->select('m.id',DB::raw('IF(m.from_id='.$userId.',1,0) as written_by_me'),'m.created_at','m.content','m.type')
         ->where('c.id',$conversationId)->offset($page)->take(5)->orderBy('m.id',"DESC")->get();
-        Log::notice($messages);
+        // Log::notice($messages);
         return $messages;
     }
 

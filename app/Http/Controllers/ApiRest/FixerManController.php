@@ -239,7 +239,7 @@ class FixerManController extends ApiController
         // if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             $tipo_de_pago = ConfigSystem::payment;
             if($tipo_de_pago["conekta"] == true){
-                Log::notice($request->all());
+                // Log::notice($request->all());
                 try {
                     $price = floatval($request->price);
                     if($price != 0){
@@ -310,7 +310,7 @@ class FixerManController extends ApiController
                     ]);
                 }
             }else{
-                Log::notice($request->all());
+                // Log::notice($request->all());
                 try {
                     $user = User::where('id',$request->fixerman_id)->first();
                     $price = floatval($request->price);

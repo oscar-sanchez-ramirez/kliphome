@@ -24,6 +24,8 @@ class PaymentController extends ApiController
         $user = $request->user();
         Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
         try {
+            Log::notice("CREANDO NUEVO CUSTOMER");
+            Log::notice($request->all());
             $random = str_random(5);
             $customer = Stripe\Customer::create ([
                 "source" => $request->stripeToken,
@@ -161,6 +163,8 @@ class PaymentController extends ApiController
             $user = User::where('id',$request->user_id)->first();
             if($request->guardar_tarjeta == 'true'){
                 try {
+                    Log::notice("NUEVO PAGO DE ".$request->type);
+                Log::notice($request->all());
                     set_time_limit(1);
                     $customer = \Conekta\Customer::create(
                         [
