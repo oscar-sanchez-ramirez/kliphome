@@ -95,26 +95,26 @@
     <script>
         Conekta.setPublicKey("key_bMzSndbgbJXebqbJW9vrrRA");
         var conektaSuccessResponseHandler= function(token){
-            console.log(token);
             jsSave(token.id);
         };
 
         var conektaErrorResponseHandler =function(response){
             var $form=$("#card-form");
-            console.log(response);
+            $("#btnSubmit").attr("disabled", false);
+            alert(response.message_to_purchaser);
         }
 
         $(document).ready(function(){
             $("#card-form").submit(function(e){
                 e.preventDefault();
                 var $form=$("#card-form");
+                $("#btnSubmit").attr("disabled", true);
                 Conekta.Token.create($form,conektaSuccessResponseHandler,conektaErrorResponseHandler);
             })
 
         })
 
         function jsSave(token_id){
-            $("#btnSubmit").attr("disabled", true);
             let params=$("#card-form").serialize();
             var url = "{{ url('') }}/api/conekta";
             $.ajax({
@@ -128,6 +128,7 @@
                         $("#form_view").hide();
                     }else{
                         alert("Error al guardar tarjeta, Porfavor intente de nuevo");
+                        $("#btnSubmit").attr("disabled", false);
                     }
                 },
                 error: function(data) {

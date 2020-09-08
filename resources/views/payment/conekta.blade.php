@@ -101,6 +101,7 @@
         };
 
         var conektaErrorResponseHandler =function(response){
+            $("#btnSubmit").attr("disabled", false);
             var $form=$("#card-form");
             alert(response.message_to_purchaser);
         }
@@ -109,13 +110,14 @@
             $("#card-form").submit(function(e){
                 e.preventDefault();
                 var $form=$("#card-form");
+                $("#btnSubmit").attr("disabled", true);
                 Conekta.Token.create($form,conektaSuccessResponseHandler,conektaErrorResponseHandler);
             })
 
         })
 
         function jsSave(token_id){
-            $("#btnSubmit").attr("disabled", true);
+
             let params=$("#card-form").serialize();
             let guardar_tarjeta = $('#guardar_tarjeta').is(":checked");
             var url = "{{ url('') }}/api/conekta_nuevo_pago";
