@@ -1,5 +1,6 @@
 @extends('layouts.app_admin')
 @section('content')
+<link href="{{ url('') }}/vendor/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 <style>
     .au-btn--small{
         padding: 0 2px !important;
@@ -151,11 +152,52 @@
         if ($('.table-responsive').is(":visible") === false) {
             $(".table-responsive").show();
             $(".chart").hide();
+            console.log(1);
         } else {
             $(".table-responsive").hide();
             $(".chart").show();
+            show_stats();
         }
         {{--  //open_chart(@json($titles),@json($count_of_orders),@json($colors))  --}}
+    }
+    function show_stats(){
+        filter('all');
+    }
+    function filter(estado){
+
+        var start = $('#start').val();
+        var end = $('#end').val();
+        let val = validate(start,end);
+        if(!val && estado != 'all'){
+            alert("Fecha incorrecta, verifique sus datos");
+           return;
+        }
+        var url = window.location.origin+"/ordenes";
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: { 'start': start,'end': end, 'chart_query':estado },
+            success: function(data) {
+                var titles = [];
+                var count_of_orders = [];
+                var colors = [];
+                var total = 0;
+                for (let index = 0; index < data.length; index++) {
+                    titles[index] = data[index]["x"];
+                    count_of_orders[index] = data[index]["y"];
+                    total = total + data[index]["y"];
+                    random = Math.floor(Math.random() * (255 - 0 + 1)) + 0;
+                    colors[index] = "rgba("+random+",5,0, 0.3)";
+                }
+                $(".total").html('<h3>Total:'+total+'</h3>');
+                $(".percent-chart").html('');
+                $(".percent-chart").html('<canvas id="myChart2"></canvas>');
+                open_chart(titles,count_of_orders,colors);
+            },
+            error: function(data) {
+                alert("Fecha incorrecta, verifique sus datos1");
+            }
+        });
     }
     function open_chart(titles,count_of_orders,colors){
         console.log(count_of_orders);
@@ -178,6 +220,44 @@
                 }
             });
     }
+    function validate(start,end){
+        if(start.length < 10 || end.length < 10){
+            return false
+        }return true;
+    }
+    function resizeCanvas() {
+        myChart2.width = window.innerWidth;
+        myChart2.height = window.innerHeight;
+    }
 </script>
 @include('layouts.modals.subCategoryModal');
+<script type="text/javascript" src="{{ url('') }}/vendor/jquery/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url('') }}/vendor/bootstrap/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+<script>
+    $( document ).ready(function() {
+        $.noConflict();
+        $('.form_date').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        $('.form_date2').datetimepicker({
+            language:  'es',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+    });
+</script>
 @endsection

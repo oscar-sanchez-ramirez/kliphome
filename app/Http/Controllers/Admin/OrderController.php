@@ -31,9 +31,36 @@ class OrderController extends Controller
     }
 
     //Show all orders
-    public function index(){
+    public function index(Request $request){
+        if(\request()->ajax()){
+            if($request->chart_query == "all"){
+                $ordenes = $this->cast_date(DB::table('orders')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
+                // ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))
+                ->groupBy('dates')->orderBy('dates','asc')->get());
+                return $ordenes;
+            }else{
+                $ordenes = $this->cast_date(DB::table('orders')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
+                ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))
+                ->groupBy('dates')->orderBy('dates','asc')->get());
+                return $ordenes;
+            }
+        }
         $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','created_at'])->orderBy('id','DESC')->paginate(10);
         return view('admin.orders.index')->with('ordenes',$ordenes);
+    }
+
+    private function cast_date($users){
+        $months = [];
+        for ($i=0; $i < count($users); $i++) {
+            $date = substr($users[$i]->dates,-16,10);
+            if(array_search($date,array_column($months,"x"))){
+                $index = array_search($date,array_column($months,"x"));
+                $months[$index]["y"] = $months[$index]["y"] + $users[$i]->total;
+            }else{
+                array_push($months,array("x" => $date,"y"=>$users[$i]->total));
+            }
+        }
+        return $months;
     }
 
     //Show one order

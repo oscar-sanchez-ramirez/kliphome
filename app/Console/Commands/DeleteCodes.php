@@ -37,6 +37,6 @@ class DeleteCodes extends Command
      */
     public function handle()
     {
-        ResetPassword::all()->delete();
+        ResetPassword::truncate();
     }
 }
