@@ -35,13 +35,12 @@ class OrderController extends Controller
         if(\request()->ajax()){
             if($request->chart_query == "all"){
                 $ordenes = $this->cast_date(DB::table('orders')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
-                // ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))
-                ->groupBy('dates')->orderBy('dates','asc')->get());
+                ->where('state','!=','CANCELLED')->groupBy('dates')->orderBy('dates','asc')->get());
                 return $ordenes;
             }else{
                 $ordenes = $this->cast_date(DB::table('orders')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
                 ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))
-                ->groupBy('dates')->orderBy('dates','asc')->get());
+                ->where('state','!=','CANCELLED')->groupBy('dates')->orderBy('dates','asc')->get());
                 return $ordenes;
             }
         }
