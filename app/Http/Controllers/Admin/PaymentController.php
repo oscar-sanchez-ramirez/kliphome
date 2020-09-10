@@ -25,7 +25,6 @@ class PaymentController extends Controller
                 $payments = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
                 ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')
                 ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
-                // ->whereMonth('p.created_at', '>=', intval(substr($request->start,-2,2)))->whereMonth('p.created_at', '<=', intval(substr($request->end,-2,2)))->whereYear('p.created_at','>=',intval(substr($request->start,-7,4)))->whereYear('p.created_at','<=',intval(substr($request->end,-7,4)))
                 ->orderBy('p.id',"DESC")->distinct('p.id')->get();
                 $stats = $this->stats($payments);
                 return $stats;
@@ -42,7 +41,7 @@ class PaymentController extends Controller
         return view('admin.payments.index',compact('payments','general_percent','stats'));
     }
 
-    private function stats($payments){
+    public function stats($payments){
         $visita = ['label'=>"Visita + Mano de Obra",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
         $servicio = ['label'=>"Costo por Material",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
         for ($i=0; $i < count($payments); $i++) {

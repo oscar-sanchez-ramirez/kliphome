@@ -9,6 +9,7 @@ use App\Payment;
 use App\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\PaymentController;
 
 class HomeController extends Controller
 {
@@ -40,7 +41,8 @@ class HomeController extends Controller
         $ordenes = Order::where('state','!=','CANCELLED')->count();
         $categories = $this->get_count_orders();
         $array_dates = $this->array_dates;
-        $sum_payments = $this->sum_payments;
+        $payment_controller = new PaymentController();
+        $sum_payments = $payment_controller->stats(DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')->orderBy('p.id',"DESC")->distinct('p.id')->get());
         return view('admin.admin',compact('clientes','tecnicos','pagos','ordenes','categories','array_dates','sum_payments'));
     }
 
@@ -84,9 +86,9 @@ class HomeController extends Controller
                 }
             }
         }
-        $this->sum_payments[0] = Payment::where('description','VISITA')->where('state',1)->sum('price');
-        $this->sum_payments[1] = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->select('p.id,q.workforce','q.price as service_price')->distinct('p.id')->sum('q.workforce');
-        $this->sum_payments[2] = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->select('p.id,q.workforce','q.price')->distinct('p.id')->sum('q.price');
+        // $this->sum_payments[0] = Payment::where('description','VISITA')->where('state',1)->sum('price');
+        // $this->sum_payments[1] = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->select('p.id,q.workforce','q.price as service_price')->distinct('p.id')->sum('q.workforce');
+        // $this->sum_payments[2] = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->select('p.id,q.workforce','q.price')->distinct('p.id')->sum('q.price');
         return $categories;
     }
     private function position($date){

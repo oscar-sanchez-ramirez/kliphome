@@ -91,7 +91,7 @@
                                         <i class="zmdi zmdi-money"></i>
                                     </div>
                                     <div class="text">
-                                        <h2>${{ $sum_payments[1] }}</h2>
+                                        <h2>${{ $sum_payments[1]["total"] }}</h2>
                                         <span>Materiales</span>
                                     </div>
                                 </div>
@@ -109,8 +109,8 @@
                                         <i class="zmdi zmdi-money"></i>
                                     </div>
                                     <div class="text">
-                                        <h2>${{ $sum_payments[2] }}</h2>
-                                        <span>Mano de Obra</span>
+                                        <h2>${{ $sum_payments[0]["total"] }}</h2>
+                                        <span>Mano de Obra + Visita</span>
                                     </div>
                                 </div>
                                 <div class="overview-chart">
