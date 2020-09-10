@@ -28,7 +28,7 @@ class PaymentController extends Controller
                     ->join('payments as p','p.order_id','o.id')
                     ->leftJoin('quotations as q','o.id','q.order_id')
                     ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
-                    ->where('p.state',1)->where('p.description','!=','VISITA')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+                    ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
                     foreach ($payments as $key => $pago) {
                         if($pago->quotation_state == 2 || $pago->quotation_state == 0){
                             if($pago->code_payment != "EFECTIVO"){
@@ -44,7 +44,7 @@ class PaymentController extends Controller
                     ->leftJoin('selected_orders as so','o.id','so.order_id')
                     ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
                     ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
-                    ->where('p.state',1)->where('p.description','!=','VISITA')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+                    ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
                     foreach ($payments as $key => $pago) {
                         if($pago->quotation_state == 2 || $pago->quotation_state == 0){
                             if($pago->code_payment != "EFECTIVO"){
