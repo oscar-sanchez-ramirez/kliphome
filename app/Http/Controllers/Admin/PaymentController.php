@@ -20,13 +20,40 @@ class PaymentController extends Controller
     }
 
     public function index(Request $request){
+        $visitas = Payment::where('description','VISITA')->where('state',1)->get();
         if(\request()->ajax()){
             if($request->filled('chart_query')){
-                $payments = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
-                ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')
-                ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
-                ->orderBy('p.id',"DESC")->distinct('p.id')->get();
-                $stats = $this->stats($payments);
+                if($request->chart_query == "all"){
+                    $payments = DB::table('orders as o')
+                    ->join('payments as p','p.order_id','o.id')
+                    ->leftJoin('quotations as q','o.id','q.order_id')
+                    ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
+                    ->where('p.state',1)->where('p.description','!=','VISITA')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+                    foreach ($payments as $key => $pago) {
+                        if($pago->quotation_state == 2 || $pago->quotation_state == 0){
+                            if($pago->code_payment != "EFECTIVO"){
+                                ($payments[$key] = []);
+                            }
+                        }
+                    }
+
+                }else{
+                    $payments = DB::table('orders as o')
+                    ->join('payments as p','p.order_id','o.id')
+                    ->leftJoin('quotations as q','o.id','q.order_id')
+                    ->leftJoin('selected_orders as so','o.id','so.order_id')
+                    ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
+                    ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
+                    ->where('p.state',1)->where('p.description','!=','VISITA')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+                    foreach ($payments as $key => $pago) {
+                        if($pago->quotation_state == 2 || $pago->quotation_state == 0){
+                            if($pago->code_payment != "EFECTIVO"){
+                                ($payments[$key] = []);
+                            }
+                        }
+                    }
+                }
+                $stats = $this->stats($payments,$visitas);
                 return $stats;
             }else{
                 $payments = Payment::where('order_id',$request->order_id)->get();
@@ -36,37 +63,82 @@ class PaymentController extends Controller
             }
         }
         $general_percent = DB::table('general_stats')->where('title',"percent")->first();
-        $payments = DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-        $stats = $this->stats($payments);
-        return view('admin.payments.index',compact('payments','general_percent','stats'));
+        $payments = DB::table('orders as o')
+        ->join('payments as p','p.order_id','o.id')
+        ->leftJoin('quotations as q','o.id','q.order_id')
+        ->leftJoin('selected_orders as so','o.id','so.order_id')
+        ->leftJoin('users as u','u.id','so.user_id')
+        ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
+        ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName','q.state as quotation_state')
+        ->where('p.state',1)->orderBy('p.id',"DESC")->distinct('p.id')->get();
+        // foreach ($payments as $key => $pago) {
+        //     if($pago->quotation_state == 2 || $pago->quotation_state == 0){
+        //         if($pago->code_payment != "EFECTIVO"){
+        //             $payments[$key] = [];
+        //         }
+        //     }
+        // }
+        // $stats = $this->stats($payments,$visitas);
+        return view('admin.payments.index',compact('payments','general_percent'));
     }
 
-    public function stats($payments){
+    public function stats($payments,$visitas){
         $visita = ['label'=>"Visita + Mano de Obra",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
         $servicio = ['label'=>"Costo por Material",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
-        for ($i=0; $i < count($payments); $i++) {
-            if($payments[$i]->state == 1){
-                $date = $this->position($payments[$i]->created_at);
-                if($payments[$i]->description == "VISITA"){
 
-                    if(!isset($visita["data"])){
-                        array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->price,'order_id'=>$payments[$i]->order_id));
-                    }else{
-                        if(array_search($date,array_column($visita["data"],"x"))){
-                            $index = array_search($date,array_column($visita["data"],"x"));
-                            if(intval($visita["data"][$index]["y"]) != null){
-                                $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->price);
-                            }
+        for ($j=0; $j < count($visitas); $j++) {
+            $date = $this->position($visitas[$j]->created_at);
+            if(!isset($visita["data"])){
+                array_push($visita["data"],array("x" => $date,"y"=>$visitas[$j]->price,'order_id'=>$visitas[$j]->order_id));
+            }else{
+                if(array_search($date,array_column($visita["data"],"x"))){
+                    $index = array_search($date,array_column($visita["data"],"x"));
+                    if(intval($visita["data"][$index]["y"]) != null){
+                        $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($visitas[$j]->price);
+                    }
+                }else{
+                    if($visitas[$j]->price != null && $visitas[$j]->price != "0"){
+                        array_push($visita["data"],array("x" => $date,"y"=>$visitas[$j]->price,'order_id'=>$visitas[$j]->order_id));
+                    }
+                }
+            }
+        }
+
+        for ($i=0; $i < count($payments); $i++) {
+            if($payments[$i] != []){
+                $date = $this->position($payments[$i]->created_at);
+                if(!isset($servicio["data"])){
+                    if($payments[$i]->service_price != "0"){
+                        array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                    }
+                }else{
+                    if($payments[$i]->code_payment == "EFECTIVO"){
+                        $workforce = 0;
+                        $service_price = 0;
+                        $price = intval($payments[$i]->price);
+                        if($payments[$i]->workforce == null && $payments[$i]->service_price == null){
+                            $workforce = $price / 2;
+                            $service_price = $price / 2;
                         }else{
-                            if($payments[$i]->price != null && $payments[$i]->price != "0"){
-                                array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->price,'order_id'=>$payments[$i]->order_id));
+                            $workforce = intval($payments[$i]->workforce);
+                            $service_price = intval($payments[$i]->service_price);
+                        }
+                        if(array_search($date,array_column($servicio["data"],"x"))){
+                            $index = array_search($date,array_column($servicio["data"],"x"));
+                            $servicio["data"][$index]["y"] = intval($servicio["data"][$index]["y"]) + $service_price;
+                        }else{
+                            if($service_price != "0" && $service_price != null){
+                                array_push($servicio["data"],array("x" => $date,"y"=>$service_price,'order_id'=>$payments[$i]->order_id));
                             }
                         }
-                    }
-                }else if($payments[$i]->description == "PAGO POR SERVICIO"){
-                    if(!isset($servicio["data"])){
-                        if($payments[$i]->service_price != "0"){
-                            array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                        // Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
+                        if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
+                            $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
+                            $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + $workforce;
+                        }else{
+                            if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
+                                array_push($visita["data"],array("x" => $date,"y"=>$workforce,'order_id'=>$payments[$i]->order_id));
+                            }
                         }
                     }else{
                         if(array_search($date,array_column($servicio["data"],"x"))){
@@ -77,15 +149,14 @@ class PaymentController extends Controller
                                 array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
                             }
                         }
-                    }
-                    //Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
-                    if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
-                        $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
-
-                        $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->workforce);
-                    }else{
-                        if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
-                            array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                        // Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
+                        if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
+                            $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
+                            $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->workforce);
+                        }else{
+                            if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
+                                array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                            }
                         }
                     }
                 }

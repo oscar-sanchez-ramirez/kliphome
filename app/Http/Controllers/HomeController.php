@@ -35,15 +35,29 @@ class HomeController extends Controller
     }
 
     public function admin(){
+
         $clientes = User::where('type','AppUser')->where('state',1)->count();
         $tecnicos = User::where('type','AppFixerMan')->where('state',1)->count();
-        $pagos = Payment::where('state',1)->sum('price');
         $ordenes = Order::where('state','!=','CANCELLED')->count();
+
+        $payment_controller = new PaymentController();
+        $pagos = DB::table('orders as o')
+        ->join('payments as p','p.order_id','o.id')
+        ->leftJoin('quotations as q','o.id','q.order_id')
+        ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
+        ->where('p.state',1)->where('p.description','!=','VISITA')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+
+        foreach ($pagos as $key => $pago) {
+            if($pago->quotation_state == 2 || $pago->quotation_state == 0){
+                if($pago->code_payment != "EFECTIVO"){
+                    ($pagos[$key] = []);
+                }
+            }
+        }
+        $sum_payments = $payment_controller->stats($pagos,Payment::where('description','VISITA')->where('state',1)->get());
         $categories = $this->get_count_orders();
         $array_dates = $this->array_dates;
-        $payment_controller = new PaymentController();
-        $sum_payments = $payment_controller->stats(DB::table('orders as o')->join('payments as p','p.order_id','o.id')->leftJoin('quotations as q','o.id','q.order_id')->leftJoin('selected_orders as so','o.id','so.order_id')->leftJoin('users as u','u.id','so.user_id')->leftJoin('fixerman_stats as ft','ft.user_id','u.id')->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName')->orderBy('p.id',"DESC")->distinct('p.id')->get());
-        return view('admin.admin',compact('clientes','tecnicos','pagos','ordenes','categories','array_dates','sum_payments'));
+         return view('admin.admin',compact('clientes','tecnicos','ordenes','categories','array_dates','sum_payments'));
     }
 
     public function notificaciones(){

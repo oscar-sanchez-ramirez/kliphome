@@ -56,7 +56,7 @@
                                             <label for="dtp_input2" class="col-md-2 control-label"></label>
                                             <div class="input-group">
                                                 <br>
-                                                <button type="submit" class="btn btn-success btn-sm" onclick="filter()">
+                                                <button type="submit" class="btn btn-success btn-sm" onclick="filter('dates')">
                                                     <i class="fa fa-dot-circle-o"></i> Filtrar
                                                 </button>
                                             </div>
@@ -94,6 +94,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($payments as $payment)
+                                    @if($payment != [])
                                     <tr class="tr-shadow">
                                         <td>
                                             @if($payment->description == "PAGO POR SERVICIO")
@@ -146,6 +147,7 @@
                                         </td>
                                     </tr>
                                     <tr class="spacer"></tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -158,29 +160,6 @@
     </div>
 </div>
 <script>
-function filter(){
-    var url = window.location.origin+"/pagos";
-    var start = $('#start').val();
-    var end = $('#end').val();
-    let val = validate(start,end);
-    if(val){
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: { 'start': start,'end': end, 'chart_query':"chart_query" },
-            success: function(data) {
-                $(".percent-chart").html('');
-                $(".percent-chart").html('<canvas id="myChart2"></canvas>');
-                open_chart(data);
-            },
-            error: function(data) {
-                alert("Fecha incorrecta, verifique sus datos1");
-            }
-        });
-    }else{
-        alert("Fecha incorrecta, verifique sus datos");
-    }
-}
 function show_chart(){
     if ($('.table-responsive').is(":visible") === false) {
         $(".table-responsive").show();
@@ -188,9 +167,38 @@ function show_chart(){
     } else {
         $(".table-responsive").hide();
         $(".chart").show();
+        show_stats();
     }
-    var dates = @json($stats);
-    open_chart(dates)
+    {{-- /*var dates = @json($stats);
+        open_chart(dates)*/ --}}
+}
+function show_stats(){
+    filter('all');
+}
+
+function filter(estado){
+    var start = $('#start').val();
+    var end = $('#end').val();
+    let val = validate(start,end);
+    if(!val && estado != 'all'){
+        alert("Fecha incorrecta, verifique sus datos");
+       return;
+    }
+    var url = window.location.origin+"/pagos";
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: { 'start': start,'end': end, 'chart_query':estado },
+        success: function(data) {
+            console.log(data);
+            $(".percent-chart").html('');
+            $(".percent-chart").html('<canvas id="myChart2"></canvas>');
+            open_chart(data);
+        },
+        error: function(data) {
+            alert("Fecha incorrecta, verifique sus datos1");
+        }
+    });
 }
 function open_chart(dates){
     myChart2 = document.getElementById('myChart2'),

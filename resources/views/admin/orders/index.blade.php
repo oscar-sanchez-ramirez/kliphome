@@ -152,7 +152,6 @@
         if ($('.table-responsive').is(":visible") === false) {
             $(".table-responsive").show();
             $(".chart").hide();
-            console.log(1);
         } else {
             $(".table-responsive").hide();
             $(".chart").show();
@@ -164,7 +163,6 @@
         filter('all');
     }
     function filter(estado){
-
         var start = $('#start').val();
         var end = $('#end').val();
         let val = validate(start,end);
