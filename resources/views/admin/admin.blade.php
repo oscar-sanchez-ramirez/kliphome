@@ -73,7 +73,7 @@
                                         <i class="zmdi zmdi-money"></i>
                                     </div>
                                     <div class="text">
-                                        <h2>${{ $pagos }}</h2>
+                                        <h2>${{ $sum_payments[1]["total"] + $sum_payments[0]["total"] }}</h2>
                                         <span>ganados</span>
                                     </div>
                                 </div>
