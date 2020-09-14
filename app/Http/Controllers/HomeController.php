@@ -8,6 +8,7 @@ use App\Order;
 use App\Payment;
 use App\Category;
 use Carbon\Carbon;
+use App\Quotation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\PaymentController;
 
@@ -41,20 +42,48 @@ class HomeController extends Controller
         $ordenes = Order::where('state','!=','CANCELLED')->count();
 
         $payment_controller = new PaymentController();
-        $pagos = DB::table('orders as o')
-        ->join('payments as p','p.order_id','o.id')
-        ->leftJoin('quotations as q','o.id','q.order_id')
-        ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
-        ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-
-        foreach ($pagos as $key => $pago) {
-            if($pago->quotation_state == 2 || $pago->quotation_state == 0){
-                if($pago->code_payment != "EFECTIVO"){
-                    ($pagos[$key] = []);
+        $total = [];
+        $visitas = Payment::where('state',1)->where('description','VISITA')->get();
+        $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->orderBy('order_id')->get();
+        foreach ($servicios as $key => $servicio) {
+            if($servicio->code_payment == "EFECTIVO"){
+                $visita = $visitas->filter(function($item) use ($servicio){
+                    return $item->order_id === $servicio->order_id;
+                })->first();
+                if($visita){
+                    $servicio->price = intval($servicio->price) - intval($visita->price);
+                }
+                array_push($total,$servicio);
+            }else{
+                $cotizaciones = Quotation::where('order_id',$servicio->order_id)->where('state',1)->get();
+                if(count($cotizaciones) > 0){
+                    if(count($cotizaciones) == 1){
+                        $servicio["workforce"] = $cotizaciones[0]->workforce;
+                        $servicio["service_price"] = $cotizaciones[0]->price;
+                        array_push($total,$servicio);
+                    }else{
+                        foreach ($cotizaciones as $key => $cotizacion) {
+                            $visita = $visitas->filter(function($item) use ($servicio){
+                                return $item->order_id === $servicio->order_id;
+                            })->first();
+                            if((intval($cotizacion->price) + intval($cotizacion->workforce)) - intval($visita->price) == $servicio->price){
+                                $servicio["workforce"] = $cotizacion->workforce;
+                                $servicio["service_price"] = $cotizacion->price;
+                                array_push($total,$servicio);
+                            }
+                            if(intval($cotizacion->price) + intval($cotizacion->workforce) == $servicio->price){
+                                $servicio["workforce"] = $cotizacion->workforce;
+                                $servicio["service_price"] = $cotizacion->price;
+                                array_push($total,$servicio);
+                            }
+                        }
+                    }
+                }else{
+                    return $servicio;
                 }
             }
         }
-        $sum_payments = $payment_controller->stats($pagos,Payment::where('description','VISITA')->where('state',1)->get());
+        $sum_payments = $payment_controller->stats($servicios,$visitas);
         $categories = $this->get_count_orders();
         $array_dates = $this->array_dates;
          return view('admin.admin',compact('clientes','tecnicos','ordenes','categories','array_dates','sum_payments'));

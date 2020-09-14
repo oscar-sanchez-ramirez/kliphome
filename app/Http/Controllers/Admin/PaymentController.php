@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use DB;
 use App\Payment;
+use App\Quotation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 
@@ -20,40 +22,100 @@ class PaymentController extends Controller
     }
 
     public function index(Request $request){
-        $visitas = Payment::where('description','VISITA')->where('state',1)->get();
+
+        /*$payments = DB::table('orders as o')
+        ->join('payments as p','p.order_id','o.id')
+        ->leftJoin('quotations as q','o.id','q.order_id')
+        ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
+        ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+        foreach ($payments as $key => $pago) {
+            if($pago->quotation_state == 2 || $pago->quotation_state == 0){
+                if($pago->code_payment != "EFECTIVO"){
+                    ($payments[$key] = []);
+                }
+            }
+        }*/
+
+
+        $total = [];
         if(\request()->ajax()){
             if($request->filled('chart_query')){
                 if($request->chart_query == "all"){
-                    $payments = DB::table('orders as o')
-                    ->join('payments as p','p.order_id','o.id')
-                    ->leftJoin('quotations as q','o.id','q.order_id')
-                    ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
-                    ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-                    foreach ($payments as $key => $pago) {
-                        if($pago->quotation_state == 2 || $pago->quotation_state == 0){
-                            if($pago->code_payment != "EFECTIVO"){
-                                ($payments[$key] = []);
-                            }
-                        }
-                    }
+                    $visitas = Payment::where('state',1)->where('description','VISITA')->get();
+                    $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->orderBy('order_id')->get();
+
+                    // $payments = DB::table('orders as o')
+                    // ->join('payments as p','p.order_id','o.id')
+                    // ->leftJoin('quotations as q','o.id','q.order_id')
+                    // ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
+                    // ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+                    // foreach ($payments as $key => $pago) {
+                    //     if($pago->quotation_state == 2 || $pago->quotation_state == 0){
+                    //         if($pago->code_payment != "EFECTIVO"){
+                    //             ($payments[$key] = []);
+                    //         }
+                    //     }
+                    // }
 
                 }else{
-                    $payments = DB::table('orders as o')
-                    ->join('payments as p','p.order_id','o.id')
-                    ->leftJoin('quotations as q','o.id','q.order_id')
-                    ->leftJoin('selected_orders as so','o.id','so.order_id')
-                    ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
-                    ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
-                    ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-                    foreach ($payments as $key => $pago) {
-                        if($pago->quotation_state == 2 || $pago->quotation_state == 0){
-                            if($pago->code_payment != "EFECTIVO"){
-                                ($payments[$key] = []);
+                    $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))->orderBy('order_id')->get();
+                    $visitas = Payment::where('state',1)->where('description','VISITA')->whereIn('order_id',\array_column($servicios->toArray(),'order_id'))->get();
+                    // ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))->get();
+                    // $payments = DB::table('orders as o')
+                    // ->join('payments as p','p.order_id','o.id')
+                    // ->leftJoin('quotations as q','o.id','q.order_id')
+                    // ->leftJoin('selected_orders as so','o.id','so.order_id')
+                    // ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
+                    // ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
+                    // ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
+                    // foreach ($payments as $key => $pago) {
+                    //     if($pago->quotation_state == 2 || $pago->quotation_state == 0){
+                    //         if($pago->code_payment != "EFECTIVO"){
+                    //             ($payments[$key] = []);
+                    //         }
+                    //     }
+                    // }
+                }
+
+                foreach ($servicios as $key => $servicio) {
+                    if($servicio->code_payment == "EFECTIVO"){
+                        $visita = $visitas->filter(function($item) use ($servicio){
+                            return $item->order_id === $servicio->order_id;
+                        })->first();
+                        if($visita){
+                            $servicio->price = intval($servicio->price) - intval($visita->price);
+                        }
+                        array_push($total,$servicio);
+                    }else{
+                        $cotizaciones = Quotation::where('order_id',$servicio->order_id)->where('state',1)->get();
+                        if(count($cotizaciones) > 0){
+                            if(count($cotizaciones) == 1){
+                                $servicio["workforce"] = $cotizaciones[0]->workforce;
+                                $servicio["service_price"] = $cotizaciones[0]->price;
+                                array_push($total,$servicio);
+                            }else{
+                                foreach ($cotizaciones as $key => $cotizacion) {
+                                    $visita = $visitas->filter(function($item) use ($servicio){
+                                        return $item->order_id === $servicio->order_id;
+                                    })->first();
+                                    if((intval($cotizacion->price) + intval($cotizacion->workforce)) - intval($visita->price) == $servicio->price){
+                                        $servicio["workforce"] = $cotizacion->workforce;
+                                        $servicio["service_price"] = $cotizacion->price;
+                                        array_push($total,$servicio);
+                                    }
+                                    if(intval($cotizacion->price) + intval($cotizacion->workforce) == $servicio->price){
+                                        $servicio["workforce"] = $cotizacion->workforce;
+                                        $servicio["service_price"] = $cotizacion->price;
+                                        array_push($total,$servicio);
+                                    }
+                                }
                             }
+                        }else{
+                            return $servicio;
                         }
                     }
                 }
-                $stats = $this->stats($payments,$visitas);
+                $stats = $this->stats($servicios,$visitas);
                 return $stats;
             }else{
                 $payments = Payment::where('order_id',$request->order_id)->get();
@@ -62,6 +124,8 @@ class PaymentController extends Controller
                 ]);
             }
         }
+
+
         $general_percent = DB::table('general_stats')->where('title',"percent")->first();
         $payments = DB::table('orders as o')
         ->join('payments as p','p.order_id','o.id')
@@ -71,14 +135,7 @@ class PaymentController extends Controller
         ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
         ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName','q.state as quotation_state')
         ->where('p.state',1)->orderBy('p.id',"DESC")->distinct('p.id')->get();
-        // foreach ($payments as $key => $pago) {
-        //     if($pago->quotation_state == 2 || $pago->quotation_state == 0){
-        //         if($pago->code_payment != "EFECTIVO"){
-        //             $payments[$key] = [];
-        //         }
-        //     }
-        // }
-        // $stats = $this->stats($payments,$visitas);
+
         return view('admin.payments.index',compact('payments','general_percent'));
     }
 
@@ -106,6 +163,7 @@ class PaymentController extends Controller
 
         for ($i=0; $i < count($payments); $i++) {
             if($payments[$i] != []){
+                $cotizacion = Quotation::where('order_id',$payments[$i]->order_id)->get();
                 $date = $this->position($payments[$i]->created_at);
                 if(!isset($servicio["data"])){
                     if($payments[$i]->service_price != "0"){
