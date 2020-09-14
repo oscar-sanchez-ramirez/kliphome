@@ -231,7 +231,6 @@ class PaymentController extends Controller
         for ($i=0; $i < count($servicio["data"]); $i++) {
             $servicio["total"] += intval($servicio["data"][$i]["y"]);
         }
-        Log::notice($visita);
         return array($visita,$servicio);
     }
 
