@@ -262,7 +262,7 @@
                 label: '# de ordenes',
                 data:{
                     datasets: [{
-                        data: @json($sum_payments),backgroundColor:[
+                        data: @json($total_suma),backgroundColor:[
                         'rgb(54, 162, 235)',
                         'rgb(255, 159, 64)',
                         'rgb(255, 205, 86)'

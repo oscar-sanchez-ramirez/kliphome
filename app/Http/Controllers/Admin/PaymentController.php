@@ -140,7 +140,7 @@ class PaymentController extends Controller
     }
 
     public function stats($payments,$visitas){
-        $visita = ['label'=>"Visita + Mano de Obra",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
+        $visita = ['label'=>"Visita + Mano de Obra",'total'=>0,'total_mano_de_obra'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(230,5,0, 0.3)','data'=>[]];
         $servicio = ['label'=>"Costo por Material",'total'=>0,'showLine'=>true,'fill'=>false,'borderColor'=>'rgba(0,255,4, 0.9)','data'=>[]];
 
         for ($j=0; $j < count($visitas); $j++) {
@@ -193,8 +193,10 @@ class PaymentController extends Controller
                         if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
                             $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
                             $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + $workforce;
+                            $visita["total_mano_de_obra"] += $workforce;
                         }else{
                             if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
+                                $visita["total_mano_de_obra"] += $workforce;
                                 array_push($visita["data"],array("x" => $date,"y"=>$workforce,'order_id'=>$payments[$i]->order_id));
                             }
                         }
@@ -211,9 +213,11 @@ class PaymentController extends Controller
                         if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
                             $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
                             $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->workforce);
+                            $visita["total_mano_de_obra"] += intval($payments[$i]->workforce);
                         }else{
                             if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
                                 array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
+                                $visita["total_mano_de_obra"] += intval($payments[$i]->workforce);
                             }
                         }
                     }
@@ -223,9 +227,11 @@ class PaymentController extends Controller
         for ($i=0; $i < count($visita["data"]); $i++) {
             $visita["total"] += intval($visita["data"][$i]["y"]);
         }
+
         for ($i=0; $i < count($servicio["data"]); $i++) {
             $servicio["total"] += intval($servicio["data"][$i]["y"]);
         }
+        Log::notice($visita);
         return array($visita,$servicio);
     }
 

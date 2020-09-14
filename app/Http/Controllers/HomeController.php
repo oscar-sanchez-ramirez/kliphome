@@ -44,6 +44,7 @@ class HomeController extends Controller
         $payment_controller = new PaymentController();
         $total = [];
         $visitas = Payment::where('state',1)->where('description','VISITA')->get();
+
         $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->orderBy('order_id')->get();
         foreach ($servicios as $key => $servicio) {
             if($servicio->code_payment == "EFECTIVO"){
@@ -83,10 +84,12 @@ class HomeController extends Controller
                 }
             }
         }
+        // return $servicios;
         $sum_payments = $payment_controller->stats($servicios,$visitas);
+        $total_suma = [[ $visitas->sum('price')],$sum_payments[1]["total"],$sum_payments[0]["total_mano_de_obra"]];
         $categories = $this->get_count_orders();
         $array_dates = $this->array_dates;
-         return view('admin.admin',compact('clientes','tecnicos','ordenes','categories','array_dates','sum_payments'));
+         return view('admin.admin',compact('clientes','tecnicos','ordenes','categories','array_dates','sum_payments','total_suma'));
     }
 
     public function notificaciones(){
