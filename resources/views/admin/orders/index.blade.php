@@ -119,12 +119,12 @@
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
                                         <td>
                                             <i class="zmdi zmdi-badge-check" id="{{ $orden->fixerman($orden->id) }}"></i>
-                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->quotation($orden->id) }}"></i>
                                             @if($orden->fixerman_arrive === 'SI')
                                                 <i class="zmdi zmdi-badge-check" id="success"></i>
                                             @else
                                                 <i class="zmdi zmdi-badge-check" id="secondary"></i>
                                             @endif
+                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->quotation($orden->id) }}"></i>
                                             @if($orden->state === 'FIXERMAN_DONE' || $orden->state === 'QUALIFIED')
                                                 <i class="zmdi zmdi-badge-check" id="success"></i>
                                             @else
