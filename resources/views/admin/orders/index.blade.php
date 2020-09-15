@@ -9,13 +9,19 @@
       color:red;
     }
     #success{
-      color:green;
+      color:#63c76a;
     }
     #proccess{
       color:#1686FE;
     }
     #second{
       color:#3FC7FE;
+    }#warning{
+        color:#ffc107;
+    }#secondary{
+        color:#6c757d;
+    }.zmdi-badge-check{
+        font-size: 20px;
     }
 </style>
 <div class="main-content">
@@ -32,6 +38,9 @@
                     <div class="table-data__tool-right">
                         <a href="{{ url('') }}/ordenes/nueva-orden" class="au-btn au-btn-icon au-btn--green">
                             Nueva Orden</a>
+                        <button class="item" data-toggle="modal" data-target="#steporder">
+                            <i data-toggle="tooltip" data-placement="top" title="Info" class="fa fa-question-circle"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="chart" style="display: none">
@@ -97,7 +106,6 @@
                                     <th>Client</th>
                                     <th>Categoría</th>
                                     <th>Fecha Registro</th>
-                                    <th>Cotización</th>
                                     <th>Estado</th>
                                     <th></th>
                                 </tr>
@@ -109,7 +117,22 @@
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
                                         <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
-                                        <td>{{ $orden->quotation($orden->id) }}</td>
+                                        <td>
+                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->fixerman($orden->id) }}"></i>
+                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->quotation($orden->id) }}"></i>
+                                            @if($orden->fixerman_arrive === 'SI')
+                                                <i class="zmdi zmdi-badge-check" id="success"></i>
+                                            @else
+                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
+                                            @endif
+                                            @if($orden->state === 'FIXERMAN_DONE' || $orden->state === 'QUALIFIED')
+                                                <i class="zmdi zmdi-badge-check" id="success"></i>
+                                            @else
+                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
+                                            @endif
+                                            <i class="zmdi zmdi-badge-check" id={{ $orden->qualify($orden->id) }}></i>
+                                        </td>
+                                        {{-- <td>{{ $orden->quotation($orden->id) }}</td>
                                         <td>
                                            @if($orden->state == "CANCELLED")
                                                 <p id="danger">Cancelado</p>
@@ -122,7 +145,7 @@
                                            @elseif($orden->state == "FIXERMAN_DONE")
                                                 <p id="second">Calificar</p>
                                            @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             <div class="table-data-feature">
                                                 @if($orden->state == "CANCELLED")

@@ -52,3 +52,22 @@ data-backdrop="static">
    </div>
 </div>
 <!-- end modal static -->
+<div class="modal fade" id="steporder" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+data-backdrop="static">
+   <div class="modal-dialog modal-lg" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title" id="staticModalLabel">Info</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body">
+               <img src="{{ url('') }}/images/step_order.png" alt="">
+           </div>
+           <div class="modal-footer">
+               <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+           </div>
+       </div>
+   </div>
+</div>

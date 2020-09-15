@@ -22,16 +22,45 @@ class Order extends Model
 
     public function quotation($id){
         $quotation = Quotation::where('order_id',$id)->orderBy('id','DESC')->first();
+        // if($quotation){
+        //     if($quotation->state == 0){
+        //         return "Cot. pendiente";
+        //     }else if($quotation->state == 1){
+        //         return "Cot. pagada";
+        //     }else if($quotation->state == 2){
+        //         return "Cot. cancelada";
+        //     }
+        // }else{
+        //     return "Sin Cotización";
+        // }
+
         if($quotation){
             if($quotation->state == 0){
-                return "Cot. pendiente";
+                return "warning";
             }else if($quotation->state == 1){
-                return "Cot. pagada";
+                return "success";
             }else if($quotation->state == 2){
-                return "Cot. cancelada";
+                return "danger";
             }
         }else{
-            return "Sin Cotización";
+            return "secondary";
+        }
+    }
+
+    public function fixerman($id){
+        $fixerman = SelectedOrders::where('order_id',$id)->where('state',1)->first();
+        if($fixerman){
+            return "success";
+        }else{
+            return "secondary";
+        }
+    }
+    public function qualify($id){
+        $qualify = DB::table('selected_orders as so')->join('qualifies as q','q.selected_order_id','so.id')->select('q.id')->where('so.order_id',$id)->where('so.state',1)->first();
+        if($qualify){
+            return "success";
+        }else{
+            return "secondary";
         }
     }
     public function orderCoupon($coupon_code){

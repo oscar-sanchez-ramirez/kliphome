@@ -44,7 +44,7 @@ class OrderController extends Controller
                 return $ordenes;
             }
         }
-        $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','created_at'])->orderBy('id','DESC')->paginate(10);
+        $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->orderBy('id','DESC')->paginate(10);
         return view('admin.orders.index')->with('ordenes',$ordenes);
     }
 
