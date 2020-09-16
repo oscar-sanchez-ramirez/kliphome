@@ -48,7 +48,7 @@
                     <div v-if="orden.gallery.length > 0">
                         <v-carousel height="500" hide-delimiter-background show-arrows-on-hover>
                             <v-carousel-item v-for="(slide, i) in orden.gallery" :key="i">
-                                <img :src="orden.gallery[i].image" alt="" class="img-responsive" width="100%" height="100%" @click="expand(orden.gallery[i].image)">
+                                <img :src="orden.gallery[i].image" alt=""  class="img-responsive" width="100%" height="100%" @click="expand(orden.gallery[i].image)">
                             </v-carousel-item>
                         </v-carousel>
                     </div>
@@ -94,6 +94,8 @@
     }
     .v-application--wrap{
         min-height: 50px !important;
+    }.card-img-top{
+        min-height: 300px;
     }
 </style>
 <script>
