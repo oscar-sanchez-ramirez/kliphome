@@ -113,7 +113,6 @@
                             <tbody>
                                 @foreach ($ordenes as $orden)
                                     <tr class="tr-shadow">
-
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
                                         <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
@@ -132,20 +131,6 @@
                                             @endif
                                             <i class="zmdi zmdi-badge-check" id={{ $orden->qualify($orden->id) }}></i>
                                         </td>
-                                        {{-- <td>{{ $orden->quotation($orden->id) }}</td>
-                                        <td>
-                                           @if($orden->state == "CANCELLED")
-                                                <p id="danger">Cancelado</p>
-                                           @elseif($orden->state == "QUALIFIED")
-                                                <p id="success">Terminado</p>
-                                           @elseif($orden->state == "ACCEPTED" || $orden->state == "FIXERMAN_APPROVED")
-                                                <p id="proccess">Con Técnico</p>
-                                           @elseif($orden->state == "FIXERMAN_NOTIFIED" || $orden->state == "PENDING")
-                                                <p id="second">Sin Técnico</p>
-                                           @elseif($orden->state == "FIXERMAN_DONE")
-                                                <p id="second">Calificar</p>
-                                           @endif
-                                        </td> --}}
                                         <td>
                                             <div class="table-data-feature">
                                                 @if($orden->state == "CANCELLED")

@@ -22,61 +22,16 @@ class PaymentController extends Controller
     }
 
     public function index(Request $request){
-
-        /*$payments = DB::table('orders as o')
-        ->join('payments as p','p.order_id','o.id')
-        ->leftJoin('quotations as q','o.id','q.order_id')
-        ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
-        ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-        foreach ($payments as $key => $pago) {
-            if($pago->quotation_state == 2 || $pago->quotation_state == 0){
-                if($pago->code_payment != "EFECTIVO"){
-                    ($payments[$key] = []);
-                }
-            }
-        }*/
-
-
         $total = [];
         if(\request()->ajax()){
             if($request->filled('chart_query')){
                 if($request->chart_query == "all"){
                     $visitas = Payment::where('state',1)->where('description','VISITA')->get();
                     $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->orderBy('order_id')->get();
-
-                    // $payments = DB::table('orders as o')
-                    // ->join('payments as p','p.order_id','o.id')
-                    // ->leftJoin('quotations as q','o.id','q.order_id')
-                    // ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
-                    // ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-                    // foreach ($payments as $key => $pago) {
-                    //     if($pago->quotation_state == 2 || $pago->quotation_state == 0){
-                    //         if($pago->code_payment != "EFECTIVO"){
-                    //             ($payments[$key] = []);
-                    //         }
-                    //     }
-                    // }
-
                 }else{
                     $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))->orderBy('order_id')->get();
                     $visitas = Payment::where('state',1)->where('description','VISITA')->whereIn('order_id',\array_column($servicios->toArray(),'order_id'))->get();
-                    // ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))->get();
-                    // $payments = DB::table('orders as o')
-                    // ->join('payments as p','p.order_id','o.id')
-                    // ->leftJoin('quotations as q','o.id','q.order_id')
-                    // ->leftJoin('selected_orders as so','o.id','so.order_id')
-                    // ->select('p.*','q.workforce','q.price as service_price','q.state as quotation_state')
-                    // ->whereBetween(DB::raw('DATE(p.created_at)'), array($request->start, $request->end))
-                    // ->where('p.state',1)->where('p.description','!=','VISITA')->where('p.description','!=','PROPINA POR SERVICIO')->orderBy('p.id',"DESC")->distinct('p.id')->get();
-                    // foreach ($payments as $key => $pago) {
-                    //     if($pago->quotation_state == 2 || $pago->quotation_state == 0){
-                    //         if($pago->code_payment != "EFECTIVO"){
-                    //             ($payments[$key] = []);
-                    //         }
-                    //     }
-                    // }
                 }
-
                 foreach ($servicios as $key => $servicio) {
                     if($servicio->code_payment == "EFECTIVO"){
                         $visita = $visitas->filter(function($item) use ($servicio){
@@ -124,8 +79,6 @@ class PaymentController extends Controller
                 ]);
             }
         }
-
-
         $general_percent = DB::table('general_stats')->where('title',"percent")->first();
         $payments = DB::table('orders as o')
         ->join('payments as p','p.order_id','o.id')
@@ -135,7 +88,6 @@ class PaymentController extends Controller
         ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
         ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName','q.state as quotation_state')
         ->where('p.state',1)->orderBy('p.id',"DESC")->distinct('p.id')->get();
-
         return view('admin.payments.index',compact('payments','general_percent'));
     }
 
