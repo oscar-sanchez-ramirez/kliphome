@@ -60,4 +60,12 @@
           </div>
       </div>
   </header>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHCCJMGS3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0BHCCJMGS3');
+</script>
 @endsection
