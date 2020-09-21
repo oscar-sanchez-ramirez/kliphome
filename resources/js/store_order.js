@@ -17,7 +17,8 @@ export default new Vuex.Store({
         fixerman_list:[],
         categories_list:[],
         quotations:[],
-        payments:[]
+        payments:[],
+        qualifies:[]
     },
     mutations: {
         // Chat
@@ -45,6 +46,8 @@ export default new Vuex.Store({
             state.modal_payment = val;
         },setPayments(state,val){
             state.payments = val;
+        },setQualifies(state,val){
+            state.qualifies = val;
         }
 
     },
@@ -107,6 +110,11 @@ export default new Vuex.Store({
     },payments(context,order_id){
         axios.get('/pagos?order_id='+order_id).then(response=>{
             context.commit('setPayments',response.data.payments);
+        });
+    },qualifies(context,order_id){
+        axios.get('/ordenes/qualifies/'+order_id).then(response=>{
+            console.log(response);
+            context.commit('setQualifies',response.data.qualifies);
         });
     }
     },

@@ -10,6 +10,7 @@ use App\Address;
 use App\Payment;
 use App\ExtraInfo;
 use App\Quotation;
+use App\Qualify;
 use App\Category;
 use App\FixermanStat;
 use Carbon\Carbon;
@@ -206,7 +207,13 @@ class OrderController extends Controller
         $user = User::where('id',$order->user_id)->first();
         $user->notify(new CancelOrder($order,$user->email));
     }
-
+    public function qualifies($id){
+        $qualifies = DB::table('orders as o')->join('selected_orders as so','so.order_id','o.id')->join('qualifies as q','q.selected_order_id','so.id')->select('q.*')->where('o.id',$id)->get();
+        // Qualify::where('selected_order_id')->get();
+        return response()->json([
+            'qualifies' => $qualifies
+          ]);
+    }
     public function markDone($id){
         $order_id = $id;
         //Get User and Order
@@ -242,7 +249,6 @@ class OrderController extends Controller
             FixermanStat::where('user_id',$check_fixerman[0]->id)->increment('completed');
         }
     }
-
     public function check(){
         $hoy = Carbon::now()->format('Y/m/d');
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')

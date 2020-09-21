@@ -19,7 +19,7 @@ Vue.component('payments-component', require('./components/orders/payments.vue').
 Vue.component('quotations-component', require('./components/orders/quotations.vue').default);
 Vue.component('configuration-component', require('./components/orders/configuration.vue').default);
 Vue.component('create-order-component', require('./components/orders/createorder.vue').default);
-
+Vue.component('qualifies-component', require('./components/orders/qualifies.vue').default);
 
 const app = new Vue({
     el: '#app',

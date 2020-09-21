@@ -71,7 +71,6 @@ export default {
             price: this.confirm.price,
             workforce: this.confirm.workforce
         };
-        console.log(params);
             axios.post('/ordenes/confimarCotizacion/'+this.quotation_id,params).then(response => {
                 if(!response.data.success){
                     this.showError(response.data.message);
