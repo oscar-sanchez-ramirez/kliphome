@@ -347,6 +347,9 @@ class OrderController extends Controller
             case 'cotizacion_pagada':
                 $quotations = Quotation::where('state',1)->pluck('order_id');
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereIn('id',$quotations)->orderBy('id','DESC')->get();
+            case 'sin_cotizacion':
+                $quotations = Quotation::where('state',1)->pluck('order_id');
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereNotIn('id',$quotations)->orderBy('id','DESC')->get();
             case 'terminados':
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('state',"FIXERMAN_DONE")->orderBy('id','DESC')->get();
             case 'calificados':

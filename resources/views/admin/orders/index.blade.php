@@ -36,6 +36,7 @@
                                 <option value="todos">Todos</option>
                                 <option value="con_tecnico">Con técnico</option>
                                 <option value="tecnico_llego">Técnico llegó</option>
+                                <option value="sin_cotizacion">Sin Cotización</option>
                                 <option value="cotizacion_pagada">Cotización Pagada</option>
                                 <option value="terminados">Terminados</option>
                                 <option value="calificados">Calificados</option>
