@@ -386,7 +386,7 @@
     @if(Request::is('tecnicos'))
         <script src="{{ url('') }}/vendor/fixerman/fixerman.js"></script>
     @endif
-    @if(Request::is('ordenes/detalle-orden/*'))
+    @if(Request::is('ordenes/detalle-orden/*') || Request::is('ordenes'))
         <script src="{{ url('') }}/vendor/order/order.js"></script>
     @endif
     <!-- Bootstrap JS-->

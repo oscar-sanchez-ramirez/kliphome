@@ -37,6 +37,9 @@ class OrderController extends Controller
                 $ordenes = $this->cast_date(DB::table('orders')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
                 ->where('state','!=','CANCELLED')->groupBy('dates')->orderBy('dates','asc')->get());
                 return $ordenes;
+            }elseif($request->chart_query == "filtro"){
+                $ordenes = $this->filtro($request->key);
+                return $ordenes;
             }else{
                 $ordenes = $this->cast_date(DB::table('orders')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
                 ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))
@@ -44,7 +47,11 @@ class OrderController extends Controller
                 return $ordenes;
             }
         }
-        $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->orderBy('id','DESC')->paginate(10);
+        if($request->filled('filtro')){
+            $ordenes = $this->filtro($request->filtro);
+        }else{
+            $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->orderBy('id','DESC')->paginate(10);
+        }
         return view('admin.orders.index')->with('ordenes',$ordenes);
     }
 
@@ -329,5 +336,26 @@ class OrderController extends Controller
             'success' => true,
             'payment' => $payment
         ]);
+    }
+    private function filtro($key){
+        switch ($key) {
+            case 'con_tecnico':
+                $fixerman = SelectedOrders::where('state',1)->pluck('order_id');
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereIn('id',$fixerman)->orderBy('id','DESC')->get();
+            case 'tecnico_llego':
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('fixerman_arrive',"SI")->orderBy('id','DESC')->get();
+            case 'cotizacion_pagada':
+                $quotations = Quotation::where('state',1)->pluck('order_id');
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereIn('id',$quotations)->orderBy('id','DESC')->get();
+            case 'terminados':
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('state',"FIXERMAN_DONE")->orderBy('id','DESC')->get();
+            case 'calificados':
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('state',"QUALIFIED")->orderBy('id','DESC')->get();
+            case 'todos':
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->orderBy('id','DESC')->paginate(10);
+            default:
+                # code...
+                break;
+        }
     }
 }

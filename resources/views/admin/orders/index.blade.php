@@ -30,10 +30,19 @@
             <div class="col-md-12">
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
-                        <div class="table-data__tool">
-                                <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green">
-                                    <i class="zmdi zmdi-chart"></i></button>
+                        <div class="rs-select2--light rs-select2--md">
+                            <select class="js-select2" name="property" id="filter_orders">
+                                <option selected="selected" value="all">Filtros</option>
+                                <option value="todos">Todos</option>
+                                <option value="con_tecnico">Con técnico</option>
+                                <option value="tecnico_llego">Técnico llegó</option>
+                                <option value="cotizacion_pagada">Cotización Pagada</option>
+                                <option value="terminados">Terminados</option>
+                                <option value="calificados">Calificados</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
                         </div>
+                        <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green"><i class="zmdi zmdi-chart"></i></button>
                     </div>
                     <div class="table-data__tool-right">
                         <a href="{{ url('') }}/ordenes/nueva-orden" class="au-btn au-btn-icon au-btn--green">
@@ -129,7 +138,11 @@
                                             @else
                                                 <i class="zmdi zmdi-badge-check" id="secondary"></i>
                                             @endif
-                                            <i class="zmdi zmdi-badge-check" id={{ $orden->qualify($orden->id) }}></i>
+                                            @if($orden->state === 'QUALIFIED')
+                                                <i class="zmdi zmdi-badge-check" id="success"></i>
+                                            @else
+                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
+                                            @endif
                                         </td>
                                         <td>
                                             <div class="table-data-feature">
@@ -151,7 +164,11 @@
                 </div>
                 <!-- END DATA TABLE -->
             </div>
-            {{ $ordenes->links() }}
+
+            @if(Request::get('filtro') == '' || Request::get('filtro') == 'todos')
+                {{ $ordenes->links() }}
+            @endif
+
         </div>
     </div>
 </div>
