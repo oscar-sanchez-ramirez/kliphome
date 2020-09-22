@@ -20,72 +20,58 @@
                     <div class="table-data__tool-right">
                         <a href="{{ url('') }}/servicios/create" class="au-btn au-btn-icon au-btn--green au-btn--small">
                             <i class="zmdi zmdi-plus"></i>Servicio</a>
-                        {{-- <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
-                            <select class="js-select2" name="type">
-                                <option selected="selected">Exportar</option>
-                                <option value="">Excel</option>
-                                <option value="">PDF</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div> --}}
                         <button class="item" data-toggle="modal" data-target="#staticModal">
                             <i data-toggle="tooltip" data-placement="top" title="Info" class="fa fa-question-circle"></i>
                         </button>
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
-                    {{-- @if(count($services) == 0)
-                        <div id="center">
-                            <h4>No se regitraron servicios</h4>
-                        </div>
-                    @else --}}
-                        <table class="table table-data2">
-                            <thead>
-                                <tr>
-                                    <th>
+                    <table class="table table-data2">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="au-checkbox">
+                                        <input type="checkbox">
+                                        <span class="au-checkmark"></span>
+                                    </label>
+                                </th>
+                                <th>Categoría</th>
+                                <th>Sub-Categoría</th>
+                                <th>Servicio</th>
+                                <th>Fecha Creación</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyServices">
+                            @foreach ($services as $service)
+                                <tr class="tr-shadow">
+                                    <td>
                                         <label class="au-checkbox">
                                             <input type="checkbox">
                                             <span class="au-checkmark"></span>
                                         </label>
-                                    </th>
-                                    <th>Categoría</th>
-                                    <th>Sub-Categoría</th>
-                                    <th>Servicio</th>
-                                    <th>Fecha Creación</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="bodyServices">
-                                @foreach ($services as $service)
-                                    <tr class="tr-shadow">
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                        <td>{{ $service->category }}</td>
-                                        <td>{{ $service->subcategory }}</td>
-                                        <td><b>{{ $service->title }}</b></td>
-                                        <td>{{ \Carbon\Carbon::parse($service->created_at)->diffForHumans() }}</td>
-                                        <td>
-                                            <div class="table-data-feature">
-                                                <form action="{{ url('') }}/servicios/{{ $service->id }}" type="GET">
-                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                        <i class="zmdi zmdi-edit"></i>
-                                                    </button>
-                                                </form>
-                                                <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubServiceModal" data-title="{{ $service->title }}" data-id="{{ $service->id }}">
-                                                    <i data-toggle="tooltip" data-placement="top" title="SubServicios" class="zmdi zmdi-collection-item-3"></i>
+                                    </td>
+                                    <td>{{ $service->category }}</td>
+                                    <td>{{ $service->subcategory }}</td>
+                                    <td><b>{{ $service->title }}</b></td>
+                                    <td>{{ \Carbon\Carbon::parse($service->created_at)->diffForHumans() }}</td>
+                                    <td>
+                                        <div class="table-data-feature">
+                                            <form action="{{ url('') }}/servicios/{{ $service->id }}" type="GET">
+                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                    <i class="zmdi zmdi-edit"></i>
                                                 </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="spacer"></tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    {{-- @endif --}}
+                                            </form>
+                                            <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubServiceModal" data-title="{{ $service->title }}" data-id="{{ $service->id }}">
+                                                <i data-toggle="tooltip" data-placement="top" title="SubServicios" class="zmdi zmdi-collection-item-3"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
                 <!-- END DATA TABLE -->
                 {{ $services->links() }}

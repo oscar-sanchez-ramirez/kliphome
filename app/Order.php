@@ -22,18 +22,6 @@ class Order extends Model
 
     public function quotation($id){
         $quotation = Quotation::where('order_id',$id)->orderBy('id','DESC')->first();
-        // if($quotation){
-        //     if($quotation->state == 0){
-        //         return "Cot. pendiente";
-        //     }else if($quotation->state == 1){
-        //         return "Cot. pagada";
-        //     }else if($quotation->state == 2){
-        //         return "Cot. cancelada";
-        //     }
-        // }else{
-        //     return "Sin Cotización";
-        // }
-
         if($quotation){
             if($quotation->state == 0){
                 return "warning";

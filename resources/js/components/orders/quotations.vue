@@ -11,6 +11,7 @@
                 <template #item.price="{ item }">${{ item.price }} / ${{ item.workforce }}</template>
                 <template #item.solution="{ item }"><span v-html="item.solution"></span></template>
                 <template #item.materials="{ item }"><span v-html="item.materials"></span></template>
+                <template #item.warranty="{ item }">{{ item.warranty_num || '' }} - {{ item.warranty_text || '' }}</template>
                 <template #item.state="{ item }"><span v-if="item.state == 0" class="status--denied">Sin Pagar <br><v-btn depressed small @click="show_confirm(item.id)"><i class="fa fa-trash"></i></v-btn><v-btn depressed small @click="show_confirm_quotation(item.id,item.price,item.workforce)"><i class="fa fa-check"></i></v-btn></span><span v-if="item.state == 1" class="status--process">Pagado</span><span v-if="item.state == 2" class="status--denied">Rechazado</span></template>
                 </v-data-table>
             </v-container>
@@ -49,7 +50,7 @@ export default {
     },data(){
         return{
             headers: [
-                {text: 'Fecha',value:'created_at'},{text: 'Servicio/Mano de obra',value:'price'},{text:'Solución',value:'solution'},{text:'Materiales',value:'materials'},{text:'Estado',value:'state'}
+                {text: 'Fecha',value:'created_at'},{text: 'Servicio/Mano de obra',value:'price'},{text:'Solución',value:'solution'},{text:'Materiales',value:'materials'},{text:'Garantia',value:'warranty'},{text:'Estado',value:'state'}
             ],dialog:false,
             dialog_confirm:false,
             quotation_id:'',
