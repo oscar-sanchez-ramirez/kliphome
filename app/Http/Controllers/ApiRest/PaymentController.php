@@ -179,6 +179,7 @@ class PaymentController extends ApiController
                         ]
                       );
                     $cus = $this->guardar_usuario($customer["payment_sources"][0],$user->id);
+                    sleep(5);
                     $this->pago($request,$cus->idToken,$user);
 
                 } catch (\Throwable $th) {

@@ -19,7 +19,6 @@ class SocialController extends ApiController
     }
     public function facebook(Request $request) {
         try {
-            Log::notice($request->all());
             $user = Socialite::driver('facebook')->userFromToken($request->access_token);
             if($user == null){
                 return response()->json([
