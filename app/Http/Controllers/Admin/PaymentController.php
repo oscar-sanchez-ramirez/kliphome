@@ -80,14 +80,15 @@ class PaymentController extends Controller
             }
         }
         $general_percent = DB::table('general_stats')->where('title',"percent")->first();
-        $payments = DB::table('orders as o')
-        ->join('payments as p','p.order_id','o.id')
-        ->leftJoin('quotations as q','o.id','q.order_id')
-        ->leftJoin('selected_orders as so','o.id','so.order_id')
-        ->leftJoin('users as u','u.id','so.user_id')
-        ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
-        ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName','q.state as quotation_state')
-        ->where('p.state',1)->orderBy('p.id',"DESC")->distinct('p.id')->get();
+        $payments = Payment::orderBy('id','DESC')->where('state',1)->paginate(10);
+        // DB::table('orders as o')
+        // ->join('payments as p','p.order_id','o.id')
+        // ->leftJoin('quotations as q','o.id','q.order_id')
+        // ->leftJoin('selected_orders as so','o.id','so.order_id')
+        // ->leftJoin('users as u','u.id','so.user_id')
+        // ->leftJoin('fixerman_stats as ft','ft.user_id','u.id')
+        // ->select('p.*','q.workforce','q.price as service_price','ft.percent','u.name','u.lastName','q.state as quotation_state')
+        // ->where('p.state',1)->orderBy('p.id',"DESC")->distinct('p.id')->paginate(10);
         return view('admin.payments.index',compact('payments','general_percent'));
     }
 

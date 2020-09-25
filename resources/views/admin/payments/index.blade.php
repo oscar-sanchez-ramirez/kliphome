@@ -84,7 +84,7 @@
                         <table class="table table-data2">
                             <thead>
                                 <tr>
-
+                                    <th>#</th>
                                     <th>Concepto</th>
                                     <th>Monto</th>
                                     <th>Fecha</th>
@@ -93,29 +93,37 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $current = ($payments->currentPage() *10) -9;
+                                    $i = $current;
+                                @endphp
                                 @foreach ($payments as $payment)
                                     @if($payment != [])
                                     <tr class="tr-shadow">
+                                        <td>{{ $i++ }}</td>
                                         <td>
                                             @if($payment->description == "PAGO POR SERVICIO")
-                                            <a data-toggle="collapse" href="#collapsePayment{{ $payment->id }}" role="button" aria-expanded="false" aria-controls="collapsePayment{{ $payment->id }}">
-                                                {{ $payment->description }}
-                                            </a>
-                                            <div class="collapse" id="collapsePayment{{ $payment->id }}">
+                                                @php
+                                                    $detalle_pago = $payment->detalle_pago($payment->order_id);
+                                                @endphp
+                                                <a data-toggle="collapse" href="#collapsePayment{{ $payment->id }}" role="button" aria-expanded="false" aria-controls="collapsePayment{{ $payment->id }}">
+                                                    {{ $payment->description }}
+                                                </a>
+                                                <div class="collapse" id="collapsePayment{{ $payment->id }}">
                                                 <div class="card card-body">
                                                     <div class="card card-body">
                                                         <div class="row">
-                                                            <b>Precio por material:  </b>{{ $payment->service_price }}
+                                                            <b>Precio por material:  </b>{{ json_encode($detalle_pago->original["cotizacion"]["price"]) }}
                                                         </div>
                                                         <div class="row">
-                                                            <b>Mano de Obra:  </b>{{ $payment->workforce }}
+                                                            <b>Mano de Obra:  </b>{{ json_encode($detalle_pago->original["cotizacion"]["workforce"]) }}
                                                         </div>
                                                         <div class="row" id="rowPercent{{ $payment->id }}">
                                                             <div class="col-md-6">
-                                                                Porcentaje de {{ $payment->name }} {{ $payment->lastName }} : {{ $payment->percent }}%
+                                                                Porcentaje de {{ json_encode($detalle_pago->original["tecnico"]->name) }} {{ json_encode($detalle_pago->original["tecnico"]->lastName) }} : {{ json_encode($detalle_pago->original["tecnico"]->percent) }}%
                                                             </div>
                                                             <div class="col-md-6">
-                                                                Ganancia: {{ ($payment->workforce * $payment->percent) / 100 }}
+                                                                Ganancia:{{ (json_encode(intval($detalle_pago->original['cotizacion']['workforce'])) * json_encode(intval($detalle_pago->original['tecnico']->percent))) / 100 }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -139,8 +147,8 @@
                                                 @if($payment->state == 0)
                                                     <span class="status--denied">Denegado</span>
                                                 @else
-                                                    <a class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $payment->order_id }}">
-                                                        Revisar Orden
+                                                    <a class="au-btn au-btn--green" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $payment->order_id }}">
+                                                        Ver Orden
                                                     </a>
                                                 @endif
                                             </div>
@@ -155,7 +163,7 @@
                 </div>
                 <!-- END DATA TABLE -->
             </div>
-            {{-- {{ $payments->links() }} --}}
+            {{ $payments->links() }}
         </div>
     </div>
 </div>
