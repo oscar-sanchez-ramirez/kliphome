@@ -53,10 +53,18 @@ class PaymentController extends Controller
                                     $visita = $visitas->filter(function($item) use ($servicio){
                                         return $item->order_id === $servicio->order_id;
                                     })->first();
-                                    if((intval($cotizacion->price) + intval($cotizacion->workforce)) - intval($visita->price) == $servicio->price){
-                                        $servicio["workforce"] = $cotizacion->workforce;
-                                        $servicio["service_price"] = $cotizacion->price;
-                                        array_push($total,$servicio);
+                                    if(!$visita){
+                                        if((intval($cotizacion->price) + intval($cotizacion->workforce)) - 0 == $servicio->price){
+                                            $servicio["workforce"] = $cotizacion->workforce;
+                                            $servicio["service_price"] = $cotizacion->price;
+                                            array_push($total,$servicio);
+                                        }
+                                    }else{
+                                        if((intval($cotizacion->price) + intval($cotizacion->workforce)) - intval($visita->price) == $servicio->price){
+                                            $servicio["workforce"] = $cotizacion->workforce;
+                                            $servicio["service_price"] = $cotizacion->price;
+                                            array_push($total,$servicio);
+                                        }
                                     }
                                     if(intval($cotizacion->price) + intval($cotizacion->workforce) == $servicio->price){
                                         $servicio["workforce"] = $cotizacion->workforce;
