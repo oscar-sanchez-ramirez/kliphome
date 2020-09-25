@@ -102,7 +102,7 @@ class OrderController extends ApiController
                             $this->guardar_pago($order->id,$temp->code_payment,$request->visit_price,"VISITA");
                             $temp->delete();
                         }
-                        if($user->email != "adrimabarak@hotmail.com"){
+                        if($user->email != "adrimabarak@hotmail.com" && $user->email != "germanruelas17@gmail.com"){
                             dispatch(new NotifyNewOrder($order->id,$user->email));
                         }
                         return response()->json([
