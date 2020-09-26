@@ -115,7 +115,7 @@ export default {
         keywords(after, before) {
             this.fetch();
         }
-    },
+    }
 }
 
 </script>

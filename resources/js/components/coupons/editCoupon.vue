@@ -10,6 +10,18 @@
             <v-col cols="12">
                 <v-text-field label="Descuento" v-model="discount"></v-text-field>
             </v-col>
+            <v-col cols="12">
+                <b-form-radio v-model="tipo" name="some-radios" value="Porcentaje">Porcentaje</b-form-radio>
+                <b-form-radio v-model="tipo" name="some-radios" value="Pesos">Pesos</b-form-radio>
+            </v-col>
+            <v-col cols="12">
+                <v-text-field label="Responsable" v-model="keywords"></v-text-field>
+                <ul v-if="results.length > 0">
+                    <span v-for="result in results">
+                        <li  :key="result.id" v-text="result.name+' '+result.lastName" @click="seleccionar_responsable(result.id,result.name,result.lastName)"></li>
+                    </span>
+                </ul>
+            </v-col>
             <v-switch v-model="state" label="Estado"></v-switch>
                 <v-layout justify-center>
                 <v-btn color="warning" dark @click="actualizar_cupon()">Actualizar Cupón</v-btn>
@@ -35,9 +47,15 @@ export default {
     props:{
         coupon:Object
     },mounted(){
+        if(this.coupon.responsable != []){
+            this.keywords = this.coupon.responsable.name+' '+this.coupon.responsable.lastName;
+            this.responsable = this.coupon.responsable.id;
+        }
         this.code = this.coupon.code;
         this.discount = this.coupon.discount;
         this.state = this.coupon.state;
+        this.tipo = this.coupon.type;
+        console.log(this.coupon);
     },
    data() {
     return {
@@ -46,7 +64,11 @@ export default {
       state:true,
       discount:'',
       loader:false,
-      message:''
+      message:'',
+      tipo:'',
+      responsable:null,
+      keywords:null,
+      results:[]
     }
   },methods:{
       abrir_detalle(id){
@@ -59,7 +81,9 @@ export default {
                 formData.append('discount',this.discount);
                 formData.append('state',this.state);
                 formData.append('id',this.coupon.id);
-
+                formData.append('responsable',this.responsable);
+                formData.append('type',this.tipo);
+                console.log(this.state);
               axios.post('/cupones/update',formData).then(response => {
                     if(!response.data.success){
                         this.showError(response.data.message);
@@ -89,8 +113,22 @@ export default {
         setTimeout(() => {
             this.error = false;
         }, 3000);
+      },fetch() {
+            axios.get('/cupones/search', { params: { keywords: this.keywords } })
+                .then((response)=>{
+                     this.results = response.data.users
+                })
+                .catch(error => {});
+        },seleccionar_responsable(id,name,lastName){
+          this.keywords = name+' '+lastName;
+          this.responsable = id;
+          this.results = [];
       }
-  }
+  },watch: {
+        keywords(after, before) {
+            this.fetch();
+        }
+    }
 }
 
 </script>

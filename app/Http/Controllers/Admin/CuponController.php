@@ -27,7 +27,7 @@ class CuponController extends Controller
         return view('admin.cupones.new_coupon');
     }
     public function editar($id){
-        $coupon = AdminCoupon::where('id',$id)->first();
+        $coupon = AdminCoupon::with('responsable')->where('id',$id)->first();
         return view('admin.cupones.edit_coupon')->with('coupon',$coupon);
     }
     public function save(Request $request){
@@ -53,11 +53,13 @@ class CuponController extends Controller
         }
     }
     public function update(Request $request){
-        if($request->state == "true"){$state = 1;}else{$state=0;}
+        if($request->state == "true" || $request->state == 1){$state = 1;}else{$state=0;}
         AdminCoupon::where('id',$request->id)->update([
             'code' => $request->code,
             'discount' => $request->discount,
-            'state' => $state
+            'state' => $state,
+            'type' => $request->type,
+            'responsable' => $request->responsable
         ]);
         return response()->json([
             'success' => true,
