@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use App\AdminCoupon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,14 @@ class CuponController extends Controller
     public function index(){
         $coupons = AdminCoupon::orderBy('id','DESC')->paginate(10);
         return view('admin.cupones.index')->with('coupons',$coupons);
+    }
+    public function search(Request $request){
+        $key = $request->keywords;
+        $users = User::where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('type','AppUser')->where('state',1)->get();
+        return response()->json([
+            'success' => true,
+            'users' => $users
+        ]);
     }
     public function nuevo(){
         return view('admin.cupones.new_coupon');
@@ -34,6 +43,8 @@ class CuponController extends Controller
             $new_coupon->code = $request->code;
             $new_coupon->discount = $request->discount;
             $new_coupon->state = $state;
+            $new_coupon->type = $request->type;
+            $new_coupon->responsable = $request->responsable;
             $new_coupon->save();
             return response()->json([
                 'success' => true,

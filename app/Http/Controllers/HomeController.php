@@ -67,12 +67,6 @@ class HomeController extends Controller
                             $visita = $visitas->filter(function($item) use ($servicio){
                                 return $item->order_id === $servicio->order_id;
                             })->first();
-                            // if(!$visita){
-                            //     $visita = collect(['price'=>0]);
-                            // }
-                            // if(!isset($servicio->price)){
-                            //     $servicio->price = 0;
-                            // }
                             if(!$visita){
                                 if((intval($cotizacion->price) + intval($cotizacion->workforce)) - 0 == $servicio->price){
                                     $servicio["workforce"] = $cotizacion->workforce;
