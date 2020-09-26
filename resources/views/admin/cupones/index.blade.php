@@ -67,7 +67,13 @@
                                             <span class="badge badge-danger">Inactivo</span>
                                             @endif
                                         </td>
-                                        <td>{{ $coupon->discount }}%</td>
+                                        <td>
+                                            @if($coupon->type == 'Porcentaje')
+                                                {{ $coupon->discount }}%
+                                            @else
+                                                ${{ $coupon->discount }}
+                                            @endif
+                                        </td>
                                         <td>
                                             {{ $coupon->count($coupon->code) }}
                                             {{-- @if($coupon->is_charged == "N")
