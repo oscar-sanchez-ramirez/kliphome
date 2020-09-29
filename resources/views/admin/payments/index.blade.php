@@ -120,10 +120,16 @@
                                                         </div>
                                                         <div class="row" id="rowPercent{{ $payment->id }}">
                                                             <div class="col-md-6">
-                                                                Porcentaje de {{ json_encode($detalle_pago->original["tecnico"]->name) }} {{ json_encode($detalle_pago->original["tecnico"]->lastName) }} : {{ json_encode($detalle_pago->original["tecnico"]->percent) }}%
+                                                                Porcentaje de
+                                                                @if($detalle_pago->original["tecnico"] != null)
+                                                                    {{ json_encode($detalle_pago->original["tecnico"]->name ) }} {{ json_encode($detalle_pago->original["tecnico"]->lastName) }} : {{ json_encode($detalle_pago->original["tecnico"]->percent) }}%
+                                                                @endif
                                                             </div>
                                                             <div class="col-md-6">
-                                                                Ganancia:{{ (json_encode(intval($detalle_pago->original['cotizacion']['workforce'])) * json_encode(intval($detalle_pago->original['tecnico']->percent))) / 100 }}
+                                                                @php
+                                                                    if($detalle_pago->original["tecnico"] != null){$percent = json_encode(intval($detalle_pago->original['tecnico']->percent));}else{$percent = 100;}
+                                                                @endphp
+                                                                Ganancia:{{ (json_encode(intval($detalle_pago->original['cotizacion']['workforce'])) * $percent) / 100 }}
                                                             </div>
                                                         </div>
                                                     </div>
