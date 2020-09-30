@@ -7,7 +7,8 @@
         <v-tab href="#tab-3">Pagos</v-tab>
         <v-tab href="#tab-4">Cotizaciones</v-tab>
         <v-tab href="#tab-5">Valoraciones</v-tab>
-        <v-tab href="#tab-6"><i class="fa fa-cog"></i></v-tab>
+        <v-tab href="#tab-6">Comentarios</v-tab>
+        <v-tab href="#tab-7"><i class="fa fa-cog"></i></v-tab>
 
         <v-tab-item value="tab-1">
             <v-card flat tile>
@@ -35,6 +36,11 @@
             </v-card>
         </v-tab-item>
         <v-tab-item value="tab-6">
+            <v-card flat tile>
+                <v-card-text><comments-component :orden="orden"></comments-component></v-card-text>
+            </v-card>
+        </v-tab-item>
+        <v-tab-item value="tab-7">
             <v-card flat tile>
                 <v-card-text><configuration-component :orden="orden"></configuration-component></v-card-text>
             </v-card>
@@ -132,6 +138,26 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model=modal_comment scrollable max-width="760px">
+            <v-card>
+            <v-card-title>
+                <span class="headline">Nuevo Comentario</span>
+            </v-card-title>
+            <v-card-text>
+                    <v-alert dense border="left" type="error" v-model="error">{{ message }}</v-alert>
+                    <v-container>
+                        <v-row>
+                            <v-col>
+                                <v-text-field label="Comentario" v-model="comment.comment"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row align="center">
+                           <v-btn x-large color="success" dark @click="guardar_comentario()">Enviar</v-btn>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+        </v-card>
+        </v-dialog>
       </v-container>
   </v-app>
 
@@ -158,6 +184,7 @@ export default{
       headers: [{text: 'Nombres',value:'full_name'},{text: 'Telefono',value:'phone'},{text:'Categorias',value:'categories'},{text:'Asignar',value:'options'}],
       quotation:{price:'',workforce:'',solution:'',materials:'',warranty_text:'',warranty_num:''},
       payment:{description:'',state:1,price:'',code_payment:'EFECTIVO'},
+      comment:{comment:''},
       error: false,
       garantia:false,
       mostrar_garantia:false,
@@ -190,11 +217,22 @@ export default{
                this.$store.commit('set_modal_payment',value);
             }
         },
+        modal_comment:{
+            get () {
+             return this.$store.state.modal_comment;
+            },
+            set (value) {
+                $('.header-desktop').css('position','fixed');
+               this.$store.commit('set_modal_comment',value);
+            }
+        },
         // modal_list_fixerman(){ return this.$store.state.modal_list_fixerman;},
         fixerman_list(){ return this.$store.state.fixerman_list;}
     },methods:{
         cerrar_modal_fixerman(){
             this.$store.commit('set_modal_list_fixerman',false);
+        },cerrar_modal_comment(){
+            this.$store.commit('set_modal_comment',false);
         },cerrar_modal_quotation(){
             $('.header-desktop').css('position','fixed');
             this.$store.commit('set_modal_quotation',false);
@@ -204,8 +242,7 @@ export default{
         },seleccionar(id){
             axios.post('/tecnicos/asignarTecnico/'+id+'/'+this.orden.id).then(response => {
                     window.location.href = window.location.origin+"/ordenes/detalle-orden/"+this.orden.id;
-            }).catch(error => {
-            });
+            }).catch(error => {});
         },categories(cats){
             let categories = "";
             let categories_f = this.$store.state.categories_list;
@@ -231,6 +268,18 @@ export default{
                 }).catch(error => {
                   this.showError("Hubo un error inesperado, intente más tarde");
                 });
+        },guardar_comentario(){
+            let formData = new FormData();
+            formData.append('comment',this.comment.comment);
+            formData.append('order_id',this.orden.id);
+            axios.post('/ordenes/comments',formData).then(response =>{
+                    if(!response.data.success){
+                        //this.showError("Hubo un error, intente más tarde");
+                    }else{
+                        this.$store.dispatch('comments',this.orden.id);
+                        this.cerrar_modal_comment();
+                    }
+            });
         },enviar_cotizacion(){
             let check = this.validate_quotation();
             if(check){

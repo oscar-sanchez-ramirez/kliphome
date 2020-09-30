@@ -17,3 +17,5 @@ Route::post('cancelOrder/{order_id}','Admin\OrderController@cancelOrder');
 Route::post('markDone/{order_id}','Admin\OrderController@markDone');
 Route::post('cancelarCotizacion/{quotation_id}','Admin\OrderController@cancelarCotizacion');
 Route::post('confimarCotizacion/{quotation_id}','Admin\OrderController@confimarCotizacion');
+
+Route::resource('comments', 'Admin\Order\CommentController');

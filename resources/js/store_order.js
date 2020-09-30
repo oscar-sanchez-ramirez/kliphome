@@ -14,11 +14,13 @@ export default new Vuex.Store({
         modal_list_fixerman:false,
         modal_quotation:false,
         modal_payment:false,
+        modal_comment:false,
         fixerman_list:[],
         categories_list:[],
         quotations:[],
         payments:[],
-        qualifies:[]
+        qualifies:[],
+        comments:[]
     },
     mutations: {
         // Chat
@@ -44,10 +46,14 @@ export default new Vuex.Store({
             state.modal_quotation = val;
         },set_modal_payment(state,val){
             state.modal_payment = val;
+        },set_modal_comment(state,val){
+            state.modal_comment = val;
         },setPayments(state,val){
             state.payments = val;
         },setQualifies(state,val){
             state.qualifies = val;
+        },setComments(state,val){
+            state.comments = val;
         }
 
     },
@@ -101,7 +107,6 @@ export default new Vuex.Store({
           }).catch(error => {
             this.loader = false;
           });
-
     },
     quotations(context,order_id){
         axios.get('/ordenes/cotizaciones/'+order_id).then(response=>{
@@ -113,8 +118,11 @@ export default new Vuex.Store({
         });
     },qualifies(context,order_id){
         axios.get('/ordenes/qualifies/'+order_id).then(response=>{
-            console.log(response);
             context.commit('setQualifies',response.data.qualifies);
+        });
+    },comments(context,order_id){
+        axios.get('/ordenes/comments?order_id='+order_id).then(response=>{
+            context.commit('setComments',response.data.comments);
         });
     }
     },
