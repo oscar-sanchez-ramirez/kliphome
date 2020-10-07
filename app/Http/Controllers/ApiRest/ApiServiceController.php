@@ -6,9 +6,10 @@ namespace App\Http\Controllers\ApiRest;
 
 use DB;
 use App\User;
+use App\Report;
 use App\Address;
-use App\VersionApp;
 use App\Category;
+use App\VersionApp;
 use App\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -190,6 +191,14 @@ class ApiServiceController extends ApiController
                 break;
         }
 
+    }
+    public function report(Request $request){
+        return $request;
+        $reporte = new Report;
+        $reporte->user_id = $request->user_id;
+        $reporte->asunto = $request->asunto;
+        $reporte->detalles = $request->detalles;
+        $reporte->save();
     }
 
 }

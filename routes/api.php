@@ -44,6 +44,7 @@ Route::post('newAddress','ApiRest\RegisterController@newAddress');
 Route::post('verifyemail','ApiRest\RegisterController@verifyemail');
 Route::post('verifyphone','ApiRest\RegisterController@verifyphone');
 Route::post('check_social_account','ApiRest\RegisterController@check_social_account');
+Route::post('report','ApiRest\ApiServiceController@report');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
