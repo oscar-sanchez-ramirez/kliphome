@@ -21,9 +21,15 @@
             <div class="col-md-12">
                 <!-- DATA TABLE -->
                 <div class="table-data__tool">
-                    <div class="table-data__tool-right">
+                    <div class="table-data__tool-left">
                         <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green au-btn--small">
                             <i class="zmdi zmdi-chart"></i></button>
+                            <div class="rs-select2--light">
+                                <form class="form-header" action="" method="POST">
+                                    <input class="au-input au-input--xl" type="text" name="search" id="search_cliente" placeholder="Buscar cliente...">
+                                </form>
+                            </div>
+
                     </div>
                 </div>
                 <div class="chart" style="display: none">
@@ -93,7 +99,7 @@
                                     <th>Fecha Registro</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tbodyModal">
                                 @php
                                     $current = ($users->currentPage() *10) -9;
                                     $i = $current;

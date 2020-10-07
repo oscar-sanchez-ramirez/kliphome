@@ -30,6 +30,22 @@ class UserController extends Controller
             return view('admin.users.index',compact('users','monthlysales'));
         }
     }
+    public function busqueda(Request $request){
+        $key = $request->keywords;
+        $users = User::where('type','AppUser')->where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('state',1)->get();
+        return response()->json([
+            'success' => true,
+            'users' => $users
+        ]);
+    }
+    public function busqueda_tecnico(Request $request){
+        $key = $request->keywords;
+        $users = User::where('type','AppFixerMan')->where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->get();
+        return response()->json([
+            'success' => true,
+            'users' => $users
+        ]);
+    }
     private function cast_date($users){
         $months = [];
         for ($i=0; $i < count($users); $i++) {

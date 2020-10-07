@@ -389,6 +389,9 @@
     @if(Request::is('ordenes/detalle-orden/*') || Request::is('ordenes'))
         <script src="{{ url('') }}/vendor/order/order.js"></script>
     @endif
+    @if(Request::is('clientes') || Request::is('tecnicos'))
+        <script src="{{ url('') }}/vendor/custom.js"></script>
+    @endif
     <!-- Bootstrap JS-->
     <script src="{{ url('') }}/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="{{ url('') }}/vendor/bootstrap-4.1/bootstrap.min.js"></script>
