@@ -20,6 +20,7 @@ class CreateReportsTable extends Migration
             $table->string('asunto');
             $table->longText('detalles');
             $table->string('estado')->default('PENDIENTE');
+            $table->string('imagen')->nullable();
             $table->timestamps();
         });
     }

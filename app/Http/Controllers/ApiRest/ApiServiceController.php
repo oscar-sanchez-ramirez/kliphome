@@ -198,6 +198,7 @@ class ApiServiceController extends ApiController
             $reporte->user_id = $request->user_id;
             $reporte->asunto = $request->asunto;
             $reporte->detalles = $request->detalles;
+            $reporte->imagen = $request->imagen;
             $reporte->save();
             return response()->json([
                 'success' => true
