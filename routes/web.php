@@ -25,6 +25,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('admin', 'HomeController@admin')->middleware('auth','checkadmin');
 
 Route::resource('categorias', 'CategoryController');
+Route::resource('reportes', 'Admin\ReporteController');
 Route::resource('servicios', 'ServiceController');
 Route::resource('sub-categorias', 'SubCategoryController',['except' => ['show']]);
 

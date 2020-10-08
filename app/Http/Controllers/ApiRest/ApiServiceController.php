@@ -193,14 +193,20 @@ class ApiServiceController extends ApiController
 
     }
     public function report(Request $request){
-        $reporte = new Report;
-        $reporte->user_id = $request->user_id;
-        $reporte->asunto = $request->asunto;
-        $reporte->detalles = $request->detalles;
-        $reporte->save();
-        return response()->json([
-            'success' => true
-        ]);
+        try {
+            $reporte = new Report;
+            $reporte->user_id = $request->user_id;
+            $reporte->asunto = $request->asunto;
+            $reporte->detalles = $request->detalles;
+            $reporte->save();
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false
+            ]);
+        }
     }
 
 }

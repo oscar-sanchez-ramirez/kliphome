@@ -158,6 +158,10 @@
                             <a href="{{ url('') }}/notificaciones-push">
                                 <i class="fa fa-bell"></i>Notificaciones Push</a>
                         </li>
+                        <li class="{{ active_menu('reportes')}}">
+                            <a href="{{ url('') }}/reportes">
+                                <i class="fa fa-file-code-o"></i>Reportes</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
