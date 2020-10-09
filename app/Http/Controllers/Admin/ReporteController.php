@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
 use App\Report;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,8 +14,16 @@ class ReporteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->filled('notification_id')){
+            $carbon = new \Carbon\Carbon();
+            $date = $carbon->now();
+            DB::table('notifications')->where('id',$request->notification_id)->update([
+                'read_at' => $date = $carbon->now()
+            ]);
+        }
+
         $reportes = Report::with('user')->orderBy('id',"DESC")->paginate(10);
         return view('admin.reportes.index',compact('reportes'));
     }

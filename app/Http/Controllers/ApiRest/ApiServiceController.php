@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ServiceCollection;
+use App\Notifications\Admin\Report as ReportNotification;
 
 class ApiServiceController extends ApiController
 {
@@ -200,6 +201,8 @@ class ApiServiceController extends ApiController
             $reporte->detalles = $request->detalles;
             $reporte->imagen = $request->imagen;
             $reporte->save();
+            $client = User::where('type',"ADMINISTRATOR")->first();
+            $client->notify(new ReportNotification($reporte));
             return response()->json([
                 'success' => true
             ]);

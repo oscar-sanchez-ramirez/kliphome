@@ -308,6 +308,21 @@
                                                         </div>
                                                     </div>
                                                 @endif
+                                                @if($notification->type == "App\Notifications\Admin\Report")
+                                                    <div class="notifi__item" onclick="javascript:document.getElementById('NewReport{{ $notification->id }}').submit();">
+                                                        <div class="bg-c1 img-cir img-40">
+                                                            <i class="fa fa-wrench"></i>
+                                                        </div>
+                                                        <div class="content">
+                                                            <p>Recibiste un nuevo mensaje</p>
+                                                            <form action="{{ url('') }}/reportes" id="NewReport{{ $notification->id }}">
+                                                                <input type="hidden" name="notification_id" value="{{ $notification->id }}">
+x                                                                <button type="submit">Ver</button>
+                                                            </form>
+                                                            <span class="date">{{ $notification->created_at->diffForHumans() }}</span>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             @endforeach
                                             <div class="notifi__footer">
                                                 <a href="{{ url('') }}/notificaciones">Todas las Notificaciones</a>
