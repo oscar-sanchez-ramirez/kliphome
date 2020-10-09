@@ -314,7 +314,7 @@
                                                             <i class="fa fa-wrench"></i>
                                                         </div>
                                                         <div class="content">
-                                                            <p>Recibiste un nuevo mensaje</p>
+                                                            <p>Tienes un nuevo reporte desde la aplicación</p>
                                                             <form action="{{ url('') }}/reportes" id="NewReport{{ $notification->id }}">
                                                                 <input type="hidden" name="notification_id" value="{{ $notification->id }}">
 x                                                                <button type="submit">Ver</button>
