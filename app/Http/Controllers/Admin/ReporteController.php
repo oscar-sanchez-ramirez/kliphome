@@ -80,7 +80,10 @@ class ReporteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Report::where('id',$id)->update([
+            'estado' => "RESUELTO"
+        ]);
+        return back();
     }
 
     /**
@@ -91,6 +94,7 @@ class ReporteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Report::where('id',$id)->delete();
+        return back();
     }
 }

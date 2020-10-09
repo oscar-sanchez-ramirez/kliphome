@@ -21,6 +21,7 @@
                                     <th>Detalles</th>
                                     <th>Estado</th>
                                     <th>Fecha Registro</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody class="tbodyModal">
@@ -36,6 +37,16 @@
                                         <td>{{ $reporte->detalles }}</td>
                                         <td>{{ $reporte->estado }}</td>
                                         <td>{{ $reporte->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            <div class="table-data-feature">
+                                                @if($reporte->estado != 'RESUELTO')
+                                                <button class="item editar" type="button" data-id="{{ $reporte->id }}"><i data-toggle="tooltip" data-placement="top" class="zmdi zmdi-check"></i></button>
+                                                <form id="form-editar{{ $reporte->id }}" action="{{ url('') }}/reportes/{{ $reporte->id }}" method="POST">@csrf @method('PATCH')</form>
+                                                @endif
+                                                <button class="item eliminar" type="button" data-id="{{ $reporte->id }}"><i data-toggle="tooltip" data-placement="top" class="zmdi zmdi-delete"></i></button>
+                                                <form id="form-eliminar{{ $reporte->id }}" action="{{ url('') }}/reportes/{{ $reporte->id }}" method="POST">@csrf @method('DELETE')</form>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="spacer"></tr>
                                 @endforeach

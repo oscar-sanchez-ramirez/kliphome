@@ -43,3 +43,39 @@ $(document).on('keypress','#search_tecnico',function(){
         }
     });
 });
+$(document).ready(function(){
+    $(".eliminar").click(function(e) {
+        let id = $( this ).attr( "data-id" );
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertirlo!",
+            icon: "warning",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: "Sí, ¡Borrar!",
+            cancelButtonText:"Cancelar",
+        }).then(function(result) {
+            if (result.value) {
+                $("#form-eliminar"+id).submit();
+            }
+        });
+    });
+});
+$(document).ready(function(){
+    $(".editar").click(function(e) {
+        let id = $( this ).attr( "data-id" );
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertirlo!",
+            icon: "success",
+            type: 'success',
+            showCancelButton: true,
+            confirmButtonText: "Sí, ¡Marcar como resuelto!",
+            cancelButtonText:"Cancelar",
+        }).then(function(result) {
+            if (result.value) {
+                $("#form-editar"+id).submit();
+            }
+        });
+    });
+});

@@ -31,6 +31,7 @@
     <link href="{{ url('') }}/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="{{ url('') }}/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="{{ url('') }}/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.css">
 
     <!-- Main CSS-->
     <link href="{{ url('') }}/css/theme.css" rel="stylesheet" media="all">
@@ -408,7 +409,7 @@ x                                                                <button type="s
     @if(Request::is('ordenes/detalle-orden/*') || Request::is('ordenes'))
         <script src="{{ url('') }}/vendor/order/order.js"></script>
     @endif
-    @if(Request::is('clientes') || Request::is('tecnicos'))
+    @if(Request::is('clientes') || Request::is('tecnicos') || Request::is('reportes'))
         <script src="{{ url('') }}/vendor/custom.js"></script>
     @endif
     <!-- Bootstrap JS-->
@@ -428,6 +429,7 @@ x                                                                <button type="s
     <script src="{{ url('') }}/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="{{ url('') }}/vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="{{ url('') }}/vendor/select2/select2.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.js"></script>
     <!-- Main JS-->
     <script src="{{ url('') }}/js/main.js"></script>
     @if(Request::is('pagos/pagos-fecha'))
