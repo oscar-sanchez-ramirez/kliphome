@@ -25,17 +25,17 @@
                             </thead>
                             <tbody class="tbodyModal">
                                 @php
-                                    $current = ($users->currentPage() *10) -9;
+                                    $current = ($reportes->currentPage() *10) -9;
                                     $i = $current;
                                 @endphp
                                 @foreach ($reportes as $reporte)
                                     <tr class="tr-shadow">
                                         <td>{{$i++}}</td>
-                                        <td>{{ $reporte->user->name }} {{ $user->user->lastName }}</td>
-                                        <td>{{ $user->asunto }}</td>
-                                        <td>{{ $user->detalles }}</td>
-                                        <td>{{ $user->estado }}</td>
-                                        <td>{{ $user->created_at->diffForHumans() }}</td>
+                                        <td>{{ $reporte->user->name }} {{ $reporte->user->lastName }}</td>
+                                        <td>{{ $reporte->asunto }}</td>
+                                        <td>{{ $reporte->detalles }}</td>
+                                        <td>{{ $reporte->estado }}</td>
+                                        <td>{{ $reporte->created_at->diffForHumans() }}</td>
                                     </tr>
                                     <tr class="spacer"></tr>
                                 @endforeach

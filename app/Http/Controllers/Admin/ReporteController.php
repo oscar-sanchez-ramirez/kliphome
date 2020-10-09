@@ -15,7 +15,7 @@ class ReporteController extends Controller
      */
     public function index()
     {
-        $reportes = Report::with('user')->orderBy('id',"DESC")->get();
+        $reportes = Report::with('user')->orderBy('id',"DESC")->paginate(10);
         return view('admin.reportes.index',compact('reportes'));
     }
 
