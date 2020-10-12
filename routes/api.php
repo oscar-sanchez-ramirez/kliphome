@@ -81,6 +81,7 @@ Route::post('qualifyService','ApiRest\FixerManController@qualifyService');
 Route::get('fixerManorderDetail/{order_id}','ApiRest\FixerManController@fixerManorderDetail');
 Route::get('clientorderDetail/{order_id}','ApiRest\FixerManController@clientorderDetail');
 Route::post('requirequotation','ApiRest\FixerManController@requirequotation');
+Route::post('fixerman/gallery','ApiRest\FixerManController@gallery');
 
 //Client**
 Route::get('historyOrders/{id}','ApiRest\ClientController@historyOrders');

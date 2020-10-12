@@ -20,6 +20,7 @@ use App\TempPayment;
 use App\FixermanStat;
 use App\ConfigSystem;
 use App\SelectedOrders;
+use App\FixermanGallery;
 use App\SelectedDelegation;
 use App\SelectedCategories;
 use App\Notifications\NewFixerMan;
@@ -710,6 +711,7 @@ class FixerManController extends ApiController
                 break;
         }
     }
+
     private function guardar_pago($order_id,$code_payment,$visit_price,$descripcion){
         $payment = new Payment;
         $payment->order_id = $order_id;
@@ -718,6 +720,17 @@ class FixerManController extends ApiController
         $payment->state = true;
         $payment->price = $visit_price;
         $payment->save();
+    }
+
+    public function gallery(Request $request){
+        $gallery = new FixermanGallery;
+        $gallery->user_id = $request->user_id;
+        $gallery->path = $request->path;
+        $gallery->type = $request->type;
+        $gallery->save();
+        return response()->json([
+            'success' => true
+          ]);
     }
 
 }
