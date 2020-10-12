@@ -19,6 +19,7 @@
                                     <th>Nombres</th>
                                     <th>Asunto</th>
                                     <th>Detalles</th>
+                                    <th>Imagen</th>
                                     <th>Estado</th>
                                     <th>Fecha Registro</th>
                                     <th></th>
@@ -35,13 +36,20 @@
                                         <td>{{ $reporte->user->name }} {{ $reporte->user->lastName }}</td>
                                         <td>{{ $reporte->asunto }}</td>
                                         <td>{{ $reporte->detalles }}</td>
+                                        <td>
+                                            @if($reporte->imagen != "")
+                                                <img src="{{ $reporte->imagen }}" height="100px">
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </td>
                                         <td>{{ $reporte->estado }}</td>
                                         <td>{{ $reporte->created_at->diffForHumans() }}</td>
                                         <td>
                                             <div class="table-data-feature">
                                                 @if($reporte->estado != 'RESUELTO')
-                                                <button class="item editar" type="button" data-id="{{ $reporte->id }}"><i data-toggle="tooltip" data-placement="top" class="zmdi zmdi-check"></i></button>
-                                                <form id="form-editar{{ $reporte->id }}" action="{{ url('') }}/reportes/{{ $reporte->id }}" method="POST">@csrf @method('PATCH')</form>
+                                                    <button class="item editar" type="button" data-id="{{ $reporte->id }}"><i data-toggle="tooltip" data-placement="top" class="zmdi zmdi-check"></i></button>
+                                                    <form id="form-editar{{ $reporte->id }}" action="{{ url('') }}/reportes/{{ $reporte->id }}" method="POST">@csrf @method('PATCH')</form>
                                                 @endif
                                                 <button class="item eliminar" type="button" data-id="{{ $reporte->id }}"><i data-toggle="tooltip" data-placement="top" class="zmdi zmdi-delete"></i></button>
                                                 <form id="form-eliminar{{ $reporte->id }}" action="{{ url('') }}/reportes/{{ $reporte->id }}" method="POST">@csrf @method('DELETE')</form>
