@@ -114,4 +114,7 @@ class User extends Authenticatable
     public function stats(){
         return $this->hasOne(FixermanStat::class);
     }
+    public function gallery(){
+        return $this->hasMany(FixermanGallery::class, 'user_id')->orderBy('created_at', 'asc');
+    }
 }

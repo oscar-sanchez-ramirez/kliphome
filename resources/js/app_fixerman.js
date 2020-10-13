@@ -19,6 +19,7 @@ Vue.component('categories-component', require('./components/fixerman/categories.
 Vue.component('reviews-component', require('./components/fixerman/reviews.vue').default);
 Vue.component('payments-component', require('./components/fixerman/payments.vue').default);
 Vue.component('info-component', require('./components/fixerman/info.vue').default);
+Vue.component('images-component', require('./components/fixerman/images.vue').default);
 
 const app = new Vue({
     el: '#app',

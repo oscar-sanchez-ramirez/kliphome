@@ -8,6 +8,7 @@
     <v-tab href="#tab-4">Calificaciones</v-tab>
     <v-tab href="#tab-5">Pagos</v-tab>
     <v-tab href="#tab-6">Datos</v-tab>
+    <v-tab href="#tab-7">Imagenes</v-tab>
     <v-tab-item value="tab-1">
         <v-card flat tile>
             <calendar-component :fixerman="fixerman"></calendar-component>
@@ -36,6 +37,11 @@
      <v-tab-item value="tab-6">
         <v-card flat tile>
             <v-card-text><info-component :fixerman="fixerman"></info-component></v-card-text>
+        </v-card>
+    </v-tab-item>
+    <v-tab-item value="tab-7">
+        <v-card flat tile>
+            <v-card-text><images-component :fixerman="fixerman"></images-component></v-card-text>
         </v-card>
     </v-tab-item>
   </v-tabs>

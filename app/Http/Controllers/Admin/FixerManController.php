@@ -72,7 +72,7 @@ class FixerManController extends Controller
     }
 
     public function detail1($id){
-        $fixerman = User::where('id',$id)->first();
+        $fixerman = User::where('id',$id)->with('gallery')->first();
         $ficha = json_encode(DB::table('fixerman_stats')->where('user_id',$id)->first());
         $delegation = DB::table('selected_delegations')->select('municipio as title','postal_code')->where('user_id',$id)->get();
         $categories = DB::table('selected_categories as s')->join('categories as c','c.id','s.category_id')->select('s.id','c.id as category_id','c.title')->where('s.user_id',$id)->get();
