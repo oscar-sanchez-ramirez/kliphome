@@ -74,7 +74,7 @@
                                 </div>
                         </div>
                         <br>
-                        <label><input type="checkbox" id="guardar_tarjeta" value="false"> Guardar Tarjeta</label><br>
+                        {{-- <label><input type="checkbox" id="guardar_tarjeta" value="false"> Guardar Tarjeta</label><br> --}}
                         <br>
                         <div class="row">
                                 <div class="col-md-12" style="text-align:center;">
