@@ -350,6 +350,9 @@ class OrderController extends Controller
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereIn('id',$fixerman)->orderBy('id','DESC')->get();
             case 'tecnico_llego':
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('fixerman_arrive',"SI")->orderBy('id','DESC')->get();
+            case 'contizacion_pendiente':
+                $quotations = Quotation::where('state',0)->pluck('order_id');
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereIn('id',$quotations)->orderBy('id','DESC')->get();
             case 'cotizacion_pagada':
                 $quotations = Quotation::where('state',1)->pluck('order_id');
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereIn('id',$quotations)->orderBy('id','DESC')->get();
