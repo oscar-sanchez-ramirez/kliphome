@@ -168,6 +168,7 @@ return [
         Sentry\Laravel\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Nexmo\Laravel\NexmoServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -236,6 +237,7 @@ return [
         'Sentry' => Sentry\Laravel\Facade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Nexmo' => Nexmo\Laravel\Facade\Nexmo::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

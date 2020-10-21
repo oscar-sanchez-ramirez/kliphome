@@ -6,7 +6,9 @@ use DB;
 use App\User;
 use App\Order;
 use Illuminate\Http\Request;
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -63,6 +65,13 @@ class UserController extends Controller
             }
         }
         return $months;
+    }
+
+    public function export(Request $request){
+        if($request->filtro == ''){
+            return back();
+        }
+        return Excel::download(new UsersExport($request->filtro), 'usuarios.xlsx');
     }
 
     private function filtro($key){

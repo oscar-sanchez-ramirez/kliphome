@@ -163,6 +163,12 @@ function calculatePercent(id,num){
     console.log(result);
 }
 
+function export_excel(key){
+    console.log(key);
+    var url = window.location.origin+"/clientes/export?filtro="+key;
+    window.location.href = url;
+}
+
 $( "#filter_users" ).change(function() {
     let key = $("#filter_users").val();
     var url = window.location.origin+"/clientes?filtro="+key;

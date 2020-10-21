@@ -25,12 +25,12 @@
                         <div class="rs-select2--light rs-select2--md">
                             <select class="js-select2" name="property" id="filter_users">
                                 <option selected="selected" value="all">Filtros</option>
-                                <option value="todos">Todos</option>
                                 <option value="con_orden">Con Órdenes</option>
                                 <option value="sin_orden">Sin Órdenes</option>
                             </select>
                             <div class="dropDownSelect2"></div>
                         </div>
+                        <button onclick="export_excel('{{ Request::get('filtro') }}')" class="au-btn au-btn-icon au-btn--green"><i class="zmdi zmdi-file-text"></i></button>
                     </div>
                     <div class="table-data__tool-left">
                         <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green au-btn--small">
