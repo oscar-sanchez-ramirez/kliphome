@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use DB;
 use App\User;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -25,8 +26,12 @@ class UserController extends Controller
                 return $users;
             }
         }else{
+            if($request->filled('filtro')){
+                $users = $this->filtro($request->filtro);
+            }else{
+                $users = User::where('type','AppUser')->orderBy('id',"DESC")->paginate(10);
+            }
             $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))->where('type','AppUser')->groupBy('dates')->orderBy('dates','asc')->get());
-            $users = User::where('type','AppUser')->orderBy('id',"DESC")->paginate(10);
             return view('admin.users.index',compact('users','monthlysales'));
         }
     }
@@ -58,5 +63,21 @@ class UserController extends Controller
             }
         }
         return $months;
+    }
+
+    private function filtro($key){
+        switch ($key) {
+            case 'con_orden':
+                $usuarios = Order::pluck('user_id');
+                return User::where('type','AppUser')->whereIn('id',$usuarios)->orderBy('id',"DESC")->get();
+            case 'sin_orden':
+                $usuarios = Order::pluck('user_id');
+                return User::where('type','AppUser')->whereNotIn('id',$usuarios)->orderBy('id',"DESC")->get();
+            case 'todos':
+                return User::where('type','AppUser')->orderBy('id',"DESC")->paginate(10);
+            default:
+                # code...
+                break;
+        }
     }
 }

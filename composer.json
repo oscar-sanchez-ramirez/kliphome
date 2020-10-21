@@ -11,6 +11,7 @@
         "php": "^7.1.3",
         "barryvdh/laravel-cors": "^0.11.4",
         "berkayk/onesignal-laravel": "^1.0",
+        "conekta/conekta-php": "4.2.0",
         "fideloper/proxy": "^4.0",
         "firebase/php-jwt": "^5.0",
         "guzzlehttp/guzzle": "^6.4",
@@ -30,6 +31,7 @@
         "laravel/socialite": "^4.4",
         "laravel/tinker": "^1.0",
         "league/oauth2-server": "^7.3",
+        "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.26.0",
         "nexmo/laravel": "^2.2",
         "norkunas/onesignal-php-api": "^1.14",
@@ -41,8 +43,7 @@
         "sentry/sentry-laravel": "1.8.0",
         "stripe/stripe-php": "^7.20",
         "symfony/psr-http-message-bridge": "~1.0",
-        "zendframework/zend-diactoros": "~1.0",
-        "conekta/conekta-php": "4.2.0"
+        "zendframework/zend-diactoros": "~1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -22,6 +22,17 @@
                 <!-- DATA TABLE -->
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
+                        <div class="rs-select2--light rs-select2--md">
+                            <select class="js-select2" name="property" id="filter_users">
+                                <option selected="selected" value="all">Filtros</option>
+                                <option value="todos">Todos</option>
+                                <option value="con_orden">Con Órdenes</option>
+                                <option value="sin_orden">Sin Órdenes</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </div>
+                    <div class="table-data__tool-left">
                         <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green au-btn--small">
                             <i class="zmdi zmdi-chart"></i></button>
                             <div class="rs-select2--light">
@@ -100,10 +111,14 @@
                                 </tr>
                             </thead>
                             <tbody class="tbodyModal">
-                                @php
-                                    $current = ($users->currentPage() *10) -9;
-                                    $i = $current;
-                                @endphp
+                                @if(Request::get('filtro') == '' || Request::get('filtro') == 'todos')
+                                    @php
+                                        $current = ($users->currentPage() *10) -9;
+                                        $i = $current;
+                                    @endphp
+                                @else
+                                    @php $i = 1 @endphp
+                                @endif
                                 @foreach ($users as $user)
                                     <tr class="tr-shadow">
                                         <td>{{$i++}}</td>
@@ -116,7 +131,10 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $users->links() }}
+                        @if(Request::get('filtro') == '' || Request::get('filtro') == 'todos')
+                            {{ $users->links() }}
+                        @endif
+
                     @endif
                 </div>
                 <!-- END DATA TABLE -->

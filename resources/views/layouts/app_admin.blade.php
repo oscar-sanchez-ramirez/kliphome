@@ -403,7 +403,7 @@ x                                                                <button type="s
     @if(Request::is('servicios'))
         <script src="{{ url('') }}/vendor/services/subservices.js"></script>
     @endif
-    @if(Request::is('tecnicos'))
+    @if(Request::is('tecnicos') || Request::is('clientes'))
         <script src="{{ url('') }}/vendor/fixerman/fixerman.js"></script>
     @endif
     @if(Request::is('ordenes/detalle-orden/*') || Request::is('ordenes'))

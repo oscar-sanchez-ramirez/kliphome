@@ -162,3 +162,9 @@ function calculatePercent(id,num){
     $("#rowPercent"+id).after("<b>El monto es: </b>"+result);
     console.log(result);
 }
+
+$( "#filter_users" ).change(function() {
+    let key = $("#filter_users").val();
+    var url = window.location.origin+"/clientes?filtro="+key;
+    window.location.href = url;
+  });
