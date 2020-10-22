@@ -113,7 +113,10 @@ class RegisterController extends ApiController
     }
 
     public function verifyphone(Request $request){
-        $num = (string)($request->phone);
+        // $num = (string)($request->phone);
+        $num = substr((string)($request->phone), 2);
+        $num = '521'.$num;
+
         // $sub = substr($num,0,1);
         // if($sub != "+"){
         //     $num = '+'.$num;
