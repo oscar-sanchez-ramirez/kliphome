@@ -27,6 +27,8 @@
                                 <option selected="selected" value="all">Filtros</option>
                                 <option value="con_orden">Con Órdenes</option>
                                 <option value="sin_orden">Sin Órdenes</option>
+                                <option value="sin_orden">Órdenes sin Cotización</option>
+                                <option value="sin_orden">Órdenes con Cotización</option>
                             </select>
                             <div class="dropDownSelect2"></div>
                         </div>

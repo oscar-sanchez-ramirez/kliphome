@@ -44,7 +44,13 @@
                             </select>
                             <div class="dropDownSelect2"></div>
                         </div>
-                        <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green"><i class="zmdi zmdi-chart"></i></button>
+                        <div class="rs-select2--light">
+                            <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" id="search_cliente_orden" placeholder="Buscar cliente...">
+                            </form>
+                        </div>
+                        <button onclick="show_chart()" class="au-btn au-btn--green"><i class="zmdi zmdi-chart"></i></button>
+                        <button onclick="export_excel('{{ Request::get('filtro') }}')" class="au-btn au-btn-icon au-btn--green"><i class="zmdi zmdi-file-text"></i></button>
                     </div>
                     <div class="table-data__tool-right">
                         <a href="{{ url('') }}/ordenes/nueva-orden" class="au-btn au-btn-icon au-btn--green">
@@ -114,14 +120,14 @@
                             <thead>
                                 <tr>
 
-                                    <th>Client</th>
+                                    <th>Cliente</th>
                                     <th>Categoría</th>
                                     <th>Fecha Registro</th>
                                     <th>Estado</th>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tabla_order">
                                 @foreach ($ordenes as $orden)
                                     <tr class="tr-shadow">
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>

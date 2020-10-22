@@ -21,7 +21,6 @@ class UsersExport implements FromCollection
 
     public function collection()
     {
-        Log::notice($this->key);
         switch ($this->key) {
             case 'con_orden':
                 $usuarios = Order::pluck('user_id');

@@ -16,10 +16,12 @@ use App\FixermanStat;
 use Carbon\Carbon;
 use App\AdminCoupon;
 use App\SelectedOrders;
+use App\Exports\OrdersExport;
 use Illuminate\Http\Request;
 use App\Jobs\ApproveOrderFixerMan;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\DisapproveOrderFixerMan;
 use App\Notifications\Database\CancelOrder;
 use App\Notifications\Database\FinishedOrder;
@@ -207,6 +209,7 @@ class OrderController extends Controller
         $user = User::where('id',$order->user_id)->first();
         $user->notify(new CancelOrder($order,$user->email));
     }
+
     public function qualifies($id){
         $qualifies = DB::table('orders as o')->join('selected_orders as so','so.order_id','o.id')->join('qualifies as q','q.selected_order_id','so.id')->select('q.*')->where('o.id',$id)->get();
         // Qualify::where('selected_order_id')->get();
@@ -214,6 +217,7 @@ class OrderController extends Controller
             'qualifies' => $qualifies
           ]);
     }
+
     public function markDone($id){
         $order_id = $id;
         //Get User and Order
@@ -249,6 +253,7 @@ class OrderController extends Controller
             FixermanStat::where('user_id',$check_fixerman[0]->id)->increment('completed');
         }
     }
+
     public function check(){
         $hoy = Carbon::now()->format('Y/m/d');
         $orders = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','s.user_id','u.id')
@@ -258,6 +263,7 @@ class OrderController extends Controller
 
         return $orders;
     }
+
     public function cupon($coupon_code){
         $coupon = User::where('code',$coupon_code)->first();
         if(!empty($coupon)){
@@ -272,39 +278,19 @@ class OrderController extends Controller
             ]);
         }
     }
-    public function getService($type,$id){
-        switch ($type) {
-            case 'Category':
-                $category = DB::table('categories')->select('title as category')->where('id',$id)->get();
-                return $category[0]->category;
-                break;
-            case 'SubCategory':
-                $category  = DB::table('sub_categories as su')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category')->where('su.id',$id)->get();
-                return $category[0]->category.'/'.$category[0]->sub_category;
-                break;
-            case 'Service':
-                $category = DB::table('services as se')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('se.title as service','ca.title as category','su.title as sub_category')->where('se.id',$id)->get();
-                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->service;
-                break;
-            case 'SubService':
-                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category','subse.title as service','se.title as serviceTrait')->where('subse.id',$id)->get();
-                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->serviceTrait.'/'.$category[0]->service;
-                break;
-            default:
-                # code...
-                break;
-        }
-    }
+
     public function cotizaciones($order_id){
         $quotations = Quotation::where('order_id',$order_id)->get();
         return response()->json([
             'quotations' => $quotations
         ]);
     }
+
     public function nueva_orden(){
         $categories = Category::all();
         return view('admin.orders.create')->with('categories',$categories);
     }
+
     public function store(Request $request){
         try {
             if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
@@ -330,6 +316,7 @@ class OrderController extends Controller
             ]);
         }
     }
+
     public function nuevo_pago(Request $request,$id){
         $payment = new Payment;
         $payment->order_id = $id;
@@ -341,6 +328,21 @@ class OrderController extends Controller
         return response()->json([
             'success' => true,
             'payment' => $payment
+        ]);
+    }
+
+    public function busqueda(Request $request){
+        $key = $request->keywords;
+        $orders = DB::table('users as u')->join('orders as o','o.user_id','u.id')
+        ->where('u.name','LIKE','%'.$key.'%')->orWhere('u.lastName','LIKE','%'.$key.'%')->where('u.state',1)->get();
+
+        foreach ($orders as $key => $order) {
+            $order->categoria = $this->getCategory($order->type_service,$order->selected_id);
+            $order->stateicon = $this->getState($order);
+        }
+        return response()->json([
+            'success' => true,
+            'orders' => $orders
         ]);
     }
     private function filtro($key){
@@ -369,5 +371,72 @@ class OrderController extends Controller
                 # code...
                 break;
         }
+    }
+
+    public function getService($type,$id){
+        switch ($type) {
+            case 'Category':
+                $category = DB::table('categories')->select('title as category')->where('id',$id)->get();
+                return $category[0]->category;
+                break;
+            case 'SubCategory':
+                $category  = DB::table('sub_categories as su')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category')->where('su.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category;
+                break;
+            case 'Service':
+                $category = DB::table('services as se')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('se.title as service','ca.title as category','su.title as sub_category')->where('se.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->service;
+                break;
+            case 'SubService':
+                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category','subse.title as service','se.title as serviceTrait')->where('subse.id',$id)->get();
+                return $category[0]->category.'/'.$category[0]->sub_category.'/'.$category[0]->serviceTrait.'/'.$category[0]->service;
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function getCategory($type,$id){
+        switch ($type) {
+            case 'Category':
+                $category = DB::table('categories')->select('title as category')->where('id',$id)->get();
+                return $category[0]->category;
+                break;
+            case 'SubCategory':
+                $category  = DB::table('sub_categories as su')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category')->where('su.id',$id)->get();
+                return $category[0]->category;
+                break;
+            case 'Service':
+                $category = DB::table('services as se')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('se.title as service','ca.title as category','su.title as sub_category')->where('se.id',$id)->get();
+                return $category[0]->category;
+                break;
+            case 'SubService':
+                $category = DB::table('sub_services as subse')->join('services as se','se.id','subse.service_id')->join('sub_categories as su','se.subcategory_id','su.id')->join('categories as ca','su.category_id','ca.id')->select('ca.title as category','su.title as sub_category','subse.title as service','se.title as serviceTrait')->where('subse.id',$id)->get();
+                return $category[0]->category;
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function export(Request $request){
+        if($request->filtro == ''){
+            return back();
+        }
+        return Excel::download(new OrdersExport($request->filtro), 'ordenes.xlsx');
+    }
+
+    public function getState($order){
+        $fixerman = SelectedOrders::where('order_id',$order->id)->where('state',1)->first();
+        if($fixerman){$fixerman = "success";}else{$fixerman = "secondary";}
+        $quotation = Quotation::where('order_id',$order->id)->orderBy('id','DESC')->first();
+        if($quotation){if($quotation->state == 0){$quotation = "warning";}else if($quotation->state == 1){$quotation = "success";}else if($quotation->state == 2){$quotation = "danger";}}else{$quotation = "secondary";}
+        if($order->fixerman_arrive === 'SI'){$arrive = '<i class="zmdi zmdi-badge-check" id="success"></i>';}else{$arrive = '<i class="zmdi zmdi-badge-check" id="secondary"></i>';}
+        if($order->state === 'FIXERMAN_DONE' || $order->state === 'QUALIFIED'){$done = '<i class="zmdi zmdi-badge-check" id="success"></i>';}else{$done = '<i class="zmdi zmdi-badge-check" id="secondary"></i>';}
+        if($order->state === 'QUALIFIED'){$qualify = '<i class="zmdi zmdi-badge-check" id="success"></i>';}else{$qualify = '<i class="zmdi zmdi-badge-check" id="secondary"></i>';}
+
+        return '<i class="zmdi zmdi-badge-check" id="'.$fixerman.'"></i>&nbsp;'.$arrive.'&nbsp;'.'<i class="zmdi zmdi-badge-check" id="'.$quotation.'"></i>&nbsp;'.$done.'&nbsp;'.$qualify;
     }
 }

@@ -164,7 +164,6 @@ function calculatePercent(id,num){
 }
 
 function export_excel(key){
-    console.log(key);
     var url = window.location.origin+"/clientes/export?filtro="+key;
     window.location.href = url;
 }

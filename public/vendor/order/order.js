@@ -40,3 +40,36 @@ function listFixerManDetail(id_orden){
 function esCereza(fruta) {
     return fruta.nombre === 'cerezas';
 }
+
+function export_excel(key){
+    var url = window.location.origin+"/ordenes/export?filtro="+key;
+    window.location.href = url;
+}
+
+$(document).on('keypress', '#search_cliente_orden', function(){
+    var url = window.location.origin+"/ordenes/busqueda";
+    var key = $("#search_cliente_orden").val();
+    console.log(key);
+    $.ajax({
+        type: "GET",
+        data: { 'keywords': key,'_token': token },
+        url: url,
+        success: function(data) {
+            var urlorigin = window.location.origin;
+            console.log(data);
+            $(".tabla_order").html('');
+            for (let index = 0; index < data["orders"].length; index++) {
+                var boton = '';
+                if(data['orders'][index]['state'] == 'CANCELLED'){
+                    boton = '<div class="table-data-feature"><span class="status--denied">Cancelado</span></div>';
+                }else{
+                    boton = '<div class="table-data-feature"><a class="au-btn au-btn--green" data-toggle="tooltip" data-placement="top" title="Ver" href="'+urlorigin+'/ordenes/detalle-orden/'+data["orders"][index]["id"]+'">Revisar</a></div>';
+                }
+                $(".tabla_order").append(' <tr><td>'+data['orders'][index]["name"]+' '+data['orders'][index]["lastName"]+'</td><td>'+data["orders"][index]["categoria"]+'</td><td>'+data["orders"][index]["created_at"]+'</td><td>'+data["orders"][index]["stateicon"]+'</td><td>'+boton+'</td></tr>');
+            }
+        },
+        error: function(data) {
+            console.log("Error al obtener en busqueda");
+        }
+    });
+});

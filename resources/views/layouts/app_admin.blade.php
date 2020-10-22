@@ -430,6 +430,7 @@ x                                                                <button type="s
     <script src="{{ url('') }}/vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="{{ url('') }}/vendor/select2/select2.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
     <!-- Main JS-->
     <script src="{{ url('') }}/js/main.js"></script>
     @if(Request::is('pagos/pagos-fecha'))
