@@ -213,10 +213,10 @@ class RegisterController extends ApiController
     public function validateCode(Request $request){
         Log::notice($request->all());
         $num = substr((string)($request->phone), 2);
-        $num = '521'.$num;
-        Log::notice($num);
+        $num1 = '521'.$num;
+        Log::notice($num1);
         // Log::notice($request->all());
-        $validateCode = ResetPassword::where('email',$num)->where('code',$request->code)->first();
+        $validateCode = ResetPassword::where('email',$num1)->where('code',$request->code)->first();
         if(empty($validateCode)){
             return response()->json([
                 'success' => false,
