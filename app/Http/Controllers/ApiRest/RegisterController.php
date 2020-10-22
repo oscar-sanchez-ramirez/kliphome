@@ -212,7 +212,7 @@ class RegisterController extends ApiController
 
     public function validateCode(Request $request){
         Log::notice($request->all());
-        $num = substr((string)($request->phone), 2);
+        $num = substr((string)($request->email), 2);
         $num1 = '521'.$num;
         Log::notice($num1);
         // Log::notice($request->all());
