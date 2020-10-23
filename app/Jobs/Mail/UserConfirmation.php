@@ -32,7 +32,7 @@ class UserConfirmation implements ShouldQueue
     {
         $usuario = array('lastName' => $this->user["lastName"], 'name' => $this->user["name"]);
         // $mail = $this->user["email"];
-        $mail = "kliphome97@gmail.com";
+        $mail = "tonyhamui68@gmail.com";
         Mail::send('emails.emailconfirmation',$usuario, function($msj) use ($mail){
             $msj->subject('KlipHome: Un nuevo usuario ha terminado el registro');
             $msj->to($mail,"Nuevo Usuario Registrado");
