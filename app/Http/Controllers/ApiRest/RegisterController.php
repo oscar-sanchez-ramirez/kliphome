@@ -47,7 +47,7 @@ class RegisterController extends ApiController
                 'municipio' => $request->municipio
             ]);
         }
-        // dispatch(new UserConfirmation($user));
+        dispatch(new UserConfirmation($user));
         return response()->json([
             'message' => "Usuario creado correctamente",
             'user' => $user
@@ -211,11 +211,8 @@ class RegisterController extends ApiController
     }
 
     public function validateCode(Request $request){
-        Log::notice($request->all());
         $num = substr((string)($request->email), 2);
         $num1 = '521'.$num;
-        Log::notice($num1);
-        // Log::notice($request->all());
         $validateCode = ResetPassword::where('email',$num1)->where('code',$request->code)->first();
         if(empty($validateCode)){
             return response()->json([
