@@ -115,19 +115,19 @@ class OrderController extends ApiController
                         Log::error($error);
                         return response()->json([
                             'success' => false,
-                            'message' => "La orden de servicio no se realizó"
+                            'message' => $error->getMessage()
                         ]);
                     } catch (\Conekta\ParameterValidationError $error){
                         Log::error($error);
                         return response()->json([
                             'success' => false,
-                            'message' => "La orden de servicio no se realizó"
+                            'message' => $error->getMessage()
                         ]);
                     } catch (\Conekta\Handler $error){
                         Log::error($error);
                         return response()->json([
                             'success' => false,
-                            'message' => "La orden de servicio no se realizó"
+                            'message' => $error->getMessage()
                         ]);
                     }
                 }else{
