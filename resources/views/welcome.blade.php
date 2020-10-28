@@ -38,14 +38,19 @@
                     </button>
                     <div class="dropdown-menu">
                       <!-- Dropdown menu links -->
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Carpintería</button>
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Cerrajería</button>
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Electricidad</button>
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Electrodomésticos</button>
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Pintura</button>
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Plomería</button>
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Computadora</button>
-                        <button class="dropdown-item white buttom_nav_item" id="color1" type="button">Celular</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Carpintería</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Cerrajería</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Electricidad</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Electrodomésticos</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Pintura</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Plomería</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Computadora</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Celular</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Fumigación</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Sanitización</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Mil Usos</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Impermeabilización</button>
+                        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="dropdown-item white buttom_nav_item" id="color1" type="button">Vidrios y Canceles</button>
                     </div>
                   </div>
             </div>
