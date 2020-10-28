@@ -212,8 +212,6 @@ class RegisterController extends ApiController
 
     public function validateCode(Request $request){
 
-        Log::notice($request->all());
-
         if (str_contains($request->email, '@')) {
             $num1 = $request->email;
         }else{

@@ -12,6 +12,15 @@
                             <label for="title" class="control-label mb-1">Mensaje (Máximo 120 caracteres)</label>
                             <input id="title" name="title" type="text" class="form-control" required>
                         </div>
+                        <div class="form-group">
+                            <label for="title" class="control-label mb-1">Segmento:</label>
+                            <select name="segmento" class="form-control">
+                                <option value="todos">Todos</option>
+                                <option value="sin_registro">Sin Registro</option>
+                                <option value="con_orden">Con al menos una órden</option>
+                                <option value="sin_orden">Sin Órdenes/option>
+                            </select>
+                        </div>
                         <div class="row form-group">
                             <div class="col-12">
                                 <div class="form-check">

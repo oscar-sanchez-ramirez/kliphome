@@ -41,11 +41,12 @@ class NotificationsPush extends Controller
     public function store(Request $request)
     {
         // return $request->all();
+
         $nueva = new NotificationsPushModel;
         $nueva->message = $request->title;
-        $nueva->audience = $request->clientes.' '.$request->tecnicos;
+        $nueva->audience = $request->clientes.' '.$request->tecnicos.'-'.$request->segmento;
         $nueva->save();
-        dispatch(new JobNoticationPush($request->clientes,$request->tecnicos,$request->title));
+        dispatch(new JobNoticationPush($request->clientes,$request->tecnicos,$request->title,$request->segmento));
         return Redirect::action('Admin\NotificationsPush@index');
     }
 

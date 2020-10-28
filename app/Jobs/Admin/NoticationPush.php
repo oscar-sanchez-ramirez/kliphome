@@ -2,7 +2,9 @@
 
 namespace App\Jobs\Admin;
 
+use App\Order;
 use App\User;
+use OneSignal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -17,17 +19,18 @@ class NoticationPush implements ShouldQueue
     protected $clientes;
     protected $tecnicos;
     protected $mensaje;
-
+    protected $segmento;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($clientes,$tecnicos,$mensaje)
+    public function __construct($clientes,$tecnicos,$mensaje,$segmento)
     {
         $this->clientes = $clientes;
         $this->tecnicos = $tecnicos;
         $this->mensaje = $mensaje;
+        $this->segmento = $segmento;
     }
 
     /**
@@ -38,10 +41,44 @@ class NoticationPush implements ShouldQueue
     public function handle()
     {
         if($this->clientes != ""){
-            $clientes = User::where('type','AppUser')->where('state',1)->get();
-            foreach ($clientes as $key => $cliente) {
-                $cliente["mensajeClient"] = $this->mensaje;
-                $cliente->notify(new NotificationNoticationPush($cliente,$this->mensaje));
+            switch ($this->segmento) {
+                case 'todos':
+                    $clientes = User::where('type','AppUser')->where('state',1)->get();
+                    break;
+                case 'sin_registro':
+                    $clientes = "sin_registro";
+                    break;
+                case 'con_orden':
+                    $usuarios = Order::pluck('user_id');
+                    $clientes =User::where('type','AppUser')->whereIn('id',$usuarios)->orderBy('id',"DESC")->get();
+                    break;
+                case 'sin_orden':
+                    $usuarios = Order::pluck('user_id');
+                    $clientes = User::where('type','AppUser')->whereNotIn('id',$usuarios)->orderBy('id',"DESC")->get();
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            if($clientes == "sin_registro"){
+                $content = '';
+                OneSignal::sendNotificationUsingTags(
+                    $this->mensaje,
+                    array(
+                        ["field" => "tag", "key" => "email",'relation'=> "=", "value" => "descarga@kliphome.com"],
+                    ),
+                    $type=null,
+                    $content,
+                    $url=null,
+                    $data = null,
+                    $buttons = null,
+                    $schedule = null
+                );
+            }else{
+                foreach ($clientes as $key => $cliente) {
+                    $cliente["mensajeClient"] = $this->mensaje;
+                    $cliente->notify(new NotificationNoticationPush($cliente,$this->mensaje));
+                }
             }
         }
         if($this->tecnicos != ""){
