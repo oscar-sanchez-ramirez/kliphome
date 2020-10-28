@@ -10,6 +10,7 @@ use App\Payment;
 use App\Category;
 use Carbon\Carbon;
 use App\SelectedOrders;
+use App\SelectedCategories;
 use Illuminate\Http\Request;
 use App\Jobs\AproveFixerMan;
 use App\Http\Controllers\Controller;
@@ -38,8 +39,9 @@ class FixerManController extends Controller
             }
         }
         $users = User::where('type','AppFixerMan')->orderBy('id','desc')->paginate(10);
+        $categories = Category::all();
         $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))->where('type','AppFixerMan')->groupBy('dates')->orderBy('dates','asc')->get());
-        return view('admin.fixerman.index',compact('users','monthlysales'));
+        return view('admin.fixerman.index',compact('users','monthlysales','categories'));
     }
     private function cast_date($users){
         $months = [];
@@ -179,6 +181,10 @@ class FixerManController extends Controller
             'avatar' => $request->url.'/'.$nombre
         ]);
         return back()->with('success',"La imagen se actualizó");
+    }
+    public function filtro(Request $request){
+        $selected_categories = SelectedCategories::where('category_id',$request->category)->pluck('user_id');
+        return User::whereIn('id',$selected_categories)->orderBy('id','desc')->get();
     }
     // axios
     public function orders($user_id){

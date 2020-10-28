@@ -10,6 +10,7 @@ Route::get('listado','Admin\FixerManController@list');
 Route::post('asignarTecnico/{id_tecnico}/{id_order}','Admin\FixerManController@asignarTecnico');
 Route::post('eliminarTecnico/{id_tecnico}/{id_order}','Admin\FixerManController@eliminarTecnico');
 Route::get('aprove','Admin\FixerManController@aprove');
+Route::get('filtro','Admin\FixerManController@filtro');
 Route::post('updateFixermanImage','Admin\FixerManController@updateFixermanImage');
 
 // axios

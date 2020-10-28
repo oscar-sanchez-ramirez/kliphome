@@ -138,6 +138,35 @@ function aproveFixerMan(fixerman_id,name){
     }
 }
 
+$(document).on('change','#filter_category',function(){
+    let category = $('#filter_category').val();
+    var url = window.location.origin+"/tecnicos/filtro";
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: { 'category': category },
+            success: function(data) {
+                $(".tbodyModal").html('');
+                let i = 1;
+                for (let index = 0; index < data.length; index++) {
+                    let options = '<div class="table-data-feature"><a class="item" href="'+window.location.origin+'/tecnicos/detalle/'+data[index]['id']+'"><i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-eye"></i></a><button class="item" data-toggle="modal" data-target="#mediumImage" id="fixermanModalImage" data-id="'+data[index]['avatar']+'" data-user="'+data[index]['id']+'"><i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-image"></i></button></div>';
+                    var state = '';
+                    if(data[index]['state'] == 0){
+                        state = '<span class="badge badge-danger" onclick="aproveFixerMan('+data[index]['state']+',\''+data[index]['name']+'\')">Pendiente</span>';
+                    }else{
+                        state = '<span class="badge badge-success">Validado</span>';
+                    }
+                    $(".tbodyModal").append('<tr><td>'+(i++)+'</td><td>'+data[index]["name"]+' '+data[index]['lastName']+'</td><td>'+data[index]['email']+'</td><td>'+data[index]['phone']+'</td><td id="state'+data[index]['id']+'">'+state+'</td><td>'+options+'</td></tr>');
+
+                }
+                console.log(data);
+            },
+            error: function(data) {
+                alert("Error al aprobar registro, Porfavor intente de nuevo");
+            }
+        });
+});
+
 function star_function(val){
     if(val < 1.5){
         return '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';

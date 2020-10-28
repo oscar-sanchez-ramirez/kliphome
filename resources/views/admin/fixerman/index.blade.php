@@ -20,6 +20,17 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                        <div class="rs-select2--light rs-select2--md">
+                            <select class="js-select2" name="filter_category" id="filter_category">
+                                <option selected="selected" value="all">Filtros</option>
+                                @foreach($categories as $key => $category)
+                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                @endforeach
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </div>
                     <div class="table-data__tool-right">
                         <button onclick="show_chart()" class="au-btn au-btn-icon au-btn--green au-btn--small">
                             <i class="zmdi zmdi-chart"></i></button>
