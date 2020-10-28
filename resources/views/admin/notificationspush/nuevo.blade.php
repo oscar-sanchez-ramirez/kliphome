@@ -18,7 +18,7 @@
                                 <option value="todos">Todos</option>
                                 <option value="sin_registro">Sin Registro</option>
                                 <option value="con_orden">Con al menos una órden</option>
-                                <option value="sin_orden">Sin Órdenes/option>
+                                <option value="sin_orden">Sin Órdenes</option>
                             </select>
                         </div>
                         <div class="row form-group">
