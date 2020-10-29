@@ -5,6 +5,23 @@
     }#mainNav{
         background-color: transparent !important;
     }
+    .btn-group-fab {
+        z-index: 100;
+        position: fixed;
+        width: 50px;
+        height: auto;
+        right: 80px; bottom: 40px;
+      }
+
+      .btn-group-fab .btn {
+        background: transparent;
+        border:none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        width: 60px;
+        height: 60px;
+      }
+
 </style>
 @section('content')
   <header class="masthead">
@@ -65,6 +82,11 @@
           </div>
       </div>
   </header>
+  <div class="btn-group-fab" role="group" aria-label="FAB Menu">
+    <div>
+       <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="btn" type="button"><img src="{{ url('')}}/img/whatsapp.png" ></button>
+    </div>
+  </div>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHCCJMGS3"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -72,5 +94,11 @@
   gtag('js', new Date());
 
   gtag('config', 'G-0BHCCJMGS3');
+  $(function() {
+    $('.btn-group-fab').on('click', '.btn', function() {
+      $('.btn-group-fab').toggleClass('active');
+    });
+    $('has-tooltip').tooltip();
+  });
 </script>
 @endsection
