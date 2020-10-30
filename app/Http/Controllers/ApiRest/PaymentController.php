@@ -287,8 +287,6 @@ class PaymentController extends ApiController
                 ]
               );
             $this->guardar_usuario($customer["payment_sources"][0],$user->id);
-
-
         } catch (\Throwable $th) {
             Log::error($th);
         }

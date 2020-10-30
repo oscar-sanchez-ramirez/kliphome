@@ -31,6 +31,8 @@ class OrderController extends ApiController
         $this->middleware('auth:api');
     }
     public function create(Request $request){
+        Log::notice("NUEVA ORDEN");
+        Log::notice($request->all());
         $user = $request->user();
         // if($user->email == "germanruelas17@gmail.com" || $user->email == "adrimabarak@hotmail.com"){
             if($request->visit_price == "quotation"){
