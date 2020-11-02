@@ -8,6 +8,7 @@ use App\UserCard;
 use App\TempPayment;
 use App\ConfigSystem;
 use Illuminate\Http\Request;
+Use App\Jobs\Mail\ConektaError;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ApiController;
@@ -159,8 +160,8 @@ class PaymentController extends ApiController
         return view('payment.conekta',compact('user_id','monto','type'));
     }
     public function conekta_nuevo_pago(Request $request){
+        $user = User::where('id',$request->user_id)->first();
         try {
-            $user = User::where('id',$request->user_id)->first();
             if($request->guardar_tarjeta == 'true'){
                 try {
                     Log::notice("1:NUEVO PAGO DE ".$request->type);
@@ -231,40 +232,72 @@ class PaymentController extends ApiController
                 'message' => "Pago exitoso",
             ]);
         }else{
-            if(substr($token,0,3) == "tok"){
-                $pago = \Conekta\Order::create(
-                    [
-                        "line_items" => [["name" => "PAGO POR ".$request->type,"unit_price" => $price * 100,"quantity" => 1]],
-                        "currency" => "MXN",
-                        "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
-                        "charges" => [["payment_method" => ["type" => "card","token_id" => $token]]
+            try {
+                if(substr($token,0,3) == "tok"){
+                    $pago = \Conekta\Order::create(
+                        [
+                            "line_items" => [["name" => "PAGO POR ".$request->type,"unit_price" => $price * 100,"quantity" => 1]],
+                            "currency" => "MXN",
+                            "customer_info" => ["name" => $user->name.' '.$user->lastName,"email" => $user->email,"phone" => $user->phone],
+                            "charges" => [["payment_method" => ["type" => "card","token_id" => $token]]
+                            ]
                         ]
-                    ]
-                    );
-            }else if(substr($token,0,3) == "cus"){
-                $pago = \Conekta\Order::create([
-                    'currency' => 'MXN',
-                    'customer_info' => ['customer_id' => $token],
-                    "line_items" => [["name" => "PAGO POR ".$request->type,"unit_price" => $price * 100,"quantity" => 1]],
-                    'charges' => [['payment_method' => ['type' => 'default']]]
-                ]);
-            }
-            if($pago->payment_status == "paid"){
-                $payment = new TempPayment;
-                $payment->user_id = $request->user_id;
-                $payment->code_payment = $pago->id;
-                $payment->description = $request->type;
-                $payment->state = true;
-                $payment->price = $price;
-                $payment->save();
-                // dispatch(new NotifyNewOrder($order->id,$user->email));
+                        );
+                }else if(substr($token,0,3) == "cus"){
+                    $pago = \Conekta\Order::create([
+                        'currency' => 'MXN',
+                        'customer_info' => ['customer_id' => $token],
+                        "line_items" => [["name" => "PAGO POR ".$request->type,"unit_price" => $price * 100,"quantity" => 1]],
+                        'charges' => [['payment_method' => ['type' => 'default']]]
+                    ]);
+                }
+                if($pago->payment_status == "paid"){
+                    $payment = new TempPayment;
+                    $payment->user_id = $request->user_id;
+                    $payment->code_payment = $pago->id;
+                    $payment->description = $request->type;
+                    $payment->state = true;
+                    $payment->price = $price;
+                    $payment->save();
+                    // dispatch(new NotifyNewOrder($order->id,$user->email));
+                    return response()->json([
+                        'success' => true,
+                        'message' => "Pago exitoso",
+                    ]);
+                }else{
+                    return response()->json([
+                        'success' => false
+                    ]);
+                }
+            }  catch (\Conekta\ProcessingError $error){
+                Log::error($error);
+                $name = $user->name.' '.$user->lastName;
+                dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
                 return response()->json([
-                    'success' => true,
-                    'message' => "Pago exitoso",
+                    'success' => false,
+                    'message' => $error->getMessage()
                 ]);
-            }else{
+            } catch (\Conekta\ParameterValidationError $error){
+                Log::error($error);
+                $name = $user->name.' '.$user->lastName;
+                dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
                 return response()->json([
-                    'success' => false
+                    'success' => false,
+                    'message' => $error->getMessage()
+                ]);
+            } catch (\Conekta\Handler $error){
+                Log::error($error);
+                $name = $user->name.' '.$user->lastName;
+                dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
+                return response()->json([
+                    'success' => false,
+                    'message' => $error->getMessage()
+                ]);
+            } catch (\Throwable $th) {
+                Log::error($th);
+                return response()->json([
+                    'success' => false,
+                    'message' => "Hubo un inconveniente en tu pago"
                 ]);
             }
         }

@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use App\Jobs\NotifyNewOrder;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\Mail\MailOrderAccepted;
+Use App\Jobs\Mail\ConektaError;
 use App\Http\Controllers\ApiController;
 use App\Notifications\Database\newDate;
 use App\Notifications\Database\OrderCancelled;
@@ -115,21 +116,33 @@ class OrderController extends ApiController
 
                     } catch (\Conekta\ProcessingError $error){
                         Log::error($error);
+                        $name = $user->name.' '.$user->lastName;
+                        dispatch(new ConektaError($name,'PAGO POR VISITA',$error->getMessage()));
                         return response()->json([
                             'success' => false,
                             'message' => $error->getMessage()
                         ]);
                     } catch (\Conekta\ParameterValidationError $error){
                         Log::error($error);
+                        $name = $user->name.' '.$user->lastName;
+                        dispatch(new ConektaError($name,'PAGO POR VISITA',$error->getMessage()));
                         return response()->json([
                             'success' => false,
                             'message' => $error->getMessage()
                         ]);
                     } catch (\Conekta\Handler $error){
                         Log::error($error);
+                        $name = $user->name.' '.$user->lastName;
+                        dispatch(new ConektaError($name,'PAGO POR VISITA',$error->getMessage()));
                         return response()->json([
                             'success' => false,
                             'message' => $error->getMessage()
+                        ]);
+                    } catch (\Throwable $th) {
+                        Log::error($th);
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Hubo un inconveniente en tu pago"
                         ]);
                     }
                 }else{
@@ -415,21 +428,33 @@ class OrderController extends ApiController
                     ]);
                 } catch (\Conekta\ProcessingError $error){
                     Log::error($error);
+                    $name = $user->name.' '.$user->lastName;
+                    dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
                     return response()->json([
                         'success' => false,
                         'message' => $error->getMessage()
                     ]);
                 } catch (\Conekta\ParameterValidationError $error){
                     Log::error($error);
+                    $name = $user->name.' '.$user->lastName;
+                    dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
                     return response()->json([
                         'success' => false,
                         'message' => $error->getMessage()
                     ]);
                 } catch (\Conekta\Handler $error){
                     Log::error($error);
+                    $name = $user->name.' '.$user->lastName;
+                    dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
                     return response()->json([
                         'success' => false,
                         'message' => $error->getMessage()
+                    ]);
+                } catch (\Throwable $th) {
+                    Log::error($th);
+                    return response()->json([
+                        'success' => false,
+                        'message' => "Hubo un inconveniente en tu pago"
                     ]);
                 }
             }else{
