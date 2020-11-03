@@ -34,7 +34,7 @@ class ConektaError implements ShouldQueue
      */
     public function handle()
     {
-        $usuario = array('name' => $this->name, 'tipo' => $this->tipo["name"],'error'=> $this->error);
+        $usuario = array('name' => $this->name, 'tipo' => $this->tipo,'error'=> $this->error);
         // $mail = "tonyhamui68@gmail.com";
         $mail = "germanruelas17@gmail.com";
         Mail::send('emails.conektaerror',$usuario, function($msj) use ($mail){
