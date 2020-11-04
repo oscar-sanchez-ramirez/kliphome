@@ -14,6 +14,7 @@ class WebController extends ControllerWeb
         return view('terminos');
     }
     public function email_verified($code){
+        return $hola;
         $user = User::where('code',$code)->where('email_verified_at',null)->first();
         if($user){
             User::where('code',$code)->update([
