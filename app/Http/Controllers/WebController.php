@@ -26,21 +26,21 @@ class WebController extends ControllerWeb
     }
     public function test(){
         // sleep(1);
-        $revisar_pagos_previos = TempPayment::where('user_id',733)->where('price',"50")->first();
-        if($revisar_pagos_previos){
-            return response()->json([
-                'success' => true,
-                'message' => "Pago exitoso",
-            ]);
-        }else{
-            return 2;
-        }
-        // Nexmo::message()->send([
-        //     'to'   => '+51997491844',
-        //     'from' => 'KlipHome',
-        //     'text' => '2020 es tu numero de verificacion para KlipHome',
-        //     'type' => 'text'
-        // ]);
-        // return "si";
+        // $revisar_pagos_previos = TempPayment::where('user_id',733)->where('price',"50")->first();
+        // if($revisar_pagos_previos){
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => "Pago exitoso",
+        //     ]);
+        // }else{
+        //     return 2;
+        // }
+        Nexmo::message()->send([
+            'to'   => '+51997491844',
+            'from' => 'KlipHome',
+            'text' => '2020 es tu numero de verificacion para KlipHome',
+            'type' => 'text'
+        ]);
+        return "si";
     }
 }
