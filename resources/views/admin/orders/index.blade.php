@@ -131,8 +131,8 @@
                                 @foreach ($ordenes as $orden)
                                     <tr class="tr-shadow">
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
-                                        <td></td>
-                                        {{-- {{ $orden->getCategory($orden->type_service,$orden->selected_id) }} --}}
+                                        <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
+
                                         <td>{{ $orden->created_at->diffForHumans() }}</td>
                                         <td>
                                             <i class="zmdi zmdi-badge-check" id="{{ $orden->fixerman($orden->id) }}"></i>
