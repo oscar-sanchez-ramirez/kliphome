@@ -102,7 +102,12 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Service::where('id',$id)->delete();
+            return back();
+        } catch (\Throwable $th) {
+            return back();
+        }
     }
 
     public function getServicesByCategory($category_id){

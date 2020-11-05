@@ -117,4 +117,7 @@ class User extends Authenticatable
     public function gallery(){
         return $this->hasMany(FixermanGallery::class, 'user_id')->orderBy('created_at', 'asc');
     }
+    public function orders(){
+        return $this->hasManu(Order::class,'user_id');
+    }
 }

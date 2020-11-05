@@ -65,6 +65,12 @@
                                             <button class="item" data-toggle="modal" data-target="#mediumModal" id="SubServiceModal" data-title="{{ $service->title }}" data-id="{{ $service->id }}">
                                                 <i data-toggle="tooltip" data-placement="top" title="SubServicios" class="zmdi zmdi-collection-item-3"></i>
                                             </button>
+                                            <form action="{{ url('') }}/servicios/{{ $service->id }}" method="POST">
+                                                @method('DELETE') @csrf
+                                                <button class="item" data-toggle="tooltip" type="submit" data-placement="top" title="Eliminar">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
