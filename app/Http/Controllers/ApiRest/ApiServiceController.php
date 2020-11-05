@@ -24,10 +24,10 @@ class ApiServiceController extends ApiController
     }
     //Getting sub-categories for clientApp
     public function getSubCategories($category_p){
-        Log::notice($category_p);
-        $category = new Category;
-        $subCategories = $category->SubCategories($category_p);
-        return Response(json_encode(array('subCategories' => $subCategories)));
+        return Response(json_encode(array('subCategories' => [])));
+        // $category = new Category;
+        // $subCategories = $category->SubCategories($category_p);
+        // return Response(json_encode(array('subCategories' => $subCategories)));
     }
     //Getting services for clientApp
     public function getServices($subCategory){
