@@ -111,64 +111,7 @@
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
-                    @if(count($ordenes) == 0)
-                        <div id="center">
-                            <h4>No se regitraron órdenes en la aplicación</h4>
-                        </div>
-                    @else
-                        <table class="table table-data2">
-                            <thead>
-                                <tr>
 
-                                    <th>Cliente</th>
-                                    <th>Categoría</th>
-                                    <th>Fecha Registro</th>
-                                    <th>Estado</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody class="tabla_order">
-                                @foreach ($ordenes as $orden)
-                                    <tr class="tr-shadow">
-                                        <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
-                                        <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
-                                        <td>{{ $orden->created_at->diffForHumans() }}</td>
-                                        <td>
-                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->fixerman($orden->id) }}"></i>
-                                            @if($orden->fixerman_arrive === 'SI')
-                                                <i class="zmdi zmdi-badge-check" id="success"></i>
-                                            @else
-                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
-                                            @endif
-                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->quotation($orden->id) }}"></i>
-                                            @if($orden->state === 'FIXERMAN_DONE' || $orden->state === 'QUALIFIED')
-                                                <i class="zmdi zmdi-badge-check" id="success"></i>
-                                            @else
-                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
-                                            @endif
-                                            @if($orden->state === 'QUALIFIED')
-                                                <i class="zmdi zmdi-badge-check" id="success"></i>
-                                            @else
-                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="table-data-feature">
-                                                @if($orden->state == "CANCELLED")
-                                                    <span class="status--denied">Cancelado</span>
-                                                @else
-                                                    <a class="au-btn au-btn--green" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
-                                                        Revisar
-                                                    </a>
-                                                @endif
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="spacer"></tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @endif
                 </div>
                 <!-- END DATA TABLE -->
             </div>
