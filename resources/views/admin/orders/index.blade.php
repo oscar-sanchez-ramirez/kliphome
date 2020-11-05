@@ -130,6 +130,7 @@
                             <tbody class="tabla_order">
                                 @foreach ($ordenes as $orden)
                                     <tr class="tr-shadow">
+                                        <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
 
                                     </tr>
                                     <tr class="spacer"></tr>
