@@ -131,8 +131,39 @@
                                 @foreach ($ordenes as $orden)
                                     <tr class="tr-shadow">
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
-                                        <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
-
+                                        <td></td>
+                                        {{-- {{ $orden->getCategory($orden->type_service,$orden->selected_id) }} --}}
+                                        <td>{{ $orden->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->fixerman($orden->id) }}"></i>
+                                            @if($orden->fixerman_arrive === 'SI')
+                                                <i class="zmdi zmdi-badge-check" id="success"></i>
+                                            @else
+                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
+                                            @endif
+                                            <i class="zmdi zmdi-badge-check" id="{{ $orden->quotation($orden->id) }}"></i>
+                                            @if($orden->state === 'FIXERMAN_DONE' || $orden->state === 'QUALIFIED')
+                                                <i class="zmdi zmdi-badge-check" id="success"></i>
+                                            @else
+                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
+                                            @endif
+                                            @if($orden->state === 'QUALIFIED')
+                                                <i class="zmdi zmdi-badge-check" id="success"></i>
+                                            @else
+                                                <i class="zmdi zmdi-badge-check" id="secondary"></i>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="table-data-feature">
+                                                @if($orden->state == "CANCELLED")
+                                                    <span class="status--denied">Cancelado</span>
+                                                @else
+                                                    <a class="au-btn au-btn--green" data-toggle="tooltip" data-placement="top" title="Ver" href="{{ url('') }}/ordenes/detalle-orden/{{ $orden->id }}">
+                                                        Revisar
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="spacer"></tr>
                                 @endforeach
