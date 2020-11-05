@@ -47,7 +47,9 @@ class RegisterController extends ApiController
                 'municipio' => $request->municipio
             ]);
         }
-        dispatch(new UserConfirmation($user));
+        if($request->email != 'german_rastas@hotmail.com'){
+            dispatch(new UserConfirmation($user));
+        }
         return response()->json([
             'message' => "Usuario creado correctamente",
             'user' => $user
