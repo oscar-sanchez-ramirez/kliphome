@@ -131,6 +131,7 @@
                                 @foreach ($ordenes as $orden)
                                     <tr class="tr-shadow">
                                         <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
+                                        <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
 
                                     </tr>
                                     <tr class="spacer"></tr>
