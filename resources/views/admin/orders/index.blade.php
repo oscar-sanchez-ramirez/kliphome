@@ -111,7 +111,35 @@
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
+                    @if(count($ordenes) == 0)
+                        <div id="center">
+                            <h4>No se regitraron órdenes en la aplicación</h4>
+                        </div>
+                    @else
+                        <table class="table table-data2">
+                            <thead>
+                                <tr>
 
+                                    <th>Cliente</th>
+                                    <th>Categoría</th>
+                                    <th>Fecha Registro</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="tabla_order">
+                                @foreach ($ordenes as $orden)
+                                    <tr class="tr-shadow">
+                                        <td>{{ $orden->clientName($orden->user_id)["name"] }} {{ $orden->clientName($orden->user_id)["lastName"] }}</td>
+                                        <td>{{ $orden->getCategory($orden->type_service,$orden->selected_id) }}</td>
+                                        <td>{{ $orden->created_at->diffForHumans() }}</td>
+
+                                    </tr>
+                                    <tr class="spacer"></tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
                 <!-- END DATA TABLE -->
             </div>
