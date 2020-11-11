@@ -82,23 +82,24 @@
           </div>
       </div>
   </header>
-  <div class="btn-group-fab" role="group" aria-label="FAB Menu">
+  {{--  <div class="btn-group-fab" role="group" aria-label="FAB Menu">
     <div>
        <button onclick="window.location.href='https://api.whatsapp.com/send?phone=+525568013183'" class="btn" type="button"><img src="{{ url('')}}/img/whatsapp.png" ></button>
     </div>
-  </div>
+  </div>  --}}
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHCCJMGS3"></script>
+  <script async data-id="66488" src="https://cdn.widgetwhats.com/script.min.js"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-0BHCCJMGS3');
-  $(function() {
+  {{--  $(function() {
     $('.btn-group-fab').on('click', '.btn', function() {
       $('.btn-group-fab').toggleClass('active');
     });
     $('has-tooltip').tooltip();
-  });
+  });  --}}
 </script>
 @endsection
