@@ -9,7 +9,14 @@ $(document).on('keypress', '#search_cliente', function(){
         success: function(data) {
             $(".tbodyModal").html('');
             for (let index = 0; index < data["users"].length; index++) {
-                $(".tbodyModal").append(' <tr><td>'+(index+1)+'</td><td>'+data['users'][index]["name"]+' '+data['users'][index]["lastName"]+'</td><td>'+data["users"][index]["email"]+'</td><td>'+data["users"][index]["phone"]+'</td><td>'+data["users"][index]["orders_count"]+'</td><td>'+data["users"][index]["created_at"]+'</td></tr>');
+                let orders_count = '';
+                console.log(data["users"][index]["orders_count"]);
+                if(parseInt(data["users"][index]["orders_count"]) > 0){
+                    orders_count = '<a href="'+window.location.origin+'/ordenes?usuario='+data["users"][index]["id"]+'">'+data["users"][index]["orders_count"];+'</a>'
+                }else{
+                    orders_count = data["users"][index]["orders_count"];
+                }
+                $(".tbodyModal").append(' <tr><td>'+(index+1)+'</td><td>'+data['users'][index]["name"]+' '+data['users'][index]["lastName"]+'</td><td>'+data["users"][index]["email"]+'</td><td>'+data["users"][index]["phone"]+'</td><td>'+orders_count+'</td><td>'+data["users"][index]["created_at"]+'</td></tr>');
             }
         },
         error: function(data) {
