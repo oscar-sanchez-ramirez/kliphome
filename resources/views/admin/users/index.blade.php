@@ -109,6 +109,7 @@
                                     <th>Nombres</th>
                                     <th>Email</th>
                                     <th>Telefono</th>
+                                    <th>Órdenes</th>
                                     <th>Fecha Registro</th>
                                 </tr>
                             </thead>
@@ -127,6 +128,7 @@
                                         <td>{{ $user->name }} {{ $user->lastName }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
+                                        <td>{{ $user->orders_count }}</td>
                                         <td>{{ $user->created_at->diffForHumans() }}</td>
                                     </tr>
                                     <tr class="spacer"></tr>

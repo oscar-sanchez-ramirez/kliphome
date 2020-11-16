@@ -24,22 +24,23 @@ class UserController extends Controller
                 return $monthlysales;
             }else{
                 $key = $request->get('query');
-                $users = User::where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('type','AppUser')->get();
+                $users = User::where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('type','AppUser')->withCount('orders')->get();
                 return $users;
             }
         }else{
             if($request->filled('filtro')){
                 $users = $this->filtro($request->filtro);
             }else{
-                $users = User::where('type','AppUser')->orderBy('id',"DESC")->paginate(10);
+                $users = User::where('type','AppUser')->orderBy('id',"DESC")->withCount('orders')->paginate(10);
             }
+            // return $users;
             $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))->where('type','AppUser')->groupBy('dates')->orderBy('dates','asc')->get());
             return view('admin.users.index',compact('users','monthlysales'));
         }
     }
     public function busqueda(Request $request){
         $key = $request->keywords;
-        $users = User::where('type','AppUser')->where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('state',1)->get();
+        $users = User::where('type','AppUser')->where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('state',1)->withCount('orders')->get();
         return response()->json([
             'success' => true,
             'users' => $users
@@ -78,12 +79,12 @@ class UserController extends Controller
         switch ($key) {
             case 'con_orden':
                 $usuarios = Order::pluck('user_id');
-                return User::where('type','AppUser')->whereIn('id',$usuarios)->orderBy('id',"DESC")->get();
+                return User::where('type','AppUser')->whereIn('id',$usuarios)->orderBy('id',"DESC")->withCount('orders')->get();
             case 'sin_orden':
                 $usuarios = Order::pluck('user_id');
-                return User::where('type','AppUser')->whereNotIn('id',$usuarios)->orderBy('id',"DESC")->get();
+                return User::where('type','AppUser')->whereNotIn('id',$usuarios)->orderBy('id',"DESC")->withCount('orders')->get();
             case 'todos':
-                return User::where('type','AppUser')->orderBy('id',"DESC")->paginate(10);
+                return User::where('type','AppUser')->orderBy('id',"DESC")->withCount('orders')->paginate(10);
             default:
                 # code...
                 break;
