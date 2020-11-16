@@ -173,8 +173,8 @@
                 </div>
                 <!-- END DATA TABLE -->
             </div>
-            @if((Request::get('filtro') == '' || Request::get('filtro') == 'todos') && Request::get('usuario') > 0)
-                {{-- {{ $ordenes->links() }} --}}
+            @if((Request::get('filtro') == '' || Request::get('filtro') == 'todos') && Request::get('usuario') == '')
+                {{ $ordenes->links() }}
             @endif
 
         </div>
