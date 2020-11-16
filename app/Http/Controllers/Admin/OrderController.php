@@ -50,10 +50,15 @@ class OrderController extends Controller
                 return $ordenes;
             }
         }
+
         if($request->filled('filtro')){
             $ordenes = $this->filtro($request->filtro);
         }else{
-            $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->orderBy('id','DESC')->paginate(10);
+            if($request->filled('usuario')){
+                $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('user_id',$request->usuario)->orderBy('id','DESC')->get();
+            }else{
+                $ordenes = Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->orderBy('id','DESC')->paginate(10);
+            }
         }
         return view('admin.orders.index')->with('ordenes',$ordenes);
     }

@@ -128,7 +128,11 @@
                                         <td>{{ $user->name }} {{ $user->lastName }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
+                                        @if($user->orders_count > 0)
+                                        <td><a href="{{ url('') }}/ordenes?usuario={{ $user->id }}">{{ $user->orders_count }}</a></td>
+                                        @else
                                         <td>{{ $user->orders_count }}</td>
+                                        @endif
                                         <td>{{ $user->created_at->diffForHumans() }}</td>
                                     </tr>
                                     <tr class="spacer"></tr>
@@ -194,7 +198,6 @@ function show_chart(){
     open_chart(@json($titles),@json($count_of_orders),@json($colors))
 }
 function open_chart(titles,count_of_orders,colors){
-    console.log(count_of_orders);
     myChart2 = document.getElementById('myChart2'),
     context2 = myChart2.getContext('2d');
     window.addEventListener('resize', resizeCanvas, false);
@@ -223,8 +226,6 @@ function validate(start,end){
         return false
     }return true;
 }
-
-
 </script>
 @include('layouts.modals.subCategoryModal');
 <script type="text/javascript" src="{{ url('') }}/vendor/jquery/jquery.min.js" charset="UTF-8"></script>
@@ -255,5 +256,10 @@ function validate(start,end){
             forceParse: 0
         });
     });
+    $( "#filter_orders" ).change(function() {
+        let key = $("#filter_orders").val();
+        var url = window.location.origin+"/ordenes?filtro="+key;
+        window.location.href = url;
+      });
 </script>
 @endsection

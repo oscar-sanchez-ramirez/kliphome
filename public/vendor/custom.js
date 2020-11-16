@@ -7,7 +7,6 @@ $(document).on('keypress', '#search_cliente', function(){
         data: { 'keywords': key,'_token': token },
         url: url,
         success: function(data) {
-            console.log(data);
             $(".tbodyModal").html('');
             for (let index = 0; index < data["users"].length; index++) {
                 $(".tbodyModal").append(' <tr><td>'+(index+1)+'</td><td>'+data['users'][index]["name"]+' '+data['users'][index]["lastName"]+'</td><td>'+data["users"][index]["email"]+'</td><td>'+data["users"][index]["phone"]+'</td><td>'+data["users"][index]["orders_count"]+'</td><td>'+data["users"][index]["created_at"]+'</td></tr>');
@@ -29,7 +28,6 @@ $(document).on('keypress','#search_tecnico',function(){
             $(".tbodyModal").html('');
             for (let index = 0; index < data["users"].length; index++) {
                 let state;
-                console.log(data["users"][index]["state"]);
                 if(data["users"][index]["state"] === 1){
                     state = '<span class="badge badge-success">Validado</span>';
                 }else{
