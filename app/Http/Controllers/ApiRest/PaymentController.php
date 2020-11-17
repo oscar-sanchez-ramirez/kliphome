@@ -272,7 +272,7 @@ class PaymentController extends ApiController
             }  catch (\Conekta\ProcessingError $error){
                 Log::error($error);
                 $name = $user->name.' '.$user->lastName;
-                dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
+                dispatch(new ConektaError($name,'PAGO',$error->getMessage()));
                 return response()->json([
                     'success' => false,
                     'message' => $error->getMessage()
@@ -280,7 +280,7 @@ class PaymentController extends ApiController
             } catch (\Conekta\ParameterValidationError $error){
                 Log::error($error);
                 $name = $user->name.' '.$user->lastName;
-                dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
+                dispatch(new ConektaError($name,'PAGO',$error->getMessage()));
                 return response()->json([
                     'success' => false,
                     'message' => $error->getMessage()
@@ -288,7 +288,7 @@ class PaymentController extends ApiController
             } catch (\Conekta\Handler $error){
                 Log::error($error);
                 $name = $user->name.' '.$user->lastName;
-                dispatch(new ConektaError($name,'PAGO POR COTIZACION',$error->getMessage()));
+                dispatch(new ConektaError($name,'PAGO',$error->getMessage()));
                 return response()->json([
                     'success' => false,
                     'message' => $error->getMessage()
