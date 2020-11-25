@@ -55,7 +55,7 @@
                                 @foreach ($coupons as $coupon)
                                     <tr class="tr-shadow">
                                         <td>
-                                            {{ $i }}
+                                            {{ $i++ }}
                                         </td>
                                         <td>{{ $coupon->code }}</td>
                                         <td>
