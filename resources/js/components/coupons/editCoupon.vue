@@ -18,7 +18,7 @@
                 <v-text-field label="Responsable" v-model="keywords"></v-text-field>
                 <ul v-if="results.length > 0">
                     <span v-for="result in results">
-                        <li  :key="result.id" v-text="result.name+' '+result.lastName" @click="seleccionar_responsable(result.id,result.name,result.lastName)"></li>
+                        <li :key="result.id" v-text="result.name+' '+result.lastName" @click="seleccionar_responsable(result.id,result.name,result.lastName)"></li>
                     </span>
                 </ul>
             </v-col>
@@ -47,7 +47,7 @@ export default {
     props:{
         coupon:Object
     },mounted(){
-        if(this.coupon.responsable != []){
+        if(this.coupon.responsable != null){
             this.keywords = this.coupon.responsable.name+' '+this.coupon.responsable.lastName;
             this.responsable = this.coupon.responsable.id;
         }
@@ -55,7 +55,7 @@ export default {
         this.discount = this.coupon.discount;
         this.state = this.coupon.state;
         this.tipo = this.coupon.type;
-        console.log(this.coupon);
+
     },
    data() {
     return {
