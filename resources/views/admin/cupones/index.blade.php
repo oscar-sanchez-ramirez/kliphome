@@ -38,10 +38,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <label class="au-checkbox">
-                                            <input type="checkbox">
-                                            <span class="au-checkmark"></span>
-                                        </label>
+                                       #
                                     </th>
                                     <th>Código</th>
                                     <th>Disponibilidad</th>
@@ -51,13 +48,14 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $current = ($clientes->currentPage() *20) -19;
+                                    $i = $current;
+                                @endphp
                                 @foreach ($coupons as $coupon)
                                     <tr class="tr-shadow">
                                         <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox">
-                                                <span class="au-checkmark"></span>
-                                            </label>
+                                            {{ $i }}
                                         </td>
                                         <td>{{ $coupon->code }}</td>
                                         <td>
