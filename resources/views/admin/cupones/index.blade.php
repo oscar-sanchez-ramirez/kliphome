@@ -49,7 +49,7 @@
                             </thead>
                             <tbody>
                                 @php
-                                    $current = ($clientes->currentPage() *20) -19;
+                                    $current = ($coupons->currentPage() *20) -19;
                                     $i = $current;
                                 @endphp
                                 @foreach ($coupons as $coupon)
