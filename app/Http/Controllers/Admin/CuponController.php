@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class CuponController extends Controller
 {
     public function index(){
-        $coupons = AdminCoupon::orderBy('id','DESC')->paginate(10);
+        $coupons = AdminCoupon::orderBy('id','DESC')->paginate(20);
         return view('admin.cupones.index')->with('coupons',$coupons);
     }
     public function search(Request $request){

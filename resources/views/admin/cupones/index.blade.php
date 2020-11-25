@@ -108,6 +108,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $coupons->links() }}
                     @endif
                 </div>
             </div>
