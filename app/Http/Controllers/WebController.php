@@ -26,14 +26,7 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        $basic  = new \Nexmo\Client\Credentials\Basic('4a779b73', '1RYTdos0T5k715TK');
-        $client = new \Nexmo\Client($basic);
-        $message = $client->message()->send([
-            'to' => '51962590283',
-            'from' => 'FisioterapiaDeAltura',
-            'text' => 'FISIO. EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso:175342'
-        ]);
-        return "si";
+
         // Nexmo::message()->send([
         //     'to'   => '+51997491844',
         //     'from' => 'Fisioterapia de altura',
@@ -160,7 +153,7 @@ class WebController extends ControllerWeb
         // }else{
         //     return 2;
         // }
-        $array = ["962590283",
+        $array = [
         "941299615",
         "997491844",
         "955458595",
@@ -252,8 +245,8 @@ class WebController extends ControllerWeb
             $client = new \Nexmo\Client($basic);
             $message = $client->message()->send([
                 'to' => '51962590283',
-                'from' => 'Fisioterapia de Altura',
-                'text' => 'FISIOTERAPIA EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso:175342'
+                'from' => 'FisioterapiaDeAltura',
+                'text' => 'FISIO. EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso:175342'
             ]);
         }
         return "si";
