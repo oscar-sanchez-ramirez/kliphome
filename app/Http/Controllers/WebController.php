@@ -26,6 +26,13 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
+        Nexmo::message()->send([
+            'to'   => '+51997491844',
+            'from' => 'Fisioterapia de altura',
+            'text' => 'Curso FISIOTERAPIA EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso: 175342',
+            'type' => 'text'
+        ]);
+        return "123";
         // $array = [["code"=>'2UK7AV',"discount" =>	50],
         // ["code"=>'34ZMLM',"discount" =>	50],
         // ["code"=>'24CR9K',"discount" =>	50],
