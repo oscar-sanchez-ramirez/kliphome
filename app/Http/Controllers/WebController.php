@@ -30,8 +30,8 @@ class WebController extends ControllerWeb
         $client = new \Nexmo\Client($basic);
         $message = $client->message()->send([
             'to' => '51962590283',
-            'from' => 'Fisioterapia de Altura',
-            'text' => 'FISIOTERAPIA EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso:175342'
+            'from' => 'FisioterapiaDeAltura',
+            'text' => 'FISIO. EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso:175342'
         ]);
         return "si";
         // Nexmo::message()->send([
