@@ -29,7 +29,7 @@ class WebController extends ControllerWeb
         Nexmo::message()->send([
             'to'   => '+51997491844',
             'from' => 'Fisioterapia de altura',
-            'text' => 'Curso FISIOTERAPIA EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso: 175342',
+            'text' => 'Curso FISIOTERAPIA EN NEUROREHABILITACIÓN:',
             'type' => 'text'
         ]);
         return "123";
