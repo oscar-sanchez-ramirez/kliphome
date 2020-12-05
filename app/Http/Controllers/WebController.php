@@ -239,10 +239,10 @@ class WebController extends ControllerWeb
         "920033304",
         "964298607",
         "910877521"];
-        $basic  = new \Nexmo\Client\Credentials\Basic('4a779b73', '1RYTdos0T5k715TK');
-        $client = new \Nexmo\Client($basic);
-        for ($i=0; $i < count($array); $i++) {
 
+        for ($i=0; $i < count($array); $i++) {
+            $basic  = new \Nexmo\Client\Credentials\Basic('4a779b73', '1RYTdos0T5k715TK');
+            $client = new \Nexmo\Client($basic);
             $message = $client->message()->send([
                 'to' => '51'.$array[$i],
                 'from' => 'Fisioterapia de Altura',
