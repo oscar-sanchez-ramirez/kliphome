@@ -26,12 +26,20 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        Nexmo::message()->send([
-            'to'   => '+51997491844',
-            'from' => 'Fisioterapia de altura',
-            'text' => 'Curso FISIOTERAPIA EN NEUROREHABILITACIÓN:',
-            'type' => 'text'
+        $basic  = new \Nexmo\Client\Credentials\Basic('4a779b73', '1RYTdos0T5k715TK');
+        $client = new \Nexmo\Client($basic);
+
+        $message = $client->message()->send([
+            'to' => '51997491844',
+            'from' => 'Vonage APIs',
+            'text' => 'Hello from Vonage SMS API'
         ]);
+        // Nexmo::message()->send([
+        //     'to'   => '+51997491844',
+        //     'from' => 'Fisioterapia de altura',
+        //     'text' => 'Curso FISIOTERAPIA EN NEUROREHABILITACIÓN:',
+        //     'type' => 'text'
+        // ]);
         return "123";
         // $array = [["code"=>'2UK7AV',"discount" =>	50],
         // ["code"=>'34ZMLM',"discount" =>	50],
