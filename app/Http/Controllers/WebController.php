@@ -246,7 +246,7 @@ class WebController extends ControllerWeb
             $message = $client->message()->send([
                 'to' => '51'.$array[$i],
                 'from' => 'Fisioterapia de Altura',
-                'text' => 'Curso FISIOTERAPIA EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso:175342'
+                'text' => 'FISIOTERAPIA EN NEUROREHABILITACIÓN: https://zoom.us/j/96180095946?pwd=aDJSVzlJRGZOUXVpQVZpMkN4bEFrUT09 Acceso:175342'
             ]);
         }
         return "si";
