@@ -418,7 +418,15 @@
         <script src="{{ url('') }}/js/jquery.plugin.js"></script>
         <script src="{{ url('') }}/js/typed.js"></script>
         <script src="{{ url('') }}/js/designesia.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HS794P6RXD"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
 
+          gtag('config', 'G-HS794P6RXD');
+        </script>
         <script>
         $(function () {
             // jquery typed plugin
