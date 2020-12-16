@@ -13,10 +13,11 @@
 
     <!-- CSS Files
     ================================================== -->
-    <link id="bootstrap" href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link id="bootstrap-grid" href="css/bootstrap-grid.min.css" rel="stylesheet" type="text/css" />
-    <link href="css/animate.css" rel="stylesheet" type="text/css">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link id="bootstrap" href="{{ url('') }}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link id="bootstrap-grid" href="{{ url('') }}/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ url('') }}/css/animate.css" rel="stylesheet" type="text/css">
+    <link href="{{ url('') }}/css/style.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url('') }}/images/favicon-96x96.png">
 </head>
 
 
@@ -32,6 +33,8 @@
                 <a href="https://www.facebook.com/KlipHome-101356481627046" target="_blank"><i class="fa fa-facebook"></i></a>
 
                 <a href="https://www.instagram.com/klip.home/" target="_blank"><i class="fa fa-instagram"></i></a>
+
+                <a href="https://api.whatsapp.com/send?phone=+525568013183"  target="_blank"><i class="fa fa-whatsapp"></i></a>
             </span>
         </div>
 
@@ -53,10 +56,10 @@
  <!-- LOGO -->
 
         <div id="logo">
-            <a href="index.html">
-                <img alt="" class="logo" src="{{ url('') }}/images/logo_app.png" width="60px" />
+            <a href="{{ url('') }}/">
+                <img alt="" href="{{ url('') }}/" class="logo" src="{{ url('') }}/images/logo_app.png" width="60px" />
 
-                <img alt="" class="logo-2" src="{{ url('') }}/images/logo_negro.png" width="70px" />
+                <img alt="" href="{{ url('') }}/" class="logo-2" src="{{ url('') }}/images/logo_negro.png" width="70px" />
             </a>
         </div>
 
@@ -114,7 +117,7 @@
 
                 <a href="https://apps.apple.com/us/app/kliphome/id1490914291?ls=1" target="_blank">
 
-                    <img src="images/misc/download-appstore.png" alt="logoappstore" width="25%" align="right" ></a>
+                    <img src="{{ url('') }}/images/misc/download-appstore.png" alt="logoappstore" width="25%" align="right" ></a>
 
                 <a href="https://play.google.com/store/apps/details?id=com.sonmx.KlipHomeClient" target="_blank" >
 

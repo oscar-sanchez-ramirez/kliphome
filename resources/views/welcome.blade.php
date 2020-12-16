@@ -15,6 +15,7 @@
         <link id="bootstrap-grid" href="{{ url('') }}/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css"/>
         <link href="{{ url('') }}/css/animate.css" rel="stylesheet" type="text/css" />
         <link href="{{ url('') }}/css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="icon" type="image/png" sizes="96x96" href="{{ url('') }}/images/favicon-96x96.png">
     </head>
 
 
@@ -32,6 +33,8 @@
                     <a href="https://www.facebook.com/KlipHome-101356481627046" target="_blank"><i class="fa fa-facebook"></i></a>
 
                     <a href="https://www.instagram.com/klip.home/" target="_blank"><i class="fa fa-instagram"></i></a>
+
+                    <a href="https://api.whatsapp.com/send?phone=+525568013183"  target="_blank"><i class="fa fa-whatsapp"></i></a>
                 </span>
             </div>
 
@@ -152,7 +155,7 @@
                 <div class="typed"></div>
                 </div>
 
-                    <p class="lead">Reúnimos a múltiples trabajadores de diversas áreas de expertiz para así brindarte acceso a sus servicios cuando requieras trabajo en tu hogar.</p>
+                    <p class="lead">Reunimos a múltiples trabajadores de diversas áreas de expertiz para así brindarte acceso a sus servicios cuando requieras trabajo en tu hogar.</p>
 
                 <div class="spacer-20"></div>
                 <a href="https://apps.apple.com/us/app/kliphome/id1490914291?ls=1" target="_blank">
@@ -406,28 +409,29 @@
 
         <!-- Javascript Files
     ================================================== -->
-        <script src="{{ url('') }}/js/jquery.min.js"></script>
-        <script src="{{ url('') }}/js/bootstrap.min.js"></script>
-        <script src="{{ url('') }}/js/wow.min.js"></script>
-        <script src="{{ url('') }}/js/jquery.isotope.min.js"></script>
-        <script src="{{ url('') }}/js/easing.js"></script>
-        <script src="{{ url('') }}/js/owl.carousel.js"></script>
-        <script src="{{ url('') }}/js/jquery.magnific-popup.min.js"></script>
-        <script src="{{ url('') }}/js/enquire.min.js"></script>
-        <script src="{{ url('') }}/js/jquery.stellar.min.js"></script>
-        <script src="{{ url('') }}/js/jquery.plugin.js"></script>
-        <script src="{{ url('') }}/js/typed.js"></script>
-        <script src="{{ url('') }}/js/designesia.js"></script>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HS794P6RXD"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
 
-          gtag('config', 'G-HS794P6RXD');
-        </script>
-        <script>
+    <script src="{{ url('') }}/js/jquery.min.js"></script>
+    <script src="{{ url('') }}/js/bootstrap.min.js"></script>
+    <script src="{{ url('') }}/js/wow.min.js"></script>
+    <script src="{{ url('') }}/js/jquery.isotope.min.js"></script>
+    <script src="{{ url('') }}/js/easing.js"></script>
+    <script src="{{ url('') }}/js/owl.carousel.js"></script>
+    <script src="{{ url('') }}/js/jquery.magnific-popup.min.js"></script>
+    <script src="{{ url('') }}/js/enquire.min.js"></script>
+    <script src="{{ url('') }}/js/jquery.stellar.min.js"></script>
+    <script src="{{ url('') }}/js/jquery.plugin.js"></script>
+    <script src="{{ url('') }}/js/typed.js"></script>
+    <script src="{{ url('') }}/js/designesia.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HS794P6RXD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-HS794P6RXD');
+    </script>
+    <script>
         $(function () {
             // jquery typed plugin
             $(".typed").typed({
