@@ -49,6 +49,7 @@ class RegisterController extends ApiController
         }
         dispatch(new UserConfirmation($user));
         return response()->json([
+            'success' => true,
             'message' => "Usuario creado correctamente",
             'user' => $user
         ]);
