@@ -34,7 +34,7 @@
 
                     <a href="https://www.instagram.com/klip.home/" target="_blank"><i class="fa fa-instagram"></i></a>
 
-                    <a href="https://api.whatsapp.com/send?phone=+525568013183"  target="_blank"><i class="fa fa-whatsapp"></i></a>
+                    <a href="https://api.whatsapp.com/send?phone=+525568013185"  target="_blank"><i class="fa fa-whatsapp"></i></a>
                 </span>
             </div>
 
@@ -82,17 +82,17 @@
         <a href="#">NUESTRO SERVICIOS<span></span></a>
 
             <ul>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Carpintería</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Cerrajería</a></li>
-			    <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Electrodomésticos</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Electrónicos</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Electricidad</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Fumigación</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Impermeabilización</a></li>
-			    <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Plomería</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Pintura</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Sanitización</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Vidrios y canceles</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Carpintería</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Cerrajería</a></li>
+			    <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Electrodomésticos</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Electrónicos</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Electricidad</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Fumigación</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Impermeabilización</a></li>
+			    <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Plomería</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Pintura</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Sanitización</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Vidrios y canceles</a></li>
             </ul>
     </li>
 
@@ -206,7 +206,7 @@
             <div class="col-lg-3 col-md-6 mb30 sq-item wow">
 
                 <div class="f-box f-icon-left f-icon-circle f-icon-shadow">
-                    <a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank"><i class="fa fa-list bg-color text-light"></i></a>
+                    <a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank"><i class="fa fa-list bg-color text-light"></i></a>
                         <div class="fb-text">
                             <h4>Selección de servicio</h4>
                             <p>Se define la urgencia y el horario para visita, además de incluir detalles sobre el problema.</p>
@@ -331,7 +331,7 @@
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                 <p>Nuestra red de Kliphome se basa en la ubicación tanto de nuestros empleados como la tuya. Esto con el fin de  aumentar la eficiencia en todos nuestros servicios.
                     <br> Sabemos que pueden pasar cosas inesperadas. <br>
-                    Por eso, si algo no está en nuestras listas, puedes  <a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank"> solicitarlo directamente. </a>
+                    Por eso, si algo no está en nuestras listas, puedes  <a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank"> solicitarlo directamente. </a>
 
             </p></div>
             </div>

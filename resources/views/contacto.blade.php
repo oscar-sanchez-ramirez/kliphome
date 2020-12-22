@@ -34,7 +34,7 @@
 
                 <a href="https://www.instagram.com/klip.home/" target="_blank"><i class="fa fa-instagram"></i></a>
 
-                <a href="https://api.whatsapp.com/send?phone=+525568013183"  target="_blank"><i class="fa fa-whatsapp"></i></a>
+                <a href="https://api.whatsapp.com/send?phone=+525568013185"  target="_blank"><i class="fa fa-whatsapp"></i></a>
             </span>
         </div>
 
@@ -83,17 +83,17 @@
         <a href="#">NUESTRO SERVICIOS<span></span></a>
 
             <ul>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Carpintería</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Cerrajería</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Electrodomésticos</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Electrónicos</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Electricidad</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Fumigación</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Impermeabilización</a></li>
-                <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Plomería</a></li>
-                 <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Pintura</a></li>
-                 <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Sanitización</a></li>
-                 <li><a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">Vidrios y canceles</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Carpintería</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Cerrajería</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Electrodomésticos</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Electrónicos</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Electricidad</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Fumigación</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Impermeabilización</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Plomería</a></li>
+                 <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Pintura</a></li>
+                 <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Sanitización</a></li>
+                 <li><a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">Vidrios y canceles</a></li>
             </ul>
         </li>
 
@@ -183,7 +183,7 @@
                     Colonia Lomas de Tecamachalco,
                     <br>Mcpio. Naucalpan de Juárez, CP. 53950, México</span> <br>
                 <span><i class="fa fa-phone fa-lg"></i>
-                    <a href="https://api.whatsapp.com/send?phone=+525568013183" target="_blank">5568013183</a>
+                    <a href="https://api.whatsapp.com/send?phone=+525568013185" target="_blank">5568013183</a>
                 </span>
                 <br>
                 <span><i class="fa fa-envelope"></i>
