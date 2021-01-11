@@ -40,6 +40,31 @@ class SocialController extends ApiController
         }
     }
 
+    public function facebook_flutter(Request $request){
+        Log::notice($request);
+        $user = User::where('email',$request->email)->first();
+        $tel = 'not_required';
+        if(!$user){
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => bcrypt($random),
+                'code' => $random,
+                'provider' => 'FACEBOOK',
+                'state' => 1,
+                'email_verified_at' => Carbon::now()
+            ])->toArray();
+            return $user;
+        }
+        if($user->phone == null || $user->phone == ''){$tel="required";}
+        return response()->json([
+            "success" => true,
+            "user" => $user,
+            'phone' => $tel
+        ]);
+    }
+
     public function google(Request $request){
         try {
             $user = Socialite::driver('google')->userFromToken($request->access_token);
