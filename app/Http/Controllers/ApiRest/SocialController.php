@@ -50,14 +50,16 @@ class SocialController extends ApiController
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'avatar' => $request->avatar,
                 'password' => bcrypt($random),
                 'code' => $random,
                 'provider' => 'FACEBOOK',
                 'state' => 1,
                 'email_verified_at' => Carbon::now()
             ])->toArray();
-            return $user;
         }
+        $user->avatar = $request->avatar;
+        $user->save();
         if($user->phone == null || $user->phone == ''){$tel="required";}
         return response()->json([
             "success" => true,
