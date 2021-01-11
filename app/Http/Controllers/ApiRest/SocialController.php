@@ -45,6 +45,7 @@ class SocialController extends ApiController
         $user = User::where('email',$request->email)->first();
         $tel = 'not_required';
         if(!$user){
+            $random = strtoupper(substr(md5(mt_rand()), 0, 10));
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
