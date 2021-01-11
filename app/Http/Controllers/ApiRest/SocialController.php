@@ -58,8 +58,8 @@ class SocialController extends ApiController
                 'email_verified_at' => Carbon::now()
             ])->toArray();
         }
-        $user->avatar = $request->avatar;
-        $user->save();
+        // $user->avatar = $request->avatar;
+        // $user->save();
         if($user->phone == null || $user->phone == ''){$tel="required";}
         return response()->json([
             "success" => true,
