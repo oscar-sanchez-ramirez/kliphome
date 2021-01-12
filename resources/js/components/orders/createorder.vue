@@ -73,6 +73,7 @@
 }
 </style>
 <script>
+import moment from 'moment';
 export default {
     props:{
         categories:Array
@@ -109,11 +110,11 @@ export default {
             alert('Debes seleccionar a una categoría');
             return;
         }
-        if(this.time == ""){
+        if(this.time == null){
             alert('Debes seleccionar la hora del servicio');
             return;
         }
-        if(this.description == ""){
+        if(this.description == ''){
             alert('Debes ingresar una descripción');
             return;
         }
@@ -121,7 +122,7 @@ export default {
             user_id: this.user_id,
             selected_id:this.category,
             type_service: 'Category',
-            service_date: this.date+' '+this.time,
+            service_date: moment(String(this.date+' '+this.time)).format('YYYY/MM/DD hh:mm'),
             service_description: this.description,
             visit_price:'quotation',
         };
