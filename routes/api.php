@@ -48,7 +48,6 @@ Route::post('check_social_account','ApiRest\RegisterController@check_social_acco
 Route::post('report','ApiRest\ApiServiceController@report');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    Log::notice($request);
     $user = $request->user();
     $info = new ApiServiceController();
 
@@ -60,6 +59,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         $needle = "Android";
     }
     $final = $info->userInfo($user->id,$needle);
+    if($request->filled('telefono')){
+        if($request->telefono != 'not_required'){
+            $info->actualizarTelefono();
+        }
+    }
     return $final;
 });
 Route::get('getAccepted/{page}','ApiRest\ApiServiceController@getAccepted');

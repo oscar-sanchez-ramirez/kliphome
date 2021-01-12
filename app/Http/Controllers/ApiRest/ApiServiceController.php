@@ -214,4 +214,11 @@ class ApiServiceController extends ApiController
         }
     }
 
+    public function actualizarTelefono(){
+        $usuario = $request->user();
+        User::where('id',$usuario->id)->update([
+            'phone' => $request->phone
+        ]);
+    }
+
 }
