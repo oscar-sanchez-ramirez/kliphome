@@ -214,7 +214,7 @@ class ApiServiceController extends ApiController
         }
     }
 
-    public function actualizarTelefono(){
+    public function actualizarTelefono(Request $request){
         $usuario = $request->user();
         User::where('id',$usuario->id)->update([
             'phone' => $request->phone
