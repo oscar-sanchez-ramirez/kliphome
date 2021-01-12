@@ -20,7 +20,7 @@ use App\Notifications\Admin\Report as ReportNotification;
 class ApiServiceController extends ApiController
 {
     public function __construct(){
-        $this->middleware('auth:api', ['only' => ['getSubCategories','getAccepted']]);
+        $this->middleware('auth:api', ['only' => ['getSubCategories','getAccepted','actualizarTelefono']]);
     }
     //Getting sub-categories for clientApp
     public function getSubCategories($category_p){
