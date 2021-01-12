@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ApiRest\ApiServiceController;
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::post('check_social_account','ApiRest\RegisterController@check_social_acco
 Route::post('report','ApiRest\ApiServiceController@report');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
+    Log::notice($request);
     $user = $request->user();
     $info = new ApiServiceController();
 

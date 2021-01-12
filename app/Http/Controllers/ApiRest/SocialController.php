@@ -41,7 +41,6 @@ class SocialController extends ApiController
     }
 
     public function facebook_flutter(Request $request){
-        Log::notice($request);
         $user = User::where('email',$request->email)->first();
         $tel = 'not_required';
         if(!$user){
@@ -58,8 +57,8 @@ class SocialController extends ApiController
                 'email_verified_at' => Carbon::now()
             ])->toArray();
         }
-        // $user->avatar = $request->avatar;
-        // $user->save();
+        $user->avatar = $request->avatar;
+        $user->save();
         if($user->phone == null || $user->phone == ''){$tel="required";}
         return response()->json([
             "success" => true,
