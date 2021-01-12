@@ -52,7 +52,7 @@ class SocialController extends ApiController
                 'avatar' => $request->avatar,
                 'password' => bcrypt($random),
                 'code' => $random,
-                'provider' => 'FACEBOOK',
+                'provider' => $request->provider,
                 'state' => 1,
                 'email_verified_at' => Carbon::now()
             ])->toArray();
