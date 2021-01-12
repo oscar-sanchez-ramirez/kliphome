@@ -61,7 +61,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     $final = $info->userInfo($user->id,$needle);
     if($request->filled('telefono')){
         if($request->telefono != 'not_required'){
-            $info->actualizarTelefono();
+            $info->actualizarTelefono($user->id,$request->telefono);
         }
     }
     return $final;
