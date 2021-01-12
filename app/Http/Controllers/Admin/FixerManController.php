@@ -144,6 +144,8 @@ class FixerManController extends Controller
         ]);
     }
     public function asignarTecnico($id_tecnico,$id_orden){
+        Log::notice($id_tecnico);
+        Log::notice($id_orden);
         $order = Order::where('id',$id_orden)->first();
         $fixerman = User::where('id',$id_tecnico)->first();
         $date = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
