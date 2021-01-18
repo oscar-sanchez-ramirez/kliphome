@@ -42,14 +42,17 @@ class MailOrderAccepted implements ShouldQueue
         $fecha = Carbon::createFromFormat('Y/m/d H:i', $order->service_date);
         $cupon = Coupon::where('order_id',$order->id)->first();
         if($visita){
-
+            if($cupon){
+                $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>$cupon->code);
+            }else{
+                $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>"");
+            }
         }else{
-            $visita["price"] = 0;
-        }
-        if($cupon){
-            $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>$cupon->code);
-        }else{
-            $usuario = array('monto' => $monto->price, 'visita' => $visita->price,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>"");
+            if($cupon){
+                $usuario = array('monto' => $monto->price, 'visita' => 0,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>$cupon->code);
+            }else{
+                $usuario = array('monto' => $monto->price, 'visita' => 0,'fecha'=> $fecha->format('d/m/Y H:i'),'service_image'=>$order->service_image,'cupon'=>"");
+            }
         }
         $mail = $order->email;
         Mail::send('emails.neworder',$usuario, function($msj) use ($mail){
