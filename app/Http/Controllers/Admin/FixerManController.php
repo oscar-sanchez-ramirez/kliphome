@@ -9,6 +9,7 @@ use App\Order;
 use App\Payment;
 use App\Category;
 use Carbon\Carbon;
+use App\FixermanGallery;
 use App\SelectedOrders;
 use App\SelectedCategories;
 use Illuminate\Http\Request;
@@ -107,6 +108,30 @@ class FixerManController extends Controller
             'percent' => $request->percent
         ]);
         return response()->json([
+            'success' => true
+        ]);
+    }
+    public function guardar_imagen_dato(Request $request,$id){
+        $file = $request->file('imagen');
+        $random = str_random(15);
+        $nombre = trim('images/'.$random.".png");
+        $image = Image::make($file->getRealPath())->resize(200, 240);
+        // ->orientate()
+        $image->save($nombre);
+        $tipo = DB::table('fixerman_galleries')->where('user_id',$id)->where('type',$request->tipo)->first();
+        if($tipo){
+            FixermanGallery::where('user_id',$id)->where('type',$request->tipo)->update([
+                'path' => url('').'/'.$nombre
+            ]);
+        }else{
+            FixermanGallery::create([
+                'user_id' => $id,
+                'type' => $request->tipo,
+                'path' => url('').'/'.$nombre
+            ]);
+        }
+        return response()->json([
+            'fixerman' => User::where('id',$id)->with('gallery')->first(),
             'success' => true
         ]);
     }

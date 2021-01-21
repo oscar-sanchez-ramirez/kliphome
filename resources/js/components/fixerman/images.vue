@@ -7,7 +7,7 @@
         <v-col cols="12" v-if="fixerman.gallery.length == 0">
             <h5>No se adjuntaron imágenes</h5>
         </v-col>
-        <v-col cols="4" v-for="item in fixerman.gallery" :key="item.id">
+        <v-col cols="4" v-for="item in fixerman.gallery" :key="item.id" @click="update(item)">
             <h5><b>{{ text_transform(item.type) }}</b></h5>
             <v-img
                 :src="item.path" lazy-src="https://picsum.photos/id/11/100/60" aspect-ratio="1" max-width="150" max-height="150">
@@ -18,9 +18,7 @@
                 </template>
             </v-img>
         </v-col>
-
     </b-row>
-
  </div>
 </template>
 <style lang='scss'>
@@ -51,14 +49,16 @@ export default{
         switch (text) {
             case 'identificacion_oficial':
                 return 'Identificación Oficial:'
-                break;
             case 'comprobante_domicilio':
                 return 'Comprobante de Domicilio:'
-                break;
             default:
                 return 'Prueba Psicométrica:'
-                break;
         }
+    },
+    update(item){
+        $('.header-desktop').css('position','unset');
+        this.$store.commit('set_item_image',item);
+        this.$store.commit('set_modal_images',true);
     }
   },props:{
     fixerman: Object

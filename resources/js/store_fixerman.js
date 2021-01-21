@@ -7,8 +7,10 @@ export default new Vuex.Store({
     state: {
         // chat
         dialog: false,
+        modal_image: false,
         // orders
-        orders:[]
+        orders:[],
+        item:[]
     },
     mutations: {
         // Chat
@@ -18,8 +20,13 @@ export default new Vuex.Store({
         // order
         orderList(state,orders){
             state.orders = orders;
+        },
+        set_modal_images(state,value){
+            state.modal_image = value;
+        },
+        set_item_image(state,item){
+            state.item = item;
         }
-
     },
     actions: {
       // Orders
@@ -49,7 +56,6 @@ export default new Vuex.Store({
                     }
 
                 }
-                console.log(events);
               context.commit('orderList',events);
             }
           );
@@ -60,6 +66,9 @@ export default new Vuex.Store({
             if (!val) return
         },
         dialogModal(val) {
+            if (!val) return
+        },
+        modal_image(val){
             if (!val) return
         }
     }

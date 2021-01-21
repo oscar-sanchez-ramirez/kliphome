@@ -4,6 +4,7 @@ Route::get('detalle/{id}','Admin\FixerManController@detail1');
 Route::get('reviews/{id}','Admin\FixerManController@reviews');
 Route::get('payments/{id}','Admin\FixerManController@payments');
 Route::post('guardar_datos/{id}','Admin\FixerManController@guardar_datos');
+Route::post('guardar_imagen_dato/{id}','Admin\FixerManController@guardar_imagen_dato');
 // Route::get('detalle','Admin\FixerManController@detail1');
 Route::post('guardar_ficha','Admin\FixerManController@guardar_ficha');
 Route::get('listado','Admin\FixerManController@list');
