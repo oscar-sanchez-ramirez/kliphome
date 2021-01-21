@@ -368,6 +368,8 @@ class OrderController extends Controller
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->whereNotIn('id',$quotations)->orderBy('id','DESC')->get();
             case 'terminados':
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('state',"FIXERMAN_DONE")->orderBy('id','DESC')->get();
+            case 'cancelados':
+                return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('state',"CANCELLED")->orderBy('id','DESC')->get();
             case 'calificados':
                 return Order::select(['id','user_id','service_description','service_date','state','type_service','selected_id','fixerman_arrive','created_at'])->where('state',"QUALIFIED")->orderBy('id','DESC')->get();
             case 'todos':

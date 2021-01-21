@@ -41,6 +41,7 @@
                                 <option value="cotizacion_pagada">Cotización Pagada</option>
                                 <option value="terminados">Terminados</option>
                                 <option value="calificados">Calificados</option>
+                                <option value="cancelados">Cancelados</option>
                             </select>
                             <div class="dropDownSelect2"></div>
                         </div>
@@ -194,13 +195,13 @@
         {{--  //open_chart(@json($titles),@json($count_of_orders),@json($colors))  --}}
     }
     function show_stats(){
-        filter('todos');
+        filter('all');
     }
     function filter(estado){
         var start = $('#start').val();
         var end = $('#end').val();
         let val = validate(start,end);
-        if(!val && estado != 'todos'){
+        if(!val && estado != 'all'){
             alert("Fecha incorrecta, verifique sus datos");
            return;
         }
