@@ -194,13 +194,13 @@
         {{--  //open_chart(@json($titles),@json($count_of_orders),@json($colors))  --}}
     }
     function show_stats(){
-        filter('all');
+        filter('todos');
     }
     function filter(estado){
         var start = $('#start').val();
         var end = $('#end').val();
         let val = validate(start,end);
-        if(!val && estado != 'all'){
+        if(!val && estado != 'todos'){
             alert("Fecha incorrecta, verifique sus datos");
            return;
         }
