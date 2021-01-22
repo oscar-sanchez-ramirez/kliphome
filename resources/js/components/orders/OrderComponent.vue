@@ -158,6 +158,35 @@
                 </v-card-text>
         </v-card>
         </v-dialog>
+        <v-dialog v-model="modal_qualify" scrollable max-width="760px">
+            <v-card>
+            <v-card-title>
+                <span class="headline">Nueva Valoración</span>
+            </v-card-title>
+            <v-card-text>
+                    <v-alert dense border="left" type="error" v-model="error">{{ message }}</v-alert>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="4">
+                                <v-text-field @keypress="onlyNumber" label="Presentación" type="number" :max='5' v-model="qualify.presentation"></v-text-field>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-text-field @keypress="onlyNumber" label="Puntualidad" type="number" :max='5' v-model="qualify.puntuality"></v-text-field>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-text-field @keypress="onlyNumber" label="Solución al problema" type="number" :max='5' v-model="qualify.problemSolve"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field label="Comentario" v-model="qualify.comment"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row align="center">
+                           <v-btn x-large color="success" dark @click="guardar_valoracion()">Enviar</v-btn>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+        </v-card>
+        </v-dialog>
       </v-container>
   </v-app>
 
@@ -179,12 +208,13 @@ export default{
     fixerman:Object,
     payments:Array,
     extra_info:Object
-  },
+  },mounted(){console.log(this.orden);},
   data: () => ({
       headers: [{text: 'Nombres',value:'full_name'},{text: 'Telefono',value:'phone'},{text:'Categorias',value:'categories'},{text:'Asignar',value:'options'}],
       quotation:{price:'',workforce:'',solution:'',materials:'',warranty_text:'',warranty_num:''},
       payment:{description:'',state:1,price:'',code_payment:'EFECTIVO'},
       comment:{comment:''},
+      qualify:{user_id:'',selected_order_id:'',presentation:'',puntuality:'',problemSolve:'',comment:'',tip:0},
       error: false,
       garantia:false,
       mostrar_garantia:false,
@@ -226,7 +256,15 @@ export default{
                this.$store.commit('set_modal_comment',value);
             }
         },
-        // modal_list_fixerman(){ return this.$store.state.modal_list_fixerman;},
+        modal_qualify:{
+            get () {
+             return this.$store.state.modal_qualify;
+            },
+            set (value) {
+                $('.header-desktop').css('position','fixed');
+               this.$store.commit('set_modal_qualify',value);
+            }
+        },
         fixerman_list(){ return this.$store.state.fixerman_list;}
     },methods:{
         cerrar_modal_fixerman(){
@@ -239,6 +277,9 @@ export default{
         },cerrar_modal_payment(){
             $('.header-desktop').css('position','fixed');
             this.$store.commit('set_modal_payment',false);
+        },cerrar_modal_qualify(){
+            $('.header-desktop').css('position','fixed');
+            this.$store.commit('set_modal_qualify',false);
         },seleccionar(id){
             axios.post('/tecnicos/asignarTecnico/'+id+'/'+this.orden.id).then(response => {
                     window.location.href = window.location.origin+"/ordenes/detalle-orden/"+this.orden.id;
@@ -280,7 +321,34 @@ export default{
                         this.cerrar_modal_comment();
                     }
             });
-        },enviar_cotizacion(){
+        },guardar_valoracion(){
+            if(this.orden.fixerman_user != null){
+                if(this.qualify.problemSolve > 5 || this.qualify.presentation > 5 || this.qualify.puntuality > 5){
+                    alert("La valoración no debe ser mayor a 5");
+                    return;
+                }
+                if(this.qualify.problemSolve == '' || this.qualify.presentation == '' || this.qualify.puntuality == ''){
+                    alert("Debe llenar todos los campos");
+                    return;
+                }
+                let formData = new FormData();
+                formData.append('user_id',this.orden.fixerman_user.user_id);
+                formData.append('selected_order_id',this.orden.fixerman_user.id);
+                formData.append('presentation',this.qualify.presentation);
+                formData.append('puntuality',this.qualify.puntuality);
+                formData.append('problemSolve',this.qualify.problemSolve);
+                formData.append('comment',this.qualify.comment);
+                axios.post('/ordenes/qualify',formData).then(response =>{
+                    if(response.data.success){
+                        this.$store.dispatch('qualifies',this.orden.id);
+                        this.cerrar_modal_qualify();
+                    }
+                });
+            }else{
+                alert("No se asigno un técnico");
+            }
+        },
+        enviar_cotizacion(){
             let check = this.validate_quotation();
             if(check){
                 let formData = new FormData();
@@ -317,8 +385,7 @@ export default{
             }else{
                 return false;
             }
-        },
-        isNumeric: function (n) {
+        },isNumeric: function (n) {
             return !isNaN(parseFloat(n)) && isFinite(n);
         },showError(error){
             this.error = true;
@@ -326,7 +393,13 @@ export default{
             setTimeout(() => {
                 this.error = false;
             }, 3000);
-        }
+        },onlyNumber ($event) {
+   //console.log($event.keyCode); //keyCodes value
+   let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+   if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
+      $event.preventDefault();
+   }
+}
     },watch:{
         garantia(val){
             if(val == true){

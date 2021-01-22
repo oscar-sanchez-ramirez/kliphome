@@ -79,7 +79,6 @@ export default {
         categories:Array
     },
     mounted(){
-        console.log(this.categories);
     },
 
     data: () => ({

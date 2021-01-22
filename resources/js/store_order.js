@@ -15,6 +15,7 @@ export default new Vuex.Store({
         modal_quotation:false,
         modal_payment:false,
         modal_comment:false,
+        modal_qualify:false,
         fixerman_list:[],
         categories_list:[],
         quotations:[],
@@ -46,6 +47,8 @@ export default new Vuex.Store({
             state.modal_quotation = val;
         },set_modal_payment(state,val){
             state.modal_payment = val;
+        },set_modal_qualify(state,val){
+            state.modal_qualify = val;
         },set_modal_comment(state,val){
             state.modal_comment = val;
         },setPayments(state,val){
@@ -117,7 +120,7 @@ export default new Vuex.Store({
             context.commit('setPayments',response.data.payments);
         });
     },qualifies(context,order_id){
-        axios.get('/ordenes/qualifies/'+order_id).then(response=>{
+        axios.get('/ordenes/qualify/'+order_id).then(response=>{
             context.commit('setQualifies',response.data.qualifies);
         });
     },comments(context,order_id){

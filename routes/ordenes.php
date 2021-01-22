@@ -1,6 +1,6 @@
 <?php
 Route::get('/', 'Admin\OrderController@index');
-Route::get('qualifies/{id}','Admin\OrderController@qualifies');
+// Route::get('qualifies/{id}','Admin\OrderController@qualifies');
 Route::get('detalle-orden/{id}','Admin\OrderController@orderDetail');
 Route::get('detalle_usuario/{id}/{address}','Admin\OrderController@detalle_usuario');
 Route::get('cupon/{cupon}','Admin\OrderController@cupon');
@@ -21,3 +21,4 @@ Route::post('cancelarCotizacion/{quotation_id}','Admin\OrderController@cancelarC
 Route::post('confimarCotizacion/{quotation_id}','Admin\OrderController@confimarCotizacion');
 
 Route::resource('comments', 'Admin\Order\CommentController');
+Route::resource('qualify','Admin\Order\QualifyController');

@@ -13,6 +13,9 @@ class Order extends Model
     public function clientAddress($id){
         return Address::where('id',$id)->first(['alias','street','exterior','interior','municipio','postal_code','colonia','reference']);
     }
+    public function fixerman_user(){
+        return $this->belongsTo(SelectedOrders::class,'id','order_id');
+    }
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }

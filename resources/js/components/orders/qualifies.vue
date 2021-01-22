@@ -1,5 +1,8 @@
 <template>
         <v-card>
+            <v-row>
+                <v-btn depressed small color="primary" @click="open_modal_qualify()">Nueva</v-btn>
+            </v-row>
             <v-container>
 
                 <v-data-table :headers="headers" :items="qualifies">
@@ -27,10 +30,11 @@ export default {
         }
     },computed:{
         qualifies(){ return this.$store.state.qualifies;},
+    },methods:{
+        open_modal_qualify(){
+            $('.header-desktop').css('position','unset');
+            this.$store.commit('set_modal_qualify',true);
+        }
     }
 }
 </script>
-
-<style>
-
-</style>

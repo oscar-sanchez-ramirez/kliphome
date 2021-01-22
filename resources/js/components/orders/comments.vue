@@ -16,7 +16,6 @@ export default {
         orden:Object
     },mounted(){
         this.$store.dispatch('comments',this.orden.id);
-        console.log(this.comments);
     },computed:{
         comments(){ return this.$store.state.comments;},
     },data(){

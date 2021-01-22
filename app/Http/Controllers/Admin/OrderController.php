@@ -82,7 +82,7 @@ class OrderController extends Controller
         if($request->filled('notification_id')){
             DB::table('notifications')->where('id',$request->notification_id)->update(['read_at'=>Carbon::now()]);
         }
-        $orden = Order::where('id',$id)->with('gallery')->first();
+        $orden = Order::where('id',$id)->with('gallery','fixerman_user')->first();
         if($orden){
             $fixerman = DB::table('selected_orders as s')->join('orders as o','o.id','s.order_id')->join('users as u','u.id','s.user_id')->select('u.*')->where('o.id',$id)->where('s.state',1)->first();
             $payments = Payment::where('order_id',$id)->get();
@@ -215,13 +215,13 @@ class OrderController extends Controller
         $user->notify(new CancelOrder($order,$user->email));
     }
 
-    public function qualifies($id){
-        $qualifies = DB::table('orders as o')->join('selected_orders as so','so.order_id','o.id')->join('qualifies as q','q.selected_order_id','so.id')->select('q.*')->where('o.id',$id)->get();
-        // Qualify::where('selected_order_id')->get();
-        return response()->json([
-            'qualifies' => $qualifies
-          ]);
-    }
+    // public function qualifies($id){
+    //     $qualifies = DB::table('orders as o')->join('selected_orders as so','so.order_id','o.id')->join('qualifies as q','q.selected_order_id','so.id')->select('q.*')->where('o.id',$id)->get();
+    //     // Qualify::where('selected_order_id')->get();
+    //     return response()->json([
+    //         'qualifies' => $qualifies
+    //       ]);
+    // }
 
     public function markDone($id){
         $order_id = $id;

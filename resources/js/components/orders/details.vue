@@ -106,7 +106,6 @@ export default {
         fixerman:Object,
         extra_info:Object
     },mounted(){
-        console.log(this.extra_info);
         this.$store.dispatch('user_detail',{user_id:this.orden.user_id,address:this.orden.address});
         this.$store.dispatch('getService',{type:this.orden.type_service,id:this.orden.selected_id});
     },computed:{
