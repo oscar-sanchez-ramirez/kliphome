@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin\Order;
 
 use DB;
+use App\Order;
 use App\Qualify;
+use App\SelectedOrders;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -37,18 +39,29 @@ class QualifyController extends Controller
      */
     public function store(Request $request)
     {
-        $qualify = new Qualify;
-        $qualify->user_id = $request->user_id;
-        $qualify->selected_order_id = $request->selected_order_id;
-        $qualify->presentation = $request->presentation;
-        $qualify->puntuality = $request->puntuality;
-        $qualify->problemSolve = $request->problemSolve;
-        $qualify->comment = $request->comment;
-        $qualify->tip = 0;
-        $qualify->save();
-        return response()->json([
-            'success' => true
-        ]);
+        $selected_order = SelectedOrders::where('id',$request->selected_order_id)->with('order')->first();
+        if($selected_order->order->state == 'PENDING' || $selected_order->order->state == 'FIXERMAN_NOTIFIED' || $selected_order->order->state == 'FIXERMAN_APPROVED'){
+            return response()->json([
+                'success' => false,
+                'message' => 'Esta orden esta pendiente o el técnico no ha marcado el trabajo como terminado'
+            ]);
+        }else{
+            $qualify = new Qualify;
+            $qualify->user_id = $request->user_id;
+            $qualify->selected_order_id = $request->selected_order_id;
+            $qualify->presentation = $request->presentation;
+            $qualify->puntuality = $request->puntuality;
+            $qualify->problemSolve = $request->problemSolve;
+            $qualify->comment = $request->comment;
+            $qualify->tip = 0;
+            $qualify->save();
+            return response()->json([
+                'success' => true
+            ]);
+            Order::where('id',$selected_order->order->id)->update([
+                'state' => 'QUALIFIED'
+            ]);
+        }
     }
 
     /**

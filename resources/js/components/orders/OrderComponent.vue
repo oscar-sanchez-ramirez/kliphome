@@ -342,6 +342,8 @@ export default{
                     if(response.data.success){
                         this.$store.dispatch('qualifies',this.orden.id);
                         this.cerrar_modal_qualify();
+                    }else{
+                        alert(response.data.message);
                     }
                 });
             }else{
