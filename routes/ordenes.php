@@ -9,6 +9,7 @@ Route::get('cotizaciones/{order_id}','Admin\OrderController@cotizaciones');
 Route::get('nueva-orden','Admin\OrderController@nueva_orden');
 Route::get('busqueda','Admin\OrderController@busqueda');
 Route::get('export','Admin\OrderController@export');
+Route::get('pdf','Admin\OrderController@pdf');
 Route::post('store','Admin\OrderController@store');
 Route::post('nuevo-pago/{id}','Admin\OrderController@nuevo_pago');
 Route::post('aprobarSolicitudTecnico/{fixerman_id}/{order_id}','Admin\OrderController@aprobarSolicitudTecnico');

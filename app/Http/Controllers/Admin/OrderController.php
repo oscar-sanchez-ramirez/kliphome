@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use DB;
+use PDF;
 use OneSignal;
 use App\User;
 use App\Order;
@@ -445,5 +446,14 @@ class OrderController extends Controller
         if($order->state === 'QUALIFIED'){$qualify = '<i class="zmdi zmdi-badge-check" id="success"></i>';}else{$qualify = '<i class="zmdi zmdi-badge-check" id="secondary"></i>';}
 
         return '<i class="zmdi zmdi-badge-check" id="'.$fixerman.'"></i>&nbsp;'.$arrive.'&nbsp;'.'<i class="zmdi zmdi-badge-check" id="'.$quotation.'"></i>&nbsp;'.$done.'&nbsp;'.$qualify;
+    }
+
+    public function pdf(){
+        $ordenes = Order::with('user','fixerman_user','quotations')->get();
+        $header = 'images/logo_negro.png';
+        $data = ['header' => $header,'ordenes'=>$ordenes];
+        $pdf = PDF::loadView('pdf/orders', $data);
+
+        return $pdf->stream('itsolutionstuff.pdf');
     }
 }

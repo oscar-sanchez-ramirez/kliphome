@@ -52,6 +52,7 @@
                         </div>
                         <button onclick="show_chart()" class="au-btn au-btn--green"><i class="zmdi zmdi-chart"></i></button>
                         <button onclick="export_excel('{{ Request::get('filtro') }}')" class="au-btn au-btn-icon au-btn--green"><i class="zmdi zmdi-file-text"></i></button>
+                        <a href="{{ url('') }}/ordenes/pdf" class="au-btn au-btn-icon au-btn--green"><i class="zmdi zmdi-collection-pdf"></i></a>
                     </div>
                     <div class="table-data__tool-right">
                         <a href="{{ url('') }}/ordenes/nueva-orden" class="au-btn au-btn-icon au-btn--green">

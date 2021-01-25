@@ -22,6 +22,9 @@ class Order extends Model
     public function gallery(){
         return $this->hasMany(OrderGallery::class, 'order_id');
     }
+    public function quotations(){
+        return $this->hasMany(Quotation::class,'order_id','id');
+    }
 
     public function quotation($id){
         $quotation = Quotation::where('order_id',$id)->orderBy('id','DESC')->first();
