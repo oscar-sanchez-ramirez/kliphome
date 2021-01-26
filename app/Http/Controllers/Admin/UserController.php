@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use DB;
 use App\User;
 use App\Order;
+use App\Address;
 use Illuminate\Http\Request;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
@@ -24,7 +25,7 @@ class UserController extends Controller
                 return $monthlysales;
             }else{
                 $key = $request->get('query');
-                $users = User::where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('type','AppUser')->withCount('orders')->get();
+                $users = User::where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->where('type','AppUser')->withCount('orders')->with('address')->get();
                 return $users;
             }
         }else{
@@ -89,5 +90,24 @@ class UserController extends Controller
                 # code...
                 break;
         }
+    }
+    public function nueva_direccion(Request $request){
+        $add = new Address;
+        $add->alias = $request->alias;
+        $add->street = $request->street;
+        $add->reference = $request->reference;
+        $add->postal_code = $request->postal_code;
+        $add->colonia = $request->colonia;
+        $add->municipio = $request->municipio;
+        $add->exterior = $request->exterior;
+        $add->interior = $request->interior;
+        $add->user_id = $request->user_id;
+        $add->delegation = "-";
+        $add->save();
+
+        $address = Address::where('user_id',$request->user_id)->get();
+        return response()->json([
+            'address' => $address
+        ]);
     }
 }

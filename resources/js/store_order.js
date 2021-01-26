@@ -9,6 +9,7 @@ export default new Vuex.Store({
         dialog: false,
         // orders
         user:[],
+        user_address:[],
         address:[],
         service:'',
         modal_list_fixerman:false,
@@ -64,6 +65,7 @@ export default new Vuex.Store({
       // Orders
       user_detail(context,object){
         axios.get('/ordenes/detalle_usuario/'+object.user_id+'/'+object.address).then(response=>{
+            console.log(response.data);
             context.commit('setUser',response.data.user);
             context.commit('setAddress',response.data.address);
         });

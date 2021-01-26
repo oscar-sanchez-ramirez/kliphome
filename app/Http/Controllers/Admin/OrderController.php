@@ -95,10 +95,22 @@ class OrderController extends Controller
     }
 
     public function detalle_usuario($id,$address_id){
-        $user = User::where('id',$id)->first();
+        $user = User::with('address')->where('id',$id)->first();
         $address = Address::where('id',$address_id)->first();
         return response()->json([
             'user' => $user,
+            'address' => $address
+        ]);
+    }
+
+    public function asignar_direccion($id_address,$id_orden){
+        Order::where('id',$id_orden)->update([
+            'address' => $id_address
+        ]);
+
+        $address = Address::where('id',$id_address)->first();
+        return response()->json([
+            'success' => true,
             'address' => $address
         ]);
     }

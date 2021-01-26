@@ -74,7 +74,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 @forelse(json_decode($ordenes) as $orden)
                 <tr class="border-solid">
                         <td class="w30">{{ $i++ }}</td>
@@ -87,7 +86,7 @@
                         <td align="center">{{ ($orden->address == null) ? "No" : "Si" }}</td>
                 </tr>
                 @empty
-                <p>geen invoices gevonden</p>
+                <p>No hay datos</p>
                 @endforelse
             </tbody>
 

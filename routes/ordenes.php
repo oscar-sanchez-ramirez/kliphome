@@ -11,6 +11,7 @@ Route::get('busqueda','Admin\OrderController@busqueda');
 Route::get('export','Admin\OrderController@export');
 Route::get('pdf','Admin\OrderController@pdf');
 Route::post('store','Admin\OrderController@store');
+Route::post('asignar_direccion/{id_address}/{id_orden}','Admin\OrderController@asignar_direccion');
 Route::post('nuevo-pago/{id}','Admin\OrderController@nuevo_pago');
 Route::post('aprobarSolicitudTecnico/{fixerman_id}/{order_id}','Admin\OrderController@aprobarSolicitudTecnico');
 Route::post('eliminarSolicitudTecnico/{fixerman_id}/{order_id}','Admin\OrderController@eliminarSolicitudTecnico');

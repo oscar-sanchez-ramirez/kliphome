@@ -227,6 +227,7 @@ export default{
              return this.$store.state.modal_list_fixerman;
             },
             set (value) {
+                $('.header-desktop').css('position','fixed');
                this.$store.commit('set_modal_list_fixerman',value);
             }
         },modal_quotation:{

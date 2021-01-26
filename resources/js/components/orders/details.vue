@@ -20,6 +20,11 @@
                                     <p>Colonia: {{ address.colonia }}</p>
                                     <p>Referencia: {{ address.reference }}</p>
                                 </div>
+                                <div v-if="address == null || address == ''">
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" type="button"  title="Ver"   @click="getAddList()">
+                                        Asignar Dirección
+                                    </button>
+                                </div>
                                 <div v-if="fixerman">
                                     <div v-show="orden.state != 'PENDING' && orden.state != 'FIXERMAN_NOTIFIED'">
                                         <h4 v-show="orden.fixerman_arrive == 'NO'">Técnico aún no llegó al punto</h4>
@@ -83,6 +88,43 @@
             </v-toolbar>
             <img :src="url" alt="" class="img-responsive" width="100%" height="100%">
         </v-dialog>
+        <v-dialog v-model="dialog_address" scrollable width="500" height="300">
+            <v-card>
+                <v-tabs background-color="transparent" color="basil" grow>
+                    <v-tab href="#lista">Direcciones</v-tab>
+                    <v-tab href="#nueva_direccion">Nueva Dirección</v-tab>
+
+                    <v-tab-item value="lista">
+                        <v-card flat tile>
+                            <v-list-item v-for="add in user.address" :key="add.id">
+                                <v-list-item-content>
+                                    <v-list-item-title>{{ add.alias }} - {{ add.street }} &nbsp;&nbsp;<v-btn color="primary" small @click="asignar_direccion(add.id)">Asignar</v-btn></v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <h2 v-if="user.address.length == 0" id="pt-10">Este usuario no tiene direcciones</h2>
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab-item value="nueva_direccion">
+                        <v-card flat tile>
+                            <v-card-title class="headline grey lighten-2">
+                                Nueva dirección
+                            </v-card-title>
+                            <div id="pd-15">
+                                <v-text-field v-model="new_address_field.alias" label="Alias"></v-text-field>
+                                <v-text-field v-model="new_address_field.street" label="Dirección"></v-text-field>
+                                <v-text-field v-model="new_address_field.reference" label="Referencia"></v-text-field>
+                                <v-text-field v-model="new_address_field.postal_code" label="Código postal"></v-text-field>
+                                <v-text-field v-model="new_address_field.colonia" label="Colonia"></v-text-field>
+                                <v-text-field v-model="new_address_field.municipio" label="Municipio"></v-text-field>
+                                <v-text-field v-model="new_address_field.exterior" label="Num Exterior"></v-text-field>
+                                <v-text-field v-model="new_address_field.interior" label="Num Interior"></v-text-field>
+                                <v-btn  color="primary" @click="save_address">Guardar</v-btn>
+                            </div>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -91,6 +133,11 @@
 
     #cardContent{
         overflow-y: scroll;
+    }#pd-15{
+        padding: 3% !important;
+    }#pt-10{
+        text-align: center;
+        padding: 4% !important;
     }
     .v-application--wrap{
         min-height: 50px !important;
@@ -112,6 +159,7 @@ export default {
         user(){ return this.$store.state.user;},
         address(){ return this.$store.state.address;},
         service(){return this.$store.state.service;},
+        user_address(){return this.$store.state.user_address}
     },methods:{
         orderCoupon(coupon){
             axios.get('/ordenes/cupon/'+coupon).then(response => {
@@ -127,10 +175,53 @@ export default {
         },close_modal(){
             $('.header-desktop').css('position','fixed');
             this.dialog = false;
+        },getAddList(){
+            $('.header-desktop').css('position','unset');
+            this.dialog_address = true;
+        },close_modal_address(){
+            this.dialog_address = false;
+        },save_address(){
+            this.new_address_field.user_id = this.orden.user_id;
+
+            if(this.new_address_field.alias == '' || this.new_address_field.street == '' || this.new_address_field.reference == ''){
+                alert("Debes llenar todos los datos");
+                return;
+            }
+            let formData = new FormData();
+            formData.append('alias',this.new_address_field.alias);
+            formData.append('street',this.new_address_field.street);
+            formData.append('reference',this.new_address_field.reference);
+            formData.append('postal_code',this.new_address_field.postal_code);
+            formData.append('colonia',this.new_address_field.colonia);
+            formData.append('municipio',this.new_address_field.municipio);
+            formData.append('exterior',this.new_address_field.exterior);
+            formData.append('interior',this.new_address_field.interior);
+            formData.append('user_id',this.new_address_field.user_id);
+
+             axios.post('/clientes/nueva_direccion',formData)
+            .then(response => {
+                alert("Se guardó la dirección");
+                // this.$store.state.address = ;
+                setTimeout(() => {
+                    this.asignar_direccion(response.data.address[response.data.address.length-1].id);
+                }, 500);
+            }).catch(error => {});
+        },asignar_direccion(id){
+            axios.post('/ordenes/asignar_direccion/'+id+'/'+this.orden.id).then(response => {
+            //   return response.data.coupon.discount
+                if(response.data.success){
+                    console.log(response.data.address);
+                    this.$store.state.address = response.data.address;
+                    $('.header-desktop').css('position','fixed');
+                    this.dialog_address = false;
+                }
+            });
         }
     },data () {
       return {
         dialog: false,
+        dialog_address:false,
+        new_address_field : {alias:'',street:'',reference:'',postal_code:'',colonia:'',municipio:'',exterior:'',interior:'',user_id:''},
         url:''
       }
     },

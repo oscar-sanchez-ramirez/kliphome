@@ -63,6 +63,7 @@ export default {
         orden:Object
     },methods:{
         getFixermanList(){
+            $('.header-desktop').css('position','unset');
             this.$store.dispatch('getFixermanList');
         },deleteFixerman(){
             axios.post('/tecnicos/eliminarTecnico/'+this.fixerman.id+'/'+this.orden.id).then(response => {
@@ -75,6 +76,7 @@ export default {
                 });
         }
     },computed:{
+
     }
 }
 </script>
