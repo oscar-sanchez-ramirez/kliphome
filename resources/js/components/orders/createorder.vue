@@ -124,8 +124,6 @@ export default {
     props:{
         categories:Array
     },
-    mounted(){
-    },
     data: () => ({
       user_id:'',
       category:'',

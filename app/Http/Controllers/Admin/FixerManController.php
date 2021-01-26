@@ -37,6 +37,17 @@ class FixerManController extends Controller
                 ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))
                 ->where('type','AppFixerMan')->groupBy('dates')->orderBy('dates','asc')->get());
                 return $monthlysales;
+            }else{
+                $key = $request->get('query');
+                if($key == ''){
+                    $fixerman = User::where('type','AppFixerMan')->where('state',1)->with('categories')->get();
+                }else{
+
+                    $fixerman = User::where('type','AppFixerMan')->where('state',1)->where('name','LIKE','%'.$key.'%')->orWhere('lastName','LIKE','%'.$key.'%')->with('categories')->get();
+                }
+                return response()->json([
+                    'fixerman' => $fixerman
+                ]);
             }
         }
         $users = User::where('type','AppFixerMan')->orderBy('id','desc')->paginate(10);

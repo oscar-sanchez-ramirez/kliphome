@@ -53,6 +53,7 @@
                 </v-card-title>
                 <v-card-text>
                 <v-container>
+                    <v-text-field v-model="name" :counter="100" label="Cliente" required @input="name.$touch()"></v-text-field>
                     <v-data-table :headers="headers" :items="fixerman_list">
                     <template #item.full_name="{ item }">{{ item.name }} {{ item.lastName }}</template>
                     <template #item.options="{ item }"><v-btn @click="seleccionar(item.id)" color="success">Asignar</v-btn></template>
@@ -221,6 +222,7 @@ export default{
       periodos: ['dias', 'semanas', 'meses'],
       conceptos: ['VISITA','PAGO POR SERVICIO','PROPINA'],
       message:'',
+      name: '',
     }),computed:{
         modal_list_fixerman: {
             get () {
@@ -397,12 +399,19 @@ export default{
                 this.error = false;
             }, 3000);
         },onlyNumber ($event) {
-   //console.log($event.keyCode); //keyCodes value
-   let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
-   if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
-      $event.preventDefault();
-   }
-}
+            //console.log($event.keyCode); //keyCodes value
+            let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+            if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
+                $event.preventDefault();
+            }
+        },searchMembers() {
+            axios.get('/tecnicos?query='+this.name)
+            .then(response =>{
+                console.log(response.data);
+                 this.$store.state.fixerman_list = response.data.fixerman;
+
+            }).catch(error => {});
+        }
     },watch:{
         garantia(val){
             if(val == true){
@@ -410,6 +419,9 @@ export default{
             }else{
                 this.mostrar_garantia = false;
             }
+        },
+        name(after, before) {
+            this.searchMembers();
         }
     }
 }
