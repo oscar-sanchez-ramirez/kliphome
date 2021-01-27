@@ -172,14 +172,11 @@ class PaymentController extends Controller
                         }
                         // Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
                         if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
-                            return 1;
                             $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
                             $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + $workforce;
                             $visita["total_mano_de_obra"] += $workforce;
                         }else{
-                            // return 2;
                             if($workforce != "0" && $workforce != null){
-                                // return 2;
                                 $visita["total_mano_de_obra"] += $workforce;
                                 array_push($visita["data"],array("x" => $date,"y"=>$workforce,'order_id'=>$payments[$i]->order_id));
                             }
