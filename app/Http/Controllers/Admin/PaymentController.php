@@ -29,9 +29,12 @@ class PaymentController extends Controller
                     $visitas = Payment::where('state',1)->where('description','VISITA')->get();
                     $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->orderBy('order_id')->get();
                 }else{
+
                     $servicios = Payment::where('state',1)->where('description','PAGO POR SERVICIO')->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))->orderBy('order_id')->get();
-                    $visitas = Payment::where('state',1)->where('description','VISITA')->whereIn('order_id',\array_column($servicios->toArray(),'order_id'))->get();
+                    $visitas = Payment::where('state',1)->where('description','VISITA')->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))->orderBy('order_id')->get();
+                    // ->whereIn('order_id',\array_column($servicios->toArray(),'order_id'))->get();
                 }
+
                 foreach ($servicios as $key => $servicio) {
                     if($servicio->code_payment == "EFECTIVO"){
                         $visita = $visitas->filter(function($item) use ($servicio){
@@ -78,6 +81,7 @@ class PaymentController extends Controller
                         }
                     }
                 }
+
                 $stats = $this->stats($servicios,$visitas);
                 return $stats;
             }else{
@@ -121,26 +125,42 @@ class PaymentController extends Controller
                 }
             }
         }
-
         for ($i=0; $i < count($payments); $i++) {
             if($payments[$i] != []){
-                $cotizacion = Quotation::where('order_id',$payments[$i]->order_id)->get();
+                $cotizacion = Quotation::where('order_id',$payments[$i]->order_id)->where('state',1)->get();
                 $date = $this->position($payments[$i]->created_at);
+
                 if(!isset($servicio["data"])){
                     if($payments[$i]->service_price != "0"){
                         array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
                     }
                 }else{
+
                     if($payments[$i]->code_payment == "EFECTIVO"){
                         $workforce = 0;
                         $service_price = 0;
                         $price = intval($payments[$i]->price);
-                        if($payments[$i]->workforce == null && $payments[$i]->service_price == null){
+
+                        if(count($cotizacion) == 0){
                             $workforce = $price / 2;
                             $service_price = $price / 2;
                         }else{
-                            $workforce = intval($payments[$i]->workforce);
-                            $service_price = intval($payments[$i]->service_price);
+                            if(count($cotizacion) == 1){
+                                $workforce = intval($cotizacion[0]->workforce);
+                                $service_price = intval($cotizacion[0]->price);
+                            }else{
+                                for ($c=0; $c < count($cotizacion); $c++) {
+                                    if((intval($cotizacion[$c]->workforce) + intval($cotizacion[$c]->price)) == $price){
+                                        $workforce = intval($cotizacion[$c]->workforce);
+                                        $service_price = intval($cotizacion[$c]->price);
+                                    }
+
+                                    if(count($cotizacion) == ($c+1) && $workforce == 0 && $service_price == 0){
+                                        $workforce = intval($cotizacion[$c]->workforce);
+                                        $service_price = intval($cotizacion[$c]->price);
+                                    }
+                                }
+                            }
                         }
                         if(array_search($date,array_column($servicio["data"],"x"))){
                             $index = array_search($date,array_column($servicio["data"],"x"));
@@ -152,33 +172,64 @@ class PaymentController extends Controller
                         }
                         // Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
                         if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
+                            return 1;
                             $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
                             $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + $workforce;
                             $visita["total_mano_de_obra"] += $workforce;
                         }else{
-                            if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
+                            // return 2;
+                            if($workforce != "0" && $workforce != null){
+                                // return 2;
                                 $visita["total_mano_de_obra"] += $workforce;
                                 array_push($visita["data"],array("x" => $date,"y"=>$workforce,'order_id'=>$payments[$i]->order_id));
                             }
                         }
                     }else{
+                        $price = intval($payments[$i]->price);
+                        if(count($cotizacion) == 0){
+                            $workforce = $price / 2;
+                            $service_price = $price / 2;
+                        }else{
+                            if(count($cotizacion) == 1){
+                                $workforce = intval($cotizacion[0]->workforce);
+                                $service_price = intval($cotizacion[0]->price);
+                            }else{
+                                for ($c=0; $c < count($cotizacion); $c++) {
+                                    if((intval($cotizacion[$c]->workforce) + intval($cotizacion[$c]->price)) == $price){
+                                        $workforce = intval($cotizacion[$c]->workforce);
+                                        $service_price = intval($cotizacion[$c]->price);
+                                    }
+
+                                    if(count($cotizacion) == ($c+1) && $workforce == 0 && $service_price == 0){
+                                        $workforce = intval($cotizacion[$c]->workforce);
+                                        $service_price = intval($cotizacion[$c]->price);
+                                    }
+                                }
+                            }
+                            // return $service_price;
+                            // if($payments[$i]->order_id == 349){
+                            //     // return $price;
+                            //     return $workforce;
+                            // }
+                        }
+
                         if(array_search($date,array_column($servicio["data"],"x"))){
                             $index = array_search($date,array_column($servicio["data"],"x"));
-                            $servicio["data"][$index]["y"] = intval($servicio["data"][$index]["y"]) + intval($payments[$i]->price);
+                            $servicio["data"][$index]["y"] = intval($servicio["data"][$index]["y"]) + intval($service_price);
                         }else{
-                            if($payments[$i]->service_price != "0" && $payments[$i]->service_price != null){
-                                array_push($servicio["data"],array("x" => $date,"y"=>$payments[$i]->service_price,'order_id'=>$payments[$i]->order_id));
+                            if($service_price != "0" && $service_price != null){
+                                array_push($servicio["data"],array("x" => $date,"y"=>$service_price,'order_id'=>$payments[$i]->order_id));
                             }
                         }
                         // Acá buscaremos si mano de obra de servicio tiene un pago por visita y sumarlo a ese costo
                         if(array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"))){
                             $index = array_search($payments[$i]->order_id,array_column($visita["data"],"order_id"));
-                            $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($payments[$i]->workforce);
-                            $visita["total_mano_de_obra"] += intval($payments[$i]->workforce);
+                            $visita["data"][$index]["y"] = intval($visita["data"][$index]["y"]) + intval($workforce);
+                            $visita["total_mano_de_obra"] += intval($workforce);
                         }else{
-                            if($payments[$i]->workforce != "0" && $payments[$i]->workforce != null){
-                                array_push($visita["data"],array("x" => $date,"y"=>$payments[$i]->workforce,'order_id'=>$payments[$i]->order_id));
-                                $visita["total_mano_de_obra"] += intval($payments[$i]->workforce);
+                            if($workforce != "0" && $workforce != null){
+                                array_push($visita["data"],array("x" => $date,"y"=>$workforce,'order_id'=>$payments[$i]->order_id));
+                                $visita["total_mano_de_obra"] += intval($workforce);
                             }
                         }
                     }

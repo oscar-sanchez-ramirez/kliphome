@@ -183,8 +183,6 @@ function show_chart(){
         $(".chart").show();
         show_stats();
     }
-    {{-- /*var dates = @json($stats);
-        open_chart(dates)*/ --}}
 }
 function show_stats(){
     filter('all');
@@ -199,6 +197,7 @@ function filter(estado){
        return;
     }
     var url = window.location.origin+"/pagos";
+    console.log(estado);
     $.ajax({
         type: "GET",
         url: url,

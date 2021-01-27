@@ -407,7 +407,6 @@ export default{
         },searchMembers() {
             axios.get('/tecnicos?query='+this.name)
             .then(response =>{
-                console.log(response.data);
                  this.$store.state.fixerman_list = response.data.fixerman;
 
             }).catch(error => {});

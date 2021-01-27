@@ -234,7 +234,6 @@
         });
     }
     function open_chart(titles,count_of_orders,colors){
-        console.log(count_of_orders);
         myChart2 = document.getElementById('myChart2'),
         context2 = myChart2.getContext('2d');
         window.addEventListener('resize', resizeCanvas, false);

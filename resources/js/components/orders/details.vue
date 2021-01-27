@@ -210,7 +210,6 @@ export default {
             axios.post('/ordenes/asignar_direccion/'+id+'/'+this.orden.id).then(response => {
             //   return response.data.coupon.discount
                 if(response.data.success){
-                    console.log(response.data.address);
                     this.$store.state.address = response.data.address;
                     $('.header-desktop').css('position','fixed');
                     this.dialog_address = false;
