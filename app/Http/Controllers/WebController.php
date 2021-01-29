@@ -26,13 +26,13 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        $usuario = array('name' => "error", 'tipo' => "PGO",'error'=> "Errorcillo");
-        // $mail = ["tonyhamui68@gmail.com","kliphomegaby@gmail.com"];
-        $mail = ["germanruelas17@gmail.com","german.ruelas@tigears.com"];
-        // $mail = "germanruelas17@gmail.com";
-        Mail::send('emails.conektaerror',$usuario, function($msj) use ($mail){
-            $msj->subject('KlipHome: Error en conekta');
-            $msj->to($mail,"Datos del error Conekta");
-        });
+        // $usuario = array('name' => "error", 'tipo' => "PGO",'error'=> "Errorcillo");
+        // // $mail = ["tonyhamui68@gmail.com","kliphomegaby@gmail.com"];
+        // $mail = ["germanruelas17@gmail.com","german.ruelas@tigears.com"];
+        // // $mail = "germanruelas17@gmail.com";
+        // Mail::send('emails.conektaerror',$usuario, function($msj) use ($mail){
+        //     $msj->subject('KlipHome: Error en conekta');
+        //     $msj->to($mail,"Datos del error Conekta");
+        // });
     }
 }
