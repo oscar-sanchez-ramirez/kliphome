@@ -33,7 +33,6 @@ class FixerManController extends Controller
         if(\request()->ajax()){
             if($request->filled('chart_query')){
                 $monthlysales=$this->cast_date(DB::table('users')->select(DB::raw('count(id) as total'),DB::raw('date(created_at) as dates'))
-                // ->whereMonth('created_at', '>=', intval(substr($request->start,-2,2)))->whereMonth('created_at', '<=', intval(substr($request->end,-2,2)))->whereYear('created_at','>=',intval(substr($request->start,-7,4)))->whereYear('created_at','<=',intval(substr($request->end,-7,4)))
                 ->whereBetween(DB::raw('DATE(created_at)'), array($request->start, $request->end))
                 ->where('type','AppFixerMan')->groupBy('dates')->orderBy('dates','asc')->get());
                 return $monthlysales;
