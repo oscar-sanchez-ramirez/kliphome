@@ -82,7 +82,8 @@ class ApiServiceController extends ApiController
                 'address' => $address,
                 'categories' => $categories,
                 'notifications' => $notifications,
-                'version_app' => $version_app
+                'version_app' => $version_app,
+                'whatsapp' => '+525568013183'
             ]);
         }
     }

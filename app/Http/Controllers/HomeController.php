@@ -148,48 +148,35 @@ class HomeController extends Controller
     private function position($date){
         // $date = substr($date,-11,2);
         return $date = substr($date,-16,10);
-        switch ($date) {
-            case '01':
-                return "Ene";
-                break;
-                case '02':
-                    return "Feb";
-                    break;
-                    case '03':
-                        return "Mar";
-                        break;
-                        case '04':
-                            return "Abr";
-                            break;
-                            case '05':
-                                return "May";
-                                break;
-                                case '06':
-                                    return "Jun";
-                                    break;
-                                    case '07':
-                                        return "Jul";
-                                        break;
-                                        case '08':
-                                            return "Ago";
-                                            break;
-                                            case '09':
-                                                return "Set";
-                                                break;
-                                                case '10':
-                                                    return "Oct";
-                                                    break;
-                                                    case '11':
-                                                        return "Nov";
-                                                        break;
-                                                        case '12':
-                                                            return "Dic";
-                                                            break;
-
-            default:
-                return "Ene";
-                break;
-        }
+        // switch ($date) {
+        //     case '01':
+        //         return "Ene";
+        //         break;
+        //         case '02':
+        //             return "Feb";
+        //         case '03':
+        //             return "Mar";
+        //         case '04':
+        //             return "Abr";
+        //         case '05':
+        //             return "May";
+        //         case '06':
+        //             return "Jun";
+        //         case '07':
+        //             return "Jul";
+        //         case '08':
+        //             return "Ago";
+        //         case '09':
+        //             return "Set";
+        //         case '10':
+        //             return "Oct";
+        //         case '11':
+        //             return "Nov";
+        //         case '12':
+        //             return "Dic";
+        //     default:
+        //         return "Ene";
+        // }
     }
     private function getCategory($type,$id){
         switch ($type) {

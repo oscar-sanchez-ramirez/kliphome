@@ -13,14 +13,14 @@ class ConfigSystem extends Model
         'google_ios' => false,
         'facebook_android' => true,
         'google_android' => false,
+        'whatsapp' => '+525568013183',
     ];
 
     const payment = [
-        'stripe' => false,
-        'conekta' => true
+        'stripe' => true,
+        'conekta' => false
     ];
 
-    // const conekta_key = "key_LiS5ishyiSuzq8sEhz5ahg";
     const conekta_key = "key_LiS5ishyiSuzq8sEhz5ahg";
 
 }
