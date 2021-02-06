@@ -193,11 +193,7 @@ class OrderController extends ApiController
                             $payment->state = true;
                             $payment->price = $request->visit_price;
                             $payment->save();
-                            // $user = $request->user();
-                            if($user->email != "adrimabarak@hotmail.com"){
 
-                                dispatch(new NotifyNewOrder($order->id,$user->email));
-                            }
                             return response()->json([
                                 'success' => true,
                                 'message' => "La orden de servicio se realizó con éxito",
@@ -205,10 +201,62 @@ class OrderController extends ApiController
                             ]);
                         }else{
                             return response()->json([
-                                'success' => false
+                                'success' => false,
+                                'message' => 'Hubo un error inesperado,intente más tarde'
                             ]);
                         }
-                    } catch (\Throwable $th) {
+                    }catch(\Stripe\Exception\CardException $e) {
+                        // Since it's a decline, \Stripe\Exception\CardException will be caught
+                        Log::error($e);
+                        return response()->json([
+                            'success' => false,
+                            'message' => $e->getError()->message
+                        ]);
+                      } catch (\Stripe\Exception\RateLimitException $e) {
+                        // Too many requests made to the API too quickly
+                        Log::error($e);
+                        return response()->json([
+                            'success' => false,
+                            'message' => $e->getError()->message
+                        ]);
+                      } catch (\Stripe\Exception\InvalidRequestException $e) {
+                        // Invalid parameters were supplied to Stripe's API
+                        Log::error($e);
+                        return response()->json([
+                            'success' => false,
+                            'message' => $e->getError()->message
+                        ]);
+                      } catch (\Stripe\Exception\AuthenticationException $e) {
+                        // Authentication with Stripe's API failed
+                        // (maybe you changed API keys recently)
+                        Log::error($e);
+                        return response()->json([
+                            'success' => false,
+                            'message' => $e->getError()->message
+                        ]);
+                      } catch (\Stripe\Exception\ApiConnectionException $e) {
+                        // Network communication with Stripe failed
+                        Log::error($e);
+                        return response()->json([
+                            'success' => false,
+                            'message' => $e->getError()->message
+                        ]);
+                      } catch (\Stripe\Exception\ApiErrorException $e) {
+                        // Display a very generic error to the user, and maybe send
+                        // yourself an email
+                        Log::error($e);
+                        return response()->json([
+                            'success' => false,
+                            'message' => $e->getError()->message
+                        ]);
+                      } catch (Exception $e) {
+                        // Something else happened, completely unrelated to Stripe
+                        Log::error($e);
+                        return response()->json([
+                            'success' => false,
+                            'message' => $e->getError()->message
+                        ]);
+                      }catch (\Throwable $th) {
                         Log::error($th);
                         return response()->json([
                             'success' => false,
