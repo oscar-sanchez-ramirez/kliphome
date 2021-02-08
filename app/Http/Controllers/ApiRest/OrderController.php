@@ -111,9 +111,7 @@ class OrderController extends ApiController
                             $this->guardar_pago($order->id,$temp->code_payment,$request->visit_price,"VISITA");
                             $temp->delete();
                         }
-                        if($user->email != "adrimabarak@hotmail.com" && $user->email != "germanruelas17@gmail.com"){
-                            dispatch(new NotifyNewOrder($order->id,$user->email));
-                        }
+                        dispatch(new NotifyNewOrder($order->id,$user->email));
                         return response()->json([
                             'success' => true,
                             'message' => "La orden de servicio se realizó con éxito",
@@ -193,7 +191,7 @@ class OrderController extends ApiController
                             $payment->state = true;
                             $payment->price = $request->visit_price;
                             $payment->save();
-
+                            dispatch(new NotifyNewOrder($order->id,$user->email));
                             return response()->json([
                                 'success' => true,
                                 'message' => "La orden de servicio se realizó con éxito",
