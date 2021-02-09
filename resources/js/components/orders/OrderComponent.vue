@@ -53,7 +53,7 @@
                 </v-card-title>
                 <v-card-text>
                 <v-container>
-                    <v-text-field v-model="name" :counter="100" label="Cliente" required @input="name.$touch()"></v-text-field>
+                    <v-text-field v-model="name" :counter="100" label="Técnico" required @input="name.$touch()"></v-text-field>
                     <v-data-table :headers="headers" :items="fixerman_list">
                     <template #item.full_name="{ item }">{{ item.name }} {{ item.lastName }}</template>
                     <template #item.options="{ item }"><v-btn @click="seleccionar(item.id)" color="success">Asignar</v-btn></template>
