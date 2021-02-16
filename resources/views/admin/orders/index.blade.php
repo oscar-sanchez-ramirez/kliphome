@@ -121,7 +121,6 @@
                         <table class="table table-data2">
                             <thead>
                                 <tr>
-
                                     <th>Cliente</th>
                                     <th>Categoría</th>
                                     <th>Fecha Registro</th>

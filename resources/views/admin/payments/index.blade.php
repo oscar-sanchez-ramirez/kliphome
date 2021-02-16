@@ -104,7 +104,7 @@
                                         <td>
                                             @if($payment->description == "PAGO POR SERVICIO")
                                                 @php
-                                                    $detalle_pago = $payment->detalle_pago($payment->order_id);
+                                                    $detalle_pago = $payment->detalle_pago($payment->order_id,$payment->price);
                                                 @endphp
                                                 <a data-toggle="collapse" href="#collapsePayment{{ $payment->id }}" role="button" aria-expanded="false" aria-controls="collapsePayment{{ $payment->id }}">
                                                     {{ $payment->description }}
