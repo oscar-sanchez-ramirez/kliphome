@@ -27,7 +27,7 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        $content = '';
+        $content = User::where('email','germanruelas17@gmail.com')->first();
         OneSignal::sendNotificationUsingTags(
             'Probando push notification',
             array(
