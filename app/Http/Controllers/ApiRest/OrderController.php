@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\ApiRest;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Stripe;
 use App\Cita;
 use App\User;
@@ -153,23 +153,25 @@ class OrderController extends ApiController
                     try {
                         if($request->filled('service_image')){ $image = $request->service_image;}else{$image = "https://kliphome.com/images/default.jpg";}
                         $price = floatval($request->price);
-                        Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
-                        if(substr($request->token,0,3) == "cus"){
-                            $pago = Stripe\Charge::create ([
-                                "amount" => $request->visit_price * 100,
-                                "currency" => "MXN",
-                                "customer" => $request->token,
-                                "description" => "Pago por visita"
-                            ]);
-                        }else{
-                            $pago = Stripe\Charge::create ([
-                                "amount" => $request->visit_price * 100,
-                                "currency" => "MXN",
-                                "source" => $request->token,
-                                "description" => "Pago por visita"
-                            ]);
+                        if($price > 0){
+                            Stripe\Stripe::setApiKey("sk_live_cgLVMsCuyCsluw3Tznx1RuPS00UJQp8Rqf");
+                            if(substr($request->token,0,3) == "cus"){
+                                $pago = Stripe\Charge::create ([
+                                    "amount" => $request->visit_price * 100,
+                                    "currency" => "MXN",
+                                    "customer" => $request->token,
+                                    "description" => "Pago por visita"
+                                ]);
+                            }else{
+                                $pago = Stripe\Charge::create ([
+                                    "amount" => $request->visit_price * 100,
+                                    "currency" => "MXN",
+                                    "source" => $request->token,
+                                    "description" => "Pago por visita"
+                                ]);
+                            }
                         }
-                        if($pago->paid == true){
+                        if($pago->paid == true || $price == 0){
                             $order = new Order;
                             $order->user_id = $user->id;
                             $order->selected_id = $request->selected_id;
@@ -184,13 +186,15 @@ class OrderController extends ApiController
                             $order->save();
                             $order->order_id = $order->id;
 
-                            $payment = new Payment;
-                            $payment->order_id = $order->id;
-                            $payment->code_payment = $pago->id;
-                            $payment->description = "VISITA";
-                            $payment->state = true;
-                            $payment->price = $request->visit_price;
-                            $payment->save();
+                            if($price > 0){
+                                $payment = new Payment;
+                                $payment->order_id = $order->id;
+                                $payment->code_payment = $pago->id;
+                                $payment->description = "VISITA";
+                                $payment->state = true;
+                                $payment->price = $request->visit_price;
+                                $payment->save();
+                            }
                             dispatch(new NotifyNewOrder($order->id,$user->email));
                             return response()->json([
                                 'success' => true,

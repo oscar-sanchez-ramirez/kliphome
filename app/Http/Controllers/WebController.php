@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Mail;
 use App\User;
+use OneSignal;
 use Carbon\Carbon;
 use App\AdminCoupon;
 use App\TempPayment;
@@ -26,13 +27,18 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        // $usuario = array('name' => "error", 'tipo' => "PGO",'error'=> "Errorcillo");
-        // // $mail = ["tonyhamui68@gmail.com","kliphomegaby@gmail.com"];
-        // $mail = ["germanruelas17@gmail.com","german.ruelas@tigears.com"];
-        // // $mail = "germanruelas17@gmail.com";
-        // Mail::send('emails.conektaerror',$usuario, function($msj) use ($mail){
-        //     $msj->subject('KlipHome: Error en conekta');
-        //     $msj->to($mail,"Datos del error Conekta");
-        // });
+        $content = '';
+        OneSignal::sendNotificationUsingTags(
+            'Probando push notification',
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => 'germanruelas17@gmail.com'],
+            ),
+            $type=null,
+            $content,
+            $url=null,
+            $data = null,
+            $buttons = null,
+            $schedule = null
+        );
     }
 }
