@@ -203,7 +203,6 @@ function filter(estado){
         url: url,
         data: { 'start': start,'end': end, 'chart_query':estado },
         success: function(data) {
-            console.log(data);
             $(".percent-chart").html('');
             $(".percent-chart").html('<canvas id="myChart2"></canvas>');
             open_chart(data);

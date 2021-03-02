@@ -170,8 +170,43 @@ class OrderController extends ApiController
                                     "description" => "Pago por visita"
                                 ]);
                             }
-                        }
-                        if($pago->paid == true || $price == 0){
+                            if($pago->paid == true || $price == 0){
+                                $order = new Order;
+                                $order->user_id = $user->id;
+                                $order->selected_id = $request->selected_id;
+                                $order->type_service = $request->type_service;
+                                $order->service_date = $request->service_date;
+                                $order->service_description = $request->service_description;
+                                $order->service_image = $image;
+                                $order->address = $request->address;
+                                $order->price = 'quotation';
+                                $order->visit_price = $request->visit_price;
+                                $order->pre_coupon = $request->coupon;
+                                $order->save();
+                                $order->order_id = $order->id;
+
+                                if($price > 0){
+                                    $payment = new Payment;
+                                    $payment->order_id = $order->id;
+                                    $payment->code_payment = $pago->id;
+                                    $payment->description = "VISITA";
+                                    $payment->state = true;
+                                    $payment->price = $request->visit_price;
+                                    $payment->save();
+                                }
+                                dispatch(new NotifyNewOrder($order->id,$user->email));
+                                return response()->json([
+                                    'success' => true,
+                                    'message' => "La orden de servicio se realizó con éxito",
+                                    'order' => $order
+                                ]);
+                            }else{
+                                return response()->json([
+                                    'success' => false,
+                                    'message' => 'Hubo un error inesperado,intente más tarde'
+                                ]);
+                            }
+                        }else{
                             $order = new Order;
                             $order->user_id = $user->id;
                             $order->selected_id = $request->selected_id;
@@ -201,12 +236,9 @@ class OrderController extends ApiController
                                 'message' => "La orden de servicio se realizó con éxito",
                                 'order' => $order
                             ]);
-                        }else{
-                            return response()->json([
-                                'success' => false,
-                                'message' => 'Hubo un error inesperado,intente más tarde'
-                            ]);
                         }
+
+
                     }catch(\Stripe\Exception\CardException $e) {
                         // Since it's a decline, \Stripe\Exception\CardException will be caught
                         Log::error($e);
