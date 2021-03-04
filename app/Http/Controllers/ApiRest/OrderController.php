@@ -24,6 +24,7 @@ use App\Http\Controllers\ApiController;
 use App\Notifications\Database\newDate;
 use App\Notifications\Database\OrderCancelled;
 use App\Notifications\Database\QuotationCancelled;
+use Exception;
 
 class OrderController extends ApiController
 {
@@ -230,7 +231,10 @@ class OrderController extends ApiController
                                 $payment->price = $request->visit_price;
                                 $payment->save();
                             }
-                            dispatch(new NotifyNewOrder($order->id,$user->email));
+                            if($user->email != "germanruelas17@gmail.com"){
+                                dispatch(new NotifyNewOrder($order->id,$user->email));
+                            }
+                            // dispatch(new NotifyNewOrder($order->id,$user->email));
                             return response()->json([
                                 'success' => true,
                                 'message' => "La orden de servicio se realizó con éxito",
@@ -288,7 +292,7 @@ class OrderController extends ApiController
                         Log::error($e);
                         return response()->json([
                             'success' => false,
-                            'message' => $e->getError()->message
+                            'message' => $e->getMessage()
                         ]);
                       }catch (\Throwable $th) {
                         Log::error($th);
