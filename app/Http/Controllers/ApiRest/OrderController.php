@@ -210,15 +210,15 @@ class OrderController extends ApiController
                             }
                         }else{
                             if(!$request->filled('address')){
-                                $direcciones = Address::where('user_id',$user->id)->get();
-                                if(count($direcciones) > 0){
-                                    $request->address = $direcciones[0]->id;
-                                }else{
+                                // $direcciones = Address::where('user_id',$user->id)->get();
+                                // if(count($direcciones) > 0){
+                                //     $request->address = $direcciones[0]->id;
+                                // }else{
                                     return response()->json([
                                         'success' => false,
                                         'message' => 'Selecciona una dirección'
                                     ]);
-                                }
+                                // }
                             }
                             $order = new Order;
                             $order->user_id = $user->id;
