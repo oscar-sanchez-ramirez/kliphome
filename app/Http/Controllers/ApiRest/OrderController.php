@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ApiRest;
 
+use App\Address;
 use Illuminate\Support\Facades\DB;
 use Stripe;
 use App\Cita;
@@ -208,6 +209,17 @@ class OrderController extends ApiController
                                 ]);
                             }
                         }else{
+                            if(!$request->filled('address')){
+                                $direcciones = Address::where('user_id',$user->id)->get();
+                                if(count($direcciones) > 0){
+                                    $request->address = $direcciones[0]->id;
+                                }else{
+                                    return response()->json([
+                                        'success' => false,
+                                        'message' => 'Selecciona una dirección'
+                                    ]);
+                                }
+                            }
                             $order = new Order;
                             $order->user_id = $user->id;
                             $order->selected_id = $request->selected_id;
