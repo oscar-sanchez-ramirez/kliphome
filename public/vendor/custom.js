@@ -40,7 +40,7 @@ $(document).on('keypress','#search_tecnico',function(){
                     state = '<span class="badge badge-danger" onclick="aproveFixerMan('+data['users'][index]["id"]+',\''+data['users'][index]["name"]+'\')">Pendiente</span>';
                 }
                 options = '<div class="table-data-feature"><a class="item" href="'+window.location.origin+'/tecnicos/detalle/'+data['users'][index]["id"]+'"><i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-eye"></i></a><button class="item" data-toggle="modal" data-target="#mediumImage" id="fixermanModalImage" data-id="'+data['users'][index]["avatar"]+'" data-user="'+data['users'][index]["id"]+'"><i data-toggle="tooltip" data-placement="top" title="user" class="zmdi zmdi-image"></i></button></div>';
-                $(".tbodyModal").append(' <tr><td>'+(index+1)+'</td><td>'+data['users'][index]["name"]+' '+data['users'][index]["lastName"]+'</td><td>'+data["users"][index]["email"]+'</td><td>'+data["users"][index]["phone"]+'</td><td>'+state+'</td><td>'+options+'</td></tr>');
+                $(".tbodyModal").append(' <tr><td>'+(index+1)+'</td><td>'+data['users'][index]["name"]+' '+data['users'][index]["lastName"]+'</td><td>'+data["users"][index]["email"]+'</td><td>'+data["users"][index]["phone"]+'</td><td>'+moment(data["users"][index]["created_at"]).format("DD/MM/YYYY")+'</td><td>'+state+'</td><td>'+options+'</td></tr>');
             }
         },
         error: function(data) {
