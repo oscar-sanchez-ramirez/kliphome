@@ -105,7 +105,8 @@
                                     <th>#</th>
                                     <th>Nombres</th>
                                     <th>Email</th>
-                                    <th># Telefono</th>
+                                    <th>Telefono</th>
+                                    <th>F.Creación</th>
                                     <th>Estado</th>
                                     <th></th>
                                 </tr>
@@ -121,6 +122,7 @@
                                         <td>{{ $user->name }} {{ $user->lastName }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
+                                        <td>{{ $user->created_at->format('d/m/Y') }}</td>
                                         <td id="state{{ $user->id }}">
                                             @if($user->state == 0)
                                                 <span class="badge badge-danger" onclick="aproveFixerMan({{ $user->id }},'{{ $user->name }}')">Pendiente</span>
