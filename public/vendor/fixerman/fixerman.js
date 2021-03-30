@@ -156,7 +156,7 @@ $(document).on('change','#filter_category',function(){
                     }else{
                         state = '<span class="badge badge-success">Validado</span>';
                     }
-                    $(".tbodyModal").append('<tr><td>'+(i++)+'</td><td>'+data[index]["name"]+' '+data[index]['lastName']+'</td><td>'+data[index]['email']+'</td><td>'+data[index]['phone']+'</td><td id="state'+data[index]['id']+'">'+state+'</td><td>'+options+'</td></tr>');
+                    $(".tbodyModal").append('<tr><td>'+(i++)+'</td><td>'+data[index]["name"]+' '+data[index]['lastName']+'</td><td>'+data[index]['email']+'</td><td>'+data[index]['phone']+'</td><td>'+moment(data[index]["created_at"]).format("DD/MM/YYYY")+'</td><td id="state'+data[index]['id']+'">'+state+'</td><td>'+options+'</td></tr>');
 
                 }
                 console.log(data);
