@@ -30,6 +30,12 @@ class Payment extends Model
                 'cotizacion' => $cotizacion,
                 'tecnico' => $tecnico
             ]);
+        }elseif(count($cotizacion) == 0){
+            return response()->json([
+                'order' => $id,
+                'cotizacion' => null,
+                'tecnico' => $tecnico
+            ]);
         }else{
             return response()->json([
                 'order' => $id,

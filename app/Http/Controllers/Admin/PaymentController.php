@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\GeneralStats;
 use DB;
 use App\Payment;
 use App\Quotation;
@@ -91,7 +92,7 @@ class PaymentController extends Controller
                 ]);
             }
         }
-        $general_percent = DB::table('general_stats')->where('title',"percent")->first();
+        $general_percent = GeneralStats::where('title',"percent")->first();
         $payments = Payment::orderBy('id','DESC')->where('state',1)->paginate(10);
         // DB::table('orders as o')
         // ->join('payments as p','p.order_id','o.id')

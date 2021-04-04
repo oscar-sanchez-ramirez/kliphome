@@ -102,7 +102,7 @@
                                     <tr class="tr-shadow">
                                         <td>{{ $i++ }}</td>
                                         <td>
-                                            @if($payment->description == "PAGO POR SERVICIO")
+                                            @if($payment->description == "PAGO POR SERVICIO" && $payment->state == 1)
                                                 @php
                                                     $detalle_pago = $payment->detalle_pago($payment->order_id,$payment->price);
                                                 @endphp
@@ -110,31 +110,31 @@
                                                     {{ $payment->description }}
                                                 </a>
                                                 <div class="collapse" id="collapsePayment{{ $payment->id }}">
-                                                <div class="card card-body">
                                                     <div class="card card-body">
-                                                        <div class="row">
-                                                            <b>Precio por material:  </b>{{ json_encode($detalle_pago->original["cotizacion"]["price"]) }}
-                                                        </div>
-                                                        <div class="row">
-                                                            <b>Mano de Obra:  </b>{{ json_encode($detalle_pago->original["cotizacion"]["workforce"]) }}
-                                                        </div>
-                                                        <div class="row" id="rowPercent{{ $payment->id }}">
-                                                            <div class="col-md-6">
-                                                                Porcentaje de
-                                                                @if($detalle_pago->original["tecnico"] != null)
-                                                                    {{ json_encode($detalle_pago->original["tecnico"]->name ) }} {{ json_encode($detalle_pago->original["tecnico"]->lastName) }} : {{ json_encode($detalle_pago->original["tecnico"]->percent) }}%
-                                                                @endif
+                                                        <div class="card card-body">
+                                                            <div class="row">
+                                                                <b>Precio por material:  </b>{{ $detalle_pago->original["cotizacion"] != null ? json_encode($detalle_pago->original["cotizacion"]["price"]) : 0 }}
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                @php
-                                                                    if($detalle_pago->original["tecnico"] != null){$percent = json_encode(intval($detalle_pago->original['tecnico']->percent));}else{$percent = 100;}
-                                                                @endphp
-                                                                Ganancia:{{ (json_encode(intval($detalle_pago->original['cotizacion']['workforce'])) * $percent) / 100 }}
+                                                            <div class="row">
+                                                                <b>Mano de Obra:  </b>{{ $detalle_pago->original["cotizacion"] != null ? json_encode($detalle_pago->original["cotizacion"]["workforce"]) : 0 }}
+                                                            </div>
+                                                            <div class="row" id="rowPercent{{ $payment->id }}">
+                                                                <div class="col-md-6">
+                                                                    Porcentaje de
+                                                                    @if($detalle_pago->original["tecnico"] != null)
+                                                                        {{ json_encode($detalle_pago->original["tecnico"]->name ) }} {{ json_encode($detalle_pago->original["tecnico"]->lastName) }} : {{ json_encode($detalle_pago->original["tecnico"]->percent) }}%
+                                                                    @endif
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    @php
+                                                                        if($detalle_pago->original["tecnico"] != null){$percent = json_encode(intval($detalle_pago->original['tecnico']->percent));}else{$percent = 100;}
+                                                                    @endphp
+                                                                    Ganancia:{{ $detalle_pago->original["cotizacion"] != null ? (json_encode(intval($detalle_pago->original['cotizacion']['workforce'])) * $percent) / 100 : 0 }}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                              </div>
                                             @else
                                             {{ $payment->description }}
                                             @endif
