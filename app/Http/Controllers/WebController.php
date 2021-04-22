@@ -27,18 +27,24 @@ class WebController extends ControllerWeb
         }
     }
     public function test(){
-        $content = User::where('email','germanruelas17@gmail.com')->first();
-        OneSignal::sendNotificationUsingTags(
-            'Probando push notification',
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => 'germanruelas17@gmail.com'],
-            ),
-            $type=null,
-            $content,
-            $url=null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
+        $alert = array('alert' => "Una nueva orden fue creada");
+        $mail = "germanruelas17@gmail.com";
+        Mail::send('emails.alert',$alert, function($msj) use ($mail){
+            $msj->subject('KlipHome: Nueva orden');
+            $msj->to($mail,"Detalle");
+        });
+        // $content = User::where('email','germanruelas17@gmail.com')->first();
+        // OneSignal::sendNotificationUsingTags(
+        //     'Probando push notification',
+        //     array(
+        //         ["field" => "tag", "key" => "email",'relation'=> "=", "value" => 'germanruelas17@gmail.com'],
+        //     ),
+        //     $type=null,
+        //     $content,
+        //     $url=null,
+        //     $data = null,
+        //     $buttons = null,
+        //     $schedule = null
+        // );
     }
 }
