@@ -150,22 +150,53 @@ class OrderController extends Controller
 
         $quotation->mensajeClient = "Recibiste la cotización de tu orden para el ".$date;
         $quotation->visit_price = $order->visit_price;
+        $quotation->type = "App\Notifications\Database\QuotationSended";
         $user->notify(new QuotationSended($quotation));
 
         $type = "App\Notifications\Database\QuotationSended";
         $content = $quotation;
-        OneSignal::sendNotificationUsingTags(
-            "Acabas de recibir una cotización",
-            array(
-                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
-            ),
-            $type,
-            $content,
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
+        if($order->user_id == 90){
+            OneSignal::sendNotificationUsingTags(
+                "Acabas de recibir una cotización",
+                array(
+                    ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+                ),
+                $url = null,
+                $content,
+                $buttons = null,
+                $schedule = null,
+                $headings = null,
+                $subtitle = null,
+            );
+            // $devices = \Ladumor\OneSignal\OneSignal::getDevices();
+            // $quotation = Quotation::where('id',322)->first();
+            // for ($i=0; $i < count($devices["players"]); $i++) {
+            //     if($devices["players"][$i]["tags"]["email"] == 'germanruelas17@gmail.com'){
+            //         $fields['include_player_ids'] = [$devices["players"][$i]['id']];
+            //         $fields['contents'] = array(
+            //             "en" => 'Acabas de recibir una cotización',
+            //             "es" => 'Acabas de recibir una cotización'
+            //         );
+            //         $fields['data'] = $content;
+            //         $message = 'Acabas de recibir una cotización';
+            //         $push = \Ladumor\OneSignal\OneSignal::sendPush($fields, $message);
+            //         return $push;
+            //     }
+            // }
+        }else{
+            OneSignal::sendNotificationUsingTags(
+                "Acabas de recibir una cotización",
+                array(
+                    ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+                ),
+                $type,
+                $content,
+                $url = null,
+                $data = null,
+                $buttons = null,
+                $schedule = null
+            );
+        }
         return response()->json([
             'success' => true,
             'message' => "Se envió la cotización"
