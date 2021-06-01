@@ -58,16 +58,14 @@ class NotifyAcceptOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\NotifyAcceptOrder";
         $content = $this->selected_order;
         OneSignal::sendNotificationUsingTags(
             "Te hemos asignado un técnico",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null

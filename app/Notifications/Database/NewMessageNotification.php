@@ -63,16 +63,15 @@ class NewMessageNotification extends Notification
         if($user->type == "AppFixerMan"){
             $user->sendNotification($user->email,'NewMessageNotification',$this->message);
         }else{
-            $type = "App\\Notifications\\Database\\NewMessageNotification";
             $content = $this->message;
+            $content["type"] = 'App\Notifications\Database\NewMessageNotification';
             OneSignal::sendNotificationUsingTags(
                 "¡Tienes un nuevo mensaje!",
                 array(
                     ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
                 ),
-                $type,
-                $content,
                 $url = null,
+                $content,
                 $data = null,
                 $buttons = null,
                 $schedule = null

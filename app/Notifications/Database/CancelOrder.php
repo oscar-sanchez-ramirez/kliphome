@@ -57,16 +57,14 @@ class CancelOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\CancelOrder";
         $content = $this->order;
         OneSignal::sendNotificationUsingTags(
             "Tu orden de servicio ha sido cancelada",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null

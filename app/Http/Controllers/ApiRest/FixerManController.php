@@ -134,6 +134,7 @@ class FixerManController extends ApiController
                     $user = User::where('id',$order->user_id)->first();
                     $fixerman = $request->user();
                     $new_selected_order["mensajeClient"] = $fixerman->name." aceptó tu trabajo. Échale un vistazo";
+                    $new_selected_order["type"] = 'App\Notifications\NotifyAcceptOrder';
                     $user->notify(new NotifyAcceptOrder($new_selected_order,$user->email));
                     return Response(json_encode(array('success' => 1,'message'=>'Fuiste asignado correctamente')));
                 }else{
@@ -175,6 +176,7 @@ class FixerManController extends ApiController
         //Notification for Fixerman
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $order["type"] = "App\Notifications\Database\ApproveOrderFixerMan";
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
         $notification = $fixerman->notifications()->first();
         $order->notification_id = $notification->id;
@@ -208,19 +210,18 @@ class FixerManController extends ApiController
         $fixerman = User::where('id',$fixerman_id)->first();
         //Notify
         $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio con ".ucfirst(strtolower($fixerman->name))." ha terminado, ¡Califícalo ahora! ";
+        $order["type"] = 'App\Notifications\Database\FinishedOrder';
         $client = User::where('id',$order->user_id)->first();
         $client->notify(new FinishedOrder($order));
         //Onesignal Notification
-        $type = "App\Notifications\Database\FinishedOrder";
         $content = $order;
         OneSignal::sendNotificationUsingTags(
             ucfirst(strtolower($fixerman->name))." ha marcardo el servicio como terminado. ¡Valóralo ahora!",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null
@@ -464,18 +465,17 @@ class FixerManController extends ApiController
     public function requirequotation(Request $request){
         $order = Order::where('id',$request->order_id)->first();
         $order["mensajeClient"] = "Estamos realizando tu cotización, en breve la recibirás ";
+        $order["type"] = "App\Notifications\Database\WaitQuotation";
         $client = User::where('id',$order->user_id)->first();
         $client->notify(new WaitQuotation($order));
-        $type = "App\Notifications\Database\WaitQuotation";
         $content = $order;
         OneSignal::sendNotificationUsingTags(
             "Estamos realizando tu cotización, en breve la recibirás",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null

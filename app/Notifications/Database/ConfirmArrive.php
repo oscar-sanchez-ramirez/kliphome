@@ -59,17 +59,16 @@ class ConfirmArrive extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\ConfirmArrive";
         $content = Order::where('id',$this->order_id)->first();
         $content["mensajeClient"] = "Tu kliper ha llegado a tu domicilio";
+        $content["type"] = 'App\Notifications\Database\ConfirmArrive';
         OneSignal::sendNotificationUsingTags(
             "Tu kliper ha llegado a tu domicilio",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->client_email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null

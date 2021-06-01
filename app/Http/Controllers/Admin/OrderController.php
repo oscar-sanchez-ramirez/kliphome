@@ -152,51 +152,19 @@ class OrderController extends Controller
         $quotation->visit_price = $order->visit_price;
         $quotation->type = "App\Notifications\Database\QuotationSended";
         $user->notify(new QuotationSended($quotation));
-
-        $type = "App\Notifications\Database\QuotationSended";
         $content = $quotation;
-        if($order->user_id == 90){
-            OneSignal::sendNotificationUsingTags(
-                "Acabas de recibir una cotización",
-                array(
-                    ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
-                ),
-                $url = null,
-                $content,
-                $buttons = null,
-                $schedule = null,
-                $headings = null,
-                $subtitle = null,
-            );
-            // $devices = \Ladumor\OneSignal\OneSignal::getDevices();
-            // $quotation = Quotation::where('id',322)->first();
-            // for ($i=0; $i < count($devices["players"]); $i++) {
-            //     if($devices["players"][$i]["tags"]["email"] == 'germanruelas17@gmail.com'){
-            //         $fields['include_player_ids'] = [$devices["players"][$i]['id']];
-            //         $fields['contents'] = array(
-            //             "en" => 'Acabas de recibir una cotización',
-            //             "es" => 'Acabas de recibir una cotización'
-            //         );
-            //         $fields['data'] = $content;
-            //         $message = 'Acabas de recibir una cotización';
-            //         $push = \Ladumor\OneSignal\OneSignal::sendPush($fields, $message);
-            //         return $push;
-            //     }
-            // }
-        }else{
-            OneSignal::sendNotificationUsingTags(
-                "Acabas de recibir una cotización",
-                array(
-                    ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
-                ),
-                $type,
-                $content,
-                $url = null,
-                $data = null,
-                $buttons = null,
-                $schedule = null
-            );
-        }
+        OneSignal::sendNotificationUsingTags(
+            "Acabas de recibir una cotización",
+            array(
+                ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $user->email],
+            ),
+            $url = null,
+            $content,
+            $buttons = null,
+            $schedule = null,
+            $headings = null,
+            $subtitle = null,
+        );
         return response()->json([
             'success' => true,
             'message' => "Se envió la cotización"
@@ -214,7 +182,9 @@ class OrderController extends Controller
             $url = null,
             $data = null,
             $buttons = null,
-            $schedule = null
+            $schedule = null,
+            $headings = null,
+            $subtitle = null,
         );
         return back()->with('success',"Se notifico al cliente");
     }
@@ -255,6 +225,7 @@ class OrderController extends Controller
         ]);
         $order = Order::where('id',$id)->first();
         $order["mensajeClient"] = "Tu orden de servicio ha sido cancelada";
+        $order["type"] = 'App\Notifications\Database\CancelOrder';
         $user = User::where('id',$order->user_id)->first();
         $user->notify(new CancelOrder($order,$user->email));
     }
@@ -273,19 +244,19 @@ class OrderController extends Controller
         $order = Order::where('id',$order_id)->first();
         //Notify
         $order["mensajeClient"] = "¡Gracias por usar KlipHome! Tu servicio ha terminado, ¡Califícalo ahora! ";
+        $order["type"] = 'App\Notifications\Database\FinishedOrder';
         $client = User::where('id',$order->user_id)->first();
         $client->notify(new FinishedOrder($order));
         //Onesignal Notification
-        $type = "App\Notifications\Database\FinishedOrder";
         $content = $order;
+
         OneSignal::sendNotificationUsingTags(
             "KlipHome ha marcardo el servicio como terminado. ¡Valóralo ahora!",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $client->email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null

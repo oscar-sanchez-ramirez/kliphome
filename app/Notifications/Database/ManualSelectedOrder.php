@@ -57,17 +57,16 @@ class ManualSelectedOrder extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\ManualSelectedOrder";
         $content = $this->order;
         $content["mensajeClient"] = "Un técnico fue asignado por nuestro equipo.";
+        $content["type"] = 'App\Notifications\Database\ManualSelectedOrder';
         OneSignal::sendNotificationUsingTags(
             "Un técnico fue asignado por nuestro equipo.",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null

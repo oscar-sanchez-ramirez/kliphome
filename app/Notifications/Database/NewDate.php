@@ -58,17 +58,16 @@ class NewDate extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\NewDate";
         $content = $this->order;
         $content["mensajeClient"] = "Tu técnico ha agendado una nueva visita";
+        $content["type"] = 'App\Notifications\Database\NewDate';
         OneSignal::sendNotificationUsingTags(
             "Tu técnico ha agendado una nueva visita",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->client_email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null

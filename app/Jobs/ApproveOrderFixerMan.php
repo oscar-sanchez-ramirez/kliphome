@@ -4,11 +4,9 @@ namespace App\Jobs;
 
 use DB;
 use App\User;
-use OneSignal;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -62,6 +60,7 @@ class ApproveOrderFixerMan implements ShouldQueue
         //Notification for Fixerman
         $order["mensajeClient"] = "¡Listo! Se ha Confirmado tu trabajo con ".$fixerman->name." para el día ".Carbon::parse($date)->format('d,M H:i');
         $order["mensajeFixerMan"] = "¡Listo! Se ha Confirmado tu trabajo con ".$user_order->name." para el día ".Carbon::parse($date)->format('d,M H:i');
+        $order["type"] = "App\Notifications\Database\ApproveOrderFixerMan";
         // $fixerman->sendNotification($fixerman->email,'ApproveOrderFixerMan');
         $fixerman->notify(new DatabaseApproveOrderFixerMan($order,$fixerman->email));
         //

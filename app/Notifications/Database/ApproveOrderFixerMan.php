@@ -57,16 +57,14 @@ class ApproveOrderFixerMan extends Notification
      */
     public function toArray($notifiable)
     {
-        $type = "App\Notifications\Database\ApproveOrderFixerMan";
         $content = $this->order;
         OneSignal::sendNotificationUsingTags(
             "Tu solicitud de trabajo fue aceptada",
             array(
                 ["field" => "tag", "key" => "email",'relation'=> "=", "value" => $this->email],
             ),
-            $type,
-            $content,
             $url = null,
+            $content,
             $data = null,
             $buttons = null,
             $schedule = null
