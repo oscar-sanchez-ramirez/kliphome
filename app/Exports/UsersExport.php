@@ -29,7 +29,7 @@ class UsersExport implements FromCollection
                 $usuarios = Order::pluck('user_id');
                 return User::where('type','AppUser')->whereNotIn('id',$usuarios)->orderBy('id',"DESC")->get(['name','lastName','phone','email']);
             case 'todos':
-                return User::where('type','AppUser')->orderBy('id',"DESC")->get(['name','lastName','phone','email']);
+                return User::where('type','AppFixerMan')->orderBy('id',"DESC")->get(['name','lastName','phone','email']);
             default:
                 # code...
                 break;

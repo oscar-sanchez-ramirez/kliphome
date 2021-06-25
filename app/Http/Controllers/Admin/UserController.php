@@ -85,7 +85,7 @@ class UserController extends Controller
                 $usuarios = Order::pluck('user_id');
                 return User::where('type','AppUser')->whereNotIn('id',$usuarios)->orderBy('id',"DESC")->withCount('orders')->get();
             case 'todos':
-                return User::where('type','AppFixerMan')->orderBy('id',"DESC")->withCount('orders')->paginate(10);
+                return User::where('type','AppUser')->orderBy('id',"DESC")->withCount('orders')->paginate(10);
             default:
                 # code...
                 break;
